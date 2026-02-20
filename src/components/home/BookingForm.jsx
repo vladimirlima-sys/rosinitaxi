@@ -28,6 +28,15 @@ export default function BookingForm({ bookingRef }) {
   const [estimatedDistance, setEstimatedDistance] = useState(0);
   const [isEstimating, setIsEstimating] = useState(false);
 
+  // Handle redirect back from Stripe
+  React.useEffect(() => {
+    const params = new URLSearchParams(window.location.search);
+    if (params.get('booking') === 'success') {
+      setStep(5);
+      window.history.replaceState({}, '', window.location.pathname);
+    }
+  }, []);
+
   const update = (field, value) => setForm(prev => ({ ...prev, [field]: value }));
 
   const estimateDistance = async () => {
