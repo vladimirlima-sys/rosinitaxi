@@ -62,7 +62,8 @@ export default function EditBookingForm({ booking, onSave }) {
   };
 
   return (
-    <form onSubmit={handleSubmit} className="space-y-6">
+    <div className="space-y-6">
+      <form onSubmit={handleSubmit} className="space-y-6">
       {/* Info message */}
       <div className="p-4 rounded-lg bg-blue-500/10 border border-blue-500/20 flex gap-3">
         <AlertCircle className="w-4 h-4 text-blue-400 flex-shrink-0 mt-0.5" />
