@@ -25,7 +25,7 @@ Deno.serve(async (req) => {
     const arrival = meta.arrival || "";
     const departureDate = meta.departure_date || "";
     const departureTime = meta.departure_time || "";
-    const vehicleType = meta.vehicle_type === "comfort" ? "Confort" : "Économique";
+    const vehicleType = meta.vehicle_type === "comfort" ? "Confort" : "Standard";
     const distanceKm = meta.distance_km || "";
     const amount = (session.amount_total / 100).toFixed(2);
 

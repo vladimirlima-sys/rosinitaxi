@@ -13,10 +13,10 @@ Deno.serve(async (req) => {
       line_items: [
         {
           price_data: {
-            currency: currency || 'chf',
+            currency: (currency || 'chf').toLowerCase(),
             unit_amount: Math.round(amount * 100),
             product_data: {
-              name: `Rosini Transfert — ${vehicle_type === 'economic' ? 'Économique' : 'Confort'}`,
+              name: `Rosini Transfert — ${vehicle_type === 'economic' ? 'Standard' : 'Confort'}`,
               description: `${departure} → ${arrival} | ${distance_km} km | ${departure_date} à ${departure_time}`,
             },
           },

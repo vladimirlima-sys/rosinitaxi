@@ -274,7 +274,7 @@ export default function BookingForm({ bookingRef }) {
 
   const resetForm = () => {
     setStep(1);
-    setForm({ departure_point: '', arrival_point: '', departure_date: '', departure_time: '', flight_number: '', vehicle_type: '', passengers: 1, client_name: '', client_email: '', client_phone: '', notes: '', driver_preference: '', distance_km: 0 });
+    setForm({ departure_point: '', arrival_point: '', departure_date: '', departure_time: '', flight_number: '', vehicle_type: 'economic', passengers: 1, client_name: '', client_email: '', client_phone: '', notes: '', driver_preference: '', distance_km: 0 });
     setEstimatedDistance(0);
     setEstimatedTime(0);
     setDynamicPrice(null);
@@ -563,7 +563,7 @@ export default function BookingForm({ bookingRef }) {
               <h4 className="text-white/60 text-sm uppercase tracking-wider mb-4">{t.summaryLabel}</h4>
               <div className="flex justify-between text-sm"><span className="text-white/40">{t.summaryTrajet}</span><span className="text-white">{form.departure_point} → {form.arrival_point}</span></div>
               <div className="flex justify-between text-sm"><span className="text-white/40">{t.summaryDateHeure}</span><span className="text-white">{form.departure_date} — {form.departure_time}</span></div>
-              <div className="flex justify-between text-sm"><span className="text-white/40">{t.summaryVehicle}</span><span className="text-white">{form.vehicle_type === 'economic' ? t.economic : t.comfort}</span></div>
+              <div className="flex justify-between text-sm"><span className="text-white/40">{t.summaryVehicle}</span><span className="text-white">Standard</span></div>
               <div className="flex justify-between text-sm"><span className="text-white/40">{t.summaryDistance}</span><span className="text-white">{estimatedDistance} km</span></div>
               <div className="w-full h-[1px] bg-white/10 my-2" />
               <div className="flex justify-between"><span className="text-white font-medium">{t.summaryTotal}</span><span className="text-[#C9A96E] text-xl font-semibold">CHF {totalPrice}</span></div>
