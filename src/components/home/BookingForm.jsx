@@ -209,7 +209,7 @@ export default function BookingForm({ bookingRef }) {
               <div className="text-center p-6 rounded-2xl bg-white/[0.03] border border-[#C9A96E]/20">
                 <p className="text-white/40 text-sm mb-2">{t.estimatedPrice}</p>
                 <p className="text-[#C9A96E] text-4xl font-light">CHF {totalPrice}</p>
-                <p className="text-white/30 text-sm mt-2">{estimatedDistance} km × CHF {pricePerKm}{t.perKm}</p>
+                
               </div>
             )}
 

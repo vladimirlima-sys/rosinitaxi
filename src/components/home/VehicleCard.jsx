@@ -54,14 +54,12 @@ export default function VehicleCard({ type, selected, onSelect, distance }) {
       </div>
 
       <div className="mb-5">
-        <div className="flex items-baseline gap-1">
-          <span className="text-[#C9A96E] text-2xl font-semibold">CHF {config.pricePerKm}</span>
-          <span className="text-white/30 text-sm">{t.perKm}</span>
-        </div>
-        {totalPrice && (
-          <p className="text-white/50 text-sm mt-1">
-            {t.estimatedPrice}: <span className="text-[#C9A96E] font-medium">CHF {totalPrice}</span>
-          </p>
+        {totalPrice ? (
+          <div className="flex items-baseline gap-1">
+            <span className="text-[#C9A96E] text-2xl font-semibold">CHF {totalPrice}</span>
+          </div>
+        ) : (
+          <p className="text-white/30 text-sm italic">{t.estimatedPrice}...</p>
         )}
       </div>
 
