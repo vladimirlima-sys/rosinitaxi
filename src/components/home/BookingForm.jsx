@@ -46,7 +46,6 @@ export default function BookingForm({ bookingRef }) {
   const [isLocating, setIsLocating] = useState(false);
   const [estimatedTime, setEstimatedTime] = useState(0);
   const [priceSettings, setPriceSettings] = useState(null);
-  const [showRouteMap, setShowRouteMap] = useState(false);
   const [currentRoute, setCurrentRoute] = useState(null);
 
 
@@ -264,7 +263,6 @@ export default function BookingForm({ bookingRef }) {
     setEstimatedDistance(0);
     setEstimatedTime(0);
     setDynamicPrice(null);
-    setShowRouteMap(false);
     setCurrentRoute(null);
   };
 
