@@ -1,5 +1,4 @@
 import { createClientFromRequest } from 'npm:@base44/sdk@0.8.6';
-import nodemailer from 'npm:nodemailer@6.9.3';
 
 Deno.serve(async (req) => {
   try {
@@ -7,19 +6,6 @@ Deno.serve(async (req) => {
     const body = await req.json();
 
     const { client_name, client_email, client_phone, departure_point, arrival_point, departure_date, departure_time, flight_number, vehicle_type, distance_km, total_price, passengers, notes } = body;
-
-    // Get Gmail access token
-    const accessToken = await base44.asServiceRole.connectors.getAccessToken('gmail');
-    
-    // Create Gmail transporter
-    const transporter = nodemailer.createTransport({
-      service: 'gmail',
-      auth: {
-        type: 'OAuth2',
-        user: 'taxirosini@gmail.com',
-        accessToken: accessToken,
-      },
-    });
 
     const vehicleLabel = vehicle_type === 'economic' ? 'Standard' : 'Confort';
     const flightInfo = flight_number ? `<tr><td style="padding:6px 0;color:#888;">Vol</td><td style="padding:6px 0;color:#fff;">${flight_number}</td></tr>` : '';
