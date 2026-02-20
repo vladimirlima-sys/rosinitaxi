@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useRef } from 'react';
-import { MapPin, Calendar, Clock, Plane, User, Mail, Phone, MessageSquare, Loader2, Loader } from 'lucide-react';
+import { MapPin, Calendar, Clock, Plane, User, Mail, Phone, MessageSquare, Loader2, Loader, RotateCw } from 'lucide-react';
 import { Input } from '@/components/ui/input';
 import { Button } from '@/components/ui/button';
 import { Label } from '@/components/ui/label';
@@ -50,35 +50,45 @@ export default function BookingForm({ bookingRef }) {
     update('vehicle_type', 'economic');
   }, []);
 
-  // Auto-locate and fetch price settings
-  useEffect(() => {
-    if (navigator.geolocation) {
-      setIsLocating(true);
-      navigator.geolocation.getCurrentPosition(
-        async (position) => {
-          const { latitude, longitude } = position.coords;
-          try {
-            // Reverse geocoding using Nominatim
-            const response = await fetch(
-              `https://nominatim.openstreetmap.org/reverse?format=json&lat=${latitude}&lon=${longitude}`
-            );
-            const data = await response.json();
-            if (data.address) {
-              const street = data.address.road || '';
-              const houseNumber = data.address.house_number || '';
-              const city = data.address.city || data.address.town || data.address.village || '';
-              const fullAddress = [houseNumber, street, city].filter(Boolean).join(', ');
-              update('departure_point', fullAddress || data.display_name.split(',')[0]);
-            }
-          } catch (err) {
-            console.error('Geocoding error:', err);
-          } finally {
-            setIsLocating(false);
-          }
-        },
-        () => setIsLocating(false)
-      );
+  const locateUser = async () => {
+    if (!navigator.geolocation) {
+      toast.error('Geolocalização não disponível');
+      return;
     }
+    setIsLocating(true);
+    navigator.geolocation.getCurrentPosition(
+      async (position) => {
+        const { latitude, longitude } = position.coords;
+        try {
+          const response = await fetch(
+            `https://nominatim.openstreetmap.org/reverse?format=json&lat=${latitude}&lon=${longitude}`
+          );
+          const data = await response.json();
+          if (data.address) {
+            const street = data.address.road || '';
+            const houseNumber = data.address.house_number || '';
+            const city = data.address.city || data.address.town || data.address.village || '';
+            const fullAddress = [houseNumber, street, city].filter(Boolean).join(', ');
+            update('departure_point', fullAddress || data.display_name.split(',')[0]);
+            toast.success('Localização obtida!');
+          }
+        } catch (err) {
+          console.error('Geocoding error:', err);
+          toast.error('Erro ao obter localização');
+        } finally {
+          setIsLocating(false);
+        }
+      },
+      () => {
+        setIsLocating(false);
+        toast.error('Permissão de localização negada');
+      }
+    );
+  };
+
+  // Auto-locate and fetch price settings on mount
+  useEffect(() => {
+    locateUser();
 
     // Fetch price settings
     const fetchSettings = async () => {
@@ -320,11 +330,23 @@ export default function BookingForm({ bookingRef }) {
                       placeholder={t.departurePlaceholder} 
                       value={form.departure_point} 
                       onChange={e => update('departure_point', e.target.value)} 
-                      className="bg-white/5 border border-white/10 text-white placeholder:text-white/30 focus:border-[#C9A96E] focus:bg-white/[0.08] h-12 pl-12 pr-4 transition-all rounded-xl" 
+                      className="bg-white/5 border border-white/10 text-white placeholder:text-white/30 focus:border-[#C9A96E] focus:bg-white/[0.08] h-12 pl-12 pr-16 transition-all rounded-xl" 
                       autoComplete="off"
                     />
                     <div className="absolute right-3 top-1/2 -translate-y-1/2 flex items-center gap-2">
-                      {isLocating && <Loader className="w-4 h-4 text-[#C9A96E] animate-spin" />}
+                      <button
+                        type="button"
+                        onClick={locateUser}
+                        disabled={isLocating}
+                        className="p-1.5 hover:bg-white/10 rounded-lg transition-all disabled:opacity-50"
+                        title="Localizar minha posição"
+                      >
+                        {isLocating ? (
+                          <Loader className="w-4 h-4 text-[#C9A96E] animate-spin" />
+                        ) : (
+                          <RotateCw className="w-4 h-4 text-[#C9A96E] hover:text-[#B8955D]" />
+                        )}
+                      </button>
                     </div>
                   </div>
                 </div>
