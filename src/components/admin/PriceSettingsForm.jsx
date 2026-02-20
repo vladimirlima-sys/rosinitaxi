@@ -11,7 +11,10 @@ export default function PriceSettingsForm() {
     standard_price_per_km: 2.35,
     base_fare: 10,
     airport_fee: 0,
-    night_surcharge_percentage: 10
+    night_surcharge_percentage: 10,
+    night_surcharge_day: 1,
+    night_surcharge_start_hour: 0,
+    night_surcharge_end_hour: 6
   });
   const [isLoading, setIsLoading] = useState(true);
   const [isSaving, setIsSaving] = useState(false);
@@ -104,6 +107,54 @@ export default function PriceSettingsForm() {
             onChange={e => handleChange('night_surcharge_percentage', e.target.value)}
             className="bg-white/5 border-white/10 text-white focus:border-[#C9A96E] h-12"
           />
+        </div>
+
+        <div className="border-t border-white/10 pt-6 mt-6">
+          <h3 className="text-white text-sm font-medium mb-4">Configuração de Taxa Noturna</h3>
+          
+          <div className="space-y-4">
+            <div className="space-y-2">
+              <Label className="text-white/70 text-sm">Dia da Semana</Label>
+              <select
+                value={settings.night_surcharge_day}
+                onChange={e => handleChange('night_surcharge_day', e.target.value)}
+                className="w-full bg-white/5 border border-white/10 text-white focus:border-[#C9A96E] h-12 rounded px-3"
+              >
+                <option value={0}>Domingo</option>
+                <option value={1}>Segunda-feira</option>
+                <option value={2}>Terça-feira</option>
+                <option value={3}>Quarta-feira</option>
+                <option value={4}>Quinta-feira</option>
+                <option value={5}>Sexta-feira</option>
+                <option value={6}>Sábado</option>
+              </select>
+            </div>
+
+            <div className="grid grid-cols-2 gap-4">
+              <div className="space-y-2">
+                <Label className="text-white/70 text-sm">Hora Início (0-23)</Label>
+                <Input
+                  type="number"
+                  min="0"
+                  max="23"
+                  value={settings.night_surcharge_start_hour}
+                  onChange={e => handleChange('night_surcharge_start_hour', e.target.value)}
+                  className="bg-white/5 border-white/10 text-white focus:border-[#C9A96E] h-12"
+                />
+              </div>
+              <div className="space-y-2">
+                <Label className="text-white/70 text-sm">Hora Fim (0-23)</Label>
+                <Input
+                  type="number"
+                  min="0"
+                  max="23"
+                  value={settings.night_surcharge_end_hour}
+                  onChange={e => handleChange('night_surcharge_end_hour', e.target.value)}
+                  className="bg-white/5 border-white/10 text-white focus:border-[#C9A96E] h-12"
+                />
+              </div>
+            </div>
+          </div>
         </div>
       </div>
 
