@@ -31,21 +31,30 @@ export default function PlacesAutocomplete({
   const [error, setError] = useState(null);
   const suggestionsRef = useRef(null);
 
-  // Initialize Google Places Services
+  // Initialize Google Places Services - with aggressive waiting
   useEffect(() => {
-    const checkGoogleMaps = setInterval(() => {
+    let attempts = 0;
+    const maxAttempts = 50; // Wait up to 5 seconds
+    
+    const initService = () => {
+      attempts++;
       if (typeof google !== 'undefined' && google.maps?.places?.AutocompleteService) {
-        clearInterval(checkGoogleMaps);
         try {
-          autocompleteServiceRef.current = new google.maps.places.AutocompleteService();
-          console.log('AutocompleteService initialized');
+          if (!autocompleteServiceRef.current) {
+            autocompleteServiceRef.current = new google.maps.places.AutocompleteService();
+            console.log('✓ AutocompleteService initialized on attempt', attempts);
+          }
         } catch (err) {
           console.error('Google Places initialization error:', err);
         }
+      } else if (attempts < maxAttempts) {
+        setTimeout(initService, 100);
+      } else {
+        console.error('Failed to initialize AutocompleteService after', maxAttempts, 'attempts');
       }
-    }, 100);
+    };
 
-    return () => clearInterval(checkGoogleMaps);
+    initService();
   }, []);
 
   // Debounced fetch suggestions
@@ -58,8 +67,21 @@ export default function PlacesAutocomplete({
     }
 
     if (!autocompleteServiceRef.current) {
-      console.warn('AutocompleteService not initialized');
-      setError(t?.autocompleteService || 'Service unavailable');
+      console.warn('AutocompleteService not ready, retrying...');
+      // Retry a few times if service is not ready
+      let retries = 0;
+      const retryFetch = () => {
+        retries++;
+        if (autocompleteServiceRef.current && retries < 3) {
+          fetchSuggestions(input);
+        } else if (retries >= 3) {
+          setError(t?.autocompleteService || 'Service unavailable');
+        }
+        if (retries < 3) {
+          setTimeout(retryFetch, 200);
+        }
+      };
+      setTimeout(retryFetch, 200);
       return;
     }
 
@@ -71,6 +93,12 @@ export default function PlacesAutocomplete({
         input,
         componentRestrictions: { country: COUNTRIES },
         sessionToken: sessionToken || undefined,
+      });
+
+      console.log('Predictions fetched:', {
+        input,
+        count: result?.predictions?.length || 0,
+        sessionToken: !!sessionToken
       });
 
       if (result?.predictions && result.predictions.length > 0) {
