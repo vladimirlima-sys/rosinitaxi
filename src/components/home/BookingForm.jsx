@@ -263,6 +263,8 @@ export default function BookingForm({ bookingRef }) {
     setEstimatedDistance(0);
     setEstimatedTime(0);
     setDynamicPrice(null);
+    setShowRouteMap(false);
+    setCurrentRoute(null);
   };
 
   return (
