@@ -207,27 +207,35 @@ export default function RouteMapDisplay({ departure, arrival, route, onClose }) 
           animate={{ opacity: 1 }}
           exit={{ opacity: 0 }}
           transition={{ duration: 0.3 }}
-          className="fixed inset-0 bg-black/80 backdrop-blur-sm z-50 flex items-center justify-center p-4"
+          className="fixed inset-0 z-50 flex items-center justify-center p-4"
+          style={{ backgroundColor: 'rgba(0,0,0,0.5)' }}
         >
           <motion.div
-            initial={{ scale: 0.95, y: 20 }}
-            animate={{ scale: 1, y: 0 }}
-            exit={{ scale: 0.95, y: 20 }}
-            transition={{ duration: 0.3, ease: 'easeOut' }}
-            className="bg-[#1a1a1a] rounded-2xl border border-[#C9A96E]/30 w-full max-w-2xl max-h-[85vh] flex flex-col overflow-hidden"
+            initial={{ scale: 0.9, opacity: 0 }}
+            animate={{ scale: 1, opacity: 1 }}
+            exit={{ scale: 0.9, opacity: 0 }}
+            transition={{ duration: 0.4, ease: 'easeOut' }}
+            className="w-full max-w-4xl h-[90vh] flex flex-col rounded-3xl overflow-hidden shadow-2xl border border-[#C9A96E]/40"
+            style={{ backgroundColor: '#0A0A0A' }}
           >
-            {/* Header */}
-            <div className="p-6 border-b border-[#C9A96E]/30 flex items-center justify-between">
-              <div className="flex items-center gap-3">
-                <Navigation2 className="w-5 h-5 text-[#C9A96E]" />
-                <h3 className="text-white font-medium">{t.routeCalculated}</h3>
-              </div>
-              <div className="flex items-center gap-2">
+            {/* Header - Minimalista */}
+            <div className="px-6 py-4 flex items-center justify-between border-b border-[#C9A96E]/20">
+              <motion.div 
+                initial={{ opacity: 0, x: -20 }}
+                animate={{ opacity: 1, x: 0 }}
+                className="flex items-center gap-3"
+              >
+                <div className="w-3 h-3 rounded-full bg-[#C9A96E]" />
+                <span className="text-white/70 text-sm font-light">{departure}</span>
+                <span className="text-white/30 text-xs">→</span>
+                <span className="text-white/70 text-sm font-light">{arrival}</span>
+              </motion.div>
+              <div className="flex items-center gap-1">
                 <motion.button
-                  whileHover={{ backgroundColor: 'rgba(255,255,255,0.08)' }}
+                  whileHover={{ backgroundColor: 'rgba(201,169,110,0.1)' }}
                   whileTap={{ scale: 0.95 }}
                   onClick={toggleMapType}
-                  className="p-2 rounded-lg text-white/60 transition-colors"
+                  className="p-2.5 rounded-xl text-white/60 hover:text-white/80 transition-all"
                   title="Alternar visualização"
                 >
                   {mapType === 'roadmap' ? (
@@ -237,70 +245,55 @@ export default function RouteMapDisplay({ departure, arrival, route, onClose }) 
                   )}
                 </motion.button>
                 <motion.button
-                  whileHover={{ backgroundColor: 'rgba(255,255,255,0.08)' }}
+                  whileHover={{ backgroundColor: 'rgba(201,169,110,0.1)' }}
                   whileTap={{ scale: 0.95 }}
                   onClick={handleCloseClick}
-                  className="p-2 rounded-lg text-white/60 w-6 h-6 flex items-center justify-center"
+                  className="p-2.5 rounded-xl text-white/60 hover:text-white/80 transition-all"
                 >
                   <X className="w-4 h-4" />
                 </motion.button>
               </div>
             </div>
 
-            {/* Map */}
-            <div ref={mapRef} className="flex-1 min-h-[400px] bg-[#0A0A0A]" />
+            {/* Map - Principal */}
+            <div ref={mapRef} className="flex-1 bg-[#1a1a1a] relative overflow-hidden" />
 
-            {/* Footer com info */}
-            <div className="p-6 border-t border-[#C9A96E]/30 bg-gradient-to-r from-[#0A0A0A] to-[#1a1a1a]">
-              <div className="flex items-start gap-4 mb-4">
-                <div>
-                  <p className="text-white/40 text-xs uppercase tracking-wide flex items-center gap-1">
-                    <span className="inline-block w-3 h-3 rounded-full bg-[#C9A96E]" />
-                    {t.departurePoint}
-                  </p>
-                  <p className="text-white text-sm mt-1">{departure}</p>
-                </div>
-                <div className="flex-1 text-right">
-                  <p className="text-white/40 text-xs uppercase tracking-wide flex items-center justify-end gap-1">
-                    <span className="inline-block w-3 h-3 rounded-full bg-[#4CAF50]" />
-                    {t.arrivalPoint}
-                  </p>
-                  <p className="text-white text-sm mt-1">{arrival}</p>
-                </div>
-              </div>
-              <div className="flex gap-3">
-                <motion.button
-                  whileHover={{ y: -1 }}
-                  whileTap={{ scale: 0.98 }}
-                  onClick={handleShare}
-                  className="flex-1 flex items-center justify-center gap-2 px-4 py-2.5 rounded-xl bg-white/5 border border-white/10 text-white text-sm transition-colors"
-                >
-                  <Share2 className="w-4 h-4" />
-                  {t.share}
-                </motion.button>
-                <motion.button
-                  whileHover={{ y: -1 }}
-                  whileTap={{ scale: 0.98 }}
-                  onClick={handleDownload}
-                  className="flex-1 flex items-center justify-center gap-2 px-4 py-2.5 rounded-xl bg-white/5 border border-white/10 text-white text-sm transition-colors"
-                >
-                  <Download className="w-4 h-4" />
-                  {t.save}
-                </motion.button>
-                <motion.div
-                  whileHover={{ y: -1 }}
-                  whileTap={{ scale: 0.98 }}
-                  asChild
-                >
-                  <Button
-                    onClick={handleCloseClick}
-                    className="flex-1 bg-[#C9A96E] hover:bg-[#B8955D] text-[#0A0A0A] font-semibold h-11 rounded-xl"
-                  >
-                    {t.close}
-                  </Button>
-                </motion.div>
-              </div>
-            </div>
+            {/* Footer - Ações */}
+            <motion.div 
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ delay: 0.2 }}
+              className="px-6 py-4 border-t border-[#C9A96E]/20 flex items-center gap-3"
+              style={{ backgroundColor: 'rgba(10,10,10,0.95)' }}
+            >
+              <motion.button
+                whileHover={{ scale: 1.02, backgroundColor: 'rgba(201,169,110,0.15)' }}
+                whileTap={{ scale: 0.98 }}
+                onClick={handleShare}
+                className="flex-1 flex items-center justify-center gap-2 px-4 py-3 rounded-xl text-white text-sm transition-all border border-[#C9A96E]/30"
+              >
+                <Share2 className="w-4 h-4" />
+                {t.share}
+              </motion.button>
+              <motion.button
+                whileHover={{ scale: 1.02, backgroundColor: 'rgba(201,169,110,0.15)' }}
+                whileTap={{ scale: 0.98 }}
+                onClick={handleDownload}
+                className="flex-1 flex items-center justify-center gap-2 px-4 py-3 rounded-xl text-white text-sm transition-all border border-[#C9A96E]/30"
+              >
+                <Download className="w-4 h-4" />
+                {t.save}
+              </motion.button>
+              <motion.button
+                whileHover={{ scale: 1.02 }}
+                whileTap={{ scale: 0.98 }}
+                onClick={handleCloseClick}
+                className="flex-1 flex items-center justify-center px-4 py-3 rounded-xl font-semibold transition-all"
+                style={{ backgroundColor: '#C9A96E', color: '#0A0A0A' }}
+              >
+                {t.close}
+              </motion.button>
+            </motion.div>
           </motion.div>
         </motion.div>
       )}
