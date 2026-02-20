@@ -131,8 +131,9 @@ export default function BookingForm({ bookingRef }) {
 
   const resetForm = () => {
     setStep(1);
-    setForm({ departure_point: '', arrival_point: '', departure_date: '', departure_time: '', flight_number: '', vehicle_type: '', passengers: 1, client_name: '', client_email: '', client_phone: '', notes: '', distance_km: 0 });
+    setForm({ departure_point: '', arrival_point: '', departure_date: '', departure_time: '', flight_number: '', vehicle_type: '', passengers: 1, client_name: '', client_email: '', client_phone: '', notes: '', driver_preference: '', distance_km: 0 });
     setEstimatedDistance(0);
+    setDynamicPrice(null);
   };
 
   return (
