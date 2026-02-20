@@ -23,7 +23,7 @@ export default function Home() {
         <LanguageSwitcher />
         <HeroSection onScrollToBooking={scrollToBooking} />
         <ServicesSection />
-        <BookingForm bookingRef={bookingRef} />
+        <SimpleBookingForm />
         <FooterSection />
 
 
