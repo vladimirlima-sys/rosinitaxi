@@ -412,5 +412,11 @@ export const translations = {
       comfort: ['Veicolo premium', 'Sedili in pelle', 'Wi-Fi gratuito', 'Acqua & rinfreschi', 'Caricatori USB'],
     },
     perKm: '/km',
+    journeyDetails: 'Dettagli del viaggio',
+    journeyDistance: 'Distanza',
+    journeyTime: 'Tempo stimato',
+    km: 'km',
+    hours: 'h',
+    minutes: 'min',
   },
 };
