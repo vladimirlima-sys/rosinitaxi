@@ -130,6 +130,9 @@ Deno.serve(async (req) => {
 
     const t = texts[language] || texts.fr;
 
+    const flightRow = flight_number ? `<tr><td style="padding:6px 0;color:#888;">${t.flight}</td><td style="padding:6px 0;color:#fff;">${flight_number}</td></tr>` : '';
+    const notesRow = notes ? `<tr><td style="padding:6px 0;color:#888;">${t.notes}</td><td style="padding:6px 0;color:#fff;">${notes}</td></tr>` : '';
+
     const clientEmailBody = `
 <!DOCTYPE html>
 <html>
@@ -142,28 +145,28 @@ Deno.serve(async (req) => {
     </div>
 
     <div style="background:#111;border:1px solid #222;border-radius:12px;padding:32px;margin-bottom:24px;">
-      <h2 style="color:#fff;font-size:20px;font-weight:300;margin:0 0 8px;">✅ Réservation confirmée</h2>
-      <p style="color:#888;margin:0 0 24px;">Merci ${client_name}, votre transfer est confirmé.</p>
+      <h2 style="color:#fff;font-size:20px;font-weight:300;margin:0 0 8px;">${t.confirmTitle}</h2>
+      <p style="color:#888;margin:0 0 24px;">${t.thankYou(client_name)}</p>
 
       <table style="width:100%;border-collapse:collapse;">
-        <tr><td style="padding:6px 0;color:#888;">Trajet</td><td style="padding:6px 0;color:#fff;">${departure_point} → ${arrival_point}</td></tr>
-        <tr><td style="padding:6px 0;color:#888;">Date</td><td style="padding:6px 0;color:#fff;">${departure_date} à ${departure_time}</td></tr>
-        <tr><td style="padding:6px 0;color:#888;">Véhicule</td><td style="padding:6px 0;color:#fff;">${vehicleLabel}</td></tr>
-        <tr><td style="padding:6px 0;color:#888;">Passagers</td><td style="padding:6px 0;color:#fff;">${passengers || 1}</td></tr>
-        <tr><td style="padding:6px 0;color:#888;">Distance</td><td style="padding:6px 0;color:#fff;">${distance_km} km</td></tr>
-        ${flightInfo}
-        ${notesInfo}
+        <tr><td style="padding:6px 0;color:#888;">${t.journey}</td><td style="padding:6px 0;color:#fff;">${departure_point} → ${arrival_point}</td></tr>
+        <tr><td style="padding:6px 0;color:#888;">${t.date}</td><td style="padding:6px 0;color:#fff;">${departure_date} à ${departure_time}</td></tr>
+        <tr><td style="padding:6px 0;color:#888;">${t.vehicle}</td><td style="padding:6px 0;color:#fff;">${vehicleLabel}</td></tr>
+        <tr><td style="padding:6px 0;color:#888;">${t.passengers}</td><td style="padding:6px 0;color:#fff;">${passengers || 1}</td></tr>
+        <tr><td style="padding:6px 0;color:#888;">${t.distance}</td><td style="padding:6px 0;color:#fff;">${distance_km} km</td></tr>
+        ${flightRow}
+        ${notesRow}
         <tr><td colspan="2" style="padding:12px 0;"><hr style="border:none;border-top:1px solid #333;margin:0;"></td></tr>
-        <tr><td style="padding:6px 0;color:#888;font-weight:bold;">${paymentLabel}</td><td style="padding:6px 0;color:#C9A96E;font-size:18px;font-weight:bold;">CHF ${total_price}</td></tr>
+        <tr><td style="padding:6px 0;color:#888;font-weight:bold;">${t.paymentLabel}</td><td style="padding:6px 0;color:#C9A96E;font-size:18px;font-weight:bold;">CHF ${total_price}</td></tr>
       </table>
     </div>
 
     <div style="text-align:center;padding:24px;background:#111;border:1px solid #222;border-radius:12px;">
-      <p style="color:#888;margin:0 0 4px;font-size:13px;">Des questions ? Contactez-nous</p>
+      <p style="color:#888;margin:0 0 4px;font-size:13px;">${t.contactText}</p>
       <a href="mailto:taxirosini@gmail.com" style="color:#C9A96E;text-decoration:none;">taxirosini@gmail.com</a>
     </div>
 
-    <p style="color:#444;text-align:center;font-size:11px;margin-top:24px;">© ${new Date().getFullYear()} Rosini Transfert. Tous droits réservés.</p>
+    <p style="color:#444;text-align:center;font-size:11px;margin-top:24px;">${t.copyright(new Date().getFullYear())}</p>
   </div>
 </body>
 </html>`;
