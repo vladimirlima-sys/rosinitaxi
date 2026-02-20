@@ -183,7 +183,7 @@ export default function BookingForm({ bookingRef }) {
                     {isEstimating ? <><Loader2 className="w-4 h-4 mr-2 animate-spin" />{t.estimating}</> : estimatedDistance > 0 ? t.estimatedDist(estimatedDistance) : t.estimateBtn}
                   </Button>
                 </div>
-                <RouteMap departure={form.departure_point} arrival={form.arrival_point} />
+                <RouteMap departure={form.departure_point} arrival={form.arrival_point} distance_km={estimatedDistance} />
               </div>
             )}
 
