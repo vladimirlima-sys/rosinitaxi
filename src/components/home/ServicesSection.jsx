@@ -15,7 +15,7 @@ import { Plane, MapPin } from 'lucide-react';
           <div className="w-12 h-[1px] bg-[#C9A96E] mx-auto" />
         </div>
 
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-6 max-w-2xl mx-auto">
           {services.map((service, i) => (
             <div 
               key={i}
