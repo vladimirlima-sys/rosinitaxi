@@ -197,12 +197,25 @@ export default function RouteMapDisplay({ departure, arrival, route, onClose }) 
             <Navigation2 className="w-5 h-5 text-[#C9A96E]" />
             <h3 className="text-white font-medium">Rota Calculada</h3>
           </div>
-          <button
-            onClick={onClose}
-            className="text-white/40 hover:text-white text-2xl leading-none"
-          >
-            ×
-          </button>
+          <div className="flex items-center gap-2">
+            <button
+              onClick={toggleMapType}
+              className="p-2 rounded-lg hover:bg-white/10 text-white/60 hover:text-[#C9A96E] transition-colors"
+              title="Alternar visualização"
+            >
+              {mapType === 'roadmap' ? (
+                <Satellite className="w-4 h-4" />
+              ) : (
+                <Map className="w-4 h-4" />
+              )}
+            </button>
+            <button
+              onClick={onClose}
+              className="text-white/40 hover:text-white text-2xl leading-none w-6 h-6 flex items-center justify-center"
+            >
+              ×
+            </button>
+          </div>
         </div>
 
         {/* Map */}
