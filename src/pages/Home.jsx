@@ -5,6 +5,7 @@ import ServicesSection from '@/components/home/ServicesSection';
 import BookingForm from '@/components/home/BookingForm';
 import FooterSection from '@/components/home/FooterSection';
 import LanguageSwitcher from '@/components/home/LanguageSwitcher';
+import GoogleMapsLoader from '@/components/GoogleMapsLoader';
 
 import BookingsModal from '@/components/bookings/BookingsModal';
 import { LanguageProvider } from '@/components/LanguageContext';
