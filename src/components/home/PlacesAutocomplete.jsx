@@ -32,16 +32,22 @@ export default function PlacesAutocomplete({
 
   // Initialize Google Places Services
   useEffect(() => {
-    if (typeof google !== 'undefined' && google.maps?.places) {
-      try {
-        // Using AutocompleteService for now (legacy but still supported)
-        if (google.maps.places.AutocompleteService) {
-          autocompleteServiceRef.current = new google.maps.places.AutocompleteService();
-        }
-      } catch (err) {
-        console.error('Google Places initialization error:', err);
-      }
-    }
+   if (typeof google !== 'undefined' && google.maps?.places) {
+     try {
+       // Using AutocompleteService for now (legacy but still supported)
+       if (google.maps.places.AutocompleteService) {
+         autocompleteServiceRef.current = new google.maps.places.AutocompleteService();
+       }
+       if (google.maps.places.PlacesService) {
+         placesServiceRef.current = new google.maps.places.PlacesService(document.createElement('div'));
+       }
+     } catch (err) {
+       console.error('Google Places initialization error:', err);
+       setError('Serviço de sugestão indisponível');
+     }
+   } else {
+     console.warn('Google Maps API not loaded');
+   }
   }, []);
 
   // Debounced fetch suggestions
@@ -65,16 +71,20 @@ export default function PlacesAutocomplete({
       const result = await autocompleteServiceRef.current.getPlacePredictions({
         input,
         componentRestrictions: { country: COUNTRIES },
-        sessionToken,
+        sessionToken: sessionToken || undefined,
       });
 
-      const predictions = result.predictions || [];
-      setSuggestions(predictions);
-      setShowSuggestions(predictions.length > 0);
-      setSelectedIndex(-1);
+      if (result?.predictions) {
+        setSuggestions(result.predictions);
+        setShowSuggestions(result.predictions.length > 0);
+        setSelectedIndex(-1);
+      } else {
+        setSuggestions([]);
+        setShowSuggestions(false);
+      }
     } catch (err) {
       console.error('Autocomplete fetch error:', err);
-      setError(t?.estimateDistanceError || 'Error fetching suggestions');
+      setError('Erro ao buscar sugestões');
       setSuggestions([]);
     } finally {
       setIsLoading(false);
