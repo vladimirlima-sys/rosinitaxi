@@ -1,17 +1,9 @@
 import React from 'react';
-import { Plane, Building2, MapPin, Users } from 'lucide-react';
-import { useLang } from '@/components/LanguageContext';
-import { translations } from '@/components/translations';
-
-export default function ServicesSection() {
-  const { lang } = useLang();
-  const t = translations[lang];
-
+import { Plane, MapPin } from 'lucide-react';
+...
   const services = [
     { icon: Plane, title: t.service1Title, description: t.service1Desc },
-    { icon: Building2, title: t.service2Title, description: t.service2Desc },
     { icon: MapPin, title: t.service3Title, description: t.service3Desc },
-    { icon: Users, title: t.service4Title, description: t.service4Desc },
   ];
 
   return (
