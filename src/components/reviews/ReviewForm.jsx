@@ -1,54 +1,61 @@
 import React, { useState } from 'react';
-import { Star, MessageSquare, Loader2 } from 'lucide-react';
+import { Star, Loader2 } from 'lucide-react';
 import { Button } from '@/components/ui/button';
+import { Input } from '@/components/ui/input';
 import { Textarea } from '@/components/ui/textarea';
 import { base44 } from '@/api/base44Client';
 import { toast } from 'sonner';
 
-export default function ReviewForm({ booking, onSubmitted, onCancel }) {
-  const [driverRating, setDriverRating] = useState(0);
-  const [tripRating, setTripRating] = useState(0);
-  const [comment, setComment] = useState('');
+export default function ReviewForm({ onSuccess }) {
   const [isSubmitting, setIsSubmitting] = useState(false);
+  const [driverRating, setDriverRating] = useState(5);
+  const [tripRating, setTripRating] = useState(5);
+  const [form, setForm] = useState({
+    client_name: '',
+    client_email: '',
+    journey_from: '',
+    journey_to: '',
+    journey_date: '',
+    comment: '',
+  });
 
-  const handleSubmit = async () => {
-    if (driverRating === 0 || tripRating === 0) {
-      toast.error('Veuillez noter le chauffeur et le trajet');
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    if (!form.client_name || !form.client_email || !form.journey_from || !form.journey_to) {
+      toast.error('Preencha todos os campos obrigatórios');
       return;
     }
 
     setIsSubmitting(true);
     try {
       await base44.entities.Review.create({
-        booking_id: booking.id,
-        client_name: booking.client_name,
-        client_email: booking.client_email,
+        ...form,
         driver_rating: driverRating,
         trip_rating: tripRating,
-        comment: comment,
-        journey_from: booking.departure_point,
-        journey_to: booking.arrival_point,
-        journey_date: booking.departure_date
+        booking_id: '', // Se integrado com reserva, adicione o ID
       });
-      toast.success('Avis envoyé avec succès!');
-      onSubmitted();
-    } catch (err) {
-      toast.error('Erreur lors de l\'envoi de l\'avis');
-      console.error(err);
+      toast.success('Avaliação enviada com sucesso!');
+      setForm({ client_name: '', client_email: '', journey_from: '', journey_to: '', journey_date: '', comment: '' });
+      setDriverRating(5);
+      setTripRating(5);
+      onSuccess?.();
+    } catch (error) {
+      toast.error('Erro ao enviar avaliação');
     } finally {
       setIsSubmitting(false);
     }
   };
 
-  const StarRating = ({ rating, setRating, label }) => (
+  const StarRating = ({ rating, onRate, label }) => (
     <div className="space-y-2">
       <label className="text-white/60 text-sm">{label}</label>
       <div className="flex gap-2">
-        {[1, 2, 3, 4, 5].map(star => (
+        {[1, 2, 3, 4, 5].map((star) => (
           <button
             key={star}
-            onClick={() => setRating(star)}
-            className="transition-transform hover:scale-110"
+            type="button"
+            onClick={() => onRate(star)}
+            className="transition-colors"
           >
             <Star
               className={`w-6 h-6 ${
@@ -64,42 +71,91 @@ export default function ReviewForm({ booking, onSubmitted, onCancel }) {
   );
 
   return (
-    <div className="p-6 rounded-2xl bg-white/[0.03] border border-white/10 space-y-6">
-      <h3 className="text-white text-lg font-medium">Partagez votre expérience</h3>
+    <form onSubmit={handleSubmit} className="bg-white/[0.03] border border-white/10 rounded-2xl p-6 space-y-4">
+      <h3 className="text-white font-medium mb-6">Deixe sua avaliação</h3>
 
-      <StarRating rating={driverRating} setRating={setDriverRating} label="Note du chauffeur" />
-      <StarRating rating={tripRating} setRating={setTripRating} label="Note du trajet" />
+      <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+        <div>
+          <label className="text-white/60 text-sm mb-2 block">Nome *</label>
+          <Input
+            placeholder="Seu nome"
+            value={form.client_name}
+            onChange={(e) => setForm({ ...form, client_name: e.target.value })}
+            className="bg-white/5 border-white/10 text-white placeholder:text-white/20 h-10"
+          />
+        </div>
+        <div>
+          <label className="text-white/60 text-sm mb-2 block">Email *</label>
+          <Input
+            type="email"
+            placeholder="seu@email.com"
+            value={form.client_email}
+            onChange={(e) => setForm({ ...form, client_email: e.target.value })}
+            className="bg-white/5 border-white/10 text-white placeholder:text-white/20 h-10"
+          />
+        </div>
+      </div>
 
-      <div className="space-y-2">
-        <label className="text-white/60 text-sm flex items-center gap-2">
-          <MessageSquare className="w-4 h-4 text-[#C9A96E]" /> Commentaire (optionnel)
-        </label>
-        <Textarea
-          placeholder="Partagez vos impressions sur votre trajet..."
-          value={comment}
-          onChange={e => setComment(e.target.value)}
-          maxLength={500}
-          className="bg-white/5 border-white/10 text-white placeholder:text-white/20 focus:border-[#C9A96E] min-h-[100px]"
+      <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+        <div>
+          <label className="text-white/60 text-sm mb-2 block">De (Saída) *</label>
+          <Input
+            placeholder="Ex: Aeroporto"
+            value={form.journey_from}
+            onChange={(e) => setForm({ ...form, journey_from: e.target.value })}
+            className="bg-white/5 border-white/10 text-white placeholder:text-white/20 h-10"
+          />
+        </div>
+        <div>
+          <label className="text-white/60 text-sm mb-2 block">Para (Chegada) *</label>
+          <Input
+            placeholder="Ex: Hotel"
+            value={form.journey_to}
+            onChange={(e) => setForm({ ...form, journey_to: e.target.value })}
+            className="bg-white/5 border-white/10 text-white placeholder:text-white/20 h-10"
+          />
+        </div>
+      </div>
+
+      <div>
+        <label className="text-white/60 text-sm mb-2 block">Data da viagem</label>
+        <Input
+          type="date"
+          value={form.journey_date}
+          onChange={(e) => setForm({ ...form, journey_date: e.target.value })}
+          className="bg-white/5 border-white/10 text-white h-10"
         />
-        <p className="text-white/20 text-xs text-right">{comment.length}/500</p>
       </div>
 
-      <div className="flex gap-3">
-        <Button
-          onClick={onCancel}
-          variant="outline"
-          className="flex-1 border-white/10 text-white/60 hover:bg-white/5"
-        >
-          Annuler
-        </Button>
-        <Button
-          onClick={handleSubmit}
-          disabled={isSubmitting || (driverRating === 0 || tripRating === 0)}
-          className="flex-1 bg-[#C9A96E] hover:bg-[#B8955D] text-[#0A0A0A] font-semibold"
-        >
-          {isSubmitting ? <><Loader2 className="w-4 h-4 mr-2 animate-spin" />Envoi...</> : 'Envoyer'}
-        </Button>
+      <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+        <StarRating rating={driverRating} onRate={setDriverRating} label="Avaliação do motorista" />
+        <StarRating rating={tripRating} onRate={setTripRating} label="Avaliação da viagem" />
       </div>
-    </div>
+
+      <div>
+        <label className="text-white/60 text-sm mb-2 block">Comentário</label>
+        <Textarea
+          placeholder="Compartilhe sua experiência..."
+          value={form.comment}
+          onChange={(e) => setForm({ ...form, comment: e.target.value })}
+          className="bg-white/5 border-white/10 text-white placeholder:text-white/20 min-h-24"
+        />
+      </div>
+
+      <Button
+        type="submit"
+        disabled={isSubmitting}
+        className="w-full bg-[#C9A96E] hover:bg-[#B8955D] text-[#0A0A0A] font-semibold h-11"
+      >
+        {isSubmitting ? (
+          <>
+            <Loader2 className="w-4 h-4 mr-2 animate-spin" />
+            Enviando...
+          </>
+        ) : (
+          'Enviar Avaliação'
+        )}
+      </Button>
+    </form>
   );
 }
