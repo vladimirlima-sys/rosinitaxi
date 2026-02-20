@@ -36,12 +36,10 @@ export default function BookingForm({ bookingRef }) {
   const [estimatedDistance, setEstimatedDistance] = useState(0);
   const [isEstimating, setIsEstimating] = useState(false);
   const [dynamicPrice, setDynamicPrice] = useState(null);
-  const [departureSuggestions, setDepartureSuggestions] = useState([]);
-  const [isLoadingDeparture, setIsLoadingDeparture] = useState(false);
   const [isLocating, setIsLocating] = useState(false);
   const [estimatedTime, setEstimatedTime] = useState(0);
   const [priceSettings, setPriceSettings] = useState(null);
-  const departureSuggestionRef = useRef(null);
+
 
   const update = (field, value) => setForm(prev => ({ ...prev, [field]: value }));
 
@@ -94,39 +92,7 @@ export default function BookingForm({ bookingRef }) {
     fetchSettings();
   }, []);
 
-  // Handle departure suggestions
-  const handleDepartureChange = async (value) => {
-    update('departure_point', value);
 
-    if (value.length < 3) {
-      setDepartureSuggestions([]);
-      return;
-    }
-
-    setIsLoadingDeparture(true);
-    try {
-      const response = await fetch(
-        `https://nominatim.openstreetmap.org/search?format=json&q=${encodeURIComponent(value)}&limit=5&countrycodes=ch,it,fr,de,at`
-      );
-      const data = await response.json();
-      setDepartureSuggestions(data.map(item => ({
-        id: item.osm_id,
-        display_name: item.display_name,
-        address: item.address || {}
-      })));
-    } catch (err) {
-      console.error('Search error:', err);
-    } finally {
-      setIsLoadingDeparture(false);
-    }
-  };
-
-
-
-  const selectDepartureSuggestion = (suggestion) => {
-    update('departure_point', suggestion.display_name);
-    setDepartureSuggestions([]);
-  };
 
 
 
@@ -327,41 +293,14 @@ export default function BookingForm({ bookingRef }) {
                     <Input 
                       placeholder={t.departurePlaceholder} 
                       value={form.departure_point} 
-                      onChange={e => handleDepartureChange(e.target.value)} 
-                      className="bg-white/5 border border-white/10 text-white placeholder:text-white/30 focus:border-[#C9A96E] focus:bg-white/[0.08] h-12 pl-12 pr-4 transition-all rounded-xl" 
+                      onChange={e => update('departure_point', e.target.value)} 
+                      readOnly
+                      className="bg-white/5 border border-white/10 text-white placeholder:text-white/30 focus:border-[#C9A96E] focus:bg-white/[0.08] h-12 pl-12 pr-4 transition-all rounded-xl cursor-not-allowed" 
                       autoComplete="off"
                     />
                     <div className="absolute right-3 top-1/2 -translate-y-1/2 flex items-center gap-2">
                       {isLocating && <Loader className="w-4 h-4 text-[#C9A96E] animate-spin" />}
-                      {isLoadingDeparture && <Loader className="w-4 h-4 text-[#C9A96E] animate-spin" />}
                     </div>
-
-                    {/* Departure suggestions dropdown */}
-                    {departureSuggestions.length > 0 && (
-                      <div ref={departureSuggestionRef} className="absolute top-full left-0 right-0 mt-2 bg-[#1a1a1a] border border-[#C9A96E]/20 rounded-xl overflow-hidden z-50 shadow-2xl backdrop-blur-sm">
-                        {departureSuggestions.map((suggestion, idx) => {
-                          const street = suggestion.address.road || '';
-                          const houseNumber = suggestion.address.house_number || '';
-                          const city = suggestion.address.city || suggestion.address.town || '';
-                          const detailedAddress = [houseNumber, street].filter(Boolean).join(', ');
-                          return (
-                            <button
-                              key={suggestion.id}
-                              onClick={() => selectDepartureSuggestion(suggestion)}
-                              className="w-full text-left px-4 py-3 hover:bg-[#C9A96E]/10 transition-colors border-b border-white/5 last:border-b-0 group/item"
-                              >
-                              <div className="flex items-start gap-3">
-                                <MapPin className="w-4 h-4 text-[#C9A96E] mt-0.5 flex-shrink-0" />
-                                <div>
-                                  {detailedAddress && <div className="text-white font-medium text-sm">{detailedAddress}</div>}
-                                  <div className="text-white/50 text-xs">{city}</div>
-                                </div>
-                              </div>
-                            </button>
-                          );
-                        })}
-                      </div>
-                    )}
                   </div>
                 </div>
 
