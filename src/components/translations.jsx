@@ -177,6 +177,9 @@ export const translations = {
     km: 'km',
     hours: 'h',
     minutes: 'min',
+    checkoutFromPublishedApp: 'Le paiement fonctionne uniquement depuis l\'application publiée.',
+    estimateDistanceError: 'Impossible d\'estimer la distance. Veuillez réessayer.',
+    paymentError: 'Erreur lors du paiement. Veuillez réessayer.',
   },
   en: {
     badge: 'Available 24/7 — Every Day',
@@ -265,6 +268,9 @@ export const translations = {
     km: 'km',
     hours: 'h',
     minutes: 'min',
+    checkoutFromPublishedApp: 'Payment only works from the published app.',
+    estimateDistanceError: 'Unable to estimate distance. Please try again.',
+    paymentError: 'Payment error. Please try again.',
   },
   de: {
     badge: 'Verfügbar 24/7 — Jeden Tag',
@@ -356,8 +362,8 @@ export const translations = {
     checkoutFromPublishedApp: 'Die Zahlung funktioniert nur in der veröffentlichten App.',
     estimateDistanceError: 'Entfernung kann nicht geschätzt werden. Bitte versuchen Sie es erneut.',
     paymentError: 'Zahlungsfehler. Bitte versuchen Sie es erneut.',
-    },
-    it: {
+  },
+  it: {
     badge: 'Disponibile 24/7 — Ogni giorno',
     heroDesc: 'Il vostro autista di fiducia per i viaggi a lunga percorrenza in Svizzera e in Europa. Affidabile, puntuale e piacevole.',
     pill1: '24/7 — Ogni giorno',
