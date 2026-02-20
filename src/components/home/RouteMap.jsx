@@ -1,26 +1,25 @@
 import React, { useEffect, useState } from 'react';
-import { MapPin, Navigation } from 'lucide-react';
+import { MapPin, Navigation, Clock, Zap } from 'lucide-react';
 
-export default function RouteMap({ departure, arrival }) {
-  const [mapUrl, setMapUrl] = useState(null);
+export default function RouteMap({ departure, arrival, distance_km }) {
+  const [travelTime, setTravelTime] = useState(null);
 
   useEffect(() => {
-    if (!departure || !arrival) return;
+    if (!distance_km || distance_km === 0) return;
 
-    // Build OpenStreetMap static map via staticmap.net with a route
-    const dep = encodeURIComponent(departure);
-    const arr = encodeURIComponent(arrival);
-
-    // Use OpenRouteService static map as background with markers
-    // Fallback: build a visual card with geocoded markers via nominatim
-    const url = `https://staticmap.openrouteservice.org/v0.1/staticmap?size=800x300&key=&profile=driving-car&from=${dep}&to=${arr}`;
+    // Calculate travel time based on average speed
+    // Average speed: 80-90 km/h on highways in Switzerland
+    const avgSpeed = 85; // km/h
+    const hours = distance_km / avgSpeed;
+    const minutes = Math.round((hours % 1) * 60);
+    const finalHours = Math.floor(hours);
     
-    // We'll use a simpler approach: embed a linked image from geoapify
-    const geoapifyUrl = `https://maps.geoapify.com/v1/staticmap?style=dark-matter&width=800&height=300&center=lonlat:8.2275,46.8182&zoom=6.5&apiKey=placeholder`;
-
-    // Best approach: use openstreetmap tile with a clear visual card
-    setMapUrl('ready');
-  }, [departure, arrival]);
+    setTravelTime({
+      hours: finalHours,
+      minutes: minutes,
+      total: distance_km / avgSpeed // in hours as decimal
+    });
+  }, [distance_km]);
 
   if (!departure || !arrival) return null;
 
