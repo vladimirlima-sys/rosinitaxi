@@ -36,41 +36,37 @@ export default function VehicleCard({ type, selected, onSelect, distance }) {
       )}
     >
       {selected && (
-        <div className="absolute top-4 right-4 w-6 h-6 rounded-full bg-[#C9A96E] flex items-center justify-center">
-          <Check className="w-3.5 h-3.5 text-[#0A0A0A]" />
+        <div className="absolute top-3 right-3 w-5 h-5 rounded-full bg-[#C9A96E] flex items-center justify-center">
+          <Check className="w-3 h-3 text-[#0A0A0A]" />
         </div>
       )}
 
-      <div className="h-40 rounded-xl overflow-hidden mb-6 bg-white/5">
-        <img src={config.image} alt={config.name} className="w-full h-full object-cover opacity-70" />
-      </div>
-
-      <div className="flex items-center justify-between mb-4">
-        <div className="flex items-center gap-3">
-          <Car className="w-6 h-6 text-[#C9A96E]" />
-          <h3 className="text-white text-xl font-medium">{config.name}</h3>
+      <div className="flex items-center justify-between mb-3">
+        <div className="flex items-center gap-2">
+          <Car className="w-5 h-5 text-[#C9A96E]" />
+          <h3 className="text-white text-lg font-medium">{config.name}</h3>
         </div>
         <div className="flex items-center gap-1.5 text-white/50">
-          <Users className="w-4 h-4" />
-          <span className="text-sm">{config.capacity} {t.persons}</span>
+          <Users className="w-3.5 h-3.5" />
+          <span className="text-xs">{config.capacity} {t.persons}</span>
         </div>
       </div>
 
-      <div className="mb-5">
+      <div className="mb-3">
         {totalPrice ? (
           <div className="flex items-baseline gap-1">
-            <span className="text-[#C9A96E] text-2xl font-semibold">CHF {totalPrice}</span>
+            <span className="text-[#C9A96E] text-xl font-semibold">CHF {totalPrice}</span>
           </div>
         ) : (
-          <p className="text-white/30 text-sm italic">{t.estimatedPrice}...</p>
+          <p className="text-white/30 text-xs italic">{t.estimatedPrice}...</p>
         )}
       </div>
 
-      <div className="space-y-2">
+      <div className="space-y-1.5">
         {config.features.map((f, i) => (
           <div key={i} className="flex items-center gap-2">
-            <div className="w-1 h-1 rounded-full bg-[#C9A96E]" />
-            <span className="text-white/40 text-sm">{f}</span>
+            <div className="w-0.5 h-0.5 rounded-full bg-[#C9A96E]" />
+            <span className="text-white/40 text-xs">{f}</span>
           </div>
         ))}
       </div>
