@@ -43,6 +43,12 @@ export default function BookingForm({ bookingRef }) {
   const [isLoadingArrival, setIsLoadingArrival] = useState(false);
   const [isLoadingDeparture, setIsLoadingDeparture] = useState(false);
   const [isLocating, setIsLocating] = useState(false);
+  const [waypoints, setWaypoints] = useState([]);
+  const [waypointSuggestions, setWaypointSuggestions] = useState({});
+  const [preferences, setPreferences] = useState({
+    routeType: 'best_guess',
+    avoid: []
+  });
   const suggestionRef = useRef(null);
   const departureSuggestionRef = useRef(null);
 
