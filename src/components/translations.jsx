@@ -244,6 +244,12 @@ export const translations = {
       comfort: ['Premium vehicle', 'Leather seats', 'Free Wi-Fi', 'Water & refreshments', 'USB chargers'],
     },
     perKm: '/km',
+    journeyDetails: 'Voyage details',
+    journeyDistance: 'Distance',
+    journeyTime: 'Estimated time',
+    km: 'km',
+    hours: 'h',
+    minutes: 'min',
   },
   de: {
     badge: 'Verfügbar 24/7 — Jeden Tag',
