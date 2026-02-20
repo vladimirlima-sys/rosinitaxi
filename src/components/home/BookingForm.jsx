@@ -238,20 +238,22 @@ export default function BookingForm({ bookingRef }) {
         }
       } else {
         // Cash or TWINT payment
-        await base44.entities.Booking.create({
+        const booking = await base44.entities.Booking.create({
           ...form,
           total_price: parseFloat(totalPrice),
           payment_status: 'pending',
           payment_method: paymentMethod,
         });
 
-        await base44.functions.invoke('sendBookingConfirmation', {
+        // Send confirmation email (non-blocking)
+        base44.functions.invoke('sendBookingConfirmation', {
           ...form,
           total_price: parseFloat(totalPrice),
           distance_km: estimatedDistance,
           payment_method: paymentMethod,
-        });
+        }).catch(() => {});
 
+        toast.success('Réservation confirmée!');
         setStep(5);
       }
     } catch (err) {
