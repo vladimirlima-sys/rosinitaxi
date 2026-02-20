@@ -272,6 +272,16 @@ export default function BookingForm({ bookingRef }) {
               <Label className="text-white/60 text-sm flex items-center gap-2"><MessageSquare className="w-4 h-4 text-[#C9A96E]" /> {t.notesLabel}</Label>
               <Textarea placeholder={t.notesPlaceholder} value={form.notes} onChange={e => update('notes', e.target.value)} className="bg-white/5 border-white/10 text-white placeholder:text-white/20 focus:border-[#C9A96E] min-h-[100px]" />
             </div>
+            <div className="space-y-2">
+              <Label className="text-white/60 text-sm flex items-center gap-2"><Star className="w-4 h-4 text-[#C9A96E]" /> Préférence chauffeur (optionnel)</Label>
+              <Input
+                placeholder="Ex: chauffeur anglophone, véhicule Mercedes, etc."
+                value={form.driver_preference}
+                onChange={e => update('driver_preference', e.target.value)}
+                className="bg-white/5 border-white/10 text-white placeholder:text-white/20 focus:border-[#C9A96E] h-12"
+              />
+              <p className="text-white/20 text-xs">Nous ferons notre possible pour honorer votre préférence.</p>
+            </div>
             <div className="flex justify-between pt-4">
               <Button onClick={() => setStep(2)} className="bg-[#C9A96E] hover:bg-[#B8955D] text-[#0A0A0A] font-semibold px-8 h-12">{t.backBtn}</Button>
               <Button onClick={() => setStep(4)} disabled={!canProceedStep3} className="bg-[#C9A96E] hover:bg-[#B8955D] text-[#0A0A0A] font-semibold px-8 h-12">{t.paymentBtn}</Button>
