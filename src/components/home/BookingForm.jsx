@@ -346,12 +346,12 @@ export default function BookingForm({ bookingRef }) {
                             className="w-full text-left px-4 py-3 !text-white hover:bg-[#C9A96E]/10 transition-colors text-sm border-b border-white/5 last:border-b-0"
                             >
                              <div className="flex items-center gap-2">
-                               <MapPin className="w-3 h-3 text-[#C9A96E] flex-shrink-0" />
-                               <div>
-                                 {detailedAddress && <div className="text-white font-medium">{detailedAddress}</div>}
-                                 <div className="text-white/60 text-xs">{city}</div>
-                               </div>
-                             </div>
+                                <MapPin className="w-3 h-3 text-[#C9A96E] flex-shrink-0" />
+                                <div className="text-white">
+                                  {detailedAddress && <div className="!text-white font-medium">{detailedAddress}</div>}
+                                  <div className="!text-white/60 text-xs">{city}</div>
+                                </div>
+                              </div>
                             </button>
                         );
                       })}
