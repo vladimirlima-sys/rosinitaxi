@@ -54,39 +54,33 @@ export default function EmbeddedRouteMap({ departure, arrival, route }) {
       const leg = route.legs[0];
       const map = mapInstance.current;
 
-      // Marcador de partida
-      const departureMarker = new google.maps.Marker({
-        position: leg.start_location,
+      // Marcador de partida (ponto simples)
+      const departureCircle = new google.maps.Circle({
+        center: leg.start_location,
+        radius: 200,
         map: map,
-        title: 'Partida',
-        icon: {
-          path: 'M0,-28a28,28 0 0,1 0,56a28,28 0 0,1 0,-56',
-          fillColor: '#C9A96E',
-          fillOpacity: 1,
-          strokeColor: '#0A0A0A',
-          strokeWeight: 2,
-          scale: 0.8,
-          anchor: new google.maps.Point(0, 0)
-        }
+        fillColor: '#C9A96E',
+        fillOpacity: 0.8,
+        strokeColor: '#C9A96E',
+        strokeWeight: 2,
+        strokeOpacity: 0.6,
+        zIndex: 2
       });
-      mapInstance.current.overlays.push(departureMarker);
+      mapInstance.current.overlays.push(departureCircle);
 
-      // Marcador de chegada
-      const arrivalMarker = new google.maps.Marker({
-        position: leg.end_location,
+      // Marcador de chegada (ponto simples)
+      const arrivalCircle = new google.maps.Circle({
+        center: leg.end_location,
+        radius: 200,
         map: map,
-        title: 'Chegada',
-        icon: {
-          path: 'M0,-28a28,28 0 0,1 0,56a28,28 0 0,1 0,-56',
-          fillColor: '#4CAF50',
-          fillOpacity: 1,
-          strokeColor: '#0A0A0A',
-          strokeWeight: 2,
-          scale: 0.8,
-          anchor: new google.maps.Point(0, 0)
-        }
+        fillColor: '#4CAF50',
+        fillOpacity: 0.8,
+        strokeColor: '#4CAF50',
+        strokeWeight: 2,
+        strokeOpacity: 0.6,
+        zIndex: 2
       });
-      mapInstance.current.overlays.push(arrivalMarker);
+      mapInstance.current.overlays.push(arrivalCircle);
 
       // Desenhar rota
       const polyline = new google.maps.Polyline({
