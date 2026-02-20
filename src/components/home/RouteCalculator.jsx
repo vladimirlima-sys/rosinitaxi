@@ -1,8 +1,12 @@
 import React, { useEffect, useRef, useState } from 'react';
 import { Loader2 } from 'lucide-react';
 import { toast } from 'sonner';
+import { useLang } from '@/components/LanguageContext';
+import { translations } from '@/components/translations';
 
 export default function RouteCalculator({ departure, arrival, onRouteCalculated }) {
+  const { lang } = useLang();
+  const t = translations[lang];
   const directionsService = useRef(null);
   const [calculating, setCalculating] = useState(false);
 
@@ -49,9 +53,9 @@ export default function RouteCalculator({ departure, arrival, onRouteCalculated 
           });
         }
       } catch (err) {
-        console.error('Route calculation error:', err);
-        toast.error('Erro ao calcular rota. Verifique os endereços.');
-        onRouteCalculated({ distance_km: 0, estimated_time_minutes: 0, route: null });
+       console.error('Route calculation error:', err);
+       toast.error(t.routeError);
+       onRouteCalculated({ distance_km: 0, estimated_time_minutes: 0, route: null });
       } finally {
         setCalculating(false);
       }
@@ -65,7 +69,7 @@ export default function RouteCalculator({ departure, arrival, onRouteCalculated 
   return (
     <div className="fixed bottom-6 left-1/2 transform -translate-x-1/2 z-40 flex items-center gap-3 px-6 py-4 rounded-2xl bg-[#C9A96E]/95 backdrop-blur-sm border border-[#C9A96E]/50 shadow-2xl">
       <Loader2 className="w-5 h-5 text-[#0A0A0A] animate-spin" />
-      <span className="text-[#0A0A0A] font-medium text-sm">Calculando rota...</span>
+      <span className="text-[#0A0A0A] font-medium text-sm">{t.calculatingRoute}</span>
     </div>
   );
 }
