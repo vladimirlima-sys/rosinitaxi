@@ -415,9 +415,8 @@ export default function BookingForm({ bookingRef }) {
         {step === 2 && (
           <div className="space-y-6">
             <h3 className="text-white text-xl font-medium mb-6">{t.step2Title}</h3>
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+            <div className="grid grid-cols-1 gap-6">
               <VehicleCard type="economic" selected={form.vehicle_type === 'economic'} onSelect={v => update('vehicle_type', v)} distance={estimatedDistance} />
-              <VehicleCard type="comfort" selected={form.vehicle_type === 'comfort'} onSelect={v => update('vehicle_type', v)} distance={estimatedDistance} />
             </div>
 
             {form.vehicle_type && (
