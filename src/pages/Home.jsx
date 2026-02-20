@@ -20,6 +20,7 @@ export default function Home() {
 
   return (
     <LanguageProvider>
+      <GoogleMapsLoader />
       <div className="min-h-screen bg-[#0A0A0A]">
         <LanguageSwitcher />
         <HeroSection onScrollToBooking={scrollToBooking} />
