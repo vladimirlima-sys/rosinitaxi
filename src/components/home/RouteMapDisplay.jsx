@@ -1,11 +1,13 @@
 import React, { useEffect, useRef, useState } from 'react';
-import { MapPin, Navigation2 } from 'lucide-react';
+import { MapPin, Navigation2, Satellite, Map, Share2, Download } from 'lucide-react';
 import { Button } from '@/components/ui/button';
+import { toast } from 'sonner';
 
 export default function RouteMapDisplay({ departure, arrival, route, onClose }) {
   const mapRef = useRef(null);
   const mapInstance = useRef(null);
   const [mapLoaded, setMapLoaded] = useState(false);
+  const [mapType, setMapType] = useState('roadmap');
 
   useEffect(() => {
     if (!mapRef.current || !typeof google || !route) return;
