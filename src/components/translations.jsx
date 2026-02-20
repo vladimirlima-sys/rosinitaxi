@@ -429,6 +429,16 @@ export const translations = {
     markerDeparture: 'ABFAHRT',
     markerArrival: 'ANKUNFT',
   },
+  paymentMethods: {
+    stripe: 'Stripe (Carta di credito)',
+    twint: 'TWINT',
+    cash: 'Contanti',
+  },
+  paymentMethodsDesc: {
+    stripe: 'Sicuro',
+    twint: 'Istantaneo',
+    cash: 'A bordo del veicolo',
+  },
   it: {
     badge: 'Disponibile 24/7 — Ogni giorno',
     heroDesc: 'Il vostro autista di fiducia per i viaggi a lunga percorrenza in Svizzera e in Europa. Affidabile, puntuale e piacevole.',
