@@ -1,7 +1,7 @@
 export const translations = {
   fr: {
     badge: 'Disponible 24h/24 — 7j/7',
-    heroDesc: 'Service de transfert privé premium pour vos trajets longue distance en Suisse et en Europe. Confort, ponctualité et élégance.',
+    heroDesc: 'Votre chauffeur de confiance pour tous vos trajets longue distance en Suisse et en Europe. Fiable, ponctuel et agréable.',
     pill1: '24h/24 — 7j/7',
     pill2: 'Chauffeurs professionnels',
     pill3: 'Longue distance',
@@ -79,7 +79,7 @@ export const translations = {
   },
   en: {
     badge: 'Available 24/7 — Every Day',
-    heroDesc: 'Premium private transfer service for your long-distance journeys across Switzerland and Europe. Comfort, punctuality and elegance.',
+    heroDesc: 'Your reliable driver for long-distance journeys across Switzerland and Europe. Dependable, on time and pleasant to travel with.',
     pill1: '24/7 — Every Day',
     pill2: 'Professional Drivers',
     pill3: 'Long Distance',
@@ -157,7 +157,7 @@ export const translations = {
   },
   de: {
     badge: 'Verfügbar 24/7 — Jeden Tag',
-    heroDesc: 'Premium privater Transferservice für Ihre Langstreckenfahrten durch die Schweiz und Europa. Komfort, Pünktlichkeit und Eleganz.',
+    heroDesc: 'Ihr zuverlässiger Fahrer für Langstreckenfahrten durch die Schweiz und Europa. Verlässlich, pünktlich und angenehm.',
     pill1: '24/7 — Jeden Tag',
     pill2: 'Professionelle Fahrer',
     pill3: 'Langstrecke',
@@ -235,7 +235,7 @@ export const translations = {
   },
   it: {
     badge: 'Disponibile 24/7 — Ogni giorno',
-    heroDesc: 'Servizio di trasferimento privato premium per i vostri viaggi a lunga percorrenza in Svizzera e in Europa. Comfort, puntualità ed eleganza.',
+    heroDesc: 'Il vostro autista di fiducia per i viaggi a lunga percorrenza in Svizzera e in Europa. Affidabile, puntuale e piacevole.',
     pill1: '24/7 — Ogni giorno',
     pill2: 'Autisti professionisti',
     pill3: 'Lunga distanza',
