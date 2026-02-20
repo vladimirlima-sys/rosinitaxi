@@ -129,7 +129,7 @@ export default function BookingForm({ bookingRef }) {
       setEstimatedTime(calculateEstimatedTime(dist));
       update('distance_km', dist);
     } catch {
-      toast.error("Impossible d'estimer la distance. Veuillez réessayer.");
+      toast.error(t.estimateDistanceError || "Impossible d'estimer la distance. Veuillez réessayer.");
     }
     setIsEstimating(false);
   };
@@ -195,7 +195,7 @@ export default function BookingForm({ bookingRef }) {
 
   const handleStripeCheckout = async () => {
     if (window.self !== window.top) {
-      alert("Le paiement fonctionne uniquement depuis l'application publiée.");
+      alert(t.checkoutFromPublishedApp || "Le paiement fonctionne uniquement depuis l'application publiée.");
       return;
     }
     setIsSubmitting(true);
@@ -233,7 +233,7 @@ export default function BookingForm({ bookingRef }) {
         throw new Error(response.data?.error || 'Erreur de paiement');
       }
     } catch (err) {
-      toast.error("Erreur lors du paiement. Veuillez réessayer.");
+      toast.error(t.paymentError || "Erreur lors du paiement. Veuillez réessayer.");
       setIsSubmitting(false);
     }
   };
