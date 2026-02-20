@@ -269,7 +269,7 @@ export default function BookingForm({ bookingRef }) {
             </div>
 
             <div className="flex justify-between pt-2">
-              <Button onClick={() => setStep(3)} variant="outline" className="border-white/10 text-white/60 hover:bg-white/5 h-12">{t.backBtn}</Button>
+              <Button onClick={() => setStep(3)} className="bg-[#C9A96E] hover:bg-[#B8955D] text-[#0A0A0A] font-semibold px-8 h-12">{t.backBtn}</Button>
               <Button onClick={handleStripeCheckout} disabled={isSubmitting} className="bg-[#C9A96E] hover:bg-[#B8955D] text-[#0A0A0A] font-semibold px-8 h-12 min-w-[220px]">
                 {isSubmitting ? <><Loader2 className="w-4 h-4 mr-2 animate-spin" />{t.redirecting}</> : t.payBtn(totalPrice)}
               </Button>
