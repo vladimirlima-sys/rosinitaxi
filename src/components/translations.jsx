@@ -76,6 +76,12 @@ export const translations = {
       comfort: ['Veículo premium', 'Bancos de couro', 'Wi-Fi gratuito', 'Água & bebidas', 'Carregadores USB'],
     },
     perKm: '/km',
+    journeyDetails: 'Detalhes da viagem',
+    journeyDistance: 'Distância',
+    journeyTime: 'Tempo estimado',
+    km: 'km',
+    hours: 'h',
+    minutes: 'min',
   },
   fr: {
     badge: 'Disponible 24h/24 — 7j/7',
