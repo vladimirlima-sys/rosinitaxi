@@ -364,7 +364,14 @@ export default function BookingForm({ bookingRef }) {
               </div>
             </div>
 
-
+            {form.departure_point && form.arrival_point && (
+              <RouteMap 
+                departure={form.departure_point}
+                arrival={form.arrival_point}
+                distance_km={estimatedDistance}
+                onRouteCalculated={handleRouteCalculated}
+              />
+            )}
 
             <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
               <div className="space-y-2">
