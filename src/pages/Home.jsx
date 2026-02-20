@@ -2,7 +2,7 @@ import React, { useRef, useState } from 'react';
 import { Bookmark, Phone } from 'lucide-react';
 import HeroSection from '@/components/home/HeroSection';
 import ServicesSection from '@/components/home/ServicesSection';
-import BookingForm from '@/components/home/BookingForm';
+import SimpleBookingForm from '@/components/home/SimpleBookingForm';
 import FooterSection from '@/components/home/FooterSection';
 import LanguageSwitcher from '@/components/home/LanguageSwitcher';
 
