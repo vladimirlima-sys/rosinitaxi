@@ -9,6 +9,12 @@ export default function RouteMapDisplay({ departure, arrival, route, onClose }) 
   const mapInstance = useRef(null);
   const [mapLoaded, setMapLoaded] = useState(false);
   const [mapType, setMapType] = useState('roadmap');
+  const [isClosing, setIsClosing] = useState(false);
+
+  const handleCloseClick = () => {
+    setIsClosing(true);
+    setTimeout(onClose, 300);
+  };
 
   const toggleMapType = () => {
     const newType = mapType === 'roadmap' ? 'satellite' : 'roadmap';
