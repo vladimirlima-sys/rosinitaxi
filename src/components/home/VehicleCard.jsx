@@ -13,7 +13,7 @@ export default function VehicleCard({ type, selected, onSelect, distance }) {
     name: 'STANDARD',
     capacity: 4,
     pricePerKm: 2.35,
-    image: 'https://images.unsplash.com/photo-1549317661-bd32c8ce0afa?w=600&q=80',
+    image: 'https://images.unsplash.com/photo-1533473359331-35a64b29e200?w=600&q=80',
     features: t.vehicleFeatures.economic,
   } : {
     name: t.comfort,
