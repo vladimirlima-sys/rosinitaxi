@@ -37,9 +37,12 @@ export default function BookingForm({ bookingRef }) {
   const [isEstimating, setIsEstimating] = useState(false);
   const [dynamicPrice, setDynamicPrice] = useState(null);
   const [arrivalSuggestions, setArrivalSuggestions] = useState([]);
+  const [departureSuggestions, setDepartureSuggestions] = useState([]);
   const [isLoadingArrival, setIsLoadingArrival] = useState(false);
+  const [isLoadingDeparture, setIsLoadingDeparture] = useState(false);
   const [isLocating, setIsLocating] = useState(false);
   const suggestionRef = useRef(null);
+  const departureSuggestionRef = useRef(null);
 
   const update = (field, value) => setForm(prev => ({ ...prev, [field]: value }));
 
