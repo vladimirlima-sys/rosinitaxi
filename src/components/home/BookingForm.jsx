@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useRef } from 'react';
-import { MapPin, Calendar, Clock, Plane, User, Mail, Phone, MessageSquare, Loader2, Loader, RotateCw } from 'lucide-react';
+import { MapPin, Calendar, Clock, Plane, User, Mail, Phone, MessageSquare, Loader2, Loader } from 'lucide-react';
 import { Input } from '@/components/ui/input';
 import { Button } from '@/components/ui/button';
 import { Label } from '@/components/ui/label';
@@ -7,6 +7,9 @@ import { Textarea } from '@/components/ui/textarea';
 import VehicleCard from './VehicleCard';
 import PricingBreakdown from './PricingBreakdown';
 import JourneyDetails from './JourneyDetails';
+import DepartureInput from './DepartureInput';
+import ArrivalInput from './ArrivalInput';
+import RouteCalculator from './RouteCalculator';
 
 import { base44 } from '@/api/base44Client';
 import { toast } from 'sonner';
@@ -60,17 +63,14 @@ export default function BookingForm({ bookingRef }) {
       async (position) => {
         const { latitude, longitude } = position.coords;
         try {
-          const response = await fetch(
-            `https://nominatim.openstreetmap.org/reverse?format=json&lat=${latitude}&lon=${longitude}`
-          );
-          const data = await response.json();
-          if (data.address) {
-            const street = data.address.road || '';
-            const houseNumber = data.address.house_number || '';
-            const city = data.address.city || data.address.town || data.address.village || '';
-            const fullAddress = [houseNumber, street, city].filter(Boolean).join(', ');
-            update('departure_point', fullAddress || data.display_name.split(',')[0]);
-            toast.success('Localização obtida!');
+          // Use Google's Geocoder for consistent address resolution
+          if (typeof google !== 'undefined' && google.maps) {
+            const geocoder = new google.maps.Geocoder();
+            const result = await geocoder.geocode({ location: { lat: latitude, lng: longitude } });
+            if (result.results && result.results.length > 0) {
+              update('departure_point', result.results[0].formatted_address);
+              toast.success('Localização obtida!');
+            }
           }
         } catch (err) {
           console.error('Geocoding error:', err);
@@ -123,33 +123,12 @@ export default function BookingForm({ bookingRef }) {
         }
       }, []);
 
-  const estimateDistance = async () => {
-    if (!form.departure_point || !form.arrival_point) return;
-    setIsEstimating(true);
-    try {
-      const result = await base44.integrations.Core.InvokeLLM({
-        prompt: `Estimate the driving distance in kilometers between "${form.departure_point}" and "${form.arrival_point}". Return ONLY a JSON object with the distance. Be accurate based on real road distances.`,
-        response_json_schema: {
-          type: "object",
-          properties: {
-            distance_km: { type: "number", description: "Estimated driving distance in kilometers" }
-          }
-        }
-      });
-      const dist = Math.round(result.distance_km);
-      setEstimatedDistance(dist);
-      setEstimatedTime(calculateEstimatedTime(dist));
-      update('distance_km', dist);
-    } catch {
-      toast.error(t.estimateDistanceError || "Impossible d'estimer la distance. Veuillez réessayer.");
-    }
-    setIsEstimating(false);
-  };
-
   const handleRouteCalculated = (routeData) => {
-    setEstimatedDistance(routeData.distance_km);
-    setEstimatedTime(routeData.estimated_time_minutes || calculateEstimatedTime(routeData.distance_km));
-    update('distance_km', routeData.distance_km);
+    if (routeData.distance_km > 0) {
+      setEstimatedDistance(routeData.distance_km);
+      setEstimatedTime(routeData.estimated_time_minutes);
+      update('distance_km', routeData.distance_km);
+    }
   };
 
   const calculateEstimatedTime = (km) => {
@@ -321,57 +300,35 @@ export default function BookingForm({ bookingRef }) {
               </div>
 
               <div className="space-y-6">
-                {/* Departure */}
-                <div className="space-y-3">
-                  <Label className="text-white/70 text-sm font-medium">{t.departure}</Label>
-                  <div className="relative group">
-                    <div className="absolute left-4 top-1/2 -translate-y-1/2 w-2.5 h-2.5 rounded-full bg-[#C9A96E] z-10" />
-                    <Input 
-                      placeholder={t.departurePlaceholder} 
-                      value={form.departure_point} 
-                      onChange={e => update('departure_point', e.target.value)} 
-                      className="bg-white/5 border border-white/10 text-white placeholder:text-white/30 focus:border-[#C9A96E] focus:bg-white/[0.08] h-12 pl-12 pr-16 transition-all rounded-xl" 
-                      autoComplete="off"
-                    />
-                    <div className="absolute right-3 top-1/2 -translate-y-1/2 flex items-center gap-2">
-                      <button
-                        type="button"
-                        onClick={locateUser}
-                        disabled={isLocating}
-                        className="p-1.5 hover:bg-white/10 rounded-lg transition-all disabled:opacity-50"
-                        title="Localizar minha posição"
-                      >
-                        {isLocating ? (
-                          <Loader className="w-4 h-4 text-[#C9A96E] animate-spin" />
-                        ) : (
-                          <RotateCw className="w-4 h-4 text-[#C9A96E] hover:text-[#B8955D]" />
-                        )}
-                      </button>
-                    </div>
-                  </div>
-                </div>
+                <DepartureInput
+                  value={form.departure_point}
+                  onChange={(val) => update('departure_point', val)}
+                  placeholder={t.departurePlaceholder}
+                  isLocating={isLocating}
+                  onLocate={locateUser}
+                  t={t}
+                />
 
                 {/* Route Line */}
                 <div className="flex justify-center py-2">
                   <div className="w-0.5 h-8 bg-gradient-to-b from-[#C9A96E] to-transparent" />
                 </div>
 
-                {/* Arrival */}
-                <div className="space-y-3">
-                  <Label className="text-white/70 text-sm font-medium">{t.arrival}</Label>
-                  <div className="relative group">
-                    <div className="absolute left-4 top-1/2 -translate-y-1/2 w-2.5 h-2.5 rounded-full bg-[#C9A96E] z-10" />
-                    <Input 
-                        placeholder={t.arrivalPlaceholder} 
-                        value={form.arrival_point} 
-                        onChange={e => update('arrival_point', e.target.value)} 
-                        className="bg-white/5 border border-white/10 text-white placeholder:text-white/30 focus:border-[#C9A96E] focus:bg-white/[0.08] h-12 pl-12 pr-4 transition-all rounded-xl" 
-                        autoComplete="off"
-                      />
+                <ArrivalInput
+                  value={form.arrival_point}
+                  onChange={(val) => update('arrival_point', val)}
+                  placeholder={t.arrivalPlaceholder}
+                  t={t}
+                />
 
-
-                  </div>
-                </div>
+                {/* Route Calculator - hidden component that calculates route */}
+                {form.departure_point && form.arrival_point && (
+                  <RouteCalculator
+                    departure={form.departure_point}
+                    arrival={form.arrival_point}
+                    onRouteCalculated={handleRouteCalculated}
+                  />
+                )}
               </div>
             </div>
 
@@ -439,14 +396,8 @@ export default function BookingForm({ bookingRef }) {
             {/* Action Button */}
             <div className="flex justify-end">
               <Button 
-                onClick={() => { 
-                  if (!estimatedDistance && form.departure_point && form.arrival_point) { 
-                    estimateDistance().then(() => setStep(2)); 
-                  } else { 
-                    setStep(2); 
-                  } 
-                }} 
-                disabled={!canProceedStep1} 
+                onClick={() => setStep(2)} 
+                disabled={!canProceedStep1 || estimatedDistance === 0} 
                 className="bg-[#C9A96E] hover:bg-[#B8955D] text-[#0A0A0A] font-semibold px-12 h-13 rounded-xl transition-all hover:shadow-lg hover:shadow-[#C9A96E]/20"
               >
                 {t.continueBtn}
