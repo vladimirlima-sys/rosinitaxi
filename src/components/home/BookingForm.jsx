@@ -87,10 +87,17 @@ export default function BookingForm({ bookingRef }) {
     setIsSubmitting(true);
     try {
       await base44.entities.Booking.create({
-        ...form,
-        total_price: parseFloat(totalPrice),
-        payment_status: 'pending',
-      });
+          ...form,
+          total_price: parseFloat(totalPrice),
+          payment_status: 'pending',
+        });
+
+        // Save booking data for post-payment email
+        sessionStorage.setItem('pendingBooking', JSON.stringify({
+          ...form,
+          total_price: parseFloat(totalPrice),
+          distance_km: estimatedDistance,
+        }));
 
       const response = await base44.functions.invoke('createCheckout', {
         amount: parseFloat(totalPrice),
