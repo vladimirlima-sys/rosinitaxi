@@ -7,8 +7,7 @@ import { Textarea } from '@/components/ui/textarea';
 import VehicleCard from './VehicleCard';
 import PricingBreakdown from './PricingBreakdown';
 import JourneyDetails from './JourneyDetails';
-import DepartureInput from './DepartureInput';
-import ArrivalInput from './ArrivalInput';
+import PlacesAutocomplete from './PlacesAutocomplete';
 import RouteCalculator from './RouteCalculator';
 import RouteMapDisplay from './RouteMapDisplay';
 import RouteCard from './RouteCard';
@@ -45,8 +44,9 @@ export default function BookingForm({ bookingRef }) {
   const [dynamicPrice, setDynamicPrice] = useState(null);
   const [isLocating, setIsLocating] = useState(false);
   const [estimatedTime, setEstimatedTime] = useState(0);
-  const [priceSettings, setPriceSettings] = useState(null);
-  const [currentRoute, setCurrentRoute] = useState(null);
+      const [priceSettings, setPriceSettings] = useState(null);
+      const [currentRoute, setCurrentRoute] = useState(null);
+      const [sessionToken, setSessionToken] = useState(null);
 
 
   const update = (field, value) => setForm(prev => ({ ...prev, [field]: value }));
@@ -54,6 +54,17 @@ export default function BookingForm({ bookingRef }) {
   // Set vehicle type to economic on mount
   useEffect(() => {
     update('vehicle_type', 'economic');
+  }, []);
+
+  // Initialize session token for Places API
+  useEffect(() => {
+    if (typeof google !== 'undefined' && google.maps) {
+      try {
+        setSessionToken(new google.maps.places.AutocompleteSessionToken());
+      } catch (err) {
+        console.error('Session token error:', err);
+      }
+    }
   }, []);
 
   const locateUser = async () => {
@@ -305,24 +316,30 @@ export default function BookingForm({ bookingRef }) {
               </div>
 
               <div className="space-y-6">
-                <DepartureInput
-                  value={form.departure_point}
-                  onChange={(val) => update('departure_point', val)}
-                  placeholder={t.departurePlaceholder}
-                  isLocating={isLocating}
-                  onLocate={locateUser}
-                  t={t}
-                />
+                <PlacesAutocomplete
+                    value={form.departure_point}
+                    onChange={(val) => update('departure_point', val)}
+                    placeholder={t.departurePlaceholder}
+                    label={t.departure}
+                    showLocateButton={true}
+                    isLocating={isLocating}
+                    onLocate={locateUser}
+                    sessionToken={sessionToken}
+                    t={t}
+                  />
 
                 {/* Route Line */}
                 <div className="flex justify-center py-2">
                   <div className="w-0.5 h-8 bg-gradient-to-b from-[#C9A96E] to-transparent" />
                 </div>
 
-                <ArrivalInput
+                <PlacesAutocomplete
                   value={form.arrival_point}
                   onChange={(val) => update('arrival_point', val)}
                   placeholder={t.arrivalPlaceholder}
+                  label={t.arrival}
+                  showLocateButton={false}
+                  sessionToken={sessionToken}
                   t={t}
                 />
 
