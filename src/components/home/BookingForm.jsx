@@ -303,9 +303,9 @@ export default function BookingForm({ bookingRef }) {
                               >
                               <div className="flex items-center gap-2">
                                 <MapPin className="w-3 h-3 text-[#C9A96E] flex-shrink-0" />
-                                <div>
-                                  {detailedAddress && <div className="text-white font-medium">{detailedAddress}</div>}
-                                  <div className="text-white/60 text-xs">{city}</div>
+                                <div className="text-white">
+                                  {detailedAddress && <div className="!text-white font-medium">{detailedAddress}</div>}
+                                  <div className="!text-white/60 text-xs">{city}</div>
                                 </div>
                               </div>
                               </button>
