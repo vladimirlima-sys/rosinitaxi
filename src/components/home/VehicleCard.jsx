@@ -4,7 +4,7 @@ import { cn } from '@/lib/utils';
 import { useLang } from '@/components/LanguageContext';
 import { translations } from '@/components/translations';
 
-export default function VehicleCard({ type, selected, onSelect, distance }) {
+export default function VehicleCard({ type, selected, onSelect, distance, pricePerKm }) {
   const { lang } = useLang();
   const t = translations[lang];
   const isEconomic = type === 'economic';
@@ -12,13 +12,13 @@ export default function VehicleCard({ type, selected, onSelect, distance }) {
   const config = isEconomic ? {
     name: 'STANDARD',
     capacity: 4,
-    pricePerKm: 2.35,
+    pricePerKm: pricePerKm || 2.35,
     image: 'https://images.unsplash.com/photo-1533473359331-35a64b29e200?w=600&q=80',
     features: t.vehicleFeatures.economic,
   } : {
     name: t.comfort,
     capacity: 4,
-    pricePerKm: 2.95,
+    pricePerKm: pricePerKm || 2.95,
     image: 'https://images.unsplash.com/photo-1563720223185-11003d516935?w=600&q=80',
     features: t.vehicleFeatures.comfort,
   };
