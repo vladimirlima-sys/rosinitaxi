@@ -16,12 +16,7 @@ export default function HeroSection({ onScrollToBooking }) {
       <div className="absolute inset-0 bg-gradient-to-b from-[#0A0A0A]/80 via-[#0A0A0A]/50 to-[#0A0A0A]" />
       
       <div className="relative z-10 text-center px-6 max-w-5xl mx-auto">
-        <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full border border-white/10 bg-white/5 backdrop-blur-sm mb-8">
-          <div className="w-2 h-2 rounded-full bg-[#C9A96E] animate-pulse" />
-          <span className="text-[#C9A96E] text-sm font-medium tracking-wider uppercase">
-            {t.badge}
-          </span>
-        </div>
+
 
         <h1 className="text-5xl md:text-7xl lg:text-8xl font-light text-white tracking-tight mb-4">
           ROSINI
