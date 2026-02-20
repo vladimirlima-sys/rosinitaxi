@@ -172,41 +172,41 @@ Deno.serve(async (req) => {
 </html>`;
 
     const adminEmailBody = `
-<!DOCTYPE html>
-<html>
-<head><meta charset="UTF-8"></head>
-<body style="margin:0;padding:0;background:#0A0A0A;font-family:Arial,sans-serif;">
-  <div style="max-width:600px;margin:0 auto;padding:40px 20px;">
+    <!DOCTYPE html>
+    <html>
+    <head><meta charset="UTF-8"></head>
+    <body style="margin:0;padding:0;background:#0A0A0A;font-family:Arial,sans-serif;">
+    <div style="max-width:600px;margin:0 auto;padding:40px 20px;">
     <div style="text-align:center;margin-bottom:32px;">
       <h1 style="color:#C9A96E;font-size:28px;font-weight:300;letter-spacing:4px;margin:0;">ROSINI</h1>
       <p style="color:#C9A96E;font-size:11px;letter-spacing:3px;margin:4px 0 0;">TRANSFERT</p>
     </div>
 
     <div style="background:#111;border:1px solid #C9A96E33;border-radius:12px;padding:32px;">
-      <h2 style="color:#C9A96E;font-size:20px;font-weight:300;margin:0 0 8px;">🔔 Nouvelle réservation reçue</h2>
-      <p style="color:#888;margin:0 0 24px;">Un nouveau client a effectué une réservation.</p>
+      <h2 style="color:#C9A96E;font-size:20px;font-weight:300;margin:0 0 8px;">${t.adminTitle}</h2>
+      <p style="color:#888;margin:0 0 24px;">${t.adminText}</p>
 
       <table style="width:100%;border-collapse:collapse;">
-        <tr><td style="padding:6px 0;color:#888;">Client</td><td style="padding:6px 0;color:#fff;">${client_name}</td></tr>
-        <tr><td style="padding:6px 0;color:#888;">Email</td><td style="padding:6px 0;color:#fff;">${client_email}</td></tr>
-        <tr><td style="padding:6px 0;color:#888;">Téléphone</td><td style="padding:6px 0;color:#fff;">${client_phone || 'Non renseigné'}</td></tr>
-        <tr><td colspan="2" style="padding:12px 0;"><hr style="border:none;border-top:1px solid #333;margin:0;"></td></tr>
-        <tr><td style="padding:6px 0;color:#888;">Trajet</td><td style="padding:6px 0;color:#fff;">${departure_point} → ${arrival_point}</td></tr>
-        <tr><td style="padding:6px 0;color:#888;">Date</td><td style="padding:6px 0;color:#fff;">${departure_date} à ${departure_time}</td></tr>
-        <tr><td style="padding:6px 0;color:#888;">Véhicule</td><td style="padding:6px 0;color:#fff;">${vehicleLabel}</td></tr>
-        <tr><td style="padding:6px 0;color:#888;">Passagers</td><td style="padding:6px 0;color:#fff;">${passengers || 1}</td></tr>
-        <tr><td style="padding:6px 0;color:#888;">Distance</td><td style="padding:6px 0;color:#fff;">${distance_km} km</td></tr>
-        ${flightInfo}
-        ${notesInfo}
-        <tr><td colspan="2" style="padding:12px 0;"><hr style="border:none;border-top:1px solid #333;margin:0;"></td></tr>
-        <tr><td style="padding:6px 0;color:#888;font-weight:bold;">${payment_method === 'stripe' ? 'Montant encaissé' : 'Montant à encaisser'}</td><td style="padding:6px 0;color:#C9A96E;font-size:18px;font-weight:bold;">CHF ${total_price}</td></tr>
+        <tr><td style="padding:6px 0;color:#888;">${t.client}</td><td style="padding:6px 0;color:#fff;">${client_name}</td></tr>
+        <tr><td style="padding:6px 0;color:#888;">${t.email}</td><td style="padding:6px 0;color:#fff;">${client_email}</td></tr>
+        <tr><td style="padding:6px 0;color:#888;">${t.phone}</td><td style="padding:6px 0;color:#fff;">${client_phone || t.notSet}</td></tr>
+         <tr><td colspan="2" style="padding:12px 0;"><hr style="border:none;border-top:1px solid #333;margin:0;"></td></tr>
+         <tr><td style="padding:6px 0;color:#888;">${t.journey}</td><td style="padding:6px 0;color:#fff;">${departure_point} → ${arrival_point}</td></tr>
+         <tr><td style="padding:6px 0;color:#888;">${t.date}</td><td style="padding:6px 0;color:#fff;">${departure_date} à ${departure_time}</td></tr>
+         <tr><td style="padding:6px 0;color:#888;">${t.vehicle}</td><td style="padding:6px 0;color:#fff;">${vehicleLabel}</td></tr>
+         <tr><td style="padding:6px 0;color:#888;">${t.passengers}</td><td style="padding:6px 0;color:#fff;">${passengers || 1}</td></tr>
+         <tr><td style="padding:6px 0;color:#888;">${t.distance}</td><td style="padding:6px 0;color:#fff;">${distance_km} km</td></tr>
+         ${flightRow}
+         ${notesRow}
+         <tr><td colspan="2" style="padding:12px 0;"><hr style="border:none;border-top:1px solid #333;margin:0;"></td></tr>
+         <tr><td style="padding:6px 0;color:#888;font-weight:bold;">${t.adminPaymentLabel}</td><td style="padding:6px 0;color:#C9A96E;font-size:18px;font-weight:bold;">CHF ${total_price}</td></tr>
       </table>
     </div>
 
-    <p style="color:#444;text-align:center;font-size:11px;margin-top:24px;">© ${new Date().getFullYear()} Rosini Transfert — Notification automatique</p>
-  </div>
-</body>
-</html>`;
+    <p style="color:#444;text-align:center;font-size:11px;margin-top:24px;">${t.adminCopyright(new Date().getFullYear())}</p>
+    </div>
+    </body>
+    </html>`;
 
     // Helper to base64 encode strings
     const base64Encode = (str) => {
