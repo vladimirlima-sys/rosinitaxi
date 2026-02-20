@@ -160,6 +160,12 @@ export const translations = {
       comfort: ['Véhicule premium', 'Sièges cuir', 'Wi-Fi gratuit', 'Eau & rafraîchissements', 'Chargeurs USB'],
     },
     perKm: '/km',
+    journeyDetails: 'Detalhes da viagem',
+    journeyDistance: 'Distância',
+    journeyTime: 'Tempo estimado',
+    km: 'km',
+    hours: 'h',
+    minutes: 'min',
   },
   en: {
     badge: 'Available 24/7 — Every Day',
