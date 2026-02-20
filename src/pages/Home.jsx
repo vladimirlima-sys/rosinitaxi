@@ -2,7 +2,7 @@ import React, { useRef, useState } from 'react';
 import { Bookmark, Phone } from 'lucide-react';
 import HeroSection from '@/components/home/HeroSection';
 import ServicesSection from '@/components/home/ServicesSection';
-import SimpleBookingForm from '@/components/home/SimpleBookingForm';
+import BookingForm from '@/components/home/BookingForm';
 import FooterSection from '@/components/home/FooterSection';
 import LanguageSwitcher from '@/components/home/LanguageSwitcher';
 
@@ -23,7 +23,7 @@ export default function Home() {
         <LanguageSwitcher />
         <HeroSection onScrollToBooking={scrollToBooking} />
         <ServicesSection />
-        <SimpleBookingForm />
+        <BookingForm bookingRef={bookingRef} />
         <FooterSection />
 
 
