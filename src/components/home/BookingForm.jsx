@@ -422,7 +422,7 @@ export default function BookingForm({ bookingRef }) {
             {form.vehicle_type && (
               <div className="space-y-2 max-w-xs">
                 <Label className="text-white/60 text-sm">{t.passengersLabel}</Label>
-                <Input type="number" min={1} max={form.vehicle_type === 'economic' ? 3 : 4} value={form.passengers} onChange={e => update('passengers', parseInt(e.target.value) || 1)} className="bg-white/5 border-white/10 text-white focus:border-[#C9A96E] h-12" />
+                <Input type="number" min={1} max={4} value={form.passengers} onChange={e => update('passengers', parseInt(e.target.value) || 1)} className="bg-white/5 border-white/10 text-white focus:border-[#C9A96E] h-12" />
               </div>
             )}
 

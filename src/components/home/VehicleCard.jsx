@@ -10,8 +10,8 @@ export default function VehicleCard({ type, selected, onSelect, distance }) {
   const isEconomic = type === 'economic';
 
   const config = isEconomic ? {
-    name: t.economic,
-    capacity: 3,
+    name: 'STANDARD',
+    capacity: 4,
     pricePerKm: 2.35,
     image: 'https://images.unsplash.com/photo-1549317661-bd32c8ce0afa?w=600&q=80',
     features: t.vehicleFeatures.economic,
