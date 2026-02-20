@@ -196,80 +196,110 @@ export default function RouteMapDisplay({ departure, arrival, route, onClose }) 
   }, [route, mapType]);
 
   return (
-    <div className="fixed inset-0 bg-black/80 backdrop-blur-sm z-50 flex items-center justify-center p-4">
-      <div className="bg-[#1a1a1a] rounded-2xl border border-[#C9A96E]/30 w-full max-w-2xl max-h-[85vh] flex flex-col overflow-hidden">
-        {/* Header */}
-        <div className="p-6 border-b border-[#C9A96E]/30 flex items-center justify-between">
-          <div className="flex items-center gap-3">
-            <Navigation2 className="w-5 h-5 text-[#C9A96E]" />
-            <h3 className="text-white font-medium">Rota Calculada</h3>
-          </div>
-          <div className="flex items-center gap-2">
-            <button
-              onClick={toggleMapType}
-              className="p-2 rounded-lg hover:bg-white/10 text-white/60 hover:text-[#C9A96E] transition-colors"
-              title="Alternar visualização"
-            >
-              {mapType === 'roadmap' ? (
-                <Satellite className="w-4 h-4" />
-              ) : (
-                <Map className="w-4 h-4" />
-              )}
-            </button>
-            <button
-              onClick={onClose}
-              className="text-white/40 hover:text-white text-2xl leading-none w-6 h-6 flex items-center justify-center"
-            >
-              ×
-            </button>
-          </div>
-        </div>
-
-        {/* Map */}
-        <div ref={mapRef} className="flex-1 min-h-[400px] bg-[#0A0A0A]" />
-
-        {/* Footer com info */}
-        <div className="p-6 border-t border-[#C9A96E]/30 bg-gradient-to-r from-[#0A0A0A] to-[#1a1a1a]">
-          <div className="flex items-start gap-4 mb-4">
-            <div>
-              <p className="text-white/40 text-xs uppercase tracking-wide flex items-center gap-1">
-                <span className="inline-block w-3 h-3 rounded-full bg-[#C9A96E]" />
-                Ponto de Partida
-              </p>
-              <p className="text-white text-sm mt-1">{departure}</p>
+    <AnimatePresence>
+      {!isClosing && (
+        <motion.div
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 1 }}
+          exit={{ opacity: 0 }}
+          transition={{ duration: 0.3 }}
+          className="fixed inset-0 bg-black/80 backdrop-blur-sm z-50 flex items-center justify-center p-4"
+        >
+          <motion.div
+            initial={{ scale: 0.95, y: 20 }}
+            animate={{ scale: 1, y: 0 }}
+            exit={{ scale: 0.95, y: 20 }}
+            transition={{ duration: 0.3, ease: 'easeOut' }}
+            className="bg-[#1a1a1a] rounded-2xl border border-[#C9A96E]/30 w-full max-w-2xl max-h-[85vh] flex flex-col overflow-hidden"
+          >
+            {/* Header */}
+            <div className="p-6 border-b border-[#C9A96E]/30 flex items-center justify-between">
+              <div className="flex items-center gap-3">
+                <Navigation2 className="w-5 h-5 text-[#C9A96E]" />
+                <h3 className="text-white font-medium">Rota Calculada</h3>
+              </div>
+              <div className="flex items-center gap-2">
+                <motion.button
+                  whileHover={{ backgroundColor: 'rgba(255,255,255,0.08)' }}
+                  whileTap={{ scale: 0.95 }}
+                  onClick={toggleMapType}
+                  className="p-2 rounded-lg text-white/60 transition-colors"
+                  title="Alternar visualização"
+                >
+                  {mapType === 'roadmap' ? (
+                    <Satellite className="w-4 h-4" />
+                  ) : (
+                    <Map className="w-4 h-4" />
+                  )}
+                </motion.button>
+                <motion.button
+                  whileHover={{ backgroundColor: 'rgba(255,255,255,0.08)' }}
+                  whileTap={{ scale: 0.95 }}
+                  onClick={handleCloseClick}
+                  className="p-2 rounded-lg text-white/60 w-6 h-6 flex items-center justify-center"
+                >
+                  <X className="w-4 h-4" />
+                </motion.button>
+              </div>
             </div>
-            <div className="flex-1 text-right">
-              <p className="text-white/40 text-xs uppercase tracking-wide flex items-center justify-end gap-1">
-                <span className="inline-block w-3 h-3 rounded-full bg-[#4CAF50]" />
-                Ponto de Chegada
-              </p>
-              <p className="text-white text-sm mt-1">{arrival}</p>
+
+            {/* Map */}
+            <div ref={mapRef} className="flex-1 min-h-[400px] bg-[#0A0A0A]" />
+
+            {/* Footer com info */}
+            <div className="p-6 border-t border-[#C9A96E]/30 bg-gradient-to-r from-[#0A0A0A] to-[#1a1a1a]">
+              <div className="flex items-start gap-4 mb-4">
+                <div>
+                  <p className="text-white/40 text-xs uppercase tracking-wide flex items-center gap-1">
+                    <span className="inline-block w-3 h-3 rounded-full bg-[#C9A96E]" />
+                    Ponto de Partida
+                  </p>
+                  <p className="text-white text-sm mt-1">{departure}</p>
+                </div>
+                <div className="flex-1 text-right">
+                  <p className="text-white/40 text-xs uppercase tracking-wide flex items-center justify-end gap-1">
+                    <span className="inline-block w-3 h-3 rounded-full bg-[#4CAF50]" />
+                    Ponto de Chegada
+                  </p>
+                  <p className="text-white text-sm mt-1">{arrival}</p>
+                </div>
+              </div>
+              <div className="flex gap-3">
+                <motion.button
+                  whileHover={{ y: -1 }}
+                  whileTap={{ scale: 0.98 }}
+                  onClick={handleShare}
+                  className="flex-1 flex items-center justify-center gap-2 px-4 py-2.5 rounded-xl bg-white/5 border border-white/10 text-white text-sm transition-colors"
+                >
+                  <Share2 className="w-4 h-4" />
+                  Compartilhar
+                </motion.button>
+                <motion.button
+                  whileHover={{ y: -1 }}
+                  whileTap={{ scale: 0.98 }}
+                  onClick={handleDownload}
+                  className="flex-1 flex items-center justify-center gap-2 px-4 py-2.5 rounded-xl bg-white/5 border border-white/10 text-white text-sm transition-colors"
+                >
+                  <Download className="w-4 h-4" />
+                  Salvar
+                </motion.button>
+                <motion.div
+                  whileHover={{ y: -1 }}
+                  whileTap={{ scale: 0.98 }}
+                  asChild
+                >
+                  <Button
+                    onClick={handleCloseClick}
+                    className="flex-1 bg-[#C9A96E] hover:bg-[#B8955D] text-[#0A0A0A] font-semibold h-11 rounded-xl"
+                  >
+                    Fechar
+                  </Button>
+                </motion.div>
+              </div>
             </div>
-          </div>
-          <div className="flex gap-3">
-            <button
-              onClick={handleShare}
-              className="flex-1 flex items-center justify-center gap-2 px-4 py-2.5 rounded-xl bg-white/5 border border-white/10 hover:bg-white/10 text-white text-sm transition-colors"
-            >
-              <Share2 className="w-4 h-4" />
-              Compartilhar
-            </button>
-            <button
-              onClick={handleDownload}
-              className="flex-1 flex items-center justify-center gap-2 px-4 py-2.5 rounded-xl bg-white/5 border border-white/10 hover:bg-white/10 text-white text-sm transition-colors"
-            >
-              <Download className="w-4 h-4" />
-              Salvar
-            </button>
-            <Button
-              onClick={onClose}
-              className="flex-1 bg-[#C9A96E] hover:bg-[#B8955D] text-[#0A0A0A] font-semibold h-11 rounded-xl"
-            >
-              Fechar
-            </Button>
-          </div>
-        </div>
-      </div>
-    </div>
+          </motion.div>
+        </motion.div>
+      )}
+    </AnimatePresence>
   );
 }
