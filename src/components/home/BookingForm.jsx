@@ -149,6 +149,55 @@ export default function BookingForm({ bookingRef }) {
     setArrivalSuggestions([]);
   };
 
+  // Handle waypoint changes
+  const handleWaypointChange = async (index, value) => {
+    const newWaypoints = [...waypoints];
+    newWaypoints[index] = { address: value };
+    setWaypoints(newWaypoints);
+
+    if (value.length < 3) {
+      setWaypointSuggestions(prev => ({ ...prev, [index]: [] }));
+      return;
+    }
+
+    try {
+      const response = await fetch(
+        `https://nominatim.openstreetmap.org/search?format=json&q=${encodeURIComponent(value)}&limit=5&countrycodes=ch,it,fr,de,at`
+      );
+      const data = await response.json();
+      setWaypointSuggestions(prev => ({
+        ...prev,
+        [index]: data.map(item => ({
+          id: item.osm_id,
+          display_name: item.display_name,
+          address: item.address || {}
+        }))
+      }));
+    } catch (err) {
+      console.error('Search error:', err);
+    }
+  };
+
+  const handleWaypointSelect = (index, suggestion) => {
+    const newWaypoints = [...waypoints];
+    newWaypoints[index] = { address: suggestion.display_name };
+    setWaypoints(newWaypoints);
+    setWaypointSuggestions(prev => ({ ...prev, [index]: [] }));
+  };
+
+  const removeWaypoint = (index) => {
+    setWaypoints(waypoints.filter((_, i) => i !== index));
+    setWaypointSuggestions(prev => {
+      const newSuggestions = { ...prev };
+      delete newSuggestions[index];
+      return newSuggestions;
+    });
+  };
+
+  const addWaypoint = () => {
+    setWaypoints([...waypoints, { address: '' }]);
+  };
+
   // Handle redirect back from Stripe
   React.useEffect(() => {
         const params = new URLSearchParams(window.location.search);
