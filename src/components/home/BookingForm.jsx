@@ -37,12 +37,18 @@ export default function BookingForm({ bookingRef }) {
 
   // Handle redirect back from Stripe
   React.useEffect(() => {
-    const params = new URLSearchParams(window.location.search);
-    if (params.get('booking') === 'success') {
-      setStep(5);
-      window.history.replaceState({}, '', window.location.pathname);
-    }
-  }, []);
+        const params = new URLSearchParams(window.location.search);
+        if (params.get('booking') === 'success') {
+          setStep(5);
+          window.history.replaceState({}, '', window.location.pathname);
+          // Send confirmation emails
+          const savedBooking = JSON.parse(sessionStorage.getItem('pendingBooking') || '{}');
+          if (savedBooking.client_email) {
+            base44.functions.invoke('sendBookingConfirmation', savedBooking).catch(() => {});
+            sessionStorage.removeItem('pendingBooking');
+          }
+        }
+      }, []);
 
   const estimateDistance = async () => {
     if (!form.departure_point || !form.arrival_point) return;
