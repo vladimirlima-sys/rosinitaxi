@@ -39,10 +39,7 @@ export default function PricingBreakdown({
   );
 
   // Calculate price breakdown
-  let pricePerKm = vehicleType === 'economic' 
-    ? priceSettings.standard_price_per_km 
-    : priceSettings.standard_price_per_km + 0.60;
-
+  const pricePerKm = priceSettings.standard_price_per_km;
   const distancePrice = (distance_km * pricePerKm).toFixed(2);
   const baseFareAmount = priceSettings.base_fare || 0;
   

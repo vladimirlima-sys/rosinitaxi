@@ -45,6 +45,11 @@ export default function BookingForm({ bookingRef }) {
 
   const update = (field, value) => setForm(prev => ({ ...prev, [field]: value }));
 
+  // Set vehicle type to economic on mount
+  useEffect(() => {
+    update('vehicle_type', 'economic');
+  }, []);
+
   // Auto-locate and fetch price settings
   useEffect(() => {
     if (navigator.geolocation) {
@@ -178,15 +183,7 @@ export default function BookingForm({ bookingRef }) {
   const calculateTotalPrice = () => {
     if (!priceSettings || estimatedDistance === 0) return null;
 
-    let pricePerKm = form.vehicle_type === 'economic' 
-      ? priceSettings.standard_price_per_km 
-      : form.vehicle_type === 'comfort' 
-        ? priceSettings.standard_price_per_km + 0.60 
-        : 0;
-
-    if (pricePerKm === 0) return null;
-
-    let total = estimatedDistance * pricePerKm;
+    let total = estimatedDistance * priceSettings.standard_price_per_km;
     total += priceSettings.base_fare || 0;
 
     // Apply night surcharge if conditions met
@@ -222,9 +219,9 @@ export default function BookingForm({ bookingRef }) {
   };
 
   const basePrice = estimatedDistance > 0 && priceSettings 
-    ? (estimatedDistance * (form.vehicle_type === 'economic' ? priceSettings.standard_price_per_km : priceSettings.standard_price_per_km + 0.60)).toFixed(2)
+    ? (estimatedDistance * priceSettings.standard_price_per_km).toFixed(2)
     : null;
-  const totalPrice = dynamicPrice || calculateTotalPrice();
+  const totalPrice = calculateTotalPrice();
 
   const canProceedStep1 = form.departure_point && form.arrival_point && form.departure_date && form.departure_time;
   const canProceedStep2 = form.vehicle_type;
@@ -476,26 +473,15 @@ export default function BookingForm({ bookingRef }) {
         {step === 2 && (
           <div className="space-y-6">
             <h3 className="text-white text-xl font-medium mb-6">{t.step2Title}</h3>
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-              {priceSettings && (
-                <>
-                  <VehicleCard 
-                    type="economic" 
-                    selected={form.vehicle_type === 'economic'} 
-                    onSelect={v => update('vehicle_type', v)} 
-                    distance={estimatedDistance}
-                    pricePerKm={priceSettings.standard_price_per_km}
-                  />
-                  <VehicleCard 
-                    type="comfort" 
-                    selected={form.vehicle_type === 'comfort'} 
-                    onSelect={v => update('vehicle_type', v)} 
-                    distance={estimatedDistance}
-                    pricePerKm={priceSettings.standard_price_per_km + 0.60}
-                  />
-                </>
-              )}
-            </div>
+            {priceSettings && (
+              <VehicleCard 
+                type="economic" 
+                selected={true} 
+                onSelect={v => update('vehicle_type', v)} 
+                distance={estimatedDistance}
+                pricePerKm={priceSettings.standard_price_per_km}
+              />
+            )}
 
             {form.vehicle_type && (
               <div className="space-y-2 max-w-xs">
