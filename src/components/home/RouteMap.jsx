@@ -1,142 +1,189 @@
 import React, { useEffect, useState } from 'react';
-import { MapContainer, TileLayer, Marker, Popup } from 'react-leaflet';
-import { Clock, Zap, ExternalLink } from 'lucide-react';
-import L from 'leaflet';
-import 'leaflet/dist/leaflet.css';
+import { GoogleMap, LoadScript, Marker, DirectionsRenderer } from '@react-google-maps/api';
+import { Clock, Navigation, ExternalLink, Loader2 } from 'lucide-react';
 
-// Custom icons
-const departureIcon = new L.Icon({
-  iconUrl: 'https://raw.githubusercontent.com/pointhi/leaflet-color-markers/master/img/marker-icon-2x-gold.png',
-  shadowUrl: 'https://cdnjs.cloudflare.com/ajax/libs/leaflet/0.7.7/images/marker-shadow.png',
-  iconSize: [25, 41],
-  iconAnchor: [12, 41],
-  popupAnchor: [1, -34],
-  shadowSize: [41, 41]
-});
+const mapContainerStyle = {
+  height: '100%',
+  width: '100%'
+};
 
-const arrivalIcon = new L.Icon({
-  iconUrl: 'https://raw.githubusercontent.com/pointhi/leaflet-color-markers/master/img/marker-icon-2x-green.png',
-  shadowUrl: 'https://cdnjs.cloudflare.com/ajax/libs/leaflet/0.7.7/images/marker-shadow.png',
-  iconSize: [25, 41],
-  iconAnchor: [12, 41],
-  popupAnchor: [1, -34],
-  shadowSize: [41, 41]
-});
+const defaultCenter = {
+  lat: 46.2044,
+  lng: 6.1432 // Suíça
+};
 
-export default function RouteMap({ departure, arrival, distance_km }) {
-  const [travelTime, setTravelTime] = useState(null);
-  const [departureCoords, setDepartureCoords] = useState(null);
-  const [arrivalCoords, setArrivalCoords] = useState(null);
+export default function RouteMap({ departure, arrival, distance_km, onRouteCalculated }) {
+  const [directionsResult, setDirectionsResult] = useState(null);
+  const [isLoading, setIsLoading] = useState(false);
+  const [mapError, setMapError] = useState(null);
+  const [routeDetails, setRouteDetails] = useState(null);
 
   useEffect(() => {
-    if (!distance_km || distance_km === 0) return;
+    if (!departure || !arrival) return;
 
-    const avgSpeed = 85; // km/h
-    const hours = distance_km / avgSpeed;
-    const minutes = Math.round((hours % 1) * 60);
-    const finalHours = Math.floor(hours);
-    
-    setTravelTime({
-      hours: finalHours,
-      minutes: minutes,
-      total: distance_km / avgSpeed
-    });
-  }, [distance_km]);
-
-  // Geocode departure and arrival
-  useEffect(() => {
-    const geocodeLocation = async (location, setter) => {
+    const calculateRoute = async () => {
+      setIsLoading(true);
+      setMapError(null);
+      
       try {
-        const response = await fetch(
-          `https://nominatim.openstreetmap.org/search?format=json&q=${encodeURIComponent(location)}&limit=1&countrycodes=ch,it,fr,de,at`
-        );
-        const data = await response.json();
-        if (data.length > 0) {
-          setter([parseFloat(data[0].lat), parseFloat(data[0].lon)]);
+        const apiKey = process.env.REACT_APP_GOOGLE_MAPS_API_KEY;
+        if (!apiKey) {
+          setMapError('Chave do Google Maps não configurada');
+          return;
+        }
+
+        const directionsService = new window.google.maps.DirectionsService();
+        
+        const result = await directionsService.route({
+          origin: departure,
+          destination: arrival,
+          travelMode: window.google.maps.TravelMode.DRIVING,
+        });
+
+        if (result.routes.length > 0) {
+          setDirectionsResult(result);
+          
+          const route = result.routes[0];
+          const leg = route.legs[0];
+          
+          setRouteDetails({
+            distance: leg.distance.text,
+            distance_km: Math.round(leg.distance.value / 1000),
+            duration: leg.duration.text,
+            duration_mins: Math.round(leg.duration.value / 60)
+          });
+
+          if (onRouteCalculated) {
+            onRouteCalculated({
+              distance_km: Math.round(leg.distance.value / 1000),
+              duration_mins: Math.round(leg.duration.value / 60)
+            });
+          }
         }
       } catch (err) {
-        console.error('Geocoding error:', err);
+        console.error('Erro ao calcular rota:', err);
+        setMapError('Erro ao calcular rota');
+      } finally {
+        setIsLoading(false);
       }
     };
 
-    if (departure && !departureCoords) geocodeLocation(departure, setDepartureCoords);
-    if (arrival && !arrivalCoords) geocodeLocation(arrival, setArrivalCoords);
-  }, [departure, arrival, departureCoords, arrivalCoords]);
+    const timer = setTimeout(calculateRoute, 500);
+    return () => clearTimeout(timer);
+  }, [departure, arrival, onRouteCalculated]);
 
-  if (!departure || !arrival) return null;
-
-  // Default map center if coords not available
-  const center = departureCoords || [46.8, 8.2]; // Switzerland center
-  const osmUrl = `https://www.openstreetmap.org/directions?engine=fossgis_osrm_car&route=${encodeURIComponent(departure)};${encodeURIComponent(arrival)}`;
+  const googleMapsLink = `https://www.google.com/maps/dir/${encodeURIComponent(departure)}/${encodeURIComponent(arrival)}`;
+  
+  const mapCenter = directionsResult?.routes[0]?.bounds?.getCenter() || defaultCenter;
 
   return (
-    <div className="rounded-2xl overflow-hidden border border-white/10 bg-white/[0.03]">
-      {/* Interactive Map */}
-      <div className="relative h-80 bg-[#0d1117] overflow-hidden">
-        <MapContainer center={center} zoom={9} style={{ height: '100%', width: '100%' }} scrollWheelZoom={false}>
-          <TileLayer
-            url="https://{s}.basemaps.cartocdn.com/dark_all/{z}/{x}/{y}{r}.png"
-            attribution='© OpenStreetMap contributors'
-          />
-          {departureCoords && (
-            <Marker position={departureCoords} icon={departureIcon}>
-              <Popup>
-                <div className="text-sm font-medium">{departure}</div>
-              </Popup>
-            </Marker>
+    <LoadScript googleMapsApiKey={process.env.REACT_APP_GOOGLE_MAPS_API_KEY || ''}>
+      <div className="rounded-2xl overflow-hidden border border-white/10 bg-white/[0.03]">
+        {/* Mapa */}
+        <div className="relative h-80 bg-[#0d1117] overflow-hidden">
+          {isLoading && (
+            <div className="absolute inset-0 flex items-center justify-center bg-[#0d1117]/80 z-10">
+              <div className="flex items-center gap-2 text-[#C9A96E]">
+                <Loader2 className="w-5 h-5 animate-spin" />
+                <span className="text-sm">Calculando rota...</span>
+              </div>
+            </div>
           )}
-          {arrivalCoords && (
-            <Marker position={arrivalCoords} icon={arrivalIcon}>
-              <Popup>
-                <div className="text-sm font-medium">{arrival}</div>
-              </Popup>
-            </Marker>
+
+          {mapError && (
+            <div className="absolute inset-0 flex items-center justify-center bg-[#0d1117]/80 z-10">
+              <p className="text-red-400 text-sm">{mapError}</p>
+            </div>
           )}
-        </MapContainer>
 
-        {/* Open in maps link */}
-        <a
-          href={osmUrl}
-          target="_blank"
-          rel="noopener noreferrer"
-          className="absolute top-3 right-3 flex items-center gap-1 px-3 py-2 bg-[#C9A96E]/20 hover:bg-[#C9A96E]/30 border border-[#C9A96E]/50 rounded-lg text-[#C9A96E] text-xs transition-all"
-        >
-          <ExternalLink className="w-3 h-3" /> Détails
-        </a>
-      </div>
+          {departure && arrival && (
+            <GoogleMap
+              mapContainerStyle={mapContainerStyle}
+              center={mapCenter}
+              zoom={11}
+              options={{
+                fullscreenControl: false,
+                streetViewControl: false,
+                mapTypeControl: false,
+                styles: [
+                  {
+                    elementType: 'geometry',
+                    stylers: [{ color: '#1a1a1a' }]
+                  },
+                  {
+                    elementType: 'labels.text.stroke',
+                    stylers: [{ color: '#242f3e' }]
+                  },
+                  {
+                    elementType: 'labels.text.fill',
+                    stylers: [{ color: '#746855' }]
+                  },
+                  {
+                    featureType: 'road',
+                    elementType: 'geometry',
+                    stylers: [{ color: '#38414e' }]
+                  },
+                  {
+                    featureType: 'road',
+                    elementType: 'geometry.stroke',
+                    stylers: [{ color: '#212a37' }]
+                  }
+                ]
+              }}
+            >
+              {directionsResult && (
+                <DirectionsRenderer
+                  directions={directionsResult}
+                  options={{
+                    polylineOptions: {
+                      geodesic: true,
+                      strokeColor: '#C9A96E',
+                      strokeOpacity: 0.8,
+                      strokeWeight: 3
+                    }
+                  }}
+                />
+              )}
+            </GoogleMap>
+          )}
 
-      {/* Info bar */}
-      {(distance_km || travelTime) && (
-        <div className="flex items-center justify-between px-6 py-4 bg-white/[0.02] border-t border-white/10">
-          <div className="flex gap-6">
-            {distance_km && (
+          {/* Botão Detalhes */}
+          <a
+            href={googleMapsLink}
+            target="_blank"
+            rel="noopener noreferrer"
+            className="absolute top-3 right-3 flex items-center gap-1 px-3 py-2 bg-[#C9A96E]/20 hover:bg-[#C9A96E]/30 border border-[#C9A96E]/50 rounded-lg text-[#C9A96E] text-xs transition-all"
+          >
+            <ExternalLink className="w-3 h-3" /> Detalhes
+          </a>
+        </div>
+
+        {/* Barra de informações */}
+        {routeDetails && (
+          <div className="flex items-center justify-between px-6 py-4 bg-white/[0.02] border-t border-white/10">
+            <div className="flex gap-6">
               <div className="flex items-center gap-2">
                 <div className="w-8 h-8 rounded-full bg-[#C9A96E]/10 flex items-center justify-center">
-                  <Zap className="w-4 h-4 text-[#C9A96E]" />
+                  <Navigation className="w-4 h-4 text-[#C9A96E]" />
                 </div>
                 <div>
-                  <p className="text-white/40 text-xs">Distance</p>
-                  <p className="text-white font-medium">{distance_km} km</p>
+                  <p className="text-white/40 text-xs">Distância</p>
+                  <p className="text-white font-medium">{routeDetails.distance}</p>
                 </div>
               </div>
-            )}
-            {travelTime && (
               <div className="flex items-center gap-2">
                 <div className="w-8 h-8 rounded-full bg-[#C9A96E]/10 flex items-center justify-center">
                   <Clock className="w-4 h-4 text-[#C9A96E]" />
                 </div>
                 <div>
-                  <p className="text-white/40 text-xs">Durée estimée</p>
-                  <p className="text-white font-medium">
-                    {travelTime.hours > 0 && `${travelTime.hours}h `}
-                    {travelTime.minutes}min
-                  </p>
+                  <p className="text-white/40 text-xs">Tempo estimado</p>
+                  <p className="text-white font-medium">{routeDetails.duration}</p>
                 </div>
               </div>
-            )}
+            </div>
           </div>
-        </div>
-      )}
-    </div>
+        )}
+      </div>
+    </LoadScript>
   );
 }
