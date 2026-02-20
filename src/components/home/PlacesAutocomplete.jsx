@@ -32,22 +32,19 @@ export default function PlacesAutocomplete({
 
   // Initialize Google Places Services
   useEffect(() => {
-   if (typeof google !== 'undefined' && google.maps?.places) {
-     try {
-       // Using AutocompleteService for now (legacy but still supported)
-       if (google.maps.places.AutocompleteService) {
-         autocompleteServiceRef.current = new google.maps.places.AutocompleteService();
-       }
-       if (google.maps.places.PlacesService) {
-         placesServiceRef.current = new google.maps.places.PlacesService(document.createElement('div'));
-       }
-     } catch (err) {
-       console.error('Google Places initialization error:', err);
-       setError('Serviço de sugestão indisponível');
-     }
-   } else {
-     console.warn('Google Maps API not loaded');
-   }
+    const checkGoogleMaps = setInterval(() => {
+      if (typeof google !== 'undefined' && google.maps?.places?.AutocompleteService) {
+        clearInterval(checkGoogleMaps);
+        try {
+          autocompleteServiceRef.current = new google.maps.places.AutocompleteService();
+          console.log('AutocompleteService initialized');
+        } catch (err) {
+          console.error('Google Places initialization error:', err);
+        }
+      }
+    }, 100);
+
+    return () => clearInterval(checkGoogleMaps);
   }, []);
 
   // Debounced fetch suggestions
