@@ -110,10 +110,7 @@ export default function BookingForm({ bookingRef }) {
     setDepartureSuggestions([]);
   };
 
-  const selectArrivalSuggestion = (suggestion) => {
-    update('arrival_point', suggestion.display_name);
-    setArrivalSuggestions([]);
-  };
+
 
   // Handle redirect back from Stripe
   React.useEffect(() => {
