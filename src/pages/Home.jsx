@@ -5,7 +5,7 @@ import ServicesSection from '@/components/home/ServicesSection';
 import BookingForm from '@/components/home/BookingForm';
 import FooterSection from '@/components/home/FooterSection';
 import LanguageSwitcher from '@/components/home/LanguageSwitcher';
-import ChatSupport from '@/components/home/ChatSupport';
+
 import BookingsModal from '@/components/bookings/BookingsModal';
 import { LanguageProvider } from '@/components/LanguageContext';
 
@@ -25,7 +25,7 @@ export default function Home() {
         <ServicesSection />
         <BookingForm bookingRef={bookingRef} />
         <FooterSection />
-        <ChatSupport />
+
 
         {/* Floating buttons - Bookings and Call */}
                 <div className="fixed top-6 left-6 z-50 flex items-center gap-4">
