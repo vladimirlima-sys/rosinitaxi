@@ -37,13 +37,10 @@ export default function BookingForm({ bookingRef }) {
   const [isEstimating, setIsEstimating] = useState(false);
   const [dynamicPrice, setDynamicPrice] = useState(null);
   const [departureSuggestions, setDepartureSuggestions] = useState([]);
-  const [arrivalSuggestions, setArrivalSuggestions] = useState([]);
-  const [isLoadingDeparture, setIsLoadingDeparture] = useState(false);
-  const [isLoadingArrival, setIsLoadingArrival] = useState(false);
+    const [isLoadingDeparture, setIsLoadingDeparture] = useState(false);
   const [isLocating, setIsLocating] = useState(false);
   const [estimatedTime, setEstimatedTime] = useState(0);
   const departureSuggestionRef = useRef(null);
-  const arrivalSuggestionRef = useRef(null);
 
   const update = (field, value) => setForm(prev => ({ ...prev, [field]: value }));
 
@@ -105,37 +102,7 @@ export default function BookingForm({ bookingRef }) {
     }
   };
 
-  // Handle arrival suggestions
-  const handleArrivalChange = async (value) => {
-    update('arrival_point', value);
 
-    if (value.length < 3) {
-      setArrivalSuggestions([]);
-      return;
-    }
-
-    setIsLoadingArrival(true);
-    try {
-      const response = await fetch(
-        `https://nominatim.openstreetmap.org/search?format=json&q=${encodeURIComponent(value)}&limit=5&countrycodes=ch,it,fr,de,at`
-      );
-      const data = await response.json();
-      setArrivalSuggestions(data.map(item => ({
-        id: item.osm_id,
-        display_name: item.display_name,
-        address: item.address || {}
-      })));
-    } catch (err) {
-      console.error('Search error:', err);
-    } finally {
-      setIsLoadingArrival(false);
-    }
-  };
-
-  const selectArrivalSuggestion = (suggestion) => {
-    update('arrival_point', suggestion.display_name);
-    setArrivalSuggestions([]);
-  };
 
   const selectDepartureSuggestion = (suggestion) => {
     update('departure_point', suggestion.display_name);
@@ -351,42 +318,14 @@ export default function BookingForm({ bookingRef }) {
                   <div className="relative group">
                     <div className="absolute left-4 top-1/2 -translate-y-1/2 w-2.5 h-2.5 rounded-full bg-[#C9A96E] z-10" />
                     <Input 
-                      placeholder={t.arrivalPlaceholder} 
-                      value={form.arrival_point} 
-                      onChange={e => handleArrivalChange(e.target.value)} 
-                      className="bg-white/5 border border-white/10 text-white placeholder:text-white/30 focus:border-[#C9A96E] focus:bg-white/[0.08] h-12 pl-12 pr-4 transition-all rounded-xl" 
-                      autoComplete="off"
-                    />
-                    <div className="absolute right-3 top-1/2 -translate-y-1/2">
-                      {isLoadingArrival && <Loader className="w-4 h-4 text-[#C9A96E] animate-spin" />}
-                    </div>
+                        placeholder={t.arrivalPlaceholder} 
+                        value={form.arrival_point} 
+                        onChange={e => update('arrival_point', e.target.value)} 
+                        className="bg-white/5 border border-white/10 text-white placeholder:text-white/30 focus:border-[#C9A96E] focus:bg-white/[0.08] h-12 pl-12 pr-4 transition-all rounded-xl" 
+                        autoComplete="off"
+                      />
 
-                    {/* Arrival suggestions dropdown */}
-                    {arrivalSuggestions.length > 0 && (
-                      <div ref={arrivalSuggestionRef} className="absolute top-full left-0 right-0 mt-2 bg-[#1a1a1a] border border-[#C9A96E]/20 rounded-xl overflow-hidden z-50 shadow-2xl backdrop-blur-sm">
-                        {arrivalSuggestions.map((suggestion) => {
-                          const street = suggestion.address.road || '';
-                          const houseNumber = suggestion.address.house_number || '';
-                          const city = suggestion.address.city || suggestion.address.town || '';
-                          const detailedAddress = [houseNumber, street].filter(Boolean).join(', ');
-                          return (
-                            <button
-                              key={suggestion.id}
-                              onClick={() => selectArrivalSuggestion(suggestion)}
-                              className="w-full text-left px-4 py-3 hover:bg-[#C9A96E]/10 transition-colors border-b border-white/5 last:border-b-0"
-                              >
-                              <div className="flex items-start gap-3">
-                                <MapPin className="w-4 h-4 text-[#C9A96E] mt-0.5 flex-shrink-0" />
-                                <div>
-                                  {detailedAddress && <div className="text-white font-medium text-sm">{detailedAddress}</div>}
-                                  <div className="text-white/50 text-xs">{city}</div>
-                                </div>
-                              </div>
-                            </button>
-                          );
-                        })}
-                      </div>
-                    )}
+
                   </div>
                 </div>
               </div>
