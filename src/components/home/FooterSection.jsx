@@ -24,10 +24,10 @@ export default function FooterSection() {
                 <Mail className="w-4 h-4" />
                 taxirosini@gmail.com
               </a>
-              <div className="flex items-center gap-3 text-white/40 text-sm">
+              <a href="tel:+41796505347" className="flex items-center gap-3 text-white/40 hover:text-[#C9A96E] transition-colors text-sm">
                 <Phone className="w-4 h-4" />
-                {t.contactByEmail}
-              </div>
+                +41 79 650 53 47
+              </a>
             </div>
           </div>
 
