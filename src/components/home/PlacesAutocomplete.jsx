@@ -18,6 +18,7 @@ export default function PlacesAutocomplete({
   onLocate,
   t,
   sessionToken,
+  onTokenRefresh,
 }) {
   const inputRef = useRef(null);
   const debounceTimerRef = useRef(null);
@@ -134,6 +135,11 @@ export default function PlacesAutocomplete({
     setSuggestions([]);
     setShowSuggestions(false);
     setSelectedIndex(-1);
+
+    // Refresh token after selection for next autocomplete session
+    if (onTokenRefresh) {
+      onTokenRefresh();
+    }
   };
 
   const handleKeyDown = (e) => {
