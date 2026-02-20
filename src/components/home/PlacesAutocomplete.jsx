@@ -54,7 +54,7 @@ export default function PlacesAutocomplete({
     }
 
     if (!autocompleteServiceRef.current) {
-      setError('Serviço de autocompletar não disponível');
+      setError(t?.addressSuggestions || 'Service unavailable');
       return;
     }
 
@@ -66,7 +66,6 @@ export default function PlacesAutocomplete({
         input,
         componentRestrictions: { country: COUNTRIES },
         sessionToken,
-        fields: ['description', 'place_id', 'structured_formatting'],
       });
 
       const predictions = result.predictions || [];
@@ -75,12 +74,12 @@ export default function PlacesAutocomplete({
       setSelectedIndex(-1);
     } catch (err) {
       console.error('Autocomplete fetch error:', err);
-      setError('Erro ao buscar sugestões de endereço');
+      setError(t?.estimateDistanceError || 'Error fetching suggestions');
       setSuggestions([]);
     } finally {
       setIsLoading(false);
     }
-  }, [sessionToken]);
+  }, [sessionToken, t]);
 
   const handleInputChange = (e) => {
     const val = e.target.value;
@@ -220,7 +219,7 @@ export default function PlacesAutocomplete({
               type="button"
               onClick={handleClear}
               className="p-1.5 hover:bg-white/10 rounded-lg transition-all"
-              title="Limpar"
+              title={t?.close || 'Clear'}
             >
               <X className="w-4 h-4 text-white/40 hover:text-white/60" />
             </button>
@@ -231,7 +230,7 @@ export default function PlacesAutocomplete({
               onClick={onLocate}
               disabled={isLocating}
               className="p-1.5 hover:bg-white/10 rounded-lg transition-all disabled:opacity-50"
-              title="Usar minha localização"
+              title={t?.availableNow || 'Use my location'}
             >
               {isLocating ? (
                 <Loader className="w-4 h-4 text-[#C9A96E] animate-spin" />
@@ -285,7 +284,7 @@ export default function PlacesAutocomplete({
       {showSuggestions && isLoading && (
         <div className="absolute top-full mt-2 w-full bg-[#1a1a1a] border border-[#C9A96E]/30 rounded-xl shadow-2xl z-50 p-4 flex items-center justify-center">
           <Loader className="w-4 h-4 text-[#C9A96E] animate-spin mr-2" />
-          <span className="text-white/60 text-sm">Buscando endereços...</span>
+          <span className="text-white/60 text-sm">{t?.addressSuggestions || 'Searching...'}</span>
         </div>
       )}
     </div>
