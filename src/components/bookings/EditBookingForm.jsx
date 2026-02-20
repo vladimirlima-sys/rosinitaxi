@@ -5,9 +5,15 @@ import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { Textarea } from '@/components/ui/textarea';
 import { toast } from 'sonner';
+import ReviewForm from '@/components/reviews/ReviewForm';
+import ReviewCard from '@/components/reviews/ReviewCard';
+import { base44 } from '@/api/base44Client';
 
 export default function EditBookingForm({ booking, onSave }) {
   const [isSubmitting, setIsSubmitting] = useState(false);
+  const [showReviewForm, setShowReviewForm] = useState(false);
+  const [bookingReview, setBookingReview] = useState(null);
+  const [isLoadingReview, setIsLoadingReview] = useState(false);
   const [form, setForm] = useState({
     departure_date: booking.departure_date,
     departure_time: booking.departure_time,
