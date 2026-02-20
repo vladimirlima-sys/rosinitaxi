@@ -299,36 +299,6 @@ export default function BookingForm({ bookingRef }) {
                     className="bg-white/5 border-white/10 text-white placeholder:text-white/40 focus:border-[#C9A96E] h-12" 
                     autoComplete="off"
                   />
-                  {isLoadingArrival && (
-                    <Loader className="absolute right-3 top-1/2 transform -translate-y-1/2 w-4 h-4 text-[#C9A96E] animate-spin" />
-                  )}
-
-                  {/* Suggestions dropdown */}
-                  {arrivalSuggestions.length > 0 && (
-                    <div ref={suggestionRef} className="absolute top-full left-0 right-0 mt-1 bg-[#1a1a1a] border border-[#C9A96E]/20 rounded-lg overflow-hidden z-50 shadow-lg">
-                      {arrivalSuggestions.map((suggestion) => {
-                        const street = suggestion.address.road || '';
-                        const houseNumber = suggestion.address.house_number || '';
-                        const city = suggestion.address.city || suggestion.address.town || '';
-                        const detailedAddress = [houseNumber, street].filter(Boolean).join(', ');
-                        return (
-                          <button
-                            key={suggestion.id}
-                            onClick={() => selectArrivalSuggestion(suggestion)}
-                            className="w-full text-left px-4 py-3 !text-[#C9A96E] hover:bg-[#C9A96E]/10 transition-colors text-sm border-b border-white/5 last:border-b-0"
-                            >
-                             <div className="flex items-center gap-2">
-                              <MapPin className="w-3 h-3 text-[#C9A96E] flex-shrink-0" />
-                              <div className="text-[#C9A96E]">
-                                {detailedAddress && <div className="!text-[#C9A96E] font-medium">{detailedAddress}</div>}
-                                <div className="!text-[#C9A96E]/60 text-xs">{city}</div>
-                              </div>
-                            </div>
-                          </button>
-                      );
-                      })}
-                    </div>
-                  )}
                 </div>
               </div>
             </div>
