@@ -212,6 +212,7 @@ export default function EditBookingForm({ booking, onSave }) {
           </Button>
         )}
       </div>
-    )}
+      )}
+    </div>
   );
 }
