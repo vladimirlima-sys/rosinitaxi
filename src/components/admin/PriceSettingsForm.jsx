@@ -9,9 +9,9 @@ import { toast } from 'sonner';
 export default function PriceSettingsForm() {
   const [settings, setSettings] = useState({
     standard_price_per_km: 2.35,
-    base_fare: 0,
+    base_fare: 10,
     airport_fee: 0,
-    night_surcharge_percentage: 0
+    night_surcharge_percentage: 10
   });
   const [isLoading, setIsLoading] = useState(true);
   const [isSaving, setIsSaving] = useState(false);
