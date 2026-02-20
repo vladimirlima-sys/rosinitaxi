@@ -5,7 +5,7 @@ export const translations = {
     stripeLabel: 'Stripe (Cartão de crédito)',
     stripeDesc: 'Seguro',
     twintLabel: 'TWINT',
-    twintDesc: 'Instantâneo',
+    twintDesc: 'Pagar a bordo',
     cashLabel: 'Dinheiro',
     cashDesc: 'A bordo do veículo',
     confirmBooking: 'Confirmar reserva',
