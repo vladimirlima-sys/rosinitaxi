@@ -9,6 +9,37 @@ export default function RouteMapDisplay({ departure, arrival, route, onClose }) 
   const [mapLoaded, setMapLoaded] = useState(false);
   const [mapType, setMapType] = useState('roadmap');
 
+  const toggleMapType = () => {
+    const newType = mapType === 'roadmap' ? 'satellite' : 'roadmap';
+    setMapType(newType);
+    if (mapInstance.current) {
+      mapInstance.current.setMapTypeId(newType);
+    }
+  };
+
+  const handleShare = async () => {
+    const text = `Confira minha rota: ${departure} → ${arrival}`;
+    if (navigator.share) {
+      navigator.share({ title: 'Rota', text });
+    } else {
+      navigator.clipboard.writeText(text);
+      toast.success('Rota copiada!');
+    }
+  };
+
+  const handleDownload = () => {
+    if (mapInstance.current) {
+      const canvas = mapInstance.current.getDiv().querySelector('canvas');
+      if (canvas) {
+        const link = document.createElement('a');
+        link.href = canvas.toDataURL();
+        link.download = `rota-${Date.now()}.png`;
+        link.click();
+        toast.success('Mapa salvo!');
+      }
+    }
+  };
+
   useEffect(() => {
     if (!mapRef.current || !typeof google || !route) return;
 
@@ -17,7 +48,8 @@ export default function RouteMapDisplay({ departure, arrival, route, onClose }) 
       mapInstance.current = new google.maps.Map(mapRef.current, {
         zoom: 11,
         center: { lat: 0, lng: 0 },
-        styles: [
+        mapTypeId: mapType,
+        styles: mapType === 'roadmap' ? [
           { elementType: 'geometry', stylers: [{ color: '#242f3e' }] },
           { elementType: 'labels.text.stroke', stylers: [{ color: '#242f3e' }] },
           { elementType: 'labels.text.fill', stylers: [{ color: '#746855' }] },
@@ -61,8 +93,10 @@ export default function RouteMapDisplay({ departure, arrival, route, onClose }) 
             elementType: 'geometry',
             stylers: [{ color: '#17263c' }]
           }
-        ]
+        ] : []
       });
+    } else {
+      mapInstance.current.setMapTypeId(mapType);
     }
 
     // Adicionar marcadores e polyline
