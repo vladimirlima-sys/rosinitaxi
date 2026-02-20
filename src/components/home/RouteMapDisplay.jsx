@@ -115,12 +115,19 @@ export default function RouteMapDisplay({ departure, arrival, route, onClose }) 
         map: map,
         title: 'Partida',
         icon: {
-          path: google.maps.SymbolPath.CIRCLE,
-          scale: 8,
+          path: 'M0,-28a28,28 0 0,1 0,56a28,28 0 0,1 0,-56',
           fillColor: '#C9A96E',
           fillOpacity: 1,
           strokeColor: '#0A0A0A',
-          strokeWeight: 2
+          strokeWeight: 3,
+          scale: 1.2,
+          anchor: new google.maps.Point(0, 0)
+        },
+        label: {
+          text: 'PARTIDA',
+          color: '#0A0A0A',
+          fontSize: '11px',
+          fontWeight: 'bold'
         }
       });
       map.overlays.push(departureMarker);
@@ -131,12 +138,19 @@ export default function RouteMapDisplay({ departure, arrival, route, onClose }) 
         map: map,
         title: 'Chegada',
         icon: {
-          path: google.maps.SymbolPath.CIRCLE,
-          scale: 8,
+          path: 'M0,-28a28,28 0 0,1 0,56a28,28 0 0,1 0,-56',
           fillColor: '#4CAF50',
           fillOpacity: 1,
           strokeColor: '#0A0A0A',
-          strokeWeight: 2
+          strokeWeight: 3,
+          scale: 1.2,
+          anchor: new google.maps.Point(0, 0)
+        },
+        label: {
+          text: 'CHEGADA',
+          color: '#fff',
+          fontSize: '11px',
+          fontWeight: 'bold'
         }
       });
       map.overlays.push(arrivalMarker);
