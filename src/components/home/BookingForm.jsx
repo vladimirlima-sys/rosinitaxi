@@ -363,15 +363,6 @@ export default function BookingForm({ bookingRef }) {
               </div>
             </div>
 
-            {form.departure_point && form.arrival_point && (
-              <RouteMap 
-                departure={form.departure_point}
-                arrival={form.arrival_point}
-                distance_km={estimatedDistance}
-                onRouteCalculated={handleRouteCalculated}
-              />
-            )}
-
             <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
               <div className="space-y-2">
                 <Label className="text-white/60 text-sm flex items-center gap-2"><Calendar className="w-4 h-4 text-[#C9A96E]" /> {t.dateLabel}</Label>
