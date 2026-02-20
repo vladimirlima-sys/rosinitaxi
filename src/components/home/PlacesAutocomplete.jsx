@@ -313,7 +313,7 @@ export default function PlacesAutocomplete({
       )}
 
       {showSuggestions && suggestions.length > 0 && (
-        <div className="absolute top-full mt-2 w-full bg-[#1a1a1a] border border-[#C9A96E]/30 rounded-xl shadow-2xl z-50 max-h-72 overflow-hidden flex flex-col">
+        <div className="absolute top-full mt-2 w-full bg-[#1a1a1a] border border-[#C9A96E]/30 rounded-xl shadow-2xl z-[9999] max-h-72 overflow-hidden flex flex-col">
           <div
             ref={suggestionsRef}
             className="overflow-y-auto"
@@ -348,7 +348,7 @@ export default function PlacesAutocomplete({
       )}
 
       {showSuggestions && isLoading && (
-        <div className="absolute top-full mt-2 w-full bg-[#1a1a1a] border border-[#C9A96E]/30 rounded-xl shadow-2xl z-50 p-4 flex items-center justify-center">
+        <div className="absolute top-full mt-2 w-full bg-[#1a1a1a] border border-[#C9A96E]/30 rounded-xl shadow-2xl z-[9999] p-4 flex items-center justify-center">
           <Loader className="w-4 h-4 text-[#C9A96E] animate-spin mr-2" />
           <span className="text-white/60 text-sm">{t?.autocompleteLoading || 'Searching...'}</span>
         </div>
