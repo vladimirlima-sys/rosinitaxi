@@ -29,16 +29,8 @@ export default function Home() {
         <FooterSection />
 
 
-        {/* Floating buttons - Bookings and Call */}
-                <div className="fixed top-6 left-6 z-50 flex items-center gap-4">
-                  <button
-                    onClick={() => setShowBookingsModal(true)}
-                    className="w-14 h-14 rounded-full bg-transparent border-2 border-[#C9A96E] hover:bg-[#C9A96E]/20 text-[#C9A96E] shadow-lg flex items-center justify-center transition-all hover:scale-110"
-                    title="Mes réservations"
-                  >
-                    <Bookmark className="w-6 h-6" />
-                  </button>
-
+        {/* Floating buttons - Call only */}
+                <div className="fixed top-6 left-6 z-50">
                   <a
                     href="tel:+41796505347"
                     className="w-14 h-14 rounded-full bg-transparent border-2 border-[#C9A96E] hover:bg-[#C9A96E]/20 text-[#C9A96E] shadow-lg flex items-center justify-center transition-all hover:scale-110"
