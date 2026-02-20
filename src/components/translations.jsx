@@ -103,6 +103,8 @@ export const translations = {
     routeError: 'Erro ao calcular rota. Verifique os endereços.',
     markerDeparture: 'PARTIDA',
     markerArrival: 'CHEGADA',
+    autocompleteLoading: 'Procurando endereços...',
+    autocompleteService: 'Serviço de sugestão não disponível',
   },
   fr: {
     badge: 'Disponible 24h/24 — 7j/7',
