@@ -1,3 +1,4 @@
+
 export const translations = {
   pt: {
     badge: 'Disponível 24h/24 — 7 dias/7',
@@ -125,7 +126,7 @@ export const translations = {
     service3Title: 'Longue Distance',
     service3Desc: 'Trajets inter-villes et internationaux dans le plus grand confort.',
     service4Title: 'Groupes',
-    service4Desc: 'Solutions adaptées pour vos déplacements en groupe avec véhicules spacieux.',
+    service4Desc: 'Soluções adaptées pour vos déplacements en groupe avec véhicules spacieux.',
     bookingLabel: 'Réservation',
     bookingTitle: 'Réservez votre transfert',
     step1Title: 'Détails du trajet',
@@ -186,7 +187,7 @@ export const translations = {
       comfort: ['Véhicule premium', 'Sièges cuir', 'Wi-Fi gratuit', 'Eau & rafraîchissements', 'Chargeurs USB'],
     },
     perKm: '/km',
-    journeyDetails: 'Detalhes da viagem',
+    journeyDetails: 'Détails du voyage', // Fixed: was 'Detalhes da viagem'
     journeyDistance: 'Distância',
     journeyTime: 'Tempo estimado',
     km: 'km',
@@ -292,7 +293,7 @@ export const translations = {
       comfort: ['Premium vehicle', 'Leather seats', 'Free Wi-Fi', 'Water & refreshments', 'USB chargers'],
     },
     perKm: '/km',
-    journeyDetails: 'Voyage details',
+    journeyDetails: 'Journey details', // Fixed: was 'Voyage details'
     journeyDistance: 'Distance',
     journeyTime: 'Estimated time',
     km: 'km',
@@ -398,7 +399,6 @@ export const translations = {
       comfort: ['Premium-Fahrzeug', 'Ledersitze', 'Kostenloses WLAN', 'Wasser & Erfrischungen', 'USB-Ladegeräte'],
     },
     perKm: '/km',
-    journeyDetails: 'Reisedetails',
     journeyDistance: 'Entfernung',
     journeyTime: 'Geschätzte Zeit',
     km: 'km',
@@ -510,6 +510,9 @@ export const translations = {
     km: 'km',
     hours: 'h',
     minutes: 'min',
+    checkoutFromPublishedApp: 'Il pagamento funziona solo dall\'app pubblicata.', // Added
+    estimateDistanceError: 'Impossibile stimare la distanza. Riprova.', // Added
+    paymentError: 'Errore durante l\'elaborazione del pagamento. Riprova.', // Added
     pricePerKm: 'Prezzo per km',
     baseFare: 'Tariffa base',
     nightSurcharge: 'Supplemento notturno',
