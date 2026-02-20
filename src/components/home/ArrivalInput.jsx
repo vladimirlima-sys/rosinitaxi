@@ -19,7 +19,7 @@ export default function ArrivalInput({ value, onChange, placeholder, t }) {
     const val = e.target.value;
     onChange(val);
 
-    if (val.length > 2 && autocompleteService.current) {
+    if (val.length > 1 && autocompleteService.current) {
       try {
         const predictions = await autocompleteService.current.getPlacePredictions({
           input: val,
