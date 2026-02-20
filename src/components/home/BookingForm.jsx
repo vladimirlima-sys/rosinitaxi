@@ -7,6 +7,7 @@ import { Textarea } from '@/components/ui/textarea';
 import VehicleCard from './VehicleCard';
 import PricingBreakdown from './PricingBreakdown';
 import JourneyDetails from './JourneyDetails';
+import RouteMap from './RouteMap';
 import { base44 } from '@/api/base44Client';
 import { toast } from 'sonner';
 import { useLang } from '@/components/LanguageContext';
