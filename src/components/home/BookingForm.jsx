@@ -320,7 +320,7 @@ export default function BookingForm({ bookingRef }) {
                     placeholder={t.arrivalPlaceholder} 
                     value={form.arrival_point} 
                     onChange={e => handleArrivalChange(e.target.value)} 
-                    className="bg-white/5 border-white/10 text-white placeholder:text-white/20 focus:border-[#C9A96E] h-12" 
+                    className="bg-white/5 border-white/10 text-[#C9A96E] placeholder:text-[#C9A96E]/60 focus:border-[#C9A96E] h-12" 
                     autoComplete="off"
                   />
                   {isLoadingArrival && (
