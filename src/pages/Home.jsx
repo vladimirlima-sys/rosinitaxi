@@ -25,6 +25,7 @@ export default function Home() {
         <HeroSection onScrollToBooking={scrollToBooking} />
         <ServicesSection />
         <BookingForm bookingRef={bookingRef} />
+        <ReviewList />
         <FooterSection />
         <ChatSupport />
 
