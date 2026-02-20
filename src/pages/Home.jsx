@@ -7,7 +7,6 @@ import FooterSection from '@/components/home/FooterSection';
 import LanguageSwitcher from '@/components/home/LanguageSwitcher';
 import ChatSupport from '@/components/home/ChatSupport';
 import BookingsModal from '@/components/bookings/BookingsModal';
-import LastMinuteTransferBadge from '@/components/home/LastMinuteTransferBadge';
 import { LanguageProvider } from '@/components/LanguageContext';
 
 export default function Home() {
@@ -21,7 +20,6 @@ export default function Home() {
   return (
     <LanguageProvider>
       <div className="min-h-screen bg-[#0A0A0A]">
-        <LastMinuteTransferBadge />
         <LanguageSwitcher />
         <HeroSection onScrollToBooking={scrollToBooking} />
         <ServicesSection />
