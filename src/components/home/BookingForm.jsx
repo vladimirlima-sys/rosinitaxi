@@ -76,7 +76,8 @@ export default function BookingForm({ bookingRef }) {
   };
 
   const pricePerKm = form.vehicle_type === 'economic' ? 2.35 : form.vehicle_type === 'comfort' ? 2.95 : 0;
-  const totalPrice = estimatedDistance > 0 && pricePerKm > 0 ? (estimatedDistance * pricePerKm).toFixed(2) : null;
+  const basePrice = estimatedDistance > 0 && pricePerKm > 0 ? (estimatedDistance * pricePerKm).toFixed(2) : null;
+  const totalPrice = dynamicPrice || basePrice;
 
   const canProceedStep1 = form.departure_point && form.arrival_point && form.departure_date && form.departure_time;
   const canProceedStep2 = form.vehicle_type;
