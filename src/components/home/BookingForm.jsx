@@ -373,6 +373,13 @@ export default function BookingForm({ bookingRef }) {
               </div>
             </div>
 
+            {estimatedDistance > 0 && (
+              <JourneyDetails 
+                distance_km={estimatedDistance}
+                estimatedTime={estimatedTime}
+              />
+            )}
+
             <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
               <div className="space-y-2">
                 <Label className="text-white/60 text-sm flex items-center gap-2"><Calendar className="w-4 h-4 text-[#C9A96E]" /> {t.dateLabel}</Label>
