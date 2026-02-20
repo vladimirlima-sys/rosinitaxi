@@ -13,6 +13,9 @@ Deno.serve(async (req) => {
     const vehicleLabel = vehicle_type === 'economic' ? 'Standard' : 'Confort';
     const flightInfo = flight_number ? `<tr><td style="padding:6px 0;color:#888;">Vol</td><td style="padding:6px 0;color:#fff;">${flight_number}</td></tr>` : '';
     const notesInfo = notes ? `<tr><td style="padding:6px 0;color:#888;">Notes</td><td style="padding:6px 0;color:#fff;">${notes}</td></tr>` : '';
+    
+    // Determine payment label based on payment method
+    const paymentLabel = payment_method === 'stripe' ? 'Total payé' : 'Total à payer sur place';
 
     const clientEmailBody = `
 <!DOCTYPE html>
