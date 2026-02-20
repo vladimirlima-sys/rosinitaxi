@@ -11,6 +11,7 @@ import DepartureInput from './DepartureInput';
 import ArrivalInput from './ArrivalInput';
 import RouteCalculator from './RouteCalculator';
 import RouteMapDisplay from './RouteMapDisplay';
+import EmbeddedRouteMap from './EmbeddedRouteMap';
 
 import { base44 } from '@/api/base44Client';
 import { toast } from 'sonner';
@@ -338,27 +339,24 @@ export default function BookingForm({ bookingRef }) {
               </div>
             </div>
 
+            {/* Route Map - Embedded */}
+            {currentRoute && (
+              <div>
+                <EmbeddedRouteMap 
+                  departure={form.departure_point}
+                  arrival={form.arrival_point}
+                  route={currentRoute}
+                />
+              </div>
+            )}
+
             {/* Journey Details */}
             {estimatedDistance > 0 && (
               <div className="p-8 rounded-3xl bg-gradient-to-br from-[#C9A96E]/10 to-[#C9A96E]/5 border border-[#C9A96E]/40 backdrop-blur-sm">
-                <div className="flex items-center justify-between mb-4">
-                  <div className="flex-1">
-                    <JourneyDetails 
-                      distance_km={estimatedDistance}
-                      estimatedTime={estimatedTime}
-                    />
-                  </div>
-                  {currentRoute && (
-                    <Button
-                      onClick={() => setShowRouteMap(true)}
-                      variant="outline"
-                      className="ml-4 border-[#C9A96E]/50 text-[#C9A96E] hover:bg-[#C9A96E]/10 gap-2"
-                    >
-                      <Navigation2 className="w-4 h-4" />
-                      Ver Mapa
-                    </Button>
-                  )}
-                </div>
+                <JourneyDetails 
+                  distance_km={estimatedDistance}
+                  estimatedTime={estimatedTime}
+                />
               </div>
             )}
 
@@ -569,14 +567,7 @@ export default function BookingForm({ bookingRef }) {
           </div>
         )}
 
-        {showRouteMap && currentRoute && (
-          <RouteMapDisplay
-            departure={form.departure_point}
-            arrival={form.arrival_point}
-            route={currentRoute}
-            onClose={() => setShowRouteMap(false)}
-          />
-        )}
+
       </div>
     </section>
   );
