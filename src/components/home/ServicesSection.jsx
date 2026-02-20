@@ -1,38 +1,25 @@
 import React from 'react';
 import { Plane, Building2, MapPin, Users } from 'lucide-react';
-
-const services = [
-  {
-    icon: Plane,
-    title: 'Transfert Aéroport',
-    description: 'Service porte-à-porte depuis et vers tous les aéroports suisses et européens.'
-  },
-  {
-    icon: Building2,
-    title: 'Voyages d\'affaires',
-    description: 'Transferts professionnels pour vos rendez-vous et événements corporatifs.'
-  },
-  {
-    icon: MapPin,
-    title: 'Longue Distance',
-    description: 'Trajets inter-villes et internationaux dans le plus grand confort.'
-  },
-  {
-    icon: Users,
-    title: 'Groupes',
-    description: 'Solutions adaptées pour vos déplacements en groupe avec véhicules spacieux.'
-  }
-];
+import { useLang } from '@/components/LanguageContext';
+import { translations } from '@/components/translations';
 
 export default function ServicesSection() {
+  const { lang } = useLang();
+  const t = translations[lang];
+
+  const services = [
+    { icon: Plane, title: t.service1Title, description: t.service1Desc },
+    { icon: Building2, title: t.service2Title, description: t.service2Desc },
+    { icon: MapPin, title: t.service3Title, description: t.service3Desc },
+    { icon: Users, title: t.service4Title, description: t.service4Desc },
+  ];
+
   return (
     <section className="py-24 px-6 bg-[#0F0F0F]">
       <div className="max-w-6xl mx-auto">
         <div className="text-center mb-16">
-          <p className="text-[#C9A96E] text-sm tracking-[0.3em] uppercase mb-4">Nos Services</p>
-          <h2 className="text-3xl md:text-4xl font-light text-white mb-4">
-            Un service d'exception
-          </h2>
+          <p className="text-[#C9A96E] text-sm tracking-[0.3em] uppercase mb-4">{t.servicesLabel}</p>
+          <h2 className="text-3xl md:text-4xl font-light text-white mb-4">{t.servicesTitle}</h2>
           <div className="w-12 h-[1px] bg-[#C9A96E] mx-auto" />
         </div>
 

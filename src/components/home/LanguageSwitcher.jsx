@@ -1,5 +1,5 @@
 import React from 'react';
-import { useLang } from '@/lib/LanguageContext';
+import { useLang } from '@/components/LanguageContext';
 
 const languages = [
   { code: 'fr', label: 'FR' },
