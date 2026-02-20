@@ -180,5 +180,37 @@ export default function EditBookingForm({ booking, onSave }) {
         </Button>
       </div>
     </form>
+
+    {/* Review section for completed trips */}
+    {isCompleted && (
+      <div className="mt-8 pt-8 border-t border-white/10">
+        {isLoadingReview ? (
+          <div className="text-center py-4">
+            <Loader2 className="w-4 h-4 text-[#C9A96E] animate-spin mx-auto" />
+          </div>
+        ) : bookingReview ? (
+          <>
+            <h3 className="text-white font-medium mb-4">Votre avis</h3>
+            <ReviewCard review={bookingReview} />
+          </>
+        ) : showReviewForm ? (
+          <ReviewForm
+            booking={booking}
+            onSubmitted={() => {
+              setShowReviewForm(false);
+              loadReview();
+            }}
+            onCancel={() => setShowReviewForm(false)}
+          />
+        ) : (
+          <Button
+            onClick={() => setShowReviewForm(true)}
+            className="w-full bg-[#C9A96E]/10 border border-[#C9A96E]/30 text-[#C9A96E] hover:bg-[#C9A96E]/20"
+          >
+            <Star className="w-4 h-4 mr-2" /> Laisser un avis
+          </Button>
+        )}
+      </div>
+    )}
   );
 }
