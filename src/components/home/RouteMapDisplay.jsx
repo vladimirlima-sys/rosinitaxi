@@ -225,20 +225,42 @@ export default function RouteMapDisplay({ departure, arrival, route, onClose }) 
         <div className="p-6 border-t border-[#C9A96E]/30 bg-gradient-to-r from-[#0A0A0A] to-[#1a1a1a]">
           <div className="flex items-start gap-4 mb-4">
             <div>
-              <p className="text-white/40 text-xs uppercase tracking-wide">Ponto de Partida</p>
+              <p className="text-white/40 text-xs uppercase tracking-wide flex items-center gap-1">
+                <span className="inline-block w-3 h-3 rounded-full bg-[#C9A96E]" />
+                Ponto de Partida
+              </p>
               <p className="text-white text-sm mt-1">{departure}</p>
             </div>
             <div className="flex-1 text-right">
-              <p className="text-white/40 text-xs uppercase tracking-wide">Ponto de Chegada</p>
+              <p className="text-white/40 text-xs uppercase tracking-wide flex items-center justify-end gap-1">
+                <span className="inline-block w-3 h-3 rounded-full bg-[#4CAF50]" />
+                Ponto de Chegada
+              </p>
               <p className="text-white text-sm mt-1">{arrival}</p>
             </div>
           </div>
-          <Button
-            onClick={onClose}
-            className="w-full bg-[#C9A96E] hover:bg-[#B8955D] text-[#0A0A0A] font-semibold h-11 rounded-xl"
-          >
-            Fechar Mapa
-          </Button>
+          <div className="flex gap-3">
+            <button
+              onClick={handleShare}
+              className="flex-1 flex items-center justify-center gap-2 px-4 py-2.5 rounded-xl bg-white/5 border border-white/10 hover:bg-white/10 text-white text-sm transition-colors"
+            >
+              <Share2 className="w-4 h-4" />
+              Compartilhar
+            </button>
+            <button
+              onClick={handleDownload}
+              className="flex-1 flex items-center justify-center gap-2 px-4 py-2.5 rounded-xl bg-white/5 border border-white/10 hover:bg-white/10 text-white text-sm transition-colors"
+            >
+              <Download className="w-4 h-4" />
+              Salvar
+            </button>
+            <Button
+              onClick={onClose}
+              className="flex-1 bg-[#C9A96E] hover:bg-[#B8955D] text-[#0A0A0A] font-semibold h-11 rounded-xl"
+            >
+              Fechar
+            </Button>
+          </div>
         </div>
       </div>
     </div>
