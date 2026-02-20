@@ -41,7 +41,7 @@ Deno.serve(async (req) => {
         ${flightInfo}
         ${notesInfo}
         <tr><td colspan="2" style="padding:12px 0;"><hr style="border:none;border-top:1px solid #333;margin:0;"></td></tr>
-        <tr><td style="padding:6px 0;color:#888;font-weight:bold;">Total payé</td><td style="padding:6px 0;color:#C9A96E;font-size:18px;font-weight:bold;">CHF ${total_price}</td></tr>
+        <tr><td style="padding:6px 0;color:#888;font-weight:bold;">${paymentLabel}</td><td style="padding:6px 0;color:#C9A96E;font-size:18px;font-weight:bold;">CHF ${total_price}</td></tr>
       </table>
     </div>
 
