@@ -1,7 +1,8 @@
 import React, { useEffect, useRef, useState } from 'react';
-import { MapPin, Navigation2, Satellite, Map, Share2, Download } from 'lucide-react';
+import { MapPin, Navigation2, Satellite, Map, Share2, Download, X } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { toast } from 'sonner';
+import { motion, AnimatePresence } from 'framer-motion';
 
 export default function RouteMapDisplay({ departure, arrival, route, onClose }) {
   const mapRef = useRef(null);
