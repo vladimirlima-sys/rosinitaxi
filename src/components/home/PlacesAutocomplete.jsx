@@ -258,7 +258,7 @@ export default function PlacesAutocomplete({
   }, [selectedIndex]);
 
   return (
-    <div className="space-y-3 relative">
+    <div className="space-y-3 relative z-[100]">
       <Label className="text-white/70 text-sm font-medium">{label}</Label>
       <div className="relative group">
         <div className="absolute left-4 top-1/2 -translate-y-1/2 w-2.5 h-2.5 rounded-full bg-[#C9A96E] z-10" />
@@ -313,7 +313,12 @@ export default function PlacesAutocomplete({
       )}
 
       {showSuggestions && suggestions.length > 0 && (
-        <div className="absolute top-full mt-2 w-full bg-[#1a1a1a] border border-[#C9A96E]/30 rounded-xl shadow-2xl z-[9999] max-h-72 overflow-hidden flex flex-col">
+        <div className="fixed bg-[#1a1a1a] border border-[#C9A96E]/30 rounded-xl shadow-2xl z-[10000] max-h-72 overflow-hidden flex flex-col"
+          style={{
+            top: inputRef.current?.getBoundingClientRect().bottom + 8,
+            left: inputRef.current?.getBoundingClientRect().left,
+            width: inputRef.current?.getBoundingClientRect().width,
+          }}>
           <div
             ref={suggestionsRef}
             className="overflow-y-auto"
@@ -348,7 +353,12 @@ export default function PlacesAutocomplete({
       )}
 
       {showSuggestions && isLoading && (
-        <div className="absolute top-full mt-2 w-full bg-[#1a1a1a] border border-[#C9A96E]/30 rounded-xl shadow-2xl z-[9999] p-4 flex items-center justify-center">
+        <div className="fixed bg-[#1a1a1a] border border-[#C9A96E]/30 rounded-xl shadow-2xl z-[10000] p-4 flex items-center justify-center"
+          style={{
+            top: inputRef.current?.getBoundingClientRect().bottom + 8,
+            left: inputRef.current?.getBoundingClientRect().left,
+            width: inputRef.current?.getBoundingClientRect().width,
+          }}>
           <Loader className="w-4 h-4 text-[#C9A96E] animate-spin mr-2" />
           <span className="text-white/60 text-sm">{t?.autocompleteLoading || 'Searching...'}</span>
         </div>
