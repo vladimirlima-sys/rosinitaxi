@@ -64,12 +64,5 @@ export default function RouteCalculator({ departure, arrival, onRouteCalculated 
     calculateRoute();
   }, [departure, arrival, onRouteCalculated]);
 
-  if (!calculating) return null;
-
-  return (
-    <div className="fixed bottom-6 left-1/2 transform -translate-x-1/2 z-40 flex items-center gap-3 px-6 py-4 rounded-2xl bg-[#C9A96E]/95 backdrop-blur-sm border border-[#C9A96E]/50 shadow-2xl">
-      <Loader2 className="w-5 h-5 text-[#0A0A0A] animate-spin" />
-      <span className="text-[#0A0A0A] font-medium text-sm">{t.calculatingRoute}</span>
-    </div>
-  );
+  return null;
 }
