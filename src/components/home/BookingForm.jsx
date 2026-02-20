@@ -566,6 +566,15 @@ export default function BookingForm({ bookingRef }) {
             <Button onClick={resetForm} variant="outline" className="border-[#C9A96E]/30 text-[#C9A96E] hover:bg-[#C9A96E]/10">{t.newBooking}</Button>
           </div>
         )}
+
+        {showRouteMap && currentRoute && (
+          <RouteMapDisplay
+            departure={form.departure_point}
+            arrival={form.arrival_point}
+            route={currentRoute}
+            onClose={() => setShowRouteMap(false)}
+          />
+        )}
       </div>
     </section>
   );
