@@ -416,12 +416,33 @@ export default function BookingForm({ bookingRef }) {
 
             {form.departure_point && form.arrival_point && (
               <div className="space-y-4">
+                <RoutePreferences 
+                  preferences={preferences}
+                  onPreferenceChange={(key, value) => setPreferences(prev => ({ ...prev, [key]: value }))}
+                  onAddWaypoint={addWaypoint}
+                />
+
+                {waypoints.length > 0 && (
+                  <WaypointsList
+                    waypoints={waypoints}
+                    onUpdate={handleWaypointChange}
+                    onRemove={removeWaypoint}
+                    suggestions={waypointSuggestions}
+                  />
+                )}
+
                 <div className="flex justify-center">
                   <Button onClick={estimateDistance} disabled={isEstimating} variant="outline" className="border-[#C9A96E]/30 text-[#C9A96E] hover:bg-[#C9A96E]/10">
                     {isEstimating ? <><Loader2 className="w-4 h-4 mr-2 animate-spin" />{t.estimating}</> : estimatedDistance > 0 ? t.estimatedDist(estimatedDistance) : t.estimateBtn}
                   </Button>
                 </div>
-                <RouteMap departure={form.departure_point} arrival={form.arrival_point} distance_km={estimatedDistance} />
+                <RouteMap 
+                  departure={form.departure_point} 
+                  arrival={form.arrival_point} 
+                  distance_km={estimatedDistance}
+                  waypoints={waypoints}
+                  preferences={preferences}
+                />
               </div>
             )}
 
