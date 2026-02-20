@@ -30,7 +30,7 @@ export default function Home() {
         {/* Floating button for bookings */}
         <button
           onClick={() => setShowBookingsModal(true)}
-          className="fixed bottom-6 left-6 z-40 w-14 h-14 rounded-full bg-[#C9A96E] hover:bg-[#B8955D] text-[#0A0A0A] shadow-lg flex items-center justify-center transition-all hover:scale-110"
+          className="fixed top-6 left-6 z-50 w-14 h-14 rounded-full bg-transparent border-2 border-[#C9A96E] hover:bg-[#C9A96E]/20 text-[#C9A96E] shadow-lg flex items-center justify-center transition-all hover:scale-110"
           title="Mes réservations"
         >
           <Bookmark className="w-6 h-6" />
