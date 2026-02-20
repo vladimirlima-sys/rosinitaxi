@@ -1,6 +1,14 @@
 export const translations = {
   pt: {
     badge: 'Disponível 24h/24 — 7 dias/7',
+    paymentMethod: 'Método de pagamento',
+    stripeLabel: 'Stripe (Cartão de crédito)',
+    stripeDesc: 'Seguro',
+    twintLabel: 'TWINT',
+    twintDesc: 'Instantâneo',
+    cashLabel: 'Dinheiro',
+    cashDesc: 'A bordo do veículo',
+    confirmBooking: 'Confirmar reserva',
     heroDesc: 'Seu motorista de confiança para todas as suas viagens de longa distância na Suíça e na Europa. Confiável, pontual e agradável.',
     pill1: '24h/24 — 7 dias/7',
     pill2: 'Motoristas profissionais',
