@@ -11,7 +11,7 @@ import DepartureInput from './DepartureInput';
 import ArrivalInput from './ArrivalInput';
 import RouteCalculator from './RouteCalculator';
 import RouteMapDisplay from './RouteMapDisplay';
-import EmbeddedRouteMap from './EmbeddedRouteMap';
+import RouteCard from './RouteCard';
 
 import { base44 } from '@/api/base44Client';
 import { toast } from 'sonner';
