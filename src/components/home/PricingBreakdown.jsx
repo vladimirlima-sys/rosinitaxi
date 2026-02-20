@@ -64,14 +64,14 @@ export default function PricingBreakdown({
     <div className="rounded-2xl bg-white/[0.03] border border-[#C9A96E]/20 p-5 space-y-3">
       {/* Distance-based price */}
       <div className="flex justify-between items-center text-sm">
-        <span className="text-white/40">Preço por km ({distance_km}km × CHF {pricePerKm})</span>
+        <span className="text-white/40">{t.pricePerKm} ({distance_km}km × CHF {pricePerKm})</span>
         <span className="text-white">CHF {distancePrice}</span>
       </div>
 
       {/* Base fare */}
       {baseFareAmount > 0 && (
         <div className="flex justify-between items-center text-sm">
-          <span className="text-white/40">Taxa base</span>
+          <span className="text-white/40">{t.baseFare}</span>
           <span className="text-white">CHF {baseFareAmount.toFixed(2)}</span>
         </div>
       )}
@@ -81,7 +81,7 @@ export default function PricingBreakdown({
         <div className="flex justify-between items-center text-sm">
           <span className="flex items-center gap-2 text-white/40">
             <Clock className="w-3.5 h-3.5 text-blue-400" />
-            Adicional Noturno ({priceSettings.night_surcharge_percentage}%)
+            {t.nightSurcharge} ({priceSettings.night_surcharge_percentage}%)
           </span>
           <span className="text-blue-400">+CHF {nightSurchargeAmount}</span>
         </div>
@@ -92,7 +92,7 @@ export default function PricingBreakdown({
         <div className="flex justify-between items-center text-sm">
           <span className="flex items-center gap-2 text-white/40">
             <AlertCircle className="w-3.5 h-3.5 text-orange-400" />
-            Taxa de Aeroporto
+            {t.airportFee}
           </span>
           <span className="text-orange-400">+CHF {airportFeeAmount.toFixed(2)}</span>
         </div>
@@ -103,7 +103,7 @@ export default function PricingBreakdown({
 
       {/* Total price */}
       <div className="flex justify-between items-center">
-        <span className="text-white font-medium">Total</span>
+        <span className="text-white font-medium">{t.total}</span>
         <span className="text-[#C9A96E] text-2xl font-semibold">CHF {totalPrice}</span>
       </div>
     </div>
