@@ -174,6 +174,7 @@ export default function BookingForm({ bookingRef }) {
       });
       const dist = Math.round(result.distance_km);
       setEstimatedDistance(dist);
+      setEstimatedTime(calculateEstimatedTime(dist));
       update('distance_km', dist);
     } catch {
       toast.error("Impossible d'estimer la distance. Veuillez réessayer.");
