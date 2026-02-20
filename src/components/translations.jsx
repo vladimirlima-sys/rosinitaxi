@@ -477,7 +477,7 @@ export const translations = {
     stripeLabel: 'Stripe (Carta di credito)',
     stripeDesc: 'Sicuro',
     twintLabel: 'TWINT',
-    twintDesc: 'Istantaneo',
+    twintDesc: 'Pagare a bordo',
     cashLabel: 'Contanti',
     cashDesc: 'A bordo del veicolo',
     confirmBooking: 'Conferma prenotazione',
