@@ -289,7 +289,7 @@ export default function BookingForm({ bookingRef }) {
 
                     {/* Departure suggestions dropdown */}
                     {departureSuggestions.length > 0 && (
-                      <div ref={departureSuggestionRef} className="absolute top-full left-0 right-0 mt-1 bg-[#0A0A0A] border border-[#C9A96E]/20 rounded-lg overflow-hidden z-50 shadow-lg">
+                      <div ref={departureSuggestionRef} className="absolute top-full left-0 right-0 mt-1 bg-[#1a1a1a] border border-[#C9A96E]/20 rounded-lg overflow-hidden z-50 shadow-lg">
                         {departureSuggestions.map((suggestion) => {
                           const street = suggestion.address.road || '';
                           const houseNumber = suggestion.address.house_number || '';
@@ -299,7 +299,7 @@ export default function BookingForm({ bookingRef }) {
                             <button
                               key={suggestion.id}
                               onClick={() => selectDepartureSuggestion(suggestion)}
-                              className="w-full text-left px-4 py-3 text-white hover:bg-[#C9A96E]/10 transition-colors text-sm border-b border-white/5 last:border-b-0"
+                              className="w-full text-left px-4 py-3 !text-white hover:bg-[#C9A96E]/10 transition-colors text-sm border-b border-white/5 last:border-b-0"
                               >
                               <div className="flex items-center gap-2">
                                 <MapPin className="w-3 h-3 text-[#C9A96E] flex-shrink-0" />
