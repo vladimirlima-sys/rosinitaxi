@@ -1,5 +1,5 @@
 import React, { useRef, useState } from 'react';
-import { Bookmark } from 'lucide-react';
+import { Bookmark, Phone } from 'lucide-react';
 import HeroSection from '@/components/home/HeroSection';
 import ServicesSection from '@/components/home/ServicesSection';
 import BookingForm from '@/components/home/BookingForm';
