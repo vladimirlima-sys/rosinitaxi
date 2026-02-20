@@ -519,15 +519,39 @@ export default function BookingForm({ bookingRef }) {
               <div className="flex justify-between"><span className="text-white font-medium">{t.summaryTotal}</span><span className="text-[#C9A96E] text-xl font-semibold">CHF {totalPrice}</span></div>
             </div>
 
-            <div className="flex items-center gap-2 text-white/30 text-xs mb-6">
-              <svg className="w-3.5 h-3.5" fill="currentColor" viewBox="0 0 24 24"><path d="M12 1L3 5v6c0 5.55 3.84 10.74 9 12 5.16-1.26 9-6.45 9-12V5l-9-4z"/></svg>
-              <span>{t.securePayment}</span>
+            {/* Payment Method Selection */}
+            <div className="space-y-4 p-6 rounded-2xl bg-white/[0.03] border border-white/10">
+              <Label className="text-white text-sm font-medium">Méthode de paiement</Label>
+              <div className="space-y-3">
+                <label className="flex items-center gap-3 cursor-pointer p-4 rounded-xl border-2 transition-all" style={{borderColor: paymentMethod === 'stripe' ? '#C9A96E' : 'rgba(255,255,255,0.1)', backgroundColor: paymentMethod === 'stripe' ? 'rgba(201,169,110,0.1)' : 'rgba(255,255,255,0.03)'}}>
+                  <input type="radio" name="payment" value="stripe" checked={paymentMethod === 'stripe'} onChange={(e) => setPaymentMethod(e.target.value)} className="w-4 h-4" style={{accentColor: '#C9A96E'}} />
+                  <span className="text-white flex-1">Stripe (Carte bancaire)</span>
+                  <span className="text-white/40 text-sm">Sécurisé</span>
+                </label>
+                <label className="flex items-center gap-3 cursor-pointer p-4 rounded-xl border-2 transition-all" style={{borderColor: paymentMethod === 'twint' ? '#C9A96E' : 'rgba(255,255,255,0.1)', backgroundColor: paymentMethod === 'twint' ? 'rgba(201,169,110,0.1)' : 'rgba(255,255,255,0.03)'}}>
+                  <input type="radio" name="payment" value="twint" checked={paymentMethod === 'twint'} onChange={(e) => setPaymentMethod(e.target.value)} className="w-4 h-4" style={{accentColor: '#C9A96E'}} />
+                  <span className="text-white flex-1">TWINT</span>
+                  <span className="text-white/40 text-sm">Instantané</span>
+                </label>
+                <label className="flex items-center gap-3 cursor-pointer p-4 rounded-xl border-2 transition-all" style={{borderColor: paymentMethod === 'cash' ? '#C9A96E' : 'rgba(255,255,255,0.1)', backgroundColor: paymentMethod === 'cash' ? 'rgba(201,169,110,0.1)' : 'rgba(255,255,255,0.03)'}}>
+                  <input type="radio" name="payment" value="cash" checked={paymentMethod === 'cash'} onChange={(e) => setPaymentMethod(e.target.value)} className="w-4 h-4" style={{accentColor: '#C9A96E'}} />
+                  <span className="text-white flex-1">Espèces</span>
+                  <span className="text-white/40 text-sm">À bord du véhicule</span>
+                </label>
+              </div>
             </div>
+
+            {paymentMethod === 'stripe' && (
+              <div className="flex items-center gap-2 text-white/30 text-xs">
+                <svg className="w-3.5 h-3.5" fill="currentColor" viewBox="0 0 24 24"><path d="M12 1L3 5v6c0 5.55 3.84 10.74 9 12 5.16-1.26 9-6.45 9-12V5l-9-4z"/></svg>
+                <span>{t.securePayment}</span>
+              </div>
+            )}
 
             <div className="flex justify-between pt-2">
               <Button onClick={() => setStep(3)} className="bg-[#C9A96E] hover:bg-[#B8955D] text-[#0A0A0A] font-semibold px-8 h-12">{t.backBtn}</Button>
-              <Button onClick={handleStripeCheckout} disabled={isSubmitting} className="bg-[#C9A96E] hover:bg-[#B8955D] text-[#0A0A0A] font-semibold px-8 h-12 min-w-[220px]">
-                {isSubmitting ? <><Loader2 className="w-4 h-4 mr-2 animate-spin" />{t.redirecting}</> : t.payBtn(totalPrice)}
+              <Button onClick={handlePayment} disabled={isSubmitting} className="bg-[#C9A96E] hover:bg-[#B8955D] text-[#0A0A0A] font-semibold px-8 h-12 min-w-[220px]">
+                {isSubmitting ? <><Loader2 className="w-4 h-4 mr-2 animate-spin" />{t.redirecting}</> : `${paymentMethod === 'stripe' ? t.payBtn(totalPrice) : 'Confirmer la réservation'}`}
               </Button>
             </div>
           </div>
