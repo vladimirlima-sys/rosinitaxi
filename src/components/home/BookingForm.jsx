@@ -265,21 +265,52 @@ export default function BookingForm({ bookingRef }) {
             <h3 className="text-white text-xl font-medium mb-6">{t.step1Title}</h3>
             <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
               <div className="space-y-2">
-                <Label className="text-white/60 text-sm flex items-center gap-2">
-                  <MapPin className="w-4 h-4 text-[#C9A96E]" /> {t.departure}
-                </Label>
-                <div className="relative">
-                  <Input 
-                    placeholder={t.departurePlaceholder} 
-                    value={form.departure_point} 
-                    onChange={e => update('departure_point', e.target.value)} 
-                    className="bg-white/5 border-white/10 text-white placeholder:text-white/20 focus:border-[#C9A96E] h-12" 
-                  />
-                  {isLocating && (
-                    <Loader className="absolute right-3 top-1/2 transform -translate-y-1/2 w-4 h-4 text-[#C9A96E] animate-spin" />
-                  )}
+                  <Label className="text-white/60 text-sm flex items-center gap-2">
+                    <MapPin className="w-4 h-4 text-[#C9A96E]" /> {t.departure}
+                  </Label>
+                  <div className="relative">
+                    <Input 
+                      placeholder={t.departurePlaceholder} 
+                      value={form.departure_point} 
+                      onChange={e => handleDepartureChange(e.target.value)} 
+                      className="bg-white/5 border-white/10 text-white placeholder:text-white/20 focus:border-[#C9A96E] h-12" 
+                      autoComplete="off"
+                    />
+                    {isLocating && (
+                      <Loader className="absolute right-3 top-1/2 transform -translate-y-1/2 w-4 h-4 text-[#C9A96E] animate-spin" />
+                    )}
+                    {isLoadingDeparture && (
+                      <Loader className="absolute right-3 top-1/2 transform -translate-y-1/2 w-4 h-4 text-[#C9A96E] animate-spin" />
+                    )}
+
+                    {/* Departure suggestions dropdown */}
+                    {departureSuggestions.length > 0 && (
+                      <div ref={departureSuggestionRef} className="absolute top-full left-0 right-0 mt-1 bg-[#0A0A0A] border border-[#C9A96E]/20 rounded-lg overflow-hidden z-50 shadow-lg">
+                        {departureSuggestions.map((suggestion) => {
+                          const street = suggestion.address.road || '';
+                          const houseNumber = suggestion.address.house_number || '';
+                          const city = suggestion.address.city || suggestion.address.town || '';
+                          const detailedAddress = [houseNumber, street].filter(Boolean).join(', ');
+                          return (
+                            <button
+                              key={suggestion.id}
+                              onClick={() => selectDepartureSuggestion(suggestion)}
+                              className="w-full text-left px-4 py-3 text-white/80 hover:bg-[#C9A96E]/10 transition-colors text-sm border-b border-white/5 last:border-b-0"
+                            >
+                              <div className="flex items-center gap-2">
+                                <MapPin className="w-3 h-3 text-[#C9A96E] flex-shrink-0" />
+                                <div>
+                                  {detailedAddress && <div className="text-white font-medium">{detailedAddress}</div>}
+                                  <div className="text-white/60 text-xs">{city}</div>
+                                </div>
+                              </div>
+                            </button>
+                          );
+                        })}
+                      </div>
+                    )}
+                  </div>
                 </div>
-              </div>
               <div className="space-y-2">
                 <Label className="text-white/60 text-sm flex items-center gap-2">
                   <MapPin className="w-4 h-4 text-[#C9A96E]" /> {t.arrival}
