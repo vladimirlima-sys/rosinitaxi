@@ -18,6 +18,7 @@ export default function BookingForm({ bookingRef }) {
 
   const [step, setStep] = useState(1);
   const [isSubmitting, setIsSubmitting] = useState(false);
+  const [paymentMethod, setPaymentMethod] = useState('stripe');
   const [form, setForm] = useState({
     departure_point: '',
     arrival_point: '',
