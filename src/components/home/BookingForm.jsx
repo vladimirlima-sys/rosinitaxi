@@ -59,72 +59,45 @@ export default function BookingForm({ bookingRef }) {
   const canProceedStep2 = form.vehicle_type;
   const canProceedStep3 = form.client_name && form.client_email && form.client_phone;
 
-  const handleSubmit = async () => {
+  const handleStripeCheckout = async () => {
+    // Block checkout inside iframe
+    if (window.self !== window.top) {
+      alert("Le paiement fonctionne uniquement depuis l'application publiée. Veuillez ouvrir le lien direct.");
+      return;
+    }
+
     setIsSubmitting(true);
     try {
-      const bookingData = {
+      // Save booking as pending first
+      await base44.entities.Booking.create({
         ...form,
         total_price: parseFloat(totalPrice),
-        payment_status: 'paid',
-      };
-      
-      await base44.entities.Booking.create(bookingData);
-
-      // Send email
-      const emailBody = `
-        <h2 style="color:#C9A96E;">Nouvelle Réservation — Rosini Transfert</h2>
-        <hr/>
-        <h3>Détails du client</h3>
-        <p><strong>Nom:</strong> ${form.client_name}</p>
-        <p><strong>Email:</strong> ${form.client_email}</p>
-        <p><strong>Téléphone:</strong> ${form.client_phone}</p>
-        <hr/>
-        <h3>Détails du trajet</h3>
-        <p><strong>Départ:</strong> ${form.departure_point}</p>
-        <p><strong>Arrivée:</strong> ${form.arrival_point}</p>
-        <p><strong>Date:</strong> ${form.departure_date}</p>
-        <p><strong>Heure:</strong> ${form.departure_time}</p>
-        <p><strong>N° de vol:</strong> ${form.flight_number || 'Non spécifié'}</p>
-        <hr/>
-        <h3>Véhicule & Tarif</h3>
-        <p><strong>Véhicule:</strong> ${form.vehicle_type === 'economic' ? 'Économique (3 pers.)' : 'Confort (4 pers.)'}</p>
-        <p><strong>Passagers:</strong> ${form.passengers}</p>
-        <p><strong>Distance estimée:</strong> ${estimatedDistance} km</p>
-        <p><strong>Prix total:</strong> CHF ${totalPrice}</p>
-        ${form.notes ? `<p><strong>Notes:</strong> ${form.notes}</p>` : ''}
-      `;
-
-      await base44.integrations.Core.SendEmail({
-        to: 'taxirosini@gmail.com',
-        subject: `Nouvelle réservation — ${form.client_name} — ${form.departure_point} → ${form.arrival_point}`,
-        body: emailBody
+        payment_status: 'pending',
       });
 
-      // Also send confirmation to client
-      await base44.integrations.Core.SendEmail({
-        to: form.client_email,
-        from_name: 'Rosini Transfert',
-        subject: `Confirmation de réservation — Rosini Transfert`,
-        body: `
-          <h2 style="color:#C9A96E;">Merci pour votre réservation!</h2>
-          <p>Cher(e) ${form.client_name},</p>
-          <p>Votre réservation a été confirmée avec succès.</p>
-          <hr/>
-          <p><strong>Trajet:</strong> ${form.departure_point} → ${form.arrival_point}</p>
-          <p><strong>Date:</strong> ${form.departure_date} à ${form.departure_time}</p>
-          <p><strong>Véhicule:</strong> ${form.vehicle_type === 'economic' ? 'Économique' : 'Confort'}</p>
-          <p><strong>Prix:</strong> CHF ${totalPrice}</p>
-          <hr/>
-          <p>Pour toute question, contactez-nous à taxirosini@gmail.com</p>
-          <p>Rosini Transfert — Votre confort, notre priorité.</p>
-        `
+      const response = await base44.functions.invoke('createCheckout', {
+        amount: parseFloat(totalPrice),
+        currency: 'chf',
+        client_name: form.client_name,
+        client_email: form.client_email,
+        departure: form.departure_point,
+        arrival: form.arrival_point,
+        vehicle_type: form.vehicle_type,
+        distance_km: estimatedDistance,
+        departure_date: form.departure_date,
+        departure_time: form.departure_time,
+        origin: window.location.origin,
       });
 
-      setStep(5);
+      if (response.data?.url) {
+        window.location.href = response.data.url;
+      } else {
+        throw new Error(response.data?.error || 'Erreur de paiement');
+      }
     } catch (err) {
-      toast.error("Erreur lors de la réservation. Veuillez réessayer.");
+      toast.error("Erreur lors du paiement. Veuillez réessayer.");
+      setIsSubmitting(false);
     }
-    setIsSubmitting(false);
   };
 
   return (
