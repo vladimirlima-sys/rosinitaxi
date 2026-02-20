@@ -32,15 +32,14 @@ export default function PlacesAutocomplete({
 
   // Initialize Google Places Services
   useEffect(() => {
-    if (typeof google !== 'undefined' && google.maps) {
+    if (typeof google !== 'undefined' && google.maps?.places) {
       try {
-        autocompleteServiceRef.current = new google.maps.places.AutocompleteService();
-        placesServiceRef.current = new google.maps.places.PlacesService(
-          document.createElement('div')
-        );
+        // Using AutocompleteService for now (legacy but still supported)
+        if (google.maps.places.AutocompleteService) {
+          autocompleteServiceRef.current = new google.maps.places.AutocompleteService();
+        }
       } catch (err) {
         console.error('Google Places initialization error:', err);
-        setError('Erro ao inicializar busca de endereços');
       }
     }
   }, []);
@@ -67,10 +66,12 @@ export default function PlacesAutocomplete({
         input,
         componentRestrictions: { country: COUNTRIES },
         sessionToken,
+        fields: ['description', 'place_id', 'structured_formatting'],
       });
 
-      setSuggestions(result.predictions || []);
-      setShowSuggestions(result.predictions && result.predictions.length > 0);
+      const predictions = result.predictions || [];
+      setSuggestions(predictions);
+      setShowSuggestions(predictions.length > 0);
       setSelectedIndex(-1);
     } catch (err) {
       console.error('Autocomplete fetch error:', err);
@@ -97,28 +98,29 @@ export default function PlacesAutocomplete({
     }, DEBOUNCE_DELAY);
   };
 
-  const handleSelectSuggestion = async (suggestion) => {
+  const handleSelectSuggestion = (suggestion) => {
     onChange(suggestion.description);
-    
-    if (onSelect && placesServiceRef.current) {
+
+    if (onSelect) {
       try {
-        placesServiceRef.current.getDetails(
-          { placeId: suggestion.place_id, sessionToken },
-          (place, status) => {
-            if (status === google.maps.places.PlacesServiceStatus.OK) {
+        // Use geocoding to get coordinates if needed
+        if (typeof google !== 'undefined' && google.maps?.Geocoder) {
+          const geocoder = new google.maps.Geocoder();
+          geocoder.geocode({ address: suggestion.description }, (results, status) => {
+            if (status === google.maps.GeocoderStatus.OK && results?.[0]) {
+              const place = results[0];
               onSelect({
                 description: suggestion.description,
                 placeId: suggestion.place_id,
-                location: place.geometry?.location,
                 formattedAddress: place.formatted_address,
                 lat: place.geometry?.location?.lat(),
                 lng: place.geometry?.location?.lng(),
               });
             }
-          }
-        );
+          });
+        }
       } catch (err) {
-        console.error('Place details error:', err);
+        console.error('Geocoding error:', err);
       }
     }
 
