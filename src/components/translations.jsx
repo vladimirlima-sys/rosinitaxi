@@ -89,8 +89,13 @@ export const translations = {
     checkoutFromPublishedApp: 'O pagamento funciona apenas a partir do aplicativo publicado.',
     estimateDistanceError: 'Impossível estimar a distância. Tente novamente.',
     paymentError: 'Erro ao processar o pagamento. Tente novamente.',
-    },
-    fr: {
+    pricePerKm: 'Preço por km',
+    baseFare: 'Taxa base',
+    nightSurcharge: 'Adicional Noturno',
+    airportFee: 'Taxa de Aeroporto',
+    total: 'Total',
+  },
+  fr: {
     badge: 'Disponible 24h/24 — 7j/7',
     heroDesc: 'Votre chauffeur de confiance pour tous vos trajets longue distance en Suisse et en Europe. Fiable, ponctuel et agréable.',
     pill1: '24h/24 — 7j/7',
@@ -180,6 +185,11 @@ export const translations = {
     checkoutFromPublishedApp: 'Le paiement fonctionne uniquement depuis l\'application publiée.',
     estimateDistanceError: 'Impossible d\'estimer la distance. Veuillez réessayer.',
     paymentError: 'Erreur lors du paiement. Veuillez réessayer.',
+    pricePerKm: 'Prix par km',
+    baseFare: 'Tarif de base',
+    nightSurcharge: 'Supplément de nuit',
+    airportFee: 'Taxe d\'aéroport',
+    total: 'Total',
   },
   en: {
     badge: 'Available 24/7 — Every Day',
