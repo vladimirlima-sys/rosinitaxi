@@ -1,5 +1,5 @@
 import React from 'react';
-import { Users, Check } from 'lucide-react';
+import { Users, Check, Car } from 'lucide-react';
 import { cn } from '@/lib/utils';
 import { useLang } from '@/components/LanguageContext';
 import { translations } from '@/components/translations';
@@ -46,7 +46,10 @@ export default function VehicleCard({ type, selected, onSelect, distance }) {
       </div>
 
       <div className="flex items-center justify-between mb-4">
-        <h3 className="text-white text-xl font-medium">{config.name}</h3>
+        <div className="flex items-center gap-3">
+          <Car className="w-6 h-6 text-[#C9A96E]" />
+          <h3 className="text-white text-xl font-medium">{config.name}</h3>
+        </div>
         <div className="flex items-center gap-1.5 text-white/50">
           <Users className="w-4 h-4" />
           <span className="text-sm">{config.capacity} {t.persons}</span>
