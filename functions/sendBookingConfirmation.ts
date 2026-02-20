@@ -89,23 +89,50 @@ Deno.serve(async (req) => {
 </body>
 </html>`;
 
-    // Send confirmation email to client using Base44 SendEmail
-    await base44.asServiceRole.integrations.Core.SendEmail({
-      to: client_email,
-      subject: `✅ Réservation confirmée — ${departure_point} → ${arrival_point}`,
-      body: clientEmailBody,
-      from_name: 'Rosini Transfert',
-    });
+    // Send emails using Gmail OAuth via fetch
+    const sendEmailViaGmail = async (to, subject, htmlBody) => {
+      const response = await fetch('https://www.googleapis.com/gmail/v1/users/me/messages/send', {
+        method: 'POST',
+        headers: {
+          'Authorization': `Bearer ${accessToken}`,
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          raw: btoa(
+            `From: Rosini Transfert <taxirosini@gmail.com>\r\n` +
+            `To: ${to}\r\n` +
+            `Subject: ${subject}\r\n` +
+            `MIME-Version: 1.0\r\n` +
+            `Content-Type: text/html; charset="UTF-8"\r\n` +
+            `Content-Transfer-Encoding: 7bit\r\n\r\n` +
+            htmlBody
+          ),
+        }),
+      });
+
+      if (!response.ok) {
+        const error = await response.json();
+        throw new Error(`Failed to send email: ${error.error.message}`);
+      }
+
+      return response.json();
+    };
+
+    // Send confirmation email to client
+    await sendEmailViaGmail(
+      client_email,
+      `✅ Réservation confirmée — ${departure_point} → ${arrival_point}`,
+      clientEmailBody
+    );
 
     console.log(`Confirmation email sent to ${client_email}`);
 
-    // Send notification email to admin using Base44 SendEmail
-    await base44.asServiceRole.integrations.Core.SendEmail({
-      to: 'taxirosini@gmail.com',
-      subject: `🔔 Nouvelle réservation — ${client_name} | ${departure_point} → ${arrival_point} | CHF ${total_price}`,
-      body: adminEmailBody,
-      from_name: 'Rosini Transfert',
-    });
+    // Send notification email to admin
+    await sendEmailViaGmail(
+      'taxirosini@gmail.com',
+      `🔔 Nouvelle réservation — ${client_name} | ${departure_point} → ${arrival_point} | CHF ${total_price}`,
+      adminEmailBody
+    );
 
     console.log(`Admin notification sent for booking by ${client_name}`);
 
