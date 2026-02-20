@@ -22,6 +22,7 @@ export default function Home() {
         <ServicesSection />
         <BookingForm bookingRef={bookingRef} />
         <FooterSection />
+        <ChatSupport />
       </div>
     </LanguageProvider>
   );
