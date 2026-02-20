@@ -273,7 +273,7 @@ export default function BookingForm({ bookingRef }) {
                       placeholder={t.departurePlaceholder} 
                       value={form.departure_point} 
                       onChange={e => handleDepartureChange(e.target.value)} 
-                      className="bg-white/5 border-white/10 text-white placeholder:text-white/20 focus:border-[#C9A96E] h-12" 
+                      className="bg-white/5 border-white/10 text-[#C9A96E] placeholder:text-[#C9A96E]/60 focus:border-[#C9A96E] h-12" 
                       autoComplete="off"
                     />
                     {isLocating && (
