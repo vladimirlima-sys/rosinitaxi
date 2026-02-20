@@ -2,11 +2,11 @@ import React from 'react';
 import { useLang } from '@/components/LanguageContext';
 
 const languages = [
-  { code: 'pt', label: 'PT' },
-  { code: 'fr', label: 'FR' },
-  { code: 'en', label: 'EN' },
-  { code: 'de', label: 'DE' },
-  { code: 'it', label: 'IT' },
+  { code: 'pt', label: '🇧🇷' },
+  { code: 'fr', label: '🇫🇷' },
+  { code: 'en', label: '🇬🇧' },
+  { code: 'de', label: '🇩🇪' },
+  { code: 'it', label: '🇮🇹' },
 ];
 
 export default function LanguageSwitcher() {
