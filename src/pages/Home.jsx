@@ -3,6 +3,7 @@ import { Bookmark } from 'lucide-react';
 import HeroSection from '@/components/home/HeroSection';
 import ServicesSection from '@/components/home/ServicesSection';
 import BookingForm from '@/components/home/BookingForm';
+import ReviewsSection from '@/components/home/ReviewsSection';
 import FooterSection from '@/components/home/FooterSection';
 import LanguageSwitcher from '@/components/home/LanguageSwitcher';
 import ChatSupport from '@/components/home/ChatSupport';
@@ -24,6 +25,7 @@ export default function Home() {
         <HeroSection onScrollToBooking={scrollToBooking} />
         <ServicesSection />
         <BookingForm bookingRef={bookingRef} />
+        <ReviewsSection />
         <FooterSection />
         <ChatSupport />
 
