@@ -7,7 +7,6 @@ import { Textarea } from '@/components/ui/textarea';
 import VehicleCard from './VehicleCard';
 import PricingBreakdown from './PricingBreakdown';
 import JourneyDetails from './JourneyDetails';
-import RouteMap from './RouteMap';
 import { base44 } from '@/api/base44Client';
 import { toast } from 'sonner';
 import { useLang } from '@/components/LanguageContext';
@@ -375,11 +374,10 @@ export default function BookingForm({ bookingRef }) {
               </div>
             </div>
 
-            {form.departure_point && form.arrival_point && (
-              <RouteMap
-                departure={form.departure_point}
-                arrival={form.arrival_point}
-                onRouteCalculated={handleRouteCalculated}
+            {estimatedDistance > 0 && (
+              <JourneyDetails 
+                distance_km={estimatedDistance}
+                estimatedTime={estimatedTime}
               />
             )}
 
