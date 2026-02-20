@@ -162,7 +162,7 @@ export default function ChatSupport() {
       {/* Toggle Button */}
       <button
         onClick={() => setIsOpen(prev => !prev)}
-        className="w-14 h-14 rounded-full bg-[#C9A96E] hover:bg-[#B8955D] shadow-lg flex items-center justify-center transition-all hover:scale-105 active:scale-95"
+        className="w-14 h-14 rounded-full bg-transparent border-2 border-[#C9A96E] hover:bg-[#C9A96E]/20 text-[#C9A96E] shadow-lg flex items-center justify-center transition-all hover:scale-110"
       >
         {isOpen
           ? <X className="w-6 h-6 text-[#0A0A0A]" />
