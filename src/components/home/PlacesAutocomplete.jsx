@@ -67,6 +67,8 @@ export default function PlacesAutocomplete({
 }) {
   const inputRef = useRef(null);
   const debounceTimerRef = useRef(null);
+  const autocompleteServiceRef = useRef(null);
+  const placesServiceRef = useRef(null);
   const [suggestions, setSuggestions] = useState([]);
   const [showSuggestions, setShowSuggestions] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
@@ -74,13 +76,35 @@ export default function PlacesAutocomplete({
   const [error, setError] = useState(null);
   const suggestionsRef = useRef(null);
 
-  // Initialize Google Maps (no Places Service needed - using REST API instead)
+  // Initialize Places API Services
   useEffect(() => {
-    // Google Maps is loaded via GoogleMapsLoader component
-    console.log('PlacesAutocomplete ready to use REST API');
+    let attempts = 0;
+    const maxAttempts = 50;
+    
+    const initServices = () => {
+      attempts++;
+      if (typeof google !== 'undefined' && google.maps?.places?.AutocompleteService) {
+        try {
+          if (!autocompleteServiceRef.current) {
+            autocompleteServiceRef.current = new google.maps.places.AutocompleteService();
+          }
+          if (!placesServiceRef.current) {
+            const div = document.createElement('div');
+            placesServiceRef.current = new google.maps.places.PlacesService(div);
+          }
+          console.log('✓ Places API initialized');
+        } catch (err) {
+          console.error('Places API init error:', err);
+        }
+      } else if (attempts < maxAttempts) {
+        setTimeout(initServices, 100);
+      }
+    };
+
+    initServices();
   }, []);
 
-  // Fetch suggestions using Geocoding API (no Places API required)
+  // Fetch suggestions using Places API
   const fetchSuggestions = useCallback(async (input) => {
     if (!input || input.length < MIN_INPUT_LENGTH) {
       setSuggestions([]);
@@ -89,7 +113,7 @@ export default function PlacesAutocomplete({
       return;
     }
 
-    if (typeof google === 'undefined' || !google.maps?.Geocoder) {
+    if (!autocompleteServiceRef.current) {
       setError(t?.autocompleteService || 'Service unavailable');
       return;
     }
@@ -98,26 +122,14 @@ export default function PlacesAutocomplete({
     setError(null);
 
     try {
-      const geocoder = new google.maps.Geocoder();
-      const result = await new Promise((resolve, reject) => {
-        geocoder.geocode({ address: input, componentRestrictions: { country: COUNTRIES } }, (results, status) => {
-          if (status === google.maps.GeocoderStatus.OK) {
-            resolve(results);
-          } else {
-            reject(new Error(status));
-          }
-        });
+      const result = await autocompleteServiceRef.current.getPlacePredictions({
+        input,
+        componentRestrictions: { country: COUNTRIES },
+        sessionToken,
       });
 
-      if (result && result.length > 0) {
-        const formatted = result.map(place => ({
-          place_id: place.place_id,
-          description: formatAddressDisplay(place),
-          formatted_address: place.formatted_address,
-          address_components: place.address_components,
-          geometry: place.geometry,
-        }));
-        setSuggestions(formatted);
+      if (result?.predictions && result.predictions.length > 0) {
+        setSuggestions(result.predictions);
         setShowSuggestions(true);
         setSelectedIndex(-1);
       } else {
@@ -125,12 +137,13 @@ export default function PlacesAutocomplete({
         setShowSuggestions(false);
       }
     } catch (err) {
-      console.error('Geocoding error:', err);
+      console.error('Places API error:', err);
+      setError(t?.autocompleteService || 'Service unavailable');
       setSuggestions([]);
     } finally {
       setIsLoading(false);
     }
-  }, [t]);
+  }, [sessionToken, t]);
 
   const handleInputChange = (e) => {
     const val = e.target.value;
@@ -151,21 +164,31 @@ export default function PlacesAutocomplete({
   const handleSelectSuggestion = (suggestion) => {
     onChange(suggestion.description);
 
-    if (onSelect) {
-      onSelect({
-        description: suggestion.description,
-        placeId: suggestion.place_id,
-        formattedAddress: suggestion.formatted_address,
-        lat: suggestion.geometry?.location?.lat(),
-        lng: suggestion.geometry?.location?.lng(),
-      });
+    if (onSelect && placesServiceRef.current) {
+      placesServiceRef.current.getDetails(
+        {
+          placeId: suggestion.place_id,
+          fields: ['formatted_address', 'geometry', 'address_components'],
+          sessionToken,
+        },
+        (place, status) => {
+          if (status === google.maps.places.PlacesServiceStatus.OK && place) {
+            onSelect({
+              description: suggestion.description,
+              placeId: suggestion.place_id,
+              formattedAddress: place.formatted_address,
+              lat: place.geometry?.location?.lat(),
+              lng: place.geometry?.location?.lng(),
+            });
+          }
+        }
+      );
     }
 
     setSuggestions([]);
     setShowSuggestions(false);
     setSelectedIndex(-1);
 
-    // Refresh token after selection for next autocomplete session
     if (onTokenRefresh) {
       onTokenRefresh();
     }
@@ -311,9 +334,9 @@ export default function PlacesAutocomplete({
                     <p className="text-white text-sm font-medium">
                       {suggestion.description}
                     </p>
-                    {suggestion.formatted_address && (
+                    {suggestion.secondary_text && (
                       <p className="text-white/40 text-xs mt-1">
-                        {suggestion.formatted_address}
+                        {suggestion.secondary_text}
                       </p>
                     )}
                   </div>
