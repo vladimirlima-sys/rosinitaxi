@@ -15,8 +15,8 @@ export default function LanguageSwitcher() {
   return (
     <div className="fixed top-5 right-5 z-50 flex items-center gap-1 bg-white/5 border border-white/10 backdrop-blur-sm rounded-full px-2 py-1.5">
       {languages.map((l, i) => (
-        <React.Fragment key={l.code}>
-          <button
+        <div key={l.code} className="flex items-center gap-1">
+           <button
             onClick={() => setLang(l.code)}
             className={`text-xs font-medium px-2 py-0.5 rounded-full transition-all ${
               lang === l.code
@@ -29,8 +29,8 @@ export default function LanguageSwitcher() {
           {i < languages.length - 1 && (
             <span className="text-white/10 text-xs">|</span>
           )}
-        </React.Fragment>
-      ))}
+          </div>
+          ))}
     </div>
   );
 }
