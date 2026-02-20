@@ -6,8 +6,6 @@ import { Label } from '@/components/ui/label';
 import { Textarea } from '@/components/ui/textarea';
 import VehicleCard from './VehicleCard';
 import RouteMap from './RouteMap';
-import RoutePreferences from './RoutePreferences';
-import WaypointsList from './WaypointsList';
 import PricingBreakdown from './PricingBreakdown';
 import { base44 } from '@/api/base44Client';
 import { toast } from 'sonner';
@@ -43,12 +41,6 @@ export default function BookingForm({ bookingRef }) {
   const [isLoadingArrival, setIsLoadingArrival] = useState(false);
   const [isLoadingDeparture, setIsLoadingDeparture] = useState(false);
   const [isLocating, setIsLocating] = useState(false);
-  const [waypoints, setWaypoints] = useState([]);
-  const [waypointSuggestions, setWaypointSuggestions] = useState({});
-  const [preferences, setPreferences] = useState({
-    routeType: 'best_guess',
-    avoid: []
-  });
   const suggestionRef = useRef(null);
   const departureSuggestionRef = useRef(null);
 
@@ -147,55 +139,6 @@ export default function BookingForm({ bookingRef }) {
   const selectArrivalSuggestion = (suggestion) => {
     update('arrival_point', suggestion.display_name);
     setArrivalSuggestions([]);
-  };
-
-  // Handle waypoint changes
-  const handleWaypointChange = async (index, value) => {
-    const newWaypoints = [...waypoints];
-    newWaypoints[index] = { address: value };
-    setWaypoints(newWaypoints);
-
-    if (value.length < 3) {
-      setWaypointSuggestions(prev => ({ ...prev, [index]: [] }));
-      return;
-    }
-
-    try {
-      const response = await fetch(
-        `https://nominatim.openstreetmap.org/search?format=json&q=${encodeURIComponent(value)}&limit=5&countrycodes=ch,it,fr,de,at`
-      );
-      const data = await response.json();
-      setWaypointSuggestions(prev => ({
-        ...prev,
-        [index]: data.map(item => ({
-          id: item.osm_id,
-          display_name: item.display_name,
-          address: item.address || {}
-        }))
-      }));
-    } catch (err) {
-      console.error('Search error:', err);
-    }
-  };
-
-  const handleWaypointSelect = (index, suggestion) => {
-    const newWaypoints = [...waypoints];
-    newWaypoints[index] = { address: suggestion.display_name };
-    setWaypoints(newWaypoints);
-    setWaypointSuggestions(prev => ({ ...prev, [index]: [] }));
-  };
-
-  const removeWaypoint = (index) => {
-    setWaypoints(waypoints.filter((_, i) => i !== index));
-    setWaypointSuggestions(prev => {
-      const newSuggestions = { ...prev };
-      delete newSuggestions[index];
-      return newSuggestions;
-    });
-  };
-
-  const addWaypoint = () => {
-    setWaypoints([...waypoints, { address: '' }]);
   };
 
   // Handle redirect back from Stripe
@@ -416,33 +359,12 @@ export default function BookingForm({ bookingRef }) {
 
             {form.departure_point && form.arrival_point && (
               <div className="space-y-4">
-                <RoutePreferences 
-                  preferences={preferences}
-                  onPreferenceChange={(key, value) => setPreferences(prev => ({ ...prev, [key]: value }))}
-                  onAddWaypoint={addWaypoint}
-                />
-
-                {waypoints.length > 0 && (
-                  <WaypointsList
-                    waypoints={waypoints}
-                    onUpdate={handleWaypointChange}
-                    onRemove={removeWaypoint}
-                    suggestions={waypointSuggestions}
-                  />
-                )}
-
                 <div className="flex justify-center">
                   <Button onClick={estimateDistance} disabled={isEstimating} variant="outline" className="border-[#C9A96E]/30 text-[#C9A96E] hover:bg-[#C9A96E]/10">
                     {isEstimating ? <><Loader2 className="w-4 h-4 mr-2 animate-spin" />{t.estimating}</> : estimatedDistance > 0 ? t.estimatedDist(estimatedDistance) : t.estimateBtn}
                   </Button>
                 </div>
-                <RouteMap 
-                  departure={form.departure_point} 
-                  arrival={form.arrival_point} 
-                  distance_km={estimatedDistance}
-                  waypoints={waypoints}
-                  preferences={preferences}
-                />
+                <RouteMap departure={form.departure_point} arrival={form.arrival_point} distance_km={estimatedDistance} />
               </div>
             )}
 

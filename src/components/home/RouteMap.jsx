@@ -1,161 +1,140 @@
-import React, { useEffect, useState, useRef } from 'react';
-import { GoogleMap, LoadScript, DirectionsRenderer } from '@react-google-maps/api';
-import { Clock, Navigation, AlertCircle } from 'lucide-react';
+import React, { useEffect, useState } from 'react';
+import { MapContainer, TileLayer, Marker, Popup } from 'react-leaflet';
+import { Clock, Zap, ExternalLink } from 'lucide-react';
+import L from 'leaflet';
+import 'leaflet/dist/leaflet.css';
 
-const mapContainerStyle = {
-  width: '100%',
-  height: '100%',
-};
+// Custom icons
+const departureIcon = new L.Icon({
+  iconUrl: 'https://raw.githubusercontent.com/pointhi/leaflet-color-markers/master/img/marker-icon-2x-gold.png',
+  shadowUrl: 'https://cdnjs.cloudflare.com/ajax/libs/leaflet/0.7.7/images/marker-shadow.png',
+  iconSize: [25, 41],
+  iconAnchor: [12, 41],
+  popupAnchor: [1, -34],
+  shadowSize: [41, 41]
+});
 
-const mapOptions = {
-  disableDefaultUI: false,
-  zoomControl: true,
-  fullscreenControl: true,
-  mapTypeControl: false,
-  styles: [
-    { elementType: 'geometry', stylers: [{ color: '#1a1a1a' }] },
-    { elementType: 'labels.text.stroke', stylers: [{ color: '#1a1a1a' }] },
-    { elementType: 'labels.text.fill', stylers: [{ color: '#ffffff' }] },
-    { featureType: 'administrative.locality', elementType: 'labels.text.fill', stylers: [{ color: '#ffffff' }] },
-    { featureType: 'road', elementType: 'geometry', stylers: [{ color: '#38414e' }] },
-    { featureType: 'road', elementType: 'geometry.stroke', stylers: [{ color: '#212a37' }] },
-    { featureType: 'road.highway', elementType: 'geometry', stylers: [{ color: '#746855' }] },
-    { featureType: 'road.highway', elementType: 'geometry.stroke', stylers: [{ color: '#1f2835' }] },
-  ]
-};
+const arrivalIcon = new L.Icon({
+  iconUrl: 'https://raw.githubusercontent.com/pointhi/leaflet-color-markers/master/img/marker-icon-2x-green.png',
+  shadowUrl: 'https://cdnjs.cloudflare.com/ajax/libs/leaflet/0.7.7/images/marker-shadow.png',
+  iconSize: [25, 41],
+  iconAnchor: [12, 41],
+  popupAnchor: [1, -34],
+  shadowSize: [41, 41]
+});
 
-export default function RouteMap({ departure, arrival, distance_km, waypoints = [], preferences = {} }) {
-  const [directions, setDirections] = useState(null);
-  const [loadingRoute, setLoadingRoute] = useState(false);
-  const [routeInfo, setRouteInfo] = useState(null);
-  const [error, setError] = useState(null);
-  const mapRef = useRef(null);
+export default function RouteMap({ departure, arrival, distance_km }) {
+  const [travelTime, setTravelTime] = useState(null);
+  const [departureCoords, setDepartureCoords] = useState(null);
+  const [arrivalCoords, setArrivalCoords] = useState(null);
 
   useEffect(() => {
-    if (!departure || !arrival || !window.google) return;
+    if (!distance_km || distance_km === 0) return;
 
-    const directionsService = new window.google.maps.DirectionsService();
-    setLoadingRoute(true);
-    setError(null);
+    const avgSpeed = 85; // km/h
+    const hours = distance_km / avgSpeed;
+    const minutes = Math.round((hours % 1) * 60);
+    const finalHours = Math.floor(hours);
+    
+    setTravelTime({
+      hours: finalHours,
+      minutes: minutes,
+      total: distance_km / avgSpeed
+    });
+  }, [distance_km]);
 
-    // Build waypoints array for Google Maps
-    const routeWaypoints = (waypoints || [])
-      .filter(wp => wp.address && wp.address.trim())
-      .map(wp => ({
-        location: wp.address,
-        stopover: true
-      }));
-
-    const request = {
-      origin: departure,
-      destination: arrival,
-      waypoints: routeWaypoints.length > 0 ? routeWaypoints : undefined,
-      travelMode: window.google.maps.TravelMode.DRIVING,
-      avoidHighways: preferences?.avoid?.includes('highways') || false,
-      avoidTolls: preferences?.avoid?.includes('tolls') || false,
-      avoidFerries: preferences?.avoid?.includes('ferries') || false,
-      optimizeWaypoints: true,
-      provideRouteAlternatives: false
+  // Geocode departure and arrival
+  useEffect(() => {
+    const geocodeLocation = async (location, setter) => {
+      try {
+        const response = await fetch(
+          `https://nominatim.openstreetmap.org/search?format=json&q=${encodeURIComponent(location)}&limit=1&countrycodes=ch,it,fr,de,at`
+        );
+        const data = await response.json();
+        if (data.length > 0) {
+          setter([parseFloat(data[0].lat), parseFloat(data[0].lon)]);
+        }
+      } catch (err) {
+        console.error('Geocoding error:', err);
+      }
     };
 
-    directionsService.route(request, (result, status) => {
-      if (status === window.google.maps.DirectionsStatus.OK) {
-        setDirections(result);
-
-        let totalDistance = 0;
-        let totalDuration = 0;
-        let totalDurationInTraffic = 0;
-
-        result.routes[0].legs.forEach(leg => {
-          totalDistance += leg.distance.value / 1000; // Convert to km
-          totalDuration += leg.duration.value / 60; // Convert to minutes
-          totalDurationInTraffic += (leg.duration_in_traffic?.value || leg.duration.value) / 60;
-        });
-
-        setRouteInfo({
-          distance: Math.round(totalDistance),
-          duration: Math.ceil(totalDuration),
-          durationInTraffic: Math.ceil(totalDurationInTraffic),
-          hasTraffic: totalDurationInTraffic > totalDuration
-        });
-      } else {
-        setError(`Erro ao calcular rota: ${status}`);
-      }
-      setLoadingRoute(false);
-    });
-  }, [departure, arrival, waypoints, preferences]);
+    if (departure && !departureCoords) geocodeLocation(departure, setDepartureCoords);
+    if (arrival && !arrivalCoords) geocodeLocation(arrival, setArrivalCoords);
+  }, [departure, arrival, departureCoords, arrivalCoords]);
 
   if (!departure || !arrival) return null;
 
+  // Default map center if coords not available
+  const center = departureCoords || [46.8, 8.2]; // Switzerland center
+  const osmUrl = `https://www.openstreetmap.org/directions?engine=fossgis_osrm_car&route=${encodeURIComponent(departure)};${encodeURIComponent(arrival)}`;
+
   return (
     <div className="rounded-2xl overflow-hidden border border-white/10 bg-white/[0.03]">
-      {/* Map */}
-      <LoadScript googleMapsApiKey={import.meta.env.VITE_GOOGLE_MAPS_API_KEY || ''}>
-        <div className="relative h-80 bg-[#0d1117]">
-          {loadingRoute && (
-            <div className="absolute inset-0 flex items-center justify-center bg-black/50 z-10">
-              <div className="text-white text-sm">Calculando rota...</div>
-            </div>
+      {/* Interactive Map */}
+      <div className="relative h-80 bg-[#0d1117] overflow-hidden">
+        <MapContainer center={center} zoom={9} style={{ height: '100%', width: '100%' }} scrollWheelZoom={false}>
+          <TileLayer
+            url="https://{s}.basemaps.cartocdn.com/dark_all/{z}/{x}/{y}{r}.png"
+            attribution='© OpenStreetMap contributors'
+          />
+          {departureCoords && (
+            <Marker position={departureCoords} icon={departureIcon}>
+              <Popup>
+                <div className="text-sm font-medium">{departure}</div>
+              </Popup>
+            </Marker>
           )}
-          <GoogleMap
-            mapContainerStyle={mapContainerStyle}
-            center={{ lat: 46.8, lng: 8.2 }}
-            zoom={9}
-            options={mapOptions}
-            onLoad={map => mapRef.current = map}
-          >
-            {directions && (
-              <DirectionsRenderer 
-                directions={directions} 
-                options={{ 
-                  suppressPolylines: false, 
-                  polylineOptions: { strokeColor: '#C9A96E', strokeWeight: 4 } 
-                }} 
-              />
-            )}
-          </GoogleMap>
-        </div>
-      </LoadScript>
+          {arrivalCoords && (
+            <Marker position={arrivalCoords} icon={arrivalIcon}>
+              <Popup>
+                <div className="text-sm font-medium">{arrival}</div>
+              </Popup>
+            </Marker>
+          )}
+        </MapContainer>
+
+        {/* Open in maps link */}
+        <a
+          href={osmUrl}
+          target="_blank"
+          rel="noopener noreferrer"
+          className="absolute top-3 right-3 flex items-center gap-1 px-3 py-2 bg-[#C9A96E]/20 hover:bg-[#C9A96E]/30 border border-[#C9A96E]/50 rounded-lg text-[#C9A96E] text-xs transition-all"
+        >
+          <ExternalLink className="w-3 h-3" /> Détails
+        </a>
+      </div>
 
       {/* Info bar */}
-      {routeInfo && (
-        <div className="px-6 py-4 bg-white/[0.02] border-t border-white/10 space-y-3">
-          <div className="flex items-center gap-6">
-            <div className="flex items-center gap-2">
-              <div className="w-8 h-8 rounded-full bg-[#C9A96E]/10 flex items-center justify-center">
-                <Navigation className="w-4 h-4 text-[#C9A96E]" />
+      {(distance_km || travelTime) && (
+        <div className="flex items-center justify-between px-6 py-4 bg-white/[0.02] border-t border-white/10">
+          <div className="flex gap-6">
+            {distance_km && (
+              <div className="flex items-center gap-2">
+                <div className="w-8 h-8 rounded-full bg-[#C9A96E]/10 flex items-center justify-center">
+                  <Zap className="w-4 h-4 text-[#C9A96E]" />
+                </div>
+                <div>
+                  <p className="text-white/40 text-xs">Distance</p>
+                  <p className="text-white font-medium">{distance_km} km</p>
+                </div>
               </div>
-              <div>
-                <p className="text-white/40 text-xs">Distância</p>
-                <p className="text-white font-medium">{routeInfo.distance} km</p>
+            )}
+            {travelTime && (
+              <div className="flex items-center gap-2">
+                <div className="w-8 h-8 rounded-full bg-[#C9A96E]/10 flex items-center justify-center">
+                  <Clock className="w-4 h-4 text-[#C9A96E]" />
+                </div>
+                <div>
+                  <p className="text-white/40 text-xs">Durée estimée</p>
+                  <p className="text-white font-medium">
+                    {travelTime.hours > 0 && `${travelTime.hours}h `}
+                    {travelTime.minutes}min
+                  </p>
+                </div>
               </div>
-            </div>
-
-            <div className="flex items-center gap-2">
-              <div className="w-8 h-8 rounded-full bg-[#C9A96E]/10 flex items-center justify-center">
-                <Clock className="w-4 h-4 text-[#C9A96E]" />
-              </div>
-              <div>
-                <p className="text-white/40 text-xs">Tempo estimado</p>
-                <p className="text-white font-medium">
-                  {Math.floor(routeInfo.duration / 60)}h {Math.round(routeInfo.duration % 60)}min
-                </p>
-              </div>
-            </div>
+            )}
           </div>
-
-          {routeInfo.hasTraffic && (
-            <div className="flex items-center gap-2 text-yellow-400 text-xs bg-yellow-500/10 border border-yellow-500/30 rounded-lg px-3 py-2">
-              <AlertCircle className="w-4 h-4 flex-shrink-0" />
-              <span>Tempo com trânsito: {Math.floor(routeInfo.durationInTraffic / 60)}h {Math.round(routeInfo.durationInTraffic % 60)}min</span>
-            </div>
-          )}
-
-          {error && (
-            <div className="text-red-400 text-xs bg-red-500/10 border border-red-500/30 rounded-lg px-3 py-2">
-              {error}
-            </div>
-          )}
         </div>
       )}
     </div>
