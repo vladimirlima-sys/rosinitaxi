@@ -328,6 +328,12 @@ export const translations = {
       comfort: ['Premium-Fahrzeug', 'Ledersitze', 'Kostenloses WLAN', 'Wasser & Erfrischungen', 'USB-Ladegeräte'],
     },
     perKm: '/km',
+    journeyDetails: 'Reisedetails',
+    journeyDistance: 'Entfernung',
+    journeyTime: 'Geschätzte Zeit',
+    km: 'km',
+    hours: 'h',
+    minutes: 'min',
   },
   it: {
     badge: 'Disponibile 24/7 — Ogni giorno',
