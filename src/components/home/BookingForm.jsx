@@ -60,8 +60,11 @@ export default function BookingForm({ bookingRef }) {
             );
             const data = await response.json();
             if (data.address) {
-              const address = data.address.city || data.address.town || data.address.village || data.address.county || data.display_name.split(',')[0];
-              update('departure_point', address);
+              const street = data.address.road || '';
+              const houseNumber = data.address.house_number || '';
+              const city = data.address.city || data.address.town || data.address.village || '';
+              const fullAddress = [houseNumber, street, city].filter(Boolean).join(', ');
+              update('departure_point', fullAddress || data.display_name.split(',')[0]);
             }
           } catch (err) {
             console.error('Geocoding error:', err);
