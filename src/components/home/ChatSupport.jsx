@@ -165,10 +165,10 @@ export default function ChatSupport() {
         className="w-14 h-14 rounded-full bg-transparent border-2 border-[#C9A96E] hover:bg-[#C9A96E]/20 text-[#C9A96E] shadow-lg flex items-center justify-center transition-all hover:scale-110"
       >
         {isOpen
-          ? <X className="w-6 h-6 text-[#0A0A0A]" />
-          : (
-            <div className="relative">
-              <MessageCircle className="w-6 h-6 text-[#0A0A0A]" />
+           ? <X className="w-6 h-6" />
+           : (
+             <div className="relative">
+               <MessageCircle className="w-6 h-6" />
               {hasUnread && (
                 <span className="absolute -top-1.5 -right-1.5 w-3 h-3 bg-red-500 rounded-full border-2 border-[#C9A96E]" />
               )}
