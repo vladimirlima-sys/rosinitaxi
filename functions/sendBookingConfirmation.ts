@@ -89,8 +89,23 @@ Deno.serve(async (req) => {
 </body>
 </html>`;
 
-    // Send emails using Gmail OAuth via fetch
+    // Send emails using Gmail API
     const sendEmailViaGmail = async (to, subject, htmlBody) => {
+      // Encode email message properly for RFC 2822 format
+      const emailMessage = 
+        `From: Rosini Transfert <taxirosini@gmail.com>\r\n` +
+        `To: ${to}\r\n` +
+        `Subject: =?UTF-8?B?${Buffer.from(subject).toString('base64')}?=\r\n` +
+        `MIME-Version: 1.0\r\n` +
+        `Content-Type: text/html; charset="UTF-8"\r\n` +
+        `Content-Transfer-Encoding: base64\r\n\r\n` +
+        Buffer.from(htmlBody).toString('base64');
+
+      const encodedMessage = Buffer.from(emailMessage).toString('base64')
+        .replace(/\+/g, '-')
+        .replace(/\//g, '_')
+        .replace(/=/g, '');
+
       const response = await fetch('https://www.googleapis.com/gmail/v1/users/me/messages/send', {
         method: 'POST',
         headers: {
@@ -98,15 +113,7 @@ Deno.serve(async (req) => {
           'Content-Type': 'application/json',
         },
         body: JSON.stringify({
-          raw: btoa(
-            `From: Rosini Transfert <taxirosini@gmail.com>\r\n` +
-            `To: ${to}\r\n` +
-            `Subject: ${subject}\r\n` +
-            `MIME-Version: 1.0\r\n` +
-            `Content-Type: text/html; charset="UTF-8"\r\n` +
-            `Content-Transfer-Encoding: 7bit\r\n\r\n` +
-            htmlBody
-          ),
+          raw: encodedMessage,
         }),
       });
 
