@@ -330,18 +330,27 @@ export default function BookingForm({ bookingRef }) {
                   {/* Suggestions dropdown */}
                   {arrivalSuggestions.length > 0 && (
                     <div ref={suggestionRef} className="absolute top-full left-0 right-0 mt-1 bg-[#0A0A0A] border border-[#C9A96E]/20 rounded-lg overflow-hidden z-50 shadow-lg">
-                      {arrivalSuggestions.map((suggestion) => (
-                        <button
-                          key={suggestion.id}
-                          onClick={() => selectSuggestion(suggestion)}
-                          className="w-full text-left px-4 py-2 text-white/80 hover:bg-[#C9A96E]/10 transition-colors text-sm border-b border-white/5 last:border-b-0"
-                        >
-                          <div className="flex items-center gap-2">
-                            <MapPin className="w-3 h-3 text-[#C9A96E] flex-shrink-0" />
-                            <span className="truncate">{suggestion.display_name}</span>
-                          </div>
-                        </button>
-                      ))}
+                      {arrivalSuggestions.map((suggestion) => {
+                        const street = suggestion.address.road || '';
+                        const houseNumber = suggestion.address.house_number || '';
+                        const city = suggestion.address.city || suggestion.address.town || '';
+                        const detailedAddress = [houseNumber, street].filter(Boolean).join(', ');
+                        return (
+                          <button
+                            key={suggestion.id}
+                            onClick={() => selectArrivalSuggestion(suggestion)}
+                            className="w-full text-left px-4 py-3 text-white/80 hover:bg-[#C9A96E]/10 transition-colors text-sm border-b border-white/5 last:border-b-0"
+                          >
+                            <div className="flex items-center gap-2">
+                              <MapPin className="w-3 h-3 text-[#C9A96E] flex-shrink-0" />
+                              <div>
+                                {detailedAddress && <div className="text-white font-medium">{detailedAddress}</div>}
+                                <div className="text-white/60 text-xs">{city}</div>
+                              </div>
+                            </div>
+                          </button>
+                        );
+                      })}
                     </div>
                   )}
                 </div>
