@@ -1,4 +1,3 @@
-
 export const translations = {
   pt: {
     badge: 'Disponível 24h/24 — 7 dias/7',
@@ -81,7 +80,6 @@ export const translations = {
       comfort: ['Veículo premium', 'Bancos de couro', 'Wi-Fi gratuito', 'Água & bebidas', 'Carregadores USB'],
     },
     perKm: '/km',
-    journeyDetails: 'Detalhes da viagem',
     journeyDistance: 'Distância',
     journeyTime: 'Tempo estimado',
     km: 'km',
