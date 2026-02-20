@@ -86,22 +86,22 @@ Deno.serve(async (req) => {
 </body>
 </html>`;
 
-    // Send confirmation email to client
-    await transporter.sendMail({
-      from: 'Rosini Transfert <taxirosini@gmail.com>',
+    // Send confirmation email to client using Base44 SendEmail
+    await base44.asServiceRole.integrations.Core.SendEmail({
       to: client_email,
       subject: `✅ Réservation confirmée — ${departure_point} → ${arrival_point}`,
-      html: clientEmailBody,
+      body: clientEmailBody,
+      from_name: 'Rosini Transfert',
     });
 
     console.log(`Confirmation email sent to ${client_email}`);
 
-    // Send notification email to admin
-    await transporter.sendMail({
-      from: 'Rosini Transfert <taxirosini@gmail.com>',
+    // Send notification email to admin using Base44 SendEmail
+    await base44.asServiceRole.integrations.Core.SendEmail({
       to: 'taxirosini@gmail.com',
       subject: `🔔 Nouvelle réservation — ${client_name} | ${departure_point} → ${arrival_point} | CHF ${total_price}`,
-      html: adminEmailBody,
+      body: adminEmailBody,
+      from_name: 'Rosini Transfert',
     });
 
     console.log(`Admin notification sent for booking by ${client_name}`);
