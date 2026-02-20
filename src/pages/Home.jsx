@@ -4,6 +4,7 @@ import ServicesSection from '@/components/home/ServicesSection';
 import BookingForm from '@/components/home/BookingForm';
 import FooterSection from '@/components/home/FooterSection';
 import LanguageSwitcher from '@/components/home/LanguageSwitcher';
+import ChatSupport from '@/components/home/ChatSupport';
 import { LanguageProvider } from '@/components/LanguageContext';
 
 export default function Home() {
