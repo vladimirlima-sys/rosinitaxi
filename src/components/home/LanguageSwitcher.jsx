@@ -2,6 +2,7 @@ import React from 'react';
 import { useLang } from '@/components/LanguageContext';
 
 const languages = [
+  { code: 'pt', label: 'PT' },
   { code: 'fr', label: 'FR' },
   { code: 'en', label: 'EN' },
   { code: 'de', label: 'DE' },
