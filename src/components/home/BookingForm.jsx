@@ -30,6 +30,7 @@ export default function BookingForm({ bookingRef }) {
     client_email: '',
     client_phone: '',
     notes: '',
+    driver_preference: '',
     distance_km: 0,
   });
   const [estimatedDistance, setEstimatedDistance] = useState(0);
