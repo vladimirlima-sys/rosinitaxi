@@ -57,7 +57,8 @@ export default function PlacesAutocomplete({
     }
 
     if (!autocompleteServiceRef.current) {
-      setError(t?.addressSuggestions || 'Service unavailable');
+      console.warn('AutocompleteService not initialized');
+      setError(t?.autocompleteService || 'Service unavailable');
       return;
     }
 
@@ -71,9 +72,9 @@ export default function PlacesAutocomplete({
         sessionToken: sessionToken || undefined,
       });
 
-      if (result?.predictions) {
+      if (result?.predictions && result.predictions.length > 0) {
         setSuggestions(result.predictions);
-        setShowSuggestions(result.predictions.length > 0);
+        setShowSuggestions(true);
         setSelectedIndex(-1);
       } else {
         setSuggestions([]);
@@ -81,7 +82,7 @@ export default function PlacesAutocomplete({
       }
     } catch (err) {
       console.error('Autocomplete fetch error:', err);
-      setError('Erro ao buscar sugestões');
+      setError(t?.autocompleteService || 'Service unavailable');
       setSuggestions([]);
     } finally {
       setIsLoading(false);
@@ -291,7 +292,7 @@ export default function PlacesAutocomplete({
       {showSuggestions && isLoading && (
         <div className="absolute top-full mt-2 w-full bg-[#1a1a1a] border border-[#C9A96E]/30 rounded-xl shadow-2xl z-50 p-4 flex items-center justify-center">
           <Loader className="w-4 h-4 text-[#C9A96E] animate-spin mr-2" />
-          <span className="text-white/60 text-sm">{t?.addressSuggestions || 'Searching...'}</span>
+          <span className="text-white/60 text-sm">{t?.autocompleteLoading || 'Searching...'}</span>
         </div>
       )}
     </div>
