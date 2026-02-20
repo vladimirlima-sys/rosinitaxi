@@ -3,8 +3,12 @@ import { MapPin, Navigation2, Satellite, Map, Share2, Download, X } from 'lucide
 import { Button } from '@/components/ui/button';
 import { toast } from 'sonner';
 import { motion, AnimatePresence } from 'framer-motion';
+import { useLang } from '@/components/LanguageContext';
+import { translations } from '@/components/translations';
 
 export default function RouteMapDisplay({ departure, arrival, route, onClose }) {
+  const { lang } = useLang();
+  const t = translations[lang];
   const mapRef = useRef(null);
   const mapInstance = useRef(null);
   const [mapLoaded, setMapLoaded] = useState(false);
@@ -120,7 +124,7 @@ export default function RouteMapDisplay({ departure, arrival, route, onClose }) 
       const departureMarker = new google.maps.Marker({
         position: leg.start_location,
         map: map,
-        title: 'Partida',
+        title: t.departurePoint,
         icon: {
           path: 'M0,-28a28,28 0 0,1 0,56a28,28 0 0,1 0,-56',
           fillColor: '#C9A96E',
@@ -131,7 +135,7 @@ export default function RouteMapDisplay({ departure, arrival, route, onClose }) 
           anchor: new google.maps.Point(0, 0)
         },
         label: {
-          text: 'PARTIDA',
+          text: t.markerDeparture,
           color: '#0A0A0A',
           fontSize: '11px',
           fontWeight: 'bold'
@@ -143,7 +147,7 @@ export default function RouteMapDisplay({ departure, arrival, route, onClose }) 
       const arrivalMarker = new google.maps.Marker({
         position: leg.end_location,
         map: map,
-        title: 'Chegada',
+        title: t.arrivalPoint,
         icon: {
           path: 'M0,-28a28,28 0 0,1 0,56a28,28 0 0,1 0,-56',
           fillColor: '#4CAF50',
@@ -154,7 +158,7 @@ export default function RouteMapDisplay({ departure, arrival, route, onClose }) 
           anchor: new google.maps.Point(0, 0)
         },
         label: {
-          text: 'CHEGADA',
+          text: t.markerArrival,
           color: '#fff',
           fontSize: '11px',
           fontWeight: 'bold'
@@ -216,7 +220,7 @@ export default function RouteMapDisplay({ departure, arrival, route, onClose }) 
             <div className="p-6 border-b border-[#C9A96E]/30 flex items-center justify-between">
               <div className="flex items-center gap-3">
                 <Navigation2 className="w-5 h-5 text-[#C9A96E]" />
-                <h3 className="text-white font-medium">Rota Calculada</h3>
+                <h3 className="text-white font-medium">{t.routeCalculated}</h3>
               </div>
               <div className="flex items-center gap-2">
                 <motion.button
@@ -252,14 +256,14 @@ export default function RouteMapDisplay({ departure, arrival, route, onClose }) 
                 <div>
                   <p className="text-white/40 text-xs uppercase tracking-wide flex items-center gap-1">
                     <span className="inline-block w-3 h-3 rounded-full bg-[#C9A96E]" />
-                    Ponto de Partida
+                    {t.departurePoint}
                   </p>
                   <p className="text-white text-sm mt-1">{departure}</p>
                 </div>
                 <div className="flex-1 text-right">
                   <p className="text-white/40 text-xs uppercase tracking-wide flex items-center justify-end gap-1">
                     <span className="inline-block w-3 h-3 rounded-full bg-[#4CAF50]" />
-                    Ponto de Chegada
+                    {t.arrivalPoint}
                   </p>
                   <p className="text-white text-sm mt-1">{arrival}</p>
                 </div>
@@ -272,7 +276,7 @@ export default function RouteMapDisplay({ departure, arrival, route, onClose }) 
                   className="flex-1 flex items-center justify-center gap-2 px-4 py-2.5 rounded-xl bg-white/5 border border-white/10 text-white text-sm transition-colors"
                 >
                   <Share2 className="w-4 h-4" />
-                  Compartilhar
+                  {t.share}
                 </motion.button>
                 <motion.button
                   whileHover={{ y: -1 }}
@@ -281,7 +285,7 @@ export default function RouteMapDisplay({ departure, arrival, route, onClose }) 
                   className="flex-1 flex items-center justify-center gap-2 px-4 py-2.5 rounded-xl bg-white/5 border border-white/10 text-white text-sm transition-colors"
                 >
                   <Download className="w-4 h-4" />
-                  Salvar
+                  {t.save}
                 </motion.button>
                 <motion.div
                   whileHover={{ y: -1 }}
@@ -292,7 +296,7 @@ export default function RouteMapDisplay({ departure, arrival, route, onClose }) 
                     onClick={handleCloseClick}
                     className="flex-1 bg-[#C9A96E] hover:bg-[#B8955D] text-[#0A0A0A] font-semibold h-11 rounded-xl"
                   >
-                    Fechar
+                    {t.close}
                   </Button>
                 </motion.div>
               </div>
