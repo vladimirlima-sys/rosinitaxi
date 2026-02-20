@@ -470,5 +470,10 @@ export const translations = {
     km: 'km',
     hours: 'h',
     minutes: 'min',
+    pricePerKm: 'Prezzo per km',
+    baseFare: 'Tariffa base',
+    nightSurcharge: 'Supplemento notturno',
+    airportFee: 'Tassa aeroporto',
+    total: 'Totale',
   },
 };
