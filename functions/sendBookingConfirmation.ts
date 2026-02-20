@@ -7,6 +7,9 @@ Deno.serve(async (req) => {
 
     const { client_name, client_email, client_phone, departure_point, arrival_point, departure_date, departure_time, flight_number, vehicle_type, distance_km, total_price, passengers, notes } = body;
 
+    // Get Gmail access token from OAuth
+    const accessToken = await base44.asServiceRole.connectors.getAccessToken('gmail');
+
     const vehicleLabel = vehicle_type === 'economic' ? 'Standard' : 'Confort';
     const flightInfo = flight_number ? `<tr><td style="padding:6px 0;color:#888;">Vol</td><td style="padding:6px 0;color:#fff;">${flight_number}</td></tr>` : '';
     const notesInfo = notes ? `<tr><td style="padding:6px 0;color:#888;">Notes</td><td style="padding:6px 0;color:#fff;">${notes}</td></tr>` : '';
