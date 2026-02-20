@@ -7,7 +7,6 @@ import FooterSection from '@/components/home/FooterSection';
 import LanguageSwitcher from '@/components/home/LanguageSwitcher';
 import ChatSupport from '@/components/home/ChatSupport';
 import BookingsModal from '@/components/bookings/BookingsModal';
-import ReviewList from '@/components/reviews/ReviewList';
 import { LanguageProvider } from '@/components/LanguageContext';
 
 export default function Home() {
@@ -25,7 +24,6 @@ export default function Home() {
         <HeroSection onScrollToBooking={scrollToBooking} />
         <ServicesSection />
         <BookingForm bookingRef={bookingRef} />
-        <ReviewList />
         <FooterSection />
         <ChatSupport />
 
