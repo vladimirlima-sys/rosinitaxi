@@ -271,6 +271,11 @@ export const translations = {
     checkoutFromPublishedApp: 'Payment only works from the published app.',
     estimateDistanceError: 'Unable to estimate distance. Please try again.',
     paymentError: 'Payment error. Please try again.',
+    pricePerKm: 'Price per km',
+    baseFare: 'Base fare',
+    nightSurcharge: 'Night Surcharge',
+    airportFee: 'Airport Fee',
+    total: 'Total',
   },
   de: {
     badge: 'Verfügbar 24/7 — Jeden Tag',
@@ -362,6 +367,11 @@ export const translations = {
     checkoutFromPublishedApp: 'Die Zahlung funktioniert nur in der veröffentlichten App.',
     estimateDistanceError: 'Entfernung kann nicht geschätzt werden. Bitte versuchen Sie es erneut.',
     paymentError: 'Zahlungsfehler. Bitte versuchen Sie es erneut.',
+    pricePerKm: 'Preis pro km',
+    baseFare: 'Grundgebühr',
+    nightSurcharge: 'Nachtzuschlag',
+    airportFee: 'Flughafengebühr',
+    total: 'Gesamt',
   },
   it: {
     badge: 'Disponibile 24/7 — Ogni giorno',
