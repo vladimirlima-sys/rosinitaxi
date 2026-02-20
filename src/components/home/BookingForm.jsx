@@ -7,6 +7,7 @@ import { Textarea } from '@/components/ui/textarea';
 import VehicleCard from './VehicleCard';
 import PricingBreakdown from './PricingBreakdown';
 import JourneyDetails from './JourneyDetails';
+import RouteMap from './RouteMap';
 import { base44 } from '@/api/base44Client';
 import { toast } from 'sonner';
 import { useLang } from '@/components/LanguageContext';
@@ -114,25 +115,8 @@ export default function BookingForm({ bookingRef }) {
 
   const estimateDistance = async () => {
     if (!form.departure_point || !form.arrival_point) return;
-    setIsEstimating(true);
-    try {
-      const result = await base44.integrations.Core.InvokeLLM({
-        prompt: `Estimate the driving distance in kilometers between "${form.departure_point}" and "${form.arrival_point}". Return ONLY a JSON object with the distance. Be accurate based on real road distances.`,
-        response_json_schema: {
-          type: "object",
-          properties: {
-            distance_km: { type: "number", description: "Estimated driving distance in kilometers" }
-          }
-        }
-      });
-      const dist = Math.round(result.distance_km);
-      setEstimatedDistance(dist);
-      setEstimatedTime(calculateEstimatedTime(dist));
-      update('distance_km', dist);
-    } catch {
-      toast.error(t.estimateDistanceError || "Impossible d'estimer la distance. Veuillez réessayer.");
-    }
-    setIsEstimating(false);
+    // The RouteMap component will handle distance calculation via onRouteCalculated
+    return;
   };
 
   const handleRouteCalculated = (routeData) => {
@@ -352,14 +336,14 @@ export default function BookingForm({ bookingRef }) {
               </div>
             </div>
 
-            {/* Journey Details */}
-            {estimatedDistance > 0 && (
-              <div className="p-8 rounded-3xl bg-gradient-to-br from-[#C9A96E]/10 to-[#C9A96E]/5 border border-[#C9A96E]/40 backdrop-blur-sm">
-                <JourneyDetails 
-                  distance_km={estimatedDistance}
-                  estimatedTime={estimatedTime}
-                />
-              </div>
+            {/* Route Map - calculates distance and time automatically */}
+            {form.departure_point && form.arrival_point && (
+              <RouteMap 
+                departure={form.departure_point}
+                arrival={form.arrival_point}
+                distance_km={estimatedDistance}
+                onRouteCalculated={handleRouteCalculated}
+              />
             )}
 
             {/* Date, Time & Flight Section */}
@@ -416,14 +400,8 @@ export default function BookingForm({ bookingRef }) {
             {/* Action Button */}
             <div className="flex justify-end">
               <Button 
-                onClick={() => { 
-                  if (!estimatedDistance && form.departure_point && form.arrival_point) { 
-                    estimateDistance().then(() => setStep(2)); 
-                  } else { 
-                    setStep(2); 
-                  } 
-                }} 
-                disabled={!canProceedStep1} 
+                onClick={() => setStep(2)} 
+                disabled={!canProceedStep1 || estimatedDistance === 0} 
                 className="bg-[#C9A96E] hover:bg-[#B8955D] text-[#0A0A0A] font-semibold px-12 h-13 rounded-xl transition-all hover:shadow-lg hover:shadow-[#C9A96E]/20"
               >
                 {t.continueBtn}
