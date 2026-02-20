@@ -45,6 +45,12 @@ export default function FooterSection() {
         </div>
 
         <div className="h-[1px] bg-white/5 mb-8" />
+
+        <div className="text-center mb-8">
+          <p className="text-white/30 text-sm">Chemin des Bulesses 16, 1814 La Tour-de-Peilz — Suisse</p>
+        </div>
+
+        <div className="h-[1px] bg-white/5 mb-8" />
         
         <div className="flex flex-col md:flex-row justify-between items-center gap-4">
           <p className="text-white/20 text-sm">{t.copyright(new Date().getFullYear())}</p>
