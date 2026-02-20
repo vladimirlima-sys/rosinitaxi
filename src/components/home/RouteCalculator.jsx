@@ -21,21 +21,30 @@ export default function RouteCalculator({ departure, arrival, onRouteCalculated 
           origin: departure,
           destination: arrival,
           travelMode: google.maps.TravelMode.DRIVING,
-          unitSystem: google.maps.UnitSystem.METRIC
+          unitSystem: google.maps.UnitSystem.METRIC,
+          drivingOptions: {
+            departureTime: new Date(),
+            trafficModel: google.maps.TrafficModel.BEST_GUESS
+          }
         });
 
         if (result.routes && result.routes.length > 0) {
           const route = result.routes[0];
           const leg = route.legs[0];
 
-          // Extrair distância em km e tempo em minutos
-          const distance = leg.distance.value / 1000; // converter metros para km
-          const duration = leg.duration.value / 60; // converter segundos para minutos
+          // Extrair distância em km
+          const distance = leg.distance.value / 1000;
+          
+          // Usar duração em tráfego em tempo real se disponível
+          const duration = leg.duration_in_traffic ? 
+            leg.duration_in_traffic.value / 60 : 
+            leg.duration.value / 60;
 
           onRouteCalculated({
-            distance_km: Math.round(distance * 10) / 10, // arredondar para 1 casa decimal
+            distance_km: Math.round(distance * 10) / 10,
             estimated_time_minutes: Math.round(duration),
-            route: route
+            route: route,
+            bounds: result.routes[0].bounds
           });
         }
       } catch (err) {

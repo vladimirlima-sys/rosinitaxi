@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useRef } from 'react';
-import { MapPin, Calendar, Clock, Plane, User, Mail, Phone, MessageSquare, Loader2, Loader } from 'lucide-react';
+import { MapPin, Calendar, Clock, Plane, User, Mail, Phone, MessageSquare, Loader2, Loader, Navigation2 } from 'lucide-react';
 import { Input } from '@/components/ui/input';
 import { Button } from '@/components/ui/button';
 import { Label } from '@/components/ui/label';
@@ -10,6 +10,7 @@ import JourneyDetails from './JourneyDetails';
 import DepartureInput from './DepartureInput';
 import ArrivalInput from './ArrivalInput';
 import RouteCalculator from './RouteCalculator';
+import RouteMapDisplay from './RouteMapDisplay';
 
 import { base44 } from '@/api/base44Client';
 import { toast } from 'sonner';
@@ -44,6 +45,8 @@ export default function BookingForm({ bookingRef }) {
   const [isLocating, setIsLocating] = useState(false);
   const [estimatedTime, setEstimatedTime] = useState(0);
   const [priceSettings, setPriceSettings] = useState(null);
+  const [showRouteMap, setShowRouteMap] = useState(false);
+  const [currentRoute, setCurrentRoute] = useState(null);
 
 
   const update = (field, value) => setForm(prev => ({ ...prev, [field]: value }));
@@ -127,6 +130,7 @@ export default function BookingForm({ bookingRef }) {
     if (routeData.distance_km > 0) {
       setEstimatedDistance(routeData.distance_km);
       setEstimatedTime(routeData.estimated_time_minutes);
+      setCurrentRoute(routeData.route);
       update('distance_km', routeData.distance_km);
     }
   };
@@ -335,10 +339,24 @@ export default function BookingForm({ bookingRef }) {
             {/* Journey Details */}
             {estimatedDistance > 0 && (
               <div className="p-8 rounded-3xl bg-gradient-to-br from-[#C9A96E]/10 to-[#C9A96E]/5 border border-[#C9A96E]/40 backdrop-blur-sm">
-                <JourneyDetails 
-                  distance_km={estimatedDistance}
-                  estimatedTime={estimatedTime}
-                />
+                <div className="flex items-center justify-between mb-4">
+                  <div className="flex-1">
+                    <JourneyDetails 
+                      distance_km={estimatedDistance}
+                      estimatedTime={estimatedTime}
+                    />
+                  </div>
+                  {currentRoute && (
+                    <Button
+                      onClick={() => setShowRouteMap(true)}
+                      variant="outline"
+                      className="ml-4 border-[#C9A96E]/50 text-[#C9A96E] hover:bg-[#C9A96E]/10 gap-2"
+                    >
+                      <Navigation2 className="w-4 h-4" />
+                      Ver Mapa
+                    </Button>
+                  )}
+                </div>
               </div>
             )}
 
