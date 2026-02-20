@@ -1,14 +1,36 @@
 import React, { useEffect, useState } from 'react';
-import { MapPin, Navigation, Clock, Zap } from 'lucide-react';
+import { MapContainer, TileLayer, Marker, Popup } from 'react-leaflet';
+import { Clock, Zap, ExternalLink } from 'lucide-react';
+import L from 'leaflet';
+import 'leaflet/dist/leaflet.css';
+
+// Custom icons
+const departureIcon = new L.Icon({
+  iconUrl: 'https://raw.githubusercontent.com/pointhi/leaflet-color-markers/master/img/marker-icon-2x-gold.png',
+  shadowUrl: 'https://cdnjs.cloudflare.com/ajax/libs/leaflet/0.7.7/images/marker-shadow.png',
+  iconSize: [25, 41],
+  iconAnchor: [12, 41],
+  popupAnchor: [1, -34],
+  shadowSize: [41, 41]
+});
+
+const arrivalIcon = new L.Icon({
+  iconUrl: 'https://raw.githubusercontent.com/pointhi/leaflet-color-markers/master/img/marker-icon-2x-green.png',
+  shadowUrl: 'https://cdnjs.cloudflare.com/ajax/libs/leaflet/0.7.7/images/marker-shadow.png',
+  iconSize: [25, 41],
+  iconAnchor: [12, 41],
+  popupAnchor: [1, -34],
+  shadowSize: [41, 41]
+});
 
 export default function RouteMap({ departure, arrival, distance_km }) {
   const [travelTime, setTravelTime] = useState(null);
+  const [departureCoords, setDepartureCoords] = useState(null);
+  const [arrivalCoords, setArrivalCoords] = useState(null);
 
   useEffect(() => {
     if (!distance_km || distance_km === 0) return;
 
-    // Calculate travel time based on average speed
-    // Average speed: 80-90 km/h on highways in Switzerland
     const avgSpeed = 85; // km/h
     const hours = distance_km / avgSpeed;
     const minutes = Math.round((hours % 1) * 60);
@@ -17,61 +39,69 @@ export default function RouteMap({ departure, arrival, distance_km }) {
     setTravelTime({
       hours: finalHours,
       minutes: minutes,
-      total: distance_km / avgSpeed // in hours as decimal
+      total: distance_km / avgSpeed
     });
   }, [distance_km]);
 
+  // Geocode departure and arrival
+  useEffect(() => {
+    const geocodeLocation = async (location, setter) => {
+      try {
+        const response = await fetch(
+          `https://nominatim.openstreetmap.org/search?format=json&q=${encodeURIComponent(location)}&limit=1&countrycodes=ch,it,fr,de,at`
+        );
+        const data = await response.json();
+        if (data.length > 0) {
+          setter([parseFloat(data[0].lat), parseFloat(data[0].lon)]);
+        }
+      } catch (err) {
+        console.error('Geocoding error:', err);
+      }
+    };
+
+    if (departure && !departureCoords) geocodeLocation(departure, setDepartureCoords);
+    if (arrival && !arrivalCoords) geocodeLocation(arrival, setArrivalCoords);
+  }, [departure, arrival, departureCoords, arrivalCoords]);
+
   if (!departure || !arrival) return null;
 
+  // Default map center if coords not available
+  const center = departureCoords || [46.8, 8.2]; // Switzerland center
   const osmUrl = `https://www.openstreetmap.org/directions?engine=fossgis_osrm_car&route=${encodeURIComponent(departure)};${encodeURIComponent(arrival)}`;
 
   return (
     <div className="rounded-2xl overflow-hidden border border-white/10 bg-white/[0.03]">
-      {/* Map visual */}
-      <div className="relative h-48 bg-[#0d1117] flex items-center justify-center overflow-hidden">
-        {/* Decorative grid background */}
-        <div className="absolute inset-0 opacity-10"
-          style={{
-            backgroundImage: 'linear-gradient(rgba(201,169,110,0.3) 1px, transparent 1px), linear-gradient(90deg, rgba(201,169,110,0.3) 1px, transparent 1px)',
-            backgroundSize: '40px 40px',
-          }}
-        />
-
-        {/* Dotted route line */}
-        <div className="relative w-full flex items-center justify-center px-10 gap-4">
-          {/* Departure pin */}
-          <div className="flex flex-col items-center gap-1 flex-shrink-0">
-            <div className="w-10 h-10 rounded-full bg-[#C9A96E]/20 border border-[#C9A96E]/50 flex items-center justify-center">
-              <MapPin className="w-5 h-5 text-[#C9A96E]" />
-            </div>
-            <span className="text-white/60 text-xs text-center max-w-[100px] truncate">{departure}</span>
-          </div>
-
-          {/* Route line */}
-          <div className="flex-1 flex items-center gap-1">
-            {Array.from({ length: 12 }).map((_, i) => (
-              <div key={i} className="flex-1 h-[2px] bg-[#C9A96E]/40 rounded-full" />
-            ))}
-            <Navigation className="w-5 h-5 text-[#C9A96E] flex-shrink-0 rotate-90" />
-          </div>
-
-          {/* Arrival pin */}
-          <div className="flex flex-col items-center gap-1 flex-shrink-0">
-            <div className="w-10 h-10 rounded-full bg-green-500/20 border border-green-500/50 flex items-center justify-center">
-              <MapPin className="w-5 h-5 text-green-400" />
-            </div>
-            <span className="text-white/60 text-xs text-center max-w-[100px] truncate">{arrival}</span>
-          </div>
-        </div>
+      {/* Interactive Map */}
+      <div className="relative h-80 bg-[#0d1117] overflow-hidden">
+        <MapContainer center={center} zoom={9} style={{ height: '100%', width: '100%' }} scrollWheelZoom={false}>
+          <TileLayer
+            url="https://{s}.basemaps.cartocdn.com/dark_all/{z}/{x}/{y}{r}.png"
+            attribution='© OpenStreetMap contributors'
+          />
+          {departureCoords && (
+            <Marker position={departureCoords} icon={departureIcon}>
+              <Popup>
+                <div className="text-sm font-medium">{departure}</div>
+              </Popup>
+            </Marker>
+          )}
+          {arrivalCoords && (
+            <Marker position={arrivalCoords} icon={arrivalIcon}>
+              <Popup>
+                <div className="text-sm font-medium">{arrival}</div>
+              </Popup>
+            </Marker>
+          )}
+        </MapContainer>
 
         {/* Open in maps link */}
         <a
           href={osmUrl}
           target="_blank"
           rel="noopener noreferrer"
-          className="absolute bottom-3 right-3 text-[10px] text-white/20 hover:text-[#C9A96E] transition-colors"
+          className="absolute top-3 right-3 flex items-center gap-1 px-3 py-2 bg-[#C9A96E]/20 hover:bg-[#C9A96E]/30 border border-[#C9A96E]/50 rounded-lg text-[#C9A96E] text-xs transition-all"
         >
-          Voir sur la carte →
+          <ExternalLink className="w-3 h-3" /> Détails
         </a>
       </div>
 
