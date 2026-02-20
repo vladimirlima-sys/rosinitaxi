@@ -34,6 +34,7 @@ export default function BookingForm({ bookingRef }) {
   });
   const [estimatedDistance, setEstimatedDistance] = useState(0);
   const [isEstimating, setIsEstimating] = useState(false);
+  const [dynamicPrice, setDynamicPrice] = useState(null);
 
   const update = (field, value) => setForm(prev => ({ ...prev, [field]: value }));
 
