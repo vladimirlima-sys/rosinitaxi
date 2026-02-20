@@ -1,5 +1,5 @@
-import React, { useState } from 'react';
-import { MapPin, Calendar, Clock, Plane, User, Mail, Phone, MessageSquare, Loader2, Star } from 'lucide-react';
+import React, { useState, useEffect, useRef } from 'react';
+import { MapPin, Calendar, Clock, Plane, User, Mail, Phone, MessageSquare, Loader2, Star, Loader } from 'lucide-react';
 import { Input } from '@/components/ui/input';
 import { Button } from '@/components/ui/button';
 import { Label } from '@/components/ui/label';
