@@ -281,7 +281,7 @@ export default function BookingForm({ bookingRef }) {
           <div className="space-y-8">
             <div className="text-center mb-8">
               <h3 className="text-white text-2xl font-light mb-2">{t.step1Title}</h3>
-              <p className="text-white/40 text-sm">Defina seu percurso e detalhes da viagem</p>
+              <p className="text-white/40 text-sm">{t.setYourRoute}</p>
             </div>
 
             {/* Route Section */}
@@ -290,7 +290,7 @@ export default function BookingForm({ bookingRef }) {
                 <div className="w-10 h-10 rounded-full bg-[#C9A96E]/20 flex items-center justify-center">
                   <MapPin className="w-5 h-5 text-[#C9A96E]" />
                 </div>
-                <h4 className="text-white font-medium">Seu Percurso</h4>
+                <h4 className="text-white font-medium">{t.yourRoute}</h4>
               </div>
 
               <div className="space-y-6">
@@ -408,7 +408,7 @@ export default function BookingForm({ bookingRef }) {
                 <div className="w-10 h-10 rounded-full bg-[#C9A96E]/20 flex items-center justify-center">
                   <Calendar className="w-5 h-5 text-[#C9A96E]" />
                 </div>
-                <h4 className="text-white font-medium">Detalhes da Viagem</h4>
+                <h4 className="text-white font-medium">{t.tripDetails}</h4>
               </div>
 
               <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
