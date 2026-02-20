@@ -183,7 +183,14 @@ export default function BookingForm({ bookingRef }) {
 
   const handleRouteCalculated = (routeData) => {
     setEstimatedDistance(routeData.distance_km);
+    setEstimatedTime(routeData.estimated_time_minutes || calculateEstimatedTime(routeData.distance_km));
     update('distance_km', routeData.distance_km);
+  };
+
+  const calculateEstimatedTime = (km) => {
+    // Average speed estimation: 80 km/h on highways, 50 km/h on regular roads
+    // Simplified: use average of 70 km/h
+    return Math.round((km / 70) * 60);
   };
 
   const pricePerKm = form.vehicle_type === 'economic' ? 2.35 : form.vehicle_type === 'comfort' ? 2.95 : 0;
