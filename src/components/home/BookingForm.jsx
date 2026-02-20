@@ -225,11 +225,19 @@ export default function BookingForm({ bookingRef }) {
               </div>
             )}
 
-            {totalPrice && (
+            {basePrice && form.departure_date && form.departure_time && (
+              <PricingBreakdown
+                date={form.departure_date}
+                time={form.departure_time}
+                basePrice={basePrice}
+                vehicleType={form.vehicle_type}
+                onPriceChange={(price) => setDynamicPrice(price)}
+              />
+            )}
+            {basePrice && (!form.departure_date || !form.departure_time) && (
               <div className="text-center p-6 rounded-2xl bg-white/[0.03] border border-[#C9A96E]/20">
                 <p className="text-white/40 text-sm mb-2">{t.estimatedPrice}</p>
-                <p className="text-[#C9A96E] text-4xl font-light">CHF {totalPrice}</p>
-                
+                <p className="text-[#C9A96E] text-4xl font-light">CHF {basePrice}</p>
               </div>
             )}
 
