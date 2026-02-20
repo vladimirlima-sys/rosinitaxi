@@ -176,14 +176,13 @@ export default function BookingForm({ bookingRef }) {
               </div>
             </div>
 
+            <RouteMap departure={form.departure_point} arrival={form.arrival_point} />
+
             {form.departure_point && form.arrival_point && (
-              <div className="space-y-4">
-                <div className="flex justify-center">
-                  <Button onClick={estimateDistance} disabled={isEstimating} variant="outline" className="border-[#C9A96E]/30 text-[#C9A96E] hover:bg-[#C9A96E]/10">
-                    {isEstimating ? <><Loader2 className="w-4 h-4 mr-2 animate-spin" />{t.estimating}</> : estimatedDistance > 0 ? t.estimatedDist(estimatedDistance) : t.estimateBtn}
-                  </Button>
-                </div>
-                <RouteMap departure={form.departure_point} arrival={form.arrival_point} />
+              <div className="flex justify-center">
+                <Button onClick={estimateDistance} disabled={isEstimating} variant="outline" className="border-[#C9A96E]/30 text-[#C9A96E] hover:bg-[#C9A96E]/10">
+                  {isEstimating ? <><Loader2 className="w-4 h-4 mr-2 animate-spin" />{t.estimating}</> : estimatedDistance > 0 ? t.estimatedDist(estimatedDistance) : t.estimateBtn}
+                </Button>
               </div>
             )}
 
