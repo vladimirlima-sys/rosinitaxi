@@ -180,10 +180,10 @@ export default function EditBookingForm({ booking, onSave }) {
           {isSubmitting ? <><Loader2 className="w-4 h-4 mr-2 animate-spin" /> Enregistrement...</> : <><Save className="w-4 h-4 mr-2" /> Enregistrer les modifications</>}
         </Button>
       </div>
-    </form>
+      </form>
 
-    {/* Review section for completed trips */}
-    {isCompleted && (
+      {/* Review section for completed trips */}
+      {isCompleted && (
       <div className="mt-8 pt-8 border-t border-white/10">
         {isLoadingReview ? (
           <div className="text-center py-4">
