@@ -5,7 +5,7 @@ import { Button } from '@/components/ui/button';
 import { Label } from '@/components/ui/label';
 import { Textarea } from '@/components/ui/textarea';
 import VehicleCard from './VehicleCard';
-import RouteMap from './RouteMap';
+import RouteMap from './RouteMap.jsx';
 import PricingBreakdown from './PricingBreakdown';
 import { base44 } from '@/api/base44Client';
 import { toast } from 'sonner';
