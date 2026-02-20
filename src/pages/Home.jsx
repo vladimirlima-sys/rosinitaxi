@@ -39,7 +39,7 @@ export default function Home() {
         {/* Emergency transfer call button */}
         <a
           href="tel:+41796505347"
-          className="fixed bottom-6 right-6 z-40 w-14 h-14 rounded-full bg-transparent border-2 border-[#C9A96E] hover:bg-[#C9A96E]/10 text-[#C9A96E] hover:text-[#C9A96E] shadow-lg flex items-center justify-center transition-all hover:scale-110"
+          className="fixed bottom-24 right-6 z-50 w-14 h-14 rounded-full bg-transparent border-2 border-[#C9A96E] hover:bg-[#C9A96E]/20 text-[#C9A96E] shadow-lg flex items-center justify-center transition-all hover:scale-110"
           title="Appel d'urgence"
         >
           <Phone className="w-6 h-6" />
