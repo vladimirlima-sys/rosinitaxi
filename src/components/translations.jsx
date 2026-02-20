@@ -236,7 +236,7 @@ export const translations = {
     stripeLabel: 'Stripe (Credit Card)',
     stripeDesc: 'Secure',
     twintLabel: 'TWINT',
-    twintDesc: 'Instant',
+    twintDesc: 'Pay on board',
     cashLabel: 'Cash',
     cashDesc: 'On board',
     confirmBooking: 'Confirm booking',
