@@ -375,10 +375,11 @@ export default function BookingForm({ bookingRef }) {
               </div>
             </div>
 
-            {estimatedDistance > 0 && (
-              <JourneyDetails 
-                distance_km={estimatedDistance}
-                estimatedTime={estimatedTime}
+            {form.departure_point && form.arrival_point && (
+              <RouteMap
+                departure={form.departure_point}
+                arrival={form.arrival_point}
+                onRouteCalculated={handleRouteCalculated}
               />
             )}
 
