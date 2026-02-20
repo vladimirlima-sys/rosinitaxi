@@ -337,25 +337,15 @@ export default function BookingForm({ bookingRef }) {
               </div>
             </div>
 
-            {/* Route Map - Embedded */}
-            {currentRoute && (
-              <div>
-                <EmbeddedRouteMap 
-                  departure={form.departure_point}
-                  arrival={form.arrival_point}
-                  route={currentRoute}
-                />
-              </div>
-            )}
-
-            {/* Journey Details */}
-            {estimatedDistance > 0 && (
-              <div className="p-8 rounded-3xl bg-gradient-to-br from-[#C9A96E]/10 to-[#C9A96E]/5 border border-[#C9A96E]/40 backdrop-blur-sm">
-                <JourneyDetails 
-                  distance_km={estimatedDistance}
-                  estimatedTime={estimatedTime}
-                />
-              </div>
+            {/* Route Card - Map + Journey Details */}
+            {estimatedDistance > 0 && currentRoute && (
+              <RouteCard
+                departure={form.departure_point}
+                arrival={form.arrival_point}
+                route={currentRoute}
+                distance_km={estimatedDistance}
+                estimatedTime={estimatedTime}
+              />
             )}
 
             {/* Date, Time & Flight Section */}
