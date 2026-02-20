@@ -343,17 +343,17 @@ export default function BookingForm({ bookingRef }) {
                           <button
                             key={suggestion.id}
                             onClick={() => selectArrivalSuggestion(suggestion)}
-                            className="w-full text-left px-4 py-3 !text-white hover:bg-[#C9A96E]/10 transition-colors text-sm border-b border-white/5 last:border-b-0"
+                            className="w-full text-left px-4 py-3 !text-[#C9A96E] hover:bg-[#C9A96E]/10 transition-colors text-sm border-b border-white/5 last:border-b-0"
                             >
                              <div className="flex items-center gap-2">
-                                <MapPin className="w-3 h-3 text-[#C9A96E] flex-shrink-0" />
-                                <div className="text-white">
-                                  {detailedAddress && <div className="!text-white font-medium">{detailedAddress}</div>}
-                                  <div className="!text-white/60 text-xs">{city}</div>
-                                </div>
+                              <MapPin className="w-3 h-3 text-[#C9A96E] flex-shrink-0" />
+                              <div className="text-[#C9A96E]">
+                                {detailedAddress && <div className="!text-[#C9A96E] font-medium">{detailedAddress}</div>}
+                                <div className="!text-[#C9A96E]/60 text-xs">{city}</div>
                               </div>
-                            </button>
-                        );
+                            </div>
+                          </button>
+                      );
                       })}
                     </div>
                   )}
