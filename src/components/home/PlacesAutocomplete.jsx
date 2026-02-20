@@ -67,73 +67,20 @@ export default function PlacesAutocomplete({
 }) {
   const inputRef = useRef(null);
   const debounceTimerRef = useRef(null);
-  const autocompleteServiceRef = useRef(null);
-  const placesServiceRef = useRef(null);
   const [suggestions, setSuggestions] = useState([]);
   const [showSuggestions, setShowSuggestions] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
   const [selectedIndex, setSelectedIndex] = useState(-1);
   const [error, setError] = useState(null);
   const suggestionsRef = useRef(null);
-  const [placeDetailsCache, setPlaceDetailsCache] = useState({});
 
-  // Initialize Google Places Services - with aggressive waiting
+  // Initialize Google Maps (no Places Service needed - using REST API instead)
   useEffect(() => {
-    let attempts = 0;
-    const maxAttempts = 50; // Wait up to 5 seconds
-    
-    const initService = () => {
-      attempts++;
-      if (typeof google !== 'undefined' && google.maps?.places) {
-        try {
-          if (!autocompleteServiceRef.current) {
-            autocompleteServiceRef.current = new google.maps.places.AutocompleteService();
-            console.log('✓ AutocompleteService initialized on attempt', attempts);
-          }
-          if (!placesServiceRef.current && google.maps.places.PlacesService) {
-            const tempDiv = document.createElement('div');
-            placesServiceRef.current = new google.maps.places.PlacesService(tempDiv);
-            console.log('✓ PlacesService initialized');
-          }
-        } catch (err) {
-          console.error('Google Places initialization error:', err);
-        }
-      } else if (attempts < maxAttempts) {
-        setTimeout(initService, 100);
-      } else {
-        console.error('Failed to initialize Google Places after', maxAttempts, 'attempts');
-      }
-    };
-
-    initService();
+    // Google Maps is loaded via GoogleMapsLoader component
+    console.log('PlacesAutocomplete ready to use REST API');
   }, []);
 
-  // Fetch place details with address components
-  const fetchPlaceDetails = useCallback((placeId) => {
-    if (!placesServiceRef.current || placeDetailsCache[placeId]) return;
-
-    try {
-      placesServiceRef.current.getDetails(
-        {
-          placeId,
-          fields: ['address_components', 'formatted_address', 'geometry'],
-          sessionToken: sessionToken,
-        },
-        (place, status) => {
-          if (status === google.maps.places.PlacesServiceStatus.OK) {
-            setPlaceDetailsCache(prev => ({
-              ...prev,
-              [placeId]: place
-            }));
-          }
-        }
-      );
-    } catch (err) {
-      console.error('Place details error:', err);
-    }
-  }, [sessionToken, placeDetailsCache]);
-
-  // Debounced fetch suggestions
+  // Fetch suggestions using Geocoding API (no Places API required)
   const fetchSuggestions = useCallback(async (input) => {
     if (!input || input.length < MIN_INPUT_LENGTH) {
       setSuggestions([]);
@@ -142,22 +89,8 @@ export default function PlacesAutocomplete({
       return;
     }
 
-    if (!autocompleteServiceRef.current) {
-      console.warn('AutocompleteService not ready, retrying...');
-      // Retry a few times if service is not ready
-      let retries = 0;
-      const retryFetch = () => {
-        retries++;
-        if (autocompleteServiceRef.current && retries < 3) {
-          fetchSuggestions(input);
-        } else if (retries >= 3) {
-          setError(t?.autocompleteService || 'Service unavailable');
-        }
-        if (retries < 3) {
-          setTimeout(retryFetch, 200);
-        }
-      };
-      setTimeout(retryFetch, 200);
+    if (typeof google === 'undefined' || !google.maps?.Geocoder) {
+      setError(t?.autocompleteService || 'Service unavailable');
       return;
     }
 
@@ -165,39 +98,39 @@ export default function PlacesAutocomplete({
     setError(null);
 
     try {
-      const result = await autocompleteServiceRef.current.getPlacePredictions({
-        input,
-        componentRestrictions: { country: COUNTRIES },
-        sessionToken: sessionToken || undefined,
+      const geocoder = new google.maps.Geocoder();
+      const result = await new Promise((resolve, reject) => {
+        geocoder.geocode({ address: input, componentRestrictions: { country: COUNTRIES } }, (results, status) => {
+          if (status === google.maps.GeocoderStatus.OK) {
+            resolve(results);
+          } else {
+            reject(new Error(status));
+          }
+        });
       });
 
-      console.log('Predictions fetched:', {
-        input,
-        count: result?.predictions?.length || 0,
-        sessionToken: !!sessionToken
-      });
-
-      if (result?.predictions && result.predictions.length > 0) {
-        setSuggestions(result.predictions);
+      if (result && result.length > 0) {
+        const formatted = result.map(place => ({
+          place_id: place.place_id,
+          description: formatAddressDisplay(place),
+          formatted_address: place.formatted_address,
+          address_components: place.address_components,
+          geometry: place.geometry,
+        }));
+        setSuggestions(formatted);
         setShowSuggestions(true);
         setSelectedIndex(-1);
-        
-        // Pre-fetch details for first 3 suggestions
-        result.predictions.slice(0, 3).forEach(pred => {
-          fetchPlaceDetails(pred.place_id);
-        });
       } else {
         setSuggestions([]);
         setShowSuggestions(false);
       }
     } catch (err) {
-      console.error('Autocomplete fetch error:', err);
-      setError(t?.autocompleteService || 'Service unavailable');
+      console.error('Geocoding error:', err);
       setSuggestions([]);
     } finally {
       setIsLoading(false);
     }
-  }, [sessionToken, t, fetchPlaceDetails]);
+  }, [t]);
 
   const handleInputChange = (e) => {
     const val = e.target.value;
@@ -219,26 +152,13 @@ export default function PlacesAutocomplete({
     onChange(suggestion.description);
 
     if (onSelect) {
-      try {
-        // Use geocoding to get coordinates if needed
-        if (typeof google !== 'undefined' && google.maps?.Geocoder) {
-          const geocoder = new google.maps.Geocoder();
-          geocoder.geocode({ address: suggestion.description }, (results, status) => {
-            if (status === google.maps.GeocoderStatus.OK && results?.[0]) {
-              const place = results[0];
-              onSelect({
-                description: suggestion.description,
-                placeId: suggestion.place_id,
-                formattedAddress: place.formatted_address,
-                lat: place.geometry?.location?.lat(),
-                lng: place.geometry?.location?.lng(),
-              });
-            }
-          });
-        }
-      } catch (err) {
-        console.error('Geocoding error:', err);
-      }
+      onSelect({
+        description: suggestion.description,
+        placeId: suggestion.place_id,
+        formattedAddress: suggestion.formatted_address,
+        lat: suggestion.geometry?.location?.lat(),
+        lng: suggestion.geometry?.location?.lng(),
+      });
     }
 
     setSuggestions([]);
@@ -375,38 +295,31 @@ export default function PlacesAutocomplete({
             ref={suggestionsRef}
             className="overflow-y-auto"
           >
-            {suggestions.map((suggestion, index) => {
-              const placeDetails = placeDetailsCache[suggestion.place_id];
-              const fullAddress = placeDetails 
-                ? formatAddressDisplay(placeDetails)
-                : suggestion.description;
-              
-              return (
-                <button
-                  key={suggestion.place_id}
-                  onClick={() => handleSelectSuggestion(suggestion)}
-                  className={`w-full text-left px-4 py-3.5 border-b border-white/5 last:border-b-0 transition-colors ${
-                    index === selectedIndex
-                      ? 'bg-[#C9A96E]/20'
-                      : 'hover:bg-[#C9A96E]/10'
-                  }`}
-                >
-                  <div className="flex items-start gap-3">
-                    <MapPin className="w-4 h-4 text-[#C9A96E] mt-1 flex-shrink-0" />
-                    <div className="min-w-0 flex-1">
-                      <p className="text-white text-sm font-medium">
-                        {fullAddress}
+            {suggestions.map((suggestion, index) => (
+              <button
+                key={suggestion.place_id}
+                onClick={() => handleSelectSuggestion(suggestion)}
+                className={`w-full text-left px-4 py-3.5 border-b border-white/5 last:border-b-0 transition-colors ${
+                  index === selectedIndex
+                    ? 'bg-[#C9A96E]/20'
+                    : 'hover:bg-[#C9A96E]/10'
+                }`}
+              >
+                <div className="flex items-start gap-3">
+                  <MapPin className="w-4 h-4 text-[#C9A96E] mt-1 flex-shrink-0" />
+                  <div className="min-w-0 flex-1">
+                    <p className="text-white text-sm font-medium">
+                      {suggestion.description}
+                    </p>
+                    {suggestion.formatted_address && (
+                      <p className="text-white/40 text-xs mt-1">
+                        {suggestion.formatted_address}
                       </p>
-                      {suggestion.secondary_text && (
-                        <p className="text-white/40 text-xs mt-1">
-                          {suggestion.secondary_text}
-                        </p>
-                      )}
-                    </div>
+                    )}
                   </div>
-                </button>
-              );
-            })}
+                </div>
+              </button>
+            ))}
           </div>
         </div>
       )}
