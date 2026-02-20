@@ -37,14 +37,15 @@ export default function BookingForm({ bookingRef }) {
   const [isEstimating, setIsEstimating] = useState(false);
   const [dynamicPrice, setDynamicPrice] = useState(null);
   const [departureSuggestions, setDepartureSuggestions] = useState([]);
-    const [isLoadingDeparture, setIsLoadingDeparture] = useState(false);
+  const [isLoadingDeparture, setIsLoadingDeparture] = useState(false);
   const [isLocating, setIsLocating] = useState(false);
   const [estimatedTime, setEstimatedTime] = useState(0);
+  const [priceSettings, setPriceSettings] = useState(null);
   const departureSuggestionRef = useRef(null);
 
   const update = (field, value) => setForm(prev => ({ ...prev, [field]: value }));
 
-  // Auto-locate on component mount
+  // Auto-locate and fetch price settings
   useEffect(() => {
     if (navigator.geolocation) {
       setIsLocating(true);
@@ -73,6 +74,19 @@ export default function BookingForm({ bookingRef }) {
         () => setIsLocating(false)
       );
     }
+
+    // Fetch price settings
+    const fetchSettings = async () => {
+      try {
+        const settings = await base44.entities.PriceSettings.list();
+        if (settings && settings.length > 0) {
+          setPriceSettings(settings[0]);
+        }
+      } catch (err) {
+        console.error('Error fetching price settings:', err);
+      }
+    };
+    fetchSettings();
   }, []);
 
   // Handle departure suggestions
@@ -161,9 +175,56 @@ export default function BookingForm({ bookingRef }) {
     return Math.round((km / 70) * 60);
   };
 
-  const pricePerKm = form.vehicle_type === 'economic' ? 2.35 : form.vehicle_type === 'comfort' ? 2.95 : 0;
-  const basePrice = estimatedDistance > 0 && pricePerKm > 0 ? (estimatedDistance * pricePerKm).toFixed(2) : null;
-  const totalPrice = dynamicPrice || basePrice;
+  const calculateTotalPrice = () => {
+    if (!priceSettings || estimatedDistance === 0) return null;
+
+    let pricePerKm = form.vehicle_type === 'economic' 
+      ? priceSettings.standard_price_per_km 
+      : form.vehicle_type === 'comfort' 
+        ? priceSettings.standard_price_per_km + 0.60 
+        : 0;
+
+    if (pricePerKm === 0) return null;
+
+    let total = estimatedDistance * pricePerKm;
+    total += priceSettings.base_fare || 0;
+
+    // Apply night surcharge if conditions met
+    if (form.departure_date && form.departure_time && priceSettings.night_surcharge_percentage > 0) {
+      const departureDateTime = new Date(`${form.departure_date}T${form.departure_time}:00`);
+      const dayOfWeek = departureDateTime.getDay();
+      const hour = departureDateTime.getHours();
+
+      if (
+        dayOfWeek === priceSettings.night_surcharge_day &&
+        hour >= priceSettings.night_surcharge_start_hour &&
+        hour < priceSettings.night_surcharge_end_hour
+      ) {
+        total *= (1 + priceSettings.night_surcharge_percentage / 100);
+      }
+    }
+
+    // Apply airport fee if route contains airport keywords
+    const isAirportTransfer = (
+      form.departure_point.toLowerCase().includes('aeroporto') ||
+      form.departure_point.toLowerCase().includes('aéroport') ||
+      form.departure_point.toLowerCase().includes('airport') ||
+      form.arrival_point.toLowerCase().includes('aeroporto') ||
+      form.arrival_point.toLowerCase().includes('aéroport') ||
+      form.arrival_point.toLowerCase().includes('airport')
+    );
+    
+    if (isAirportTransfer && priceSettings.airport_fee) {
+      total += priceSettings.airport_fee;
+    }
+
+    return total.toFixed(2);
+  };
+
+  const basePrice = estimatedDistance > 0 && priceSettings 
+    ? (estimatedDistance * (form.vehicle_type === 'economic' ? priceSettings.standard_price_per_km : priceSettings.standard_price_per_km + 0.60)).toFixed(2)
+    : null;
+  const totalPrice = dynamicPrice || calculateTotalPrice();
 
   const canProceedStep1 = form.departure_point && form.arrival_point && form.departure_date && form.departure_time;
   const canProceedStep2 = form.vehicle_type;
@@ -415,8 +476,25 @@ export default function BookingForm({ bookingRef }) {
         {step === 2 && (
           <div className="space-y-6">
             <h3 className="text-white text-xl font-medium mb-6">{t.step2Title}</h3>
-            <div className="grid grid-cols-1 gap-6">
-              <VehicleCard type="economic" selected={form.vehicle_type === 'economic'} onSelect={v => update('vehicle_type', v)} distance={estimatedDistance} />
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+              {priceSettings && (
+                <>
+                  <VehicleCard 
+                    type="economic" 
+                    selected={form.vehicle_type === 'economic'} 
+                    onSelect={v => update('vehicle_type', v)} 
+                    distance={estimatedDistance}
+                    pricePerKm={priceSettings.standard_price_per_km}
+                  />
+                  <VehicleCard 
+                    type="comfort" 
+                    selected={form.vehicle_type === 'comfort'} 
+                    onSelect={v => update('vehicle_type', v)} 
+                    distance={estimatedDistance}
+                    pricePerKm={priceSettings.standard_price_per_km + 0.60}
+                  />
+                </>
+              )}
             </div>
 
             {form.vehicle_type && (
@@ -426,19 +504,22 @@ export default function BookingForm({ bookingRef }) {
               </div>
             )}
 
-            {basePrice && form.departure_date && form.departure_time && (
+            {totalPrice && form.departure_date && form.departure_time && priceSettings && (
               <PricingBreakdown
                 date={form.departure_date}
                 time={form.departure_time}
+                distance_km={estimatedDistance}
                 basePrice={basePrice}
                 vehicleType={form.vehicle_type}
-                onPriceChange={(price) => setDynamicPrice(price)}
+                priceSettings={priceSettings}
+                departure_point={form.departure_point}
+                arrival_point={form.arrival_point}
               />
             )}
-            {basePrice && (!form.departure_date || !form.departure_time) && (
+            {totalPrice && (!form.departure_date || !form.departure_time) && (
               <div className="text-center p-6 rounded-2xl bg-white/[0.03] border border-[#C9A96E]/20">
                 <p className="text-white/40 text-sm mb-2">{t.estimatedPrice}</p>
-                <p className="text-[#C9A96E] text-4xl font-light">CHF {basePrice}</p>
+                <p className="text-[#C9A96E] text-4xl font-light">CHF {totalPrice}</p>
               </div>
             )}
 
