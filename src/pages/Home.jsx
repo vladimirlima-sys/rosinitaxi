@@ -3,6 +3,8 @@ import HeroSection from '@/components/home/HeroSection';
 import ServicesSection from '@/components/home/ServicesSection';
 import BookingForm from '@/components/home/BookingForm';
 import FooterSection from '@/components/home/FooterSection';
+import LanguageSwitcher from '@/components/home/LanguageSwitcher';
+import { LanguageProvider } from '@/components/LanguageContext';
 
 export default function Home() {
   const bookingRef = useRef(null);
@@ -12,11 +14,14 @@ export default function Home() {
   };
 
   return (
-    <div className="min-h-screen bg-[#0A0A0A]">
-      <HeroSection onScrollToBooking={scrollToBooking} />
-      <ServicesSection />
-      <BookingForm bookingRef={bookingRef} />
-      <FooterSection />
-    </div>
+    <LanguageProvider>
+      <div className="min-h-screen bg-[#0A0A0A]">
+        <LanguageSwitcher />
+        <HeroSection onScrollToBooking={scrollToBooking} />
+        <ServicesSection />
+        <BookingForm bookingRef={bookingRef} />
+        <FooterSection />
+      </div>
+    </LanguageProvider>
   );
 }

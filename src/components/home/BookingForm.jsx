@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { MapPin, Calendar, Clock, Plane, User, Mail, Phone, MessageSquare, Loader2, CreditCard } from 'lucide-react';
+import { MapPin, Calendar, Clock, Plane, User, Mail, Phone, MessageSquare, Loader2 } from 'lucide-react';
 import { Input } from '@/components/ui/input';
 import { Button } from '@/components/ui/button';
 import { Label } from '@/components/ui/label';
@@ -7,8 +7,13 @@ import { Textarea } from '@/components/ui/textarea';
 import VehicleCard from './VehicleCard';
 import { base44 } from '@/api/base44Client';
 import { toast } from 'sonner';
+import { useLang } from '@/components/LanguageContext';
+import { translations } from '@/components/translations';
 
 export default function BookingForm({ bookingRef }) {
+  const { lang } = useLang();
+  const t = translations[lang];
+
   const [step, setStep] = useState(1);
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [form, setForm] = useState({
@@ -28,6 +33,8 @@ export default function BookingForm({ bookingRef }) {
   const [estimatedDistance, setEstimatedDistance] = useState(0);
   const [isEstimating, setIsEstimating] = useState(false);
 
+  const update = (field, value) => setForm(prev => ({ ...prev, [field]: value }));
+
   // Handle redirect back from Stripe
   React.useEffect(() => {
     const params = new URLSearchParams(window.location.search);
@@ -36,8 +43,6 @@ export default function BookingForm({ bookingRef }) {
       window.history.replaceState({}, '', window.location.pathname);
     }
   }, []);
-
-  const update = (field, value) => setForm(prev => ({ ...prev, [field]: value }));
 
   const estimateDistance = async () => {
     if (!form.departure_point || !form.arrival_point) return;
@@ -69,15 +74,12 @@ export default function BookingForm({ bookingRef }) {
   const canProceedStep3 = form.client_name && form.client_email && form.client_phone;
 
   const handleStripeCheckout = async () => {
-    // Block checkout inside iframe
     if (window.self !== window.top) {
-      alert("Le paiement fonctionne uniquement depuis l'application publiée. Veuillez ouvrir le lien direct.");
+      alert("Le paiement fonctionne uniquement depuis l'application publiée.");
       return;
     }
-
     setIsSubmitting(true);
     try {
-      // Save booking as pending first
       await base44.entities.Booking.create({
         ...form,
         total_price: parseFloat(totalPrice),
@@ -109,15 +111,18 @@ export default function BookingForm({ bookingRef }) {
     }
   };
 
+  const resetForm = () => {
+    setStep(1);
+    setForm({ departure_point: '', arrival_point: '', departure_date: '', departure_time: '', flight_number: '', vehicle_type: '', passengers: 1, client_name: '', client_email: '', client_phone: '', notes: '', distance_km: 0 });
+    setEstimatedDistance(0);
+  };
+
   return (
     <section ref={bookingRef} className="py-24 px-6 bg-[#0A0A0A]">
       <div className="max-w-4xl mx-auto">
-        {/* Header */}
         <div className="text-center mb-12">
-          <p className="text-[#C9A96E] text-sm tracking-[0.3em] uppercase mb-4">Réservation</p>
-          <h2 className="text-3xl md:text-4xl font-light text-white mb-4">
-            Réservez votre transfert
-          </h2>
+          <p className="text-[#C9A96E] text-sm tracking-[0.3em] uppercase mb-4">{t.bookingLabel}</p>
+          <h2 className="text-3xl md:text-4xl font-light text-white mb-4">{t.bookingTitle}</h2>
           <div className="w-12 h-[1px] bg-[#C9A96E] mx-auto mb-6" />
         </div>
 
@@ -127,109 +132,58 @@ export default function BookingForm({ bookingRef }) {
             <React.Fragment key={s}>
               <div className={`w-8 h-8 rounded-full flex items-center justify-center text-sm font-medium transition-all ${
                 step >= s ? 'bg-[#C9A96E] text-[#0A0A0A]' : 'bg-white/10 text-white/30'
-              }`}>
-                {s}
-              </div>
-              {s < 4 && (
-                <div className={`w-12 h-[1px] ${step > s ? 'bg-[#C9A96E]' : 'bg-white/10'}`} />
-              )}
+              }`}>{s}</div>
+              {s < 4 && <div className={`w-12 h-[1px] ${step > s ? 'bg-[#C9A96E]' : 'bg-white/10'}`} />}
             </React.Fragment>
           ))}
         </div>
 
         {/* Step 1: Route */}
         {step === 1 && (
-          <div className="space-y-6 animate-in fade-in">
-            <h3 className="text-white text-xl font-medium mb-6">Détails du trajet</h3>
-            
+          <div className="space-y-6">
+            <h3 className="text-white text-xl font-medium mb-6">{t.step1Title}</h3>
             <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
               <div className="space-y-2">
                 <Label className="text-white/60 text-sm flex items-center gap-2">
-                  <MapPin className="w-4 h-4 text-[#C9A96E]" /> Point de départ
+                  <MapPin className="w-4 h-4 text-[#C9A96E]" /> {t.departure}
                 </Label>
-                <Input
-                  placeholder="Ex: Genève Aéroport"
-                  value={form.departure_point}
-                  onChange={e => update('departure_point', e.target.value)}
-                  className="bg-white/5 border-white/10 text-white placeholder:text-white/20 focus:border-[#C9A96E] h-12"
-                />
+                <Input placeholder={t.departurePlaceholder} value={form.departure_point} onChange={e => update('departure_point', e.target.value)} className="bg-white/5 border-white/10 text-white placeholder:text-white/20 focus:border-[#C9A96E] h-12" />
               </div>
               <div className="space-y-2">
                 <Label className="text-white/60 text-sm flex items-center gap-2">
-                  <MapPin className="w-4 h-4 text-[#C9A96E]" /> Point d'arrivée
+                  <MapPin className="w-4 h-4 text-[#C9A96E]" /> {t.arrival}
                 </Label>
-                <Input
-                  placeholder="Ex: Zurich Centre"
-                  value={form.arrival_point}
-                  onChange={e => update('arrival_point', e.target.value)}
-                  className="bg-white/5 border-white/10 text-white placeholder:text-white/20 focus:border-[#C9A96E] h-12"
-                />
+                <Input placeholder={t.arrivalPlaceholder} value={form.arrival_point} onChange={e => update('arrival_point', e.target.value)} className="bg-white/5 border-white/10 text-white placeholder:text-white/20 focus:border-[#C9A96E] h-12" />
               </div>
             </div>
 
             {form.departure_point && form.arrival_point && (
               <div className="flex justify-center">
-                <Button
-                  onClick={estimateDistance}
-                  disabled={isEstimating}
-                  variant="outline"
-                  className="border-[#C9A96E]/30 text-[#C9A96E] hover:bg-[#C9A96E]/10"
-                >
-                  {isEstimating ? (
-                    <><Loader2 className="w-4 h-4 mr-2 animate-spin" /> Estimation en cours...</>
-                  ) : estimatedDistance > 0 ? (
-                    `Distance estimée: ${estimatedDistance} km — Recalculer`
-                  ) : (
-                    'Estimer la distance'
-                  )}
+                <Button onClick={estimateDistance} disabled={isEstimating} variant="outline" className="border-[#C9A96E]/30 text-[#C9A96E] hover:bg-[#C9A96E]/10">
+                  {isEstimating ? <><Loader2 className="w-4 h-4 mr-2 animate-spin" />{t.estimating}</> : estimatedDistance > 0 ? t.estimatedDist(estimatedDistance) : t.estimateBtn}
                 </Button>
               </div>
             )}
 
             <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
               <div className="space-y-2">
-                <Label className="text-white/60 text-sm flex items-center gap-2">
-                  <Calendar className="w-4 h-4 text-[#C9A96E]" /> Date de départ
-                </Label>
-                <Input
-                  type="date"
-                  value={form.departure_date}
-                  onChange={e => update('departure_date', e.target.value)}
-                  className="bg-white/5 border-white/10 text-white focus:border-[#C9A96E] h-12"
-                />
+                <Label className="text-white/60 text-sm flex items-center gap-2"><Calendar className="w-4 h-4 text-[#C9A96E]" /> {t.dateLabel}</Label>
+                <Input type="date" value={form.departure_date} onChange={e => update('departure_date', e.target.value)} className="bg-white/5 border-white/10 text-white focus:border-[#C9A96E] h-12" />
               </div>
               <div className="space-y-2">
-                <Label className="text-white/60 text-sm flex items-center gap-2">
-                  <Clock className="w-4 h-4 text-[#C9A96E]" /> Heure de départ
-                </Label>
-                <Input
-                  type="time"
-                  value={form.departure_time}
-                  onChange={e => update('departure_time', e.target.value)}
-                  className="bg-white/5 border-white/10 text-white focus:border-[#C9A96E] h-12"
-                />
+                <Label className="text-white/60 text-sm flex items-center gap-2"><Clock className="w-4 h-4 text-[#C9A96E]" /> {t.timeLabel}</Label>
+                <Input type="time" value={form.departure_time} onChange={e => update('departure_time', e.target.value)} className="bg-white/5 border-white/10 text-white focus:border-[#C9A96E] h-12" />
               </div>
             </div>
 
             <div className="space-y-2">
-              <Label className="text-white/60 text-sm flex items-center gap-2">
-                <Plane className="w-4 h-4 text-[#C9A96E]" /> Numéro de vol (optionnel)
-              </Label>
-              <Input
-                placeholder="Ex: LX 1234"
-                value={form.flight_number}
-                onChange={e => update('flight_number', e.target.value)}
-                className="bg-white/5 border-white/10 text-white placeholder:text-white/20 focus:border-[#C9A96E] h-12 max-w-sm"
-              />
+              <Label className="text-white/60 text-sm flex items-center gap-2"><Plane className="w-4 h-4 text-[#C9A96E]" /> {t.flightLabel}</Label>
+              <Input placeholder={t.flightPlaceholder} value={form.flight_number} onChange={e => update('flight_number', e.target.value)} className="bg-white/5 border-white/10 text-white placeholder:text-white/20 focus:border-[#C9A96E] h-12 max-w-sm" />
             </div>
 
             <div className="flex justify-end pt-4">
-              <Button
-                onClick={() => { if (!estimatedDistance && form.departure_point && form.arrival_point) { estimateDistance().then(() => setStep(2)); } else { setStep(2); } }}
-                disabled={!canProceedStep1}
-                className="bg-[#C9A96E] hover:bg-[#B8955D] text-[#0A0A0A] font-semibold px-8 h-12"
-              >
-                Continuer
+              <Button onClick={() => { if (!estimatedDistance && form.departure_point && form.arrival_point) { estimateDistance().then(() => setStep(2)); } else { setStep(2); } }} disabled={!canProceedStep1} className="bg-[#C9A96E] hover:bg-[#B8955D] text-[#0A0A0A] font-semibold px-8 h-12">
+                {t.continueBtn}
               </Button>
             </div>
           </div>
@@ -237,195 +191,87 @@ export default function BookingForm({ bookingRef }) {
 
         {/* Step 2: Vehicle */}
         {step === 2 && (
-          <div className="space-y-6 animate-in fade-in">
-            <h3 className="text-white text-xl font-medium mb-6">Choisissez votre véhicule</h3>
-            
+          <div className="space-y-6">
+            <h3 className="text-white text-xl font-medium mb-6">{t.step2Title}</h3>
             <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-              <VehicleCard 
-                type="economic" 
-                selected={form.vehicle_type === 'economic'} 
-                onSelect={v => update('vehicle_type', v)}
-                distance={estimatedDistance}
-              />
-              <VehicleCard 
-                type="comfort" 
-                selected={form.vehicle_type === 'comfort'} 
-                onSelect={v => update('vehicle_type', v)}
-                distance={estimatedDistance}
-              />
+              <VehicleCard type="economic" selected={form.vehicle_type === 'economic'} onSelect={v => update('vehicle_type', v)} distance={estimatedDistance} />
+              <VehicleCard type="comfort" selected={form.vehicle_type === 'comfort'} onSelect={v => update('vehicle_type', v)} distance={estimatedDistance} />
             </div>
 
             {form.vehicle_type && (
               <div className="space-y-2 max-w-xs">
-                <Label className="text-white/60 text-sm">Nombre de passagers</Label>
-                <Input
-                  type="number"
-                  min={1}
-                  max={form.vehicle_type === 'economic' ? 3 : 4}
-                  value={form.passengers}
-                  onChange={e => update('passengers', parseInt(e.target.value) || 1)}
-                  className="bg-white/5 border-white/10 text-white focus:border-[#C9A96E] h-12"
-                />
+                <Label className="text-white/60 text-sm">{t.passengersLabel}</Label>
+                <Input type="number" min={1} max={form.vehicle_type === 'economic' ? 3 : 4} value={form.passengers} onChange={e => update('passengers', parseInt(e.target.value) || 1)} className="bg-white/5 border-white/10 text-white focus:border-[#C9A96E] h-12" />
               </div>
             )}
 
             {totalPrice && (
               <div className="text-center p-6 rounded-2xl bg-white/[0.03] border border-[#C9A96E]/20">
-                <p className="text-white/40 text-sm mb-2">Prix estimé du trajet</p>
+                <p className="text-white/40 text-sm mb-2">{t.estimatedPrice}</p>
                 <p className="text-[#C9A96E] text-4xl font-light">CHF {totalPrice}</p>
-                <p className="text-white/30 text-sm mt-2">{estimatedDistance} km × CHF {pricePerKm}/km</p>
+                <p className="text-white/30 text-sm mt-2">{estimatedDistance} km × CHF {pricePerKm}{t.perKm}</p>
               </div>
             )}
 
             <div className="flex justify-between pt-4">
-              <Button
-                onClick={() => setStep(1)}
-                variant="outline"
-                className="border-white/10 text-white/60 hover:bg-white/5 h-12"
-              >
-                Retour
-              </Button>
-              <Button
-                onClick={() => setStep(3)}
-                disabled={!canProceedStep2}
-                className="bg-[#C9A96E] hover:bg-[#B8955D] text-[#0A0A0A] font-semibold px-8 h-12"
-              >
-                Continuer
-              </Button>
+              <Button onClick={() => setStep(1)} variant="outline" className="border-white/10 text-white/60 hover:bg-white/5 h-12">{t.backBtn}</Button>
+              <Button onClick={() => setStep(3)} disabled={!canProceedStep2} className="bg-[#C9A96E] hover:bg-[#B8955D] text-[#0A0A0A] font-semibold px-8 h-12">{t.continueBtn}</Button>
             </div>
           </div>
         )}
 
         {/* Step 3: Personal info */}
         {step === 3 && (
-          <div className="space-y-6 animate-in fade-in">
-            <h3 className="text-white text-xl font-medium mb-6">Vos informations</h3>
-            
+          <div className="space-y-6">
+            <h3 className="text-white text-xl font-medium mb-6">{t.step3Title}</h3>
             <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
               <div className="space-y-2">
-                <Label className="text-white/60 text-sm flex items-center gap-2">
-                  <User className="w-4 h-4 text-[#C9A96E]" /> Nom complet
-                </Label>
-                <Input
-                  placeholder="Votre nom et prénom"
-                  value={form.client_name}
-                  onChange={e => update('client_name', e.target.value)}
-                  className="bg-white/5 border-white/10 text-white placeholder:text-white/20 focus:border-[#C9A96E] h-12"
-                />
+                <Label className="text-white/60 text-sm flex items-center gap-2"><User className="w-4 h-4 text-[#C9A96E]" /> {t.nameLabel}</Label>
+                <Input placeholder={t.namePlaceholder} value={form.client_name} onChange={e => update('client_name', e.target.value)} className="bg-white/5 border-white/10 text-white placeholder:text-white/20 focus:border-[#C9A96E] h-12" />
               </div>
               <div className="space-y-2">
-                <Label className="text-white/60 text-sm flex items-center gap-2">
-                  <Mail className="w-4 h-4 text-[#C9A96E]" /> Email
-                </Label>
-                <Input
-                  type="email"
-                  placeholder="votre@email.com"
-                  value={form.client_email}
-                  onChange={e => update('client_email', e.target.value)}
-                  className="bg-white/5 border-white/10 text-white placeholder:text-white/20 focus:border-[#C9A96E] h-12"
-                />
+                <Label className="text-white/60 text-sm flex items-center gap-2"><Mail className="w-4 h-4 text-[#C9A96E]" /> {t.emailLabel}</Label>
+                <Input type="email" placeholder={t.emailPlaceholder} value={form.client_email} onChange={e => update('client_email', e.target.value)} className="bg-white/5 border-white/10 text-white placeholder:text-white/20 focus:border-[#C9A96E] h-12" />
               </div>
             </div>
-
             <div className="space-y-2 max-w-sm">
-              <Label className="text-white/60 text-sm flex items-center gap-2">
-                <Phone className="w-4 h-4 text-[#C9A96E]" /> Téléphone
-              </Label>
-              <Input
-                type="tel"
-                placeholder="+41 XX XXX XX XX"
-                value={form.client_phone}
-                onChange={e => update('client_phone', e.target.value)}
-                className="bg-white/5 border-white/10 text-white placeholder:text-white/20 focus:border-[#C9A96E] h-12"
-              />
+              <Label className="text-white/60 text-sm flex items-center gap-2"><Phone className="w-4 h-4 text-[#C9A96E]" /> {t.phoneLabel}</Label>
+              <Input type="tel" placeholder={t.phonePlaceholder} value={form.client_phone} onChange={e => update('client_phone', e.target.value)} className="bg-white/5 border-white/10 text-white placeholder:text-white/20 focus:border-[#C9A96E] h-12" />
             </div>
-
             <div className="space-y-2">
-              <Label className="text-white/60 text-sm flex items-center gap-2">
-                <MessageSquare className="w-4 h-4 text-[#C9A96E]" /> Notes (optionnel)
-              </Label>
-              <Textarea
-                placeholder="Informations complémentaires (bagages, sièges enfant, etc.)"
-                value={form.notes}
-                onChange={e => update('notes', e.target.value)}
-                className="bg-white/5 border-white/10 text-white placeholder:text-white/20 focus:border-[#C9A96E] min-h-[100px]"
-              />
+              <Label className="text-white/60 text-sm flex items-center gap-2"><MessageSquare className="w-4 h-4 text-[#C9A96E]" /> {t.notesLabel}</Label>
+              <Textarea placeholder={t.notesPlaceholder} value={form.notes} onChange={e => update('notes', e.target.value)} className="bg-white/5 border-white/10 text-white placeholder:text-white/20 focus:border-[#C9A96E] min-h-[100px]" />
             </div>
-
             <div className="flex justify-between pt-4">
-              <Button
-                onClick={() => setStep(2)}
-                variant="outline"
-                className="border-white/10 text-white/60 hover:bg-white/5 h-12"
-              >
-                Retour
-              </Button>
-              <Button
-                onClick={() => setStep(4)}
-                disabled={!canProceedStep3}
-                className="bg-[#C9A96E] hover:bg-[#B8955D] text-[#0A0A0A] font-semibold px-8 h-12"
-              >
-                Paiement
-              </Button>
+              <Button onClick={() => setStep(2)} variant="outline" className="border-white/10 text-white/60 hover:bg-white/5 h-12">{t.backBtn}</Button>
+              <Button onClick={() => setStep(4)} disabled={!canProceedStep3} className="bg-[#C9A96E] hover:bg-[#B8955D] text-[#0A0A0A] font-semibold px-8 h-12">{t.paymentBtn}</Button>
             </div>
           </div>
         )}
 
         {/* Step 4: Payment */}
         {step === 4 && (
-          <div className="space-y-6 animate-in fade-in">
-            <h3 className="text-white text-xl font-medium mb-6">Paiement</h3>
-            
-            {/* Summary */}
+          <div className="space-y-6">
+            <h3 className="text-white text-xl font-medium mb-6">{t.step4Title}</h3>
             <div className="p-6 rounded-2xl bg-white/[0.03] border border-white/10 space-y-3 mb-8">
-              <h4 className="text-white/60 text-sm uppercase tracking-wider mb-4">Résumé de la réservation</h4>
-              <div className="flex justify-between text-sm">
-                <span className="text-white/40">Trajet</span>
-                <span className="text-white">{form.departure_point} → {form.arrival_point}</span>
-              </div>
-              <div className="flex justify-between text-sm">
-                <span className="text-white/40">Date & Heure</span>
-                <span className="text-white">{form.departure_date} à {form.departure_time}</span>
-              </div>
-              <div className="flex justify-between text-sm">
-                <span className="text-white/40">Véhicule</span>
-                <span className="text-white">{form.vehicle_type === 'economic' ? 'Économique' : 'Confort'}</span>
-              </div>
-              <div className="flex justify-between text-sm">
-                <span className="text-white/40">Distance</span>
-                <span className="text-white">{estimatedDistance} km</span>
-              </div>
+              <h4 className="text-white/60 text-sm uppercase tracking-wider mb-4">{t.summaryLabel}</h4>
+              <div className="flex justify-between text-sm"><span className="text-white/40">{t.summaryTrajet}</span><span className="text-white">{form.departure_point} → {form.arrival_point}</span></div>
+              <div className="flex justify-between text-sm"><span className="text-white/40">{t.summaryDateHeure}</span><span className="text-white">{form.departure_date} — {form.departure_time}</span></div>
+              <div className="flex justify-between text-sm"><span className="text-white/40">{t.summaryVehicle}</span><span className="text-white">{form.vehicle_type === 'economic' ? t.economic : t.comfort}</span></div>
+              <div className="flex justify-between text-sm"><span className="text-white/40">{t.summaryDistance}</span><span className="text-white">{estimatedDistance} km</span></div>
               <div className="w-full h-[1px] bg-white/10 my-2" />
-              <div className="flex justify-between">
-                <span className="text-white font-medium">Total</span>
-                <span className="text-[#C9A96E] text-xl font-semibold">CHF {totalPrice}</span>
-              </div>
+              <div className="flex justify-between"><span className="text-white font-medium">{t.summaryTotal}</span><span className="text-[#C9A96E] text-xl font-semibold">CHF {totalPrice}</span></div>
             </div>
 
-            {/* Stripe secure checkout */}
             <div className="flex items-center gap-2 text-white/30 text-xs mb-6">
               <svg className="w-3.5 h-3.5" fill="currentColor" viewBox="0 0 24 24"><path d="M12 1L3 5v6c0 5.55 3.84 10.74 9 12 5.16-1.26 9-6.45 9-12V5l-9-4z"/></svg>
-              <span>Paiement sécurisé par Stripe — Données chiffrées SSL</span>
+              <span>{t.securePayment}</span>
             </div>
 
             <div className="flex justify-between pt-2">
-              <Button
-                onClick={() => setStep(3)}
-                variant="outline"
-                className="border-white/10 text-white/60 hover:bg-white/5 h-12"
-              >
-                Retour
-              </Button>
-              <Button
-                onClick={handleStripeCheckout}
-                disabled={isSubmitting}
-                className="bg-[#C9A96E] hover:bg-[#B8955D] text-[#0A0A0A] font-semibold px-8 h-12 min-w-[220px]"
-              >
-                {isSubmitting ? (
-                  <><Loader2 className="w-4 h-4 mr-2 animate-spin" /> Redirection...</>
-                ) : (
-                  <>Payer CHF {totalPrice} via Stripe</>
-                )}
+              <Button onClick={() => setStep(3)} variant="outline" className="border-white/10 text-white/60 hover:bg-white/5 h-12">{t.backBtn}</Button>
+              <Button onClick={handleStripeCheckout} disabled={isSubmitting} className="bg-[#C9A96E] hover:bg-[#B8955D] text-[#0A0A0A] font-semibold px-8 h-12 min-w-[220px]">
+                {isSubmitting ? <><Loader2 className="w-4 h-4 mr-2 animate-spin" />{t.redirecting}</> : t.payBtn(totalPrice)}
               </Button>
             </div>
           </div>
@@ -433,26 +279,16 @@ export default function BookingForm({ bookingRef }) {
 
         {/* Step 5: Confirmation */}
         {step === 5 && (
-          <div className="text-center py-12 animate-in fade-in">
+          <div className="text-center py-12">
             <div className="w-20 h-20 rounded-full bg-[#C9A96E]/10 flex items-center justify-center mx-auto mb-8">
               <svg className="w-10 h-10 text-[#C9A96E]" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
               </svg>
             </div>
-            <h3 className="text-white text-2xl font-light mb-4">Réservation confirmée!</h3>
-            <p className="text-white/50 max-w-md mx-auto mb-2">
-              Merci {form.client_name}. Votre transfert de {form.departure_point} à {form.arrival_point} est confirmé.
-            </p>
-            <p className="text-white/30 text-sm mb-8">
-              Un email de confirmation a été envoyé à {form.client_email}.
-            </p>
-            <Button
-              onClick={() => { setStep(1); setForm({ departure_point: '', arrival_point: '', departure_date: '', departure_time: '', flight_number: '', vehicle_type: '', passengers: 1, client_name: '', client_email: '', client_phone: '', notes: '', distance_km: 0 }); setEstimatedDistance(0); }}
-              variant="outline"
-              className="border-[#C9A96E]/30 text-[#C9A96E] hover:bg-[#C9A96E]/10"
-            >
-              Nouvelle réservation
-            </Button>
+            <h3 className="text-white text-2xl font-light mb-4">{t.confirmTitle}</h3>
+            <p className="text-white/50 max-w-md mx-auto mb-2">{t.confirmMsg(form.client_name, form.departure_point, form.arrival_point)}</p>
+            <p className="text-white/30 text-sm mb-8">{t.confirmEmail(form.client_email)}</p>
+            <Button onClick={resetForm} variant="outline" className="border-[#C9A96E]/30 text-[#C9A96E] hover:bg-[#C9A96E]/10">{t.newBooking}</Button>
           </div>
         )}
       </div>
