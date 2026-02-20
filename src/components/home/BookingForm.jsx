@@ -278,32 +278,43 @@ export default function BookingForm({ bookingRef }) {
 
         {/* Step 1: Route */}
         {step === 1 && (
-          <div className="space-y-6">
-            <h3 className="text-white text-xl font-medium mb-6">{t.step1Title}</h3>
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-              <div className="space-y-2">
-                  <Label className="text-white/60 text-sm flex items-center gap-2">
-                    <MapPin className="w-4 h-4 text-[#C9A96E]" /> {t.departure}
-                  </Label>
-                  <div className="relative">
+          <div className="space-y-8">
+            <div className="text-center mb-8">
+              <h3 className="text-white text-2xl font-light mb-2">{t.step1Title}</h3>
+              <p className="text-white/40 text-sm">Defina seu percurso e detalhes da viagem</p>
+            </div>
+
+            {/* Route Section */}
+            <div className="p-8 rounded-3xl bg-gradient-to-br from-white/[0.08] to-white/[0.03] border border-[#C9A96E]/30 backdrop-blur-sm space-y-6">
+              <div className="flex items-center gap-3 mb-6">
+                <div className="w-10 h-10 rounded-full bg-[#C9A96E]/20 flex items-center justify-center">
+                  <MapPin className="w-5 h-5 text-[#C9A96E]" />
+                </div>
+                <h4 className="text-white font-medium">Seu Percurso</h4>
+              </div>
+
+              <div className="space-y-6">
+                {/* Departure */}
+                <div className="space-y-3">
+                  <Label className="text-white/70 text-sm font-medium">{t.departure}</Label>
+                  <div className="relative group">
+                    <div className="absolute left-4 top-1/2 -translate-y-1/2 w-2.5 h-2.5 rounded-full bg-[#C9A96E] z-10" />
                     <Input 
                       placeholder={t.departurePlaceholder} 
                       value={form.departure_point} 
                       onChange={e => handleDepartureChange(e.target.value)} 
-                      className="bg-white/5 border-white/10 text-white placeholder:text-white/40 focus:border-[#C9A96E] h-12" 
+                      className="bg-white/5 border border-white/10 text-white placeholder:text-white/30 focus:border-[#C9A96E] focus:bg-white/[0.08] h-12 pl-12 pr-4 transition-all rounded-xl" 
                       autoComplete="off"
                     />
-                    {isLocating && (
-                      <Loader className="absolute right-3 top-1/2 transform -translate-y-1/2 w-4 h-4 text-[#C9A96E] animate-spin" />
-                    )}
-                    {isLoadingDeparture && (
-                      <Loader className="absolute right-3 top-1/2 transform -translate-y-1/2 w-4 h-4 text-[#C9A96E] animate-spin" />
-                    )}
+                    <div className="absolute right-3 top-1/2 -translate-y-1/2 flex items-center gap-2">
+                      {isLocating && <Loader className="w-4 h-4 text-[#C9A96E] animate-spin" />}
+                      {isLoadingDeparture && <Loader className="w-4 h-4 text-[#C9A96E] animate-spin" />}
+                    </div>
 
                     {/* Departure suggestions dropdown */}
                     {departureSuggestions.length > 0 && (
-                      <div ref={departureSuggestionRef} className="absolute top-full left-0 right-0 mt-1 bg-[#1a1a1a] border border-[#C9A96E]/20 rounded-lg overflow-hidden z-50 shadow-lg">
-                        {departureSuggestions.map((suggestion) => {
+                      <div ref={departureSuggestionRef} className="absolute top-full left-0 right-0 mt-2 bg-[#1a1a1a] border border-[#C9A96E]/20 rounded-xl overflow-hidden z-50 shadow-2xl backdrop-blur-sm">
+                        {departureSuggestions.map((suggestion, idx) => {
                           const street = suggestion.address.road || '';
                           const houseNumber = suggestion.address.house_number || '';
                           const city = suggestion.address.city || suggestion.address.town || '';
@@ -312,93 +323,149 @@ export default function BookingForm({ bookingRef }) {
                             <button
                               key={suggestion.id}
                               onClick={() => selectDepartureSuggestion(suggestion)}
-                              className="w-full text-left px-4 py-3 !text-white hover:bg-[#C9A96E]/10 transition-colors text-sm border-b border-white/5 last:border-b-0"
+                              className="w-full text-left px-4 py-3 hover:bg-[#C9A96E]/10 transition-colors border-b border-white/5 last:border-b-0 group/item"
                               >
-                              <div className="flex items-center gap-2">
-                                <MapPin className="w-3 h-3 text-[#C9A96E] flex-shrink-0" />
-                                <div className="text-white">
-                                  {detailedAddress && <div className="!text-white font-medium">{detailedAddress}</div>}
-                                  <div className="!text-white/60 text-xs">{city}</div>
+                              <div className="flex items-start gap-3">
+                                <MapPin className="w-4 h-4 text-[#C9A96E] mt-0.5 flex-shrink-0" />
+                                <div>
+                                  {detailedAddress && <div className="text-white font-medium text-sm">{detailedAddress}</div>}
+                                  <div className="text-white/50 text-xs">{city}</div>
                                 </div>
                               </div>
-                              </button>
+                            </button>
                           );
                         })}
                       </div>
                     )}
                   </div>
                 </div>
-              <div className="space-y-2">
-                <Label className="text-white/60 text-sm flex items-center gap-2">
-                  <MapPin className="w-4 h-4 text-[#C9A96E]" /> {t.arrival}
-                </Label>
-                <div className="relative">
-                  <Input 
-                    placeholder={t.arrivalPlaceholder} 
-                    value={form.arrival_point} 
-                    onChange={e => handleArrivalChange(e.target.value)} 
-                    className="bg-white/5 border-white/10 text-white placeholder:text-white/40 focus:border-[#C9A96E] h-12" 
-                    autoComplete="off"
-                  />
-                  {isLoadingArrival && (
-                    <Loader className="absolute right-3 top-1/2 transform -translate-y-1/2 w-4 h-4 text-[#C9A96E] animate-spin" />
-                  )}
 
-                  {/* Arrival suggestions dropdown */}
-                  {arrivalSuggestions.length > 0 && (
-                    <div ref={arrivalSuggestionRef} className="absolute top-full left-0 right-0 mt-1 bg-[#1a1a1a] border border-[#C9A96E]/20 rounded-lg overflow-hidden z-50 shadow-lg">
-                      {arrivalSuggestions.map((suggestion) => {
-                        const street = suggestion.address.road || '';
-                        const houseNumber = suggestion.address.house_number || '';
-                        const city = suggestion.address.city || suggestion.address.town || '';
-                        const detailedAddress = [houseNumber, street].filter(Boolean).join(', ');
-                        return (
-                          <button
-                            key={suggestion.id}
-                            onClick={() => selectArrivalSuggestion(suggestion)}
-                            className="w-full text-left px-4 py-3 !text-white hover:bg-[#C9A96E]/10 transition-colors text-sm border-b border-white/5 last:border-b-0"
-                            >
-                            <div className="flex items-center gap-2">
-                              <MapPin className="w-3 h-3 text-[#C9A96E] flex-shrink-0" />
-                              <div className="text-white">
-                                {detailedAddress && <div className="!text-white font-medium">{detailedAddress}</div>}
-                                <div className="!text-white/60 text-xs">{city}</div>
-                              </div>
-                            </div>
-                            </button>
-                        );
-                      })}
+                {/* Route Line */}
+                <div className="flex justify-center py-2">
+                  <div className="w-0.5 h-8 bg-gradient-to-b from-[#C9A96E] to-transparent" />
+                </div>
+
+                {/* Arrival */}
+                <div className="space-y-3">
+                  <Label className="text-white/70 text-sm font-medium">{t.arrival}</Label>
+                  <div className="relative group">
+                    <div className="absolute left-4 top-1/2 -translate-y-1/2 w-2.5 h-2.5 rounded-full bg-[#C9A96E] z-10" />
+                    <Input 
+                      placeholder={t.arrivalPlaceholder} 
+                      value={form.arrival_point} 
+                      onChange={e => handleArrivalChange(e.target.value)} 
+                      className="bg-white/5 border border-white/10 text-white placeholder:text-white/30 focus:border-[#C9A96E] focus:bg-white/[0.08] h-12 pl-12 pr-4 transition-all rounded-xl" 
+                      autoComplete="off"
+                    />
+                    <div className="absolute right-3 top-1/2 -translate-y-1/2">
+                      {isLoadingArrival && <Loader className="w-4 h-4 text-[#C9A96E] animate-spin" />}
                     </div>
-                  )}
+
+                    {/* Arrival suggestions dropdown */}
+                    {arrivalSuggestions.length > 0 && (
+                      <div ref={arrivalSuggestionRef} className="absolute top-full left-0 right-0 mt-2 bg-[#1a1a1a] border border-[#C9A96E]/20 rounded-xl overflow-hidden z-50 shadow-2xl backdrop-blur-sm">
+                        {arrivalSuggestions.map((suggestion) => {
+                          const street = suggestion.address.road || '';
+                          const houseNumber = suggestion.address.house_number || '';
+                          const city = suggestion.address.city || suggestion.address.town || '';
+                          const detailedAddress = [houseNumber, street].filter(Boolean).join(', ');
+                          return (
+                            <button
+                              key={suggestion.id}
+                              onClick={() => selectArrivalSuggestion(suggestion)}
+                              className="w-full text-left px-4 py-3 hover:bg-[#C9A96E]/10 transition-colors border-b border-white/5 last:border-b-0"
+                              >
+                              <div className="flex items-start gap-3">
+                                <MapPin className="w-4 h-4 text-[#C9A96E] mt-0.5 flex-shrink-0" />
+                                <div>
+                                  {detailedAddress && <div className="text-white font-medium text-sm">{detailedAddress}</div>}
+                                  <div className="text-white/50 text-xs">{city}</div>
+                                </div>
+                              </div>
+                            </button>
+                          );
+                        })}
+                      </div>
+                    )}
+                  </div>
                 </div>
               </div>
             </div>
 
+            {/* Journey Details */}
             {estimatedDistance > 0 && (
-              <JourneyDetails 
-                distance_km={estimatedDistance}
-                estimatedTime={estimatedTime}
-              />
+              <div className="p-8 rounded-3xl bg-gradient-to-br from-[#C9A96E]/10 to-[#C9A96E]/5 border border-[#C9A96E]/40 backdrop-blur-sm">
+                <JourneyDetails 
+                  distance_km={estimatedDistance}
+                  estimatedTime={estimatedTime}
+                />
+              </div>
             )}
 
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-              <div className="space-y-2">
-                <Label className="text-white/60 text-sm flex items-center gap-2"><Calendar className="w-4 h-4 text-[#C9A96E]" /> {t.dateLabel}</Label>
-                <Input type="date" value={form.departure_date} onChange={e => update('departure_date', e.target.value)} className="bg-white/5 border-white/10 text-white focus:border-[#C9A96E] h-12" />
+            {/* Date, Time & Flight Section */}
+            <div className="p-8 rounded-3xl bg-gradient-to-br from-white/[0.08] to-white/[0.03] border border-[#C9A96E]/30 backdrop-blur-sm space-y-6">
+              <div className="flex items-center gap-3 mb-6">
+                <div className="w-10 h-10 rounded-full bg-[#C9A96E]/20 flex items-center justify-center">
+                  <Calendar className="w-5 h-5 text-[#C9A96E]" />
+                </div>
+                <h4 className="text-white font-medium">Detalhes da Viagem</h4>
               </div>
-              <div className="space-y-2">
-                <Label className="text-white/60 text-sm flex items-center gap-2"><Clock className="w-4 h-4 text-[#C9A96E]" /> {t.timeLabel}</Label>
-                <Input type="time" value={form.departure_time} onChange={e => update('departure_time', e.target.value)} className="bg-white/5 border-white/10 text-white focus:border-[#C9A96E] h-12" />
+
+              <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+                <div className="space-y-3">
+                  <Label className="text-white/70 text-sm font-medium flex items-center gap-2">
+                    <Calendar className="w-4 h-4 text-[#C9A96E]" />
+                    {t.dateLabel}
+                  </Label>
+                  <Input 
+                    type="date" 
+                    value={form.departure_date} 
+                    onChange={e => update('departure_date', e.target.value)} 
+                    className="bg-white/5 border border-white/10 text-white focus:border-[#C9A96E] focus:bg-white/[0.08] h-12 rounded-xl transition-all"
+                  />
+                </div>
+
+                <div className="space-y-3">
+                  <Label className="text-white/70 text-sm font-medium flex items-center gap-2">
+                    <Clock className="w-4 h-4 text-[#C9A96E]" />
+                    {t.timeLabel}
+                  </Label>
+                  <Input 
+                    type="time" 
+                    value={form.departure_time} 
+                    onChange={e => update('departure_time', e.target.value)} 
+                    className="bg-white/5 border border-white/10 text-white focus:border-[#C9A96E] focus:bg-white/[0.08] h-12 rounded-xl transition-all"
+                  />
+                </div>
+
+                <div className="space-y-3">
+                  <Label className="text-white/70 text-sm font-medium flex items-center gap-2">
+                    <Plane className="w-4 h-4 text-[#C9A96E]" />
+                    {t.flightLabel}
+                  </Label>
+                  <Input 
+                    placeholder={t.flightPlaceholder} 
+                    value={form.flight_number} 
+                    onChange={e => update('flight_number', e.target.value)} 
+                    className="bg-white/5 border border-white/10 text-white placeholder:text-white/20 focus:border-[#C9A96E] focus:bg-white/[0.08] h-12 rounded-xl transition-all"
+                  />
+                </div>
               </div>
             </div>
 
-            <div className="space-y-2">
-              <Label className="text-white/60 text-sm flex items-center gap-2"><Plane className="w-4 h-4 text-[#C9A96E]" /> {t.flightLabel}</Label>
-              <Input placeholder={t.flightPlaceholder} value={form.flight_number} onChange={e => update('flight_number', e.target.value)} className="bg-white/5 border-white/10 text-white placeholder:text-white/20 focus:border-[#C9A96E] h-12 max-w-sm" />
-            </div>
-
-            <div className="flex justify-end pt-4">
-              <Button onClick={() => { if (!estimatedDistance && form.departure_point && form.arrival_point) { estimateDistance().then(() => setStep(2)); } else { setStep(2); } }} disabled={!canProceedStep1} className="bg-[#C9A96E] hover:bg-[#B8955D] text-[#0A0A0A] font-semibold px-8 h-12">
+            {/* Action Button */}
+            <div className="flex justify-end">
+              <Button 
+                onClick={() => { 
+                  if (!estimatedDistance && form.departure_point && form.arrival_point) { 
+                    estimateDistance().then(() => setStep(2)); 
+                  } else { 
+                    setStep(2); 
+                  } 
+                }} 
+                disabled={!canProceedStep1} 
+                className="bg-[#C9A96E] hover:bg-[#B8955D] text-[#0A0A0A] font-semibold px-12 h-13 rounded-xl transition-all hover:shadow-lg hover:shadow-[#C9A96E]/20"
+              >
                 {t.continueBtn}
               </Button>
             </div>
