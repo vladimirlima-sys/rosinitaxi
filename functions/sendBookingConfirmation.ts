@@ -1,4 +1,5 @@
 import { createClientFromRequest } from 'npm:@base44/sdk@0.8.6';
+import nodemailer from 'npm:nodemailer@6.9.3';
 
 Deno.serve(async (req) => {
   try {
@@ -6,6 +7,19 @@ Deno.serve(async (req) => {
     const body = await req.json();
 
     const { client_name, client_email, client_phone, departure_point, arrival_point, departure_date, departure_time, flight_number, vehicle_type, distance_km, total_price, passengers, notes } = body;
+
+    // Get Gmail access token
+    const accessToken = await base44.asServiceRole.connectors.getAccessToken('gmail');
+    
+    // Create Gmail transporter
+    const transporter = nodemailer.createTransport({
+      service: 'gmail',
+      auth: {
+        type: 'OAuth2',
+        user: 'taxirosini@gmail.com',
+        accessToken: accessToken,
+      },
+    });
 
     const vehicleLabel = vehicle_type === 'economic' ? 'Standard' : 'Confort';
     const flightInfo = flight_number ? `<tr><td style="padding:6px 0;color:#888;">Vol</td><td style="padding:6px 0;color:#fff;">${flight_number}</td></tr>` : '';
@@ -87,24 +101,28 @@ Deno.serve(async (req) => {
 </html>`;
 
     // Send confirmation email to client
-    await base44.asServiceRole.integrations.Core.SendEmail({
+    await transporter.sendMail({
+      from: 'Rosini Transfert <taxirosini@gmail.com>',
       to: client_email,
       subject: `✅ Réservation confirmée — ${departure_point} → ${arrival_point}`,
-      body: clientEmailBody,
-      from_name: 'Rosini Transfert',
+      html: clientEmailBody,
     });
+
+    console.log(`Confirmation email sent to ${client_email}`);
 
     // Send notification email to admin
-    await base44.asServiceRole.integrations.Core.SendEmail({
+    await transporter.sendMail({
+      from: 'Rosini Transfert <taxirosini@gmail.com>',
       to: 'taxirosini@gmail.com',
       subject: `🔔 Nouvelle réservation — ${client_name} | ${departure_point} → ${arrival_point} | CHF ${total_price}`,
-      body: adminEmailBody,
-      from_name: 'Rosini Transfert',
+      html: adminEmailBody,
     });
 
-    return Response.json({ success: true });
+    console.log(`Admin notification sent for booking by ${client_name}`);
+
+    return Response.json({ success: true, message: 'Emails sent successfully' });
   } catch (error) {
     console.error('Error sending confirmation emails:', error);
-    return Response.json({ error: error.message }, { status: 500 });
+    return Response.json({ error: error.message, details: error.toString() }, { status: 500 });
   }
 });
