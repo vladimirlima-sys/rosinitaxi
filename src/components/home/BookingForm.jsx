@@ -294,8 +294,7 @@ export default function BookingForm({ bookingRef }) {
                       placeholder={t.departurePlaceholder} 
                       value={form.departure_point} 
                       onChange={e => update('departure_point', e.target.value)} 
-                      readOnly
-                      className="bg-white/5 border border-white/10 text-white placeholder:text-white/30 focus:border-[#C9A96E] focus:bg-white/[0.08] h-12 pl-12 pr-4 transition-all rounded-xl cursor-not-allowed" 
+                      className="bg-white/5 border border-white/10 text-white placeholder:text-white/30 focus:border-[#C9A96E] focus:bg-white/[0.08] h-12 pl-12 pr-4 transition-all rounded-xl" 
                       autoComplete="off"
                     />
                     <div className="absolute right-3 top-1/2 -translate-y-1/2 flex items-center gap-2">
