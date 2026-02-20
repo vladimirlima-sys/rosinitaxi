@@ -36,8 +36,72 @@ export default function BookingForm({ bookingRef }) {
   const [estimatedDistance, setEstimatedDistance] = useState(0);
   const [isEstimating, setIsEstimating] = useState(false);
   const [dynamicPrice, setDynamicPrice] = useState(null);
+  const [arrivalSuggestions, setArrivalSuggestions] = useState([]);
+  const [isLoadingArrival, setIsLoadingArrival] = useState(false);
+  const [isLocating, setIsLocating] = useState(false);
+  const suggestionRef = useRef(null);
 
   const update = (field, value) => setForm(prev => ({ ...prev, [field]: value }));
+
+  // Auto-locate on component mount
+  useEffect(() => {
+    if (navigator.geolocation) {
+      setIsLocating(true);
+      navigator.geolocation.getCurrentPosition(
+        async (position) => {
+          const { latitude, longitude } = position.coords;
+          try {
+            // Reverse geocoding using Nominatim
+            const response = await fetch(
+              `https://nominatim.openstreetmap.org/reverse?format=json&lat=${latitude}&lon=${longitude}`
+            );
+            const data = await response.json();
+            if (data.address) {
+              const address = data.address.city || data.address.town || data.address.village || data.address.county || data.display_name.split(',')[0];
+              update('departure_point', address);
+            }
+          } catch (err) {
+            console.error('Geocoding error:', err);
+          } finally {
+            setIsLocating(false);
+          }
+        },
+        () => setIsLocating(false)
+      );
+    }
+  }, []);
+
+  // Handle arrival suggestions
+  const handleArrivalChange = async (value) => {
+    update('arrival_point', value);
+    
+    if (value.length < 3) {
+      setArrivalSuggestions([]);
+      return;
+    }
+
+    setIsLoadingArrival(true);
+    try {
+      const response = await fetch(
+        `https://nominatim.openstreetmap.org/search?format=json&q=${encodeURIComponent(value)}&limit=5&countrycodes=ch,it,fr,de,at`
+      );
+      const data = await response.json();
+      setArrivalSuggestions(data.map(item => ({
+        id: item.osm_id,
+        display_name: item.display_name,
+        short_name: item.display_name.split(',')[0]
+      })));
+    } catch (err) {
+      console.error('Search error:', err);
+    } finally {
+      setIsLoadingArrival(false);
+    }
+  };
+
+  const selectSuggestion = (suggestion) => {
+    update('arrival_point', suggestion.display_name);
+    setArrivalSuggestions([]);
+  };
 
   // Handle redirect back from Stripe
   React.useEffect(() => {
