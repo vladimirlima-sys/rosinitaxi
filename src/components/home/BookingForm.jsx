@@ -41,6 +41,7 @@ export default function BookingForm({ bookingRef }) {
   const [isLoadingDeparture, setIsLoadingDeparture] = useState(false);
   const [isLoadingArrival, setIsLoadingArrival] = useState(false);
   const [isLocating, setIsLocating] = useState(false);
+  const [estimatedTime, setEstimatedTime] = useState(0);
   const departureSuggestionRef = useRef(null);
   const arrivalSuggestionRef = useRef(null);
 
