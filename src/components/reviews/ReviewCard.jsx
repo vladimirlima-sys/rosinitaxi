@@ -1,16 +1,18 @@
 import React from 'react';
 import { Star } from 'lucide-react';
-import { format } from 'date-fns';
-import { ptBR } from 'date-fns/locale';
+import { formatDistanceToNow } from 'date-fns';
+import { fr } from 'date-fns/locale';
 
 export default function ReviewCard({ review }) {
   const StarDisplay = ({ rating }) => (
     <div className="flex gap-1">
-      {[1, 2, 3, 4, 5].map((star) => (
+      {[1, 2, 3, 4, 5].map(star => (
         <Star
           key={star}
-          className={`w-4 h-4 ${
-            star <= rating ? 'fill-[#C9A96E] text-[#C9A96E]' : 'text-white/20'
+          className={`w-3.5 h-3.5 ${
+            star <= rating
+              ? 'fill-[#C9A96E] text-[#C9A96E]'
+              : 'text-white/20'
           }`}
         />
       ))}
@@ -18,35 +20,39 @@ export default function ReviewCard({ review }) {
   );
 
   return (
-    <div className="bg-white/[0.03] border border-white/10 rounded-2xl p-6 space-y-4">
-      <div className="flex items-start justify-between">
-        <div>
-          <p className="text-white font-medium">{review.client_name}</p>
-          <p className="text-white/40 text-sm">
-            {review.journey_date && format(new Date(review.journey_date), 'dd MMM yyyy', { locale: ptBR })}
+    <div className="p-4 rounded-xl bg-white/[0.02] border border-white/10 space-y-3">
+      {/* Header */}
+      <div className="flex justify-between items-start">
+        <div className="flex-1">
+          <p className="text-white font-medium text-sm">{review.client_name}</p>
+          <p className="text-white/40 text-xs">
+            {formatDistanceToNow(new Date(review.created_date), { addSuffix: true, locale: fr })}
           </p>
         </div>
-      </div>
-
-      <div className="space-y-2">
-        <div className="flex items-center justify-between">
-          <span className="text-white/60 text-sm">Motorista</span>
-          <StarDisplay rating={review.driver_rating} />
-        </div>
-        <div className="flex items-center justify-between">
-          <span className="text-white/60 text-sm">Viagem</span>
+        <div className="text-right">
+          <p className="text-white/60 text-xs mb-1">Trajet</p>
           <StarDisplay rating={review.trip_rating} />
         </div>
       </div>
 
-      {review.journey_from && review.journey_to && (
-        <p className="text-white/40 text-sm">
-          {review.journey_from} → {review.journey_to}
-        </p>
-      )}
+      {/* Journey info */}
+      <div className="flex items-center gap-2 text-xs text-white/40">
+        <span className="truncate">{review.journey_from}</span>
+        <span className="text-[#C9A96E]">→</span>
+        <span className="truncate">{review.journey_to}</span>
+      </div>
 
+      {/* Ratings */}
+      <div className="grid grid-cols-2 gap-3 pt-2 border-t border-white/10">
+        <div>
+          <p className="text-white/40 text-xs mb-1">Chauffeur</p>
+          <StarDisplay rating={review.driver_rating} />
+        </div>
+      </div>
+
+      {/* Comment */}
       {review.comment && (
-        <p className="text-white text-sm leading-relaxed">{review.comment}</p>
+        <p className="text-white/70 text-sm leading-relaxed">{review.comment}</p>
       )}
     </div>
   );
