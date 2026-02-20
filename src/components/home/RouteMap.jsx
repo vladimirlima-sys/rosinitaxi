@@ -74,6 +74,39 @@ export default function RouteMap({ departure, arrival, distance_km }) {
           Voir sur la carte →
         </a>
       </div>
+
+      {/* Info bar */}
+      {(distance_km || travelTime) && (
+        <div className="flex items-center justify-between px-6 py-4 bg-white/[0.02] border-t border-white/10">
+          <div className="flex gap-6">
+            {distance_km && (
+              <div className="flex items-center gap-2">
+                <div className="w-8 h-8 rounded-full bg-[#C9A96E]/10 flex items-center justify-center">
+                  <Zap className="w-4 h-4 text-[#C9A96E]" />
+                </div>
+                <div>
+                  <p className="text-white/40 text-xs">Distance</p>
+                  <p className="text-white font-medium">{distance_km} km</p>
+                </div>
+              </div>
+            )}
+            {travelTime && (
+              <div className="flex items-center gap-2">
+                <div className="w-8 h-8 rounded-full bg-[#C9A96E]/10 flex items-center justify-center">
+                  <Clock className="w-4 h-4 text-[#C9A96E]" />
+                </div>
+                <div>
+                  <p className="text-white/40 text-xs">Durée estimée</p>
+                  <p className="text-white font-medium">
+                    {travelTime.hours > 0 && `${travelTime.hours}h `}
+                    {travelTime.minutes}min
+                  </p>
+                </div>
+              </div>
+            )}
+          </div>
+        </div>
+      )}
     </div>
   );
 }
