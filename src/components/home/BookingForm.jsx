@@ -194,44 +194,65 @@ export default function BookingForm({ bookingRef }) {
   const canProceedStep2 = form.vehicle_type;
   const canProceedStep3 = form.client_name && form.client_email && form.client_phone;
 
-  const handleStripeCheckout = async () => {
-    if (window.self !== window.top) {
-      alert(t.checkoutFromPublishedApp || "Le paiement fonctionne uniquement depuis l'application publiée.");
-      return;
-    }
+  const handlePayment = async () => {
     setIsSubmitting(true);
     try {
-      await base44.entities.Booking.create({
+      if (paymentMethod === 'stripe') {
+        if (window.self !== window.top) {
+          alert(t.checkoutFromPublishedApp || "Le paiement fonctionne uniquement depuis l'application publiée.");
+          setIsSubmitting(false);
+          return;
+        }
+
+        await base44.entities.Booking.create({
           ...form,
           total_price: parseFloat(totalPrice),
           payment_status: 'pending',
+          payment_method: 'stripe',
         });
 
-        // Save booking data for post-payment email
         sessionStorage.setItem('pendingBooking', JSON.stringify({
           ...form,
           total_price: parseFloat(totalPrice),
           distance_km: estimatedDistance,
         }));
 
-      const response = await base44.functions.invoke('createCheckout', {
-        amount: parseFloat(totalPrice),
-        currency: 'chf',
-        client_name: form.client_name,
-        client_email: form.client_email,
-        departure: form.departure_point,
-        arrival: form.arrival_point,
-        vehicle_type: form.vehicle_type,
-        distance_km: estimatedDistance,
-        departure_date: form.departure_date,
-        departure_time: form.departure_time,
-        origin: window.location.origin,
-      });
+        const response = await base44.functions.invoke('createCheckout', {
+          amount: parseFloat(totalPrice),
+          currency: 'chf',
+          client_name: form.client_name,
+          client_email: form.client_email,
+          departure: form.departure_point,
+          arrival: form.arrival_point,
+          vehicle_type: form.vehicle_type,
+          distance_km: estimatedDistance,
+          departure_date: form.departure_date,
+          departure_time: form.departure_time,
+          origin: window.location.origin,
+        });
 
-      if (response.data?.url) {
-        window.location.href = response.data.url;
+        if (response.data?.url) {
+          window.location.href = response.data.url;
+        } else {
+          throw new Error(response.data?.error || 'Erreur de paiement');
+        }
       } else {
-        throw new Error(response.data?.error || 'Erreur de paiement');
+        // Cash or TWINT payment
+        await base44.entities.Booking.create({
+          ...form,
+          total_price: parseFloat(totalPrice),
+          payment_status: 'pending',
+          payment_method: paymentMethod,
+        });
+
+        await base44.functions.invoke('sendBookingConfirmation', {
+          ...form,
+          total_price: parseFloat(totalPrice),
+          distance_km: estimatedDistance,
+          payment_method: paymentMethod,
+        });
+
+        setStep(5);
       }
     } catch (err) {
       toast.error(t.paymentError || "Erreur lors du paiement. Veuillez réessayer.");
