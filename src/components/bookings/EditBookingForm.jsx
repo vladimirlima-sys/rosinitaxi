@@ -39,6 +39,27 @@ export default function EditBookingForm({ booking, onSave }) {
   const isUpcoming = new Date(booking.departure_date) > new Date();
   const canEditDate = isUpcoming;
   const canEditPhone = true;
+  const isCompleted = new Date(booking.departure_date) < new Date() && booking.payment_status === 'paid';
+
+  React.useEffect(() => {
+    if (isCompleted) {
+      loadReview();
+    }
+  }, [isCompleted]);
+
+  const loadReview = async () => {
+    setIsLoadingReview(true);
+    try {
+      const reviews = await base44.entities.Review.filter({ booking_id: booking.id });
+      if (reviews.length > 0) {
+        setBookingReview(reviews[0]);
+      }
+    } catch (err) {
+      console.error('Error loading review:', err);
+    } finally {
+      setIsLoadingReview(false);
+    }
+  };
 
   return (
     <form onSubmit={handleSubmit} className="space-y-6">
