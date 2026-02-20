@@ -155,14 +155,26 @@ export default function RouteMapDisplay({ departure, arrival, route, onClose }) 
       });
       map.overlays.push(arrivalMarker);
 
-      // Desenhar rota
+      // Desenhar rota com sombra
+      const shadowPolyline = new google.maps.Polyline({
+        path: route.overview_path,
+        geodesic: true,
+        strokeColor: '#000',
+        strokeOpacity: 0.3,
+        strokeWeight: 6,
+        map: map,
+        zIndex: 1
+      });
+      map.overlays.push(shadowPolyline);
+
       const polyline = new google.maps.Polyline({
         path: route.overview_path,
         geodesic: true,
         strokeColor: '#C9A96E',
-        strokeOpacity: 0.8,
-        strokeWeight: 3,
-        map: map
+        strokeOpacity: 1,
+        strokeWeight: 4,
+        map: map,
+        zIndex: 2
       });
       map.overlays.push(polyline);
 
