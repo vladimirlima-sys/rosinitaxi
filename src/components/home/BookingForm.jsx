@@ -195,26 +195,33 @@ export default function BookingForm({ bookingRef }) {
     : null;
   const totalPrice = calculateTotalPrice();
 
-  const canProceedStep1 = form.departure_point && form.arrival_point && form.departure_date && form.departure_time;
+  const canProceedStep1 = form.departure_point && form.arrival_point && form.departure_date && form.departure_time && estimatedDistance > 0;
   const canProceedStep2 = form.vehicle_type;
   const canProceedStep3 = form.client_name && form.client_email && form.client_phone;
 
   const handlePayment = async () => {
+    if (!totalPrice) {
+      toast.error('Erro ao processar o preço. Tente novamente.');
+      return;
+    }
+
     setIsSubmitting(true);
     try {
       if (paymentMethod === 'stripe') {
         if (window.self !== window.top) {
-          alert(t.checkoutFromPublishedApp || "Le paiement fonctionne uniquement depuis l'application publiée.");
+          toast.error(t.checkoutFromPublishedApp || "Le paiement fonctionne uniquement depuis l'application publiée.");
           setIsSubmitting(false);
           return;
         }
 
-        await base44.entities.Booking.create({
+        const bookingData = {
           ...form,
           total_price: parseFloat(totalPrice),
           payment_status: 'pending',
           payment_method: 'stripe',
-        });
+        };
+
+        await base44.entities.Booking.create(bookingData);
 
         sessionStorage.setItem('pendingBooking', JSON.stringify({
           ...form,
@@ -243,7 +250,7 @@ export default function BookingForm({ bookingRef }) {
         }
       } else {
         // Cash or TWINT payment
-        const booking = await base44.entities.Booking.create({
+        await base44.entities.Booking.create({
           ...form,
           total_price: parseFloat(totalPrice),
           payment_status: 'pending',
@@ -270,12 +277,15 @@ export default function BookingForm({ bookingRef }) {
           });
         } catch (err) {
           console.error('Error sending confirmation email:', err);
+          toast.error('Erro ao enviar e-mail de confirmação');
         }
 
         toast.success('Réservation confirmée!');
         setStep(5);
+        setIsSubmitting(false);
       }
     } catch (err) {
+      console.error('Payment error:', err);
       toast.error(t.paymentError || "Erreur lors du paiement. Veuillez réessayer.");
       setIsSubmitting(false);
     }
