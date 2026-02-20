@@ -77,10 +77,37 @@ export default function BookingForm({ bookingRef }) {
     }
   }, []);
 
+  // Handle departure suggestions
+  const handleDepartureChange = async (value) => {
+    update('departure_point', value);
+
+    if (value.length < 3) {
+      setDepartureSuggestions([]);
+      return;
+    }
+
+    setIsLoadingDeparture(true);
+    try {
+      const response = await fetch(
+        `https://nominatim.openstreetmap.org/search?format=json&q=${encodeURIComponent(value)}&limit=5&countrycodes=ch,it,fr,de,at`
+      );
+      const data = await response.json();
+      setDepartureSuggestions(data.map(item => ({
+        id: item.osm_id,
+        display_name: item.display_name,
+        address: item.address || {}
+      })));
+    } catch (err) {
+      console.error('Search error:', err);
+    } finally {
+      setIsLoadingDeparture(false);
+    }
+  };
+
   // Handle arrival suggestions
   const handleArrivalChange = async (value) => {
     update('arrival_point', value);
-    
+
     if (value.length < 3) {
       setArrivalSuggestions([]);
       return;
@@ -95,7 +122,7 @@ export default function BookingForm({ bookingRef }) {
       setArrivalSuggestions(data.map(item => ({
         id: item.osm_id,
         display_name: item.display_name,
-        short_name: item.display_name.split(',')[0]
+        address: item.address || {}
       })));
     } catch (err) {
       console.error('Search error:', err);
@@ -104,7 +131,12 @@ export default function BookingForm({ bookingRef }) {
     }
   };
 
-  const selectSuggestion = (suggestion) => {
+  const selectDepartureSuggestion = (suggestion) => {
+    update('departure_point', suggestion.display_name);
+    setDepartureSuggestions([]);
+  };
+
+  const selectArrivalSuggestion = (suggestion) => {
     update('arrival_point', suggestion.display_name);
     setArrivalSuggestions([]);
   };
