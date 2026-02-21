@@ -420,7 +420,7 @@ export default function BookingForm({ bookingRef }) {
                     <h4 className="text-black font-bold">{t.tripDetails}</h4>
                   </div>
 
-              <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+              <div className="bg-transparent grid grid-cols-1 md:grid-cols-3 gap-6">
                 <div className="space-y-3">
                   <Label className="text-black/70 text-sm font-semibold flex items-center gap-2">
                     <Calendar className="w-4 h-4 text-black" />
@@ -429,7 +429,7 @@ export default function BookingForm({ bookingRef }) {
                   <Input
                   type="date"
                   value={form.departure_date}
-                  onChange={(e) => update('departure_date', e.target.value)} className="bg-[#fff261] text-black px-3 py-1 text-base rounded-xl flex w-full shadow-sm file:border-0 file:bg-transparent file:text-sm file:font-medium file:text-foreground placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring disabled:cursor-not-allowed disabled:opacity-50 md:text-sm border border-black/20 focus:border-black h-12 transition-all" />
+                  onChange={(e) => update('departure_date', e.target.value)} className="bg-[#fcf6ab] text-black px-3 py-1 text-base rounded-xl flex w-full shadow-sm file:border-0 file:bg-transparent file:text-sm file:font-medium file:text-foreground placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring disabled:cursor-not-allowed disabled:opacity-50 md:text-sm border border-black/20 focus:border-black h-12 transition-all" />
 
 
                 </div>
@@ -442,7 +442,7 @@ export default function BookingForm({ bookingRef }) {
                   <Input
                   type="time"
                   value={form.departure_time}
-                  onChange={(e) => update('departure_time', e.target.value)} className="bg-[#fff261] text-black px-3 py-1 text-base rounded-xl flex w-full shadow-sm file:border-0 file:bg-transparent file:text-sm file:font-medium file:text-foreground placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring disabled:cursor-not-allowed disabled:opacity-50 md:text-sm border border-black/20 focus:border-black h-12 transition-all" />
+                  onChange={(e) => update('departure_time', e.target.value)} className="bg-[#fcf6ab] text-black px-3 py-1 text-base rounded-xl flex w-full shadow-sm file:border-0 file:bg-transparent file:text-sm file:font-medium file:text-foreground placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring disabled:cursor-not-allowed disabled:opacity-50 md:text-sm border border-black/20 focus:border-black h-12 transition-all" />
 
 
                 </div>
@@ -455,7 +455,7 @@ export default function BookingForm({ bookingRef }) {
                   <Input
                   placeholder={t.flightPlaceholder}
                   value={form.flight_number}
-                  onChange={(e) => update('flight_number', e.target.value)} className="bg-[#fff261] text-black px-3 py-1 text-base rounded-xl flex w-full shadow-sm file:border-0 file:bg-transparent file:text-sm file:font-medium file:text-foreground focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring disabled:cursor-not-allowed disabled:opacity-50 md:text-sm border border-black/20 placeholder:text-black/30 focus:border-black h-12 transition-all" />
+                  onChange={(e) => update('flight_number', e.target.value)} className="bg-[#fcf6ab] text-black px-3 py-1 text-base rounded-xl flex w-full shadow-sm file:border-0 file:bg-transparent file:text-sm file:font-medium file:text-foreground focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring disabled:cursor-not-allowed disabled:opacity-50 md:text-sm border border-black/20 placeholder:text-black/30 focus:border-black h-12 transition-all" />
 
 
                 </div>
