@@ -359,8 +359,8 @@ export default function PlacesAutocomplete({
             left: inputRef.current?.getBoundingClientRect().left,
             width: inputRef.current?.getBoundingClientRect().width,
           }}>
-          <Loader className="w-4 h-4 text-[#C9A96E] animate-spin mr-2" />
-          <span className="text-white/60 text-sm">{t?.autocompleteLoading || 'Searching...'}</span>
+          <Loader className="w-4 h-4 text-black/50 animate-spin mr-2" />
+          <span className="text-black/60 text-sm">{t?.autocompleteLoading || 'Searching...'}</span>
         </div>
       )}
     </div>
