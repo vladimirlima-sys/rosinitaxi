@@ -541,17 +541,22 @@ export default function BookingForm({ bookingRef }) {
 
         {/* Step 4: Payment */}
         {step === 4 &&
-        <div className="space-y-6">
-            <h3 className="text-black text-xl font-bold mb-6">{t.step4Title}</h3>
-            <div className="p-6 rounded-2xl bg-white border border-black/10 space-y-3 mb-8">
-              <h4 className="text-black/60 text-sm uppercase tracking-wider font-semibold mb-4">{t.summaryLabel}</h4>
-              <div className="flex justify-between text-sm"><span className="text-black/50">{t.summaryTrajet}</span><span className="text-black font-medium">{form.departure_point} → {form.arrival_point}</span></div>
-              <div className="flex justify-between text-sm"><span className="text-black/50">{t.summaryDateHeure}</span><span className="text-black font-medium">{form.departure_date} — {form.departure_time}</span></div>
-              <div className="flex justify-between text-sm"><span className="text-black/50">{t.summaryVehicle}</span><span className="text-black font-medium">Standard</span></div>
-              <div className="flex justify-between text-sm"><span className="text-black/50">{t.summaryDistance}</span><span className="text-black font-medium">{estimatedDistance} km</span></div>
-              <div className="w-full h-[1px] bg-black/10 my-2" />
-              <div className="flex justify-between"><span className="text-black font-bold">{t.summaryTotal}</span><span className="text-black text-xl font-bold">CHF {totalPrice}</span></div>
-              <p className="text-black/40 text-xs italic mt-2">{t.noTollsIncluded}</p>
+        <div className="space-y-8">
+            <div>
+              <h3 className="text-slate-900 text-2xl font-bold mb-2">{t.step4Title}</h3>
+              <p className="text-slate-600 text-sm">Review and confirm your booking</p>
+            </div>
+            <div className="p-8 rounded-xl bg-blue-50 border border-blue-200 space-y-4">
+              <h4 className="text-slate-700 text-sm uppercase tracking-wider font-semibold">{t.summaryLabel}</h4>
+              <div className="space-y-3">
+                <div className="flex justify-between text-sm"><span className="text-slate-600">{t.summaryTrajet}</span><span className="text-slate-900 font-medium">{form.departure_point} → {form.arrival_point}</span></div>
+                <div className="flex justify-between text-sm"><span className="text-slate-600">{t.summaryDateHeure}</span><span className="text-slate-900 font-medium">{form.departure_date} — {form.departure_time}</span></div>
+                <div className="flex justify-between text-sm"><span className="text-slate-600">{t.summaryVehicle}</span><span className="text-slate-900 font-medium">Standard</span></div>
+                <div className="flex justify-between text-sm"><span className="text-slate-600">{t.summaryDistance}</span><span className="text-slate-900 font-medium">{estimatedDistance} km</span></div>
+              </div>
+              <div className="w-full h-[1px] bg-blue-200 my-4" />
+              <div className="flex justify-between"><span className="text-slate-900 font-bold">{t.summaryTotal}</span><span className="text-slate-900 text-2xl font-bold">CHF {totalPrice}</span></div>
+              <p className="text-slate-600 text-xs italic mt-4">{t.noTollsIncluded}</p>
               </div>
 
             {/* Payment Method Selection */}
