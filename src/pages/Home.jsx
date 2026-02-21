@@ -29,8 +29,8 @@ function HomeContent({ bookingRef, scrollToBooking }) {
           </a>
         </div>
       </div>
-    </React.Fragment>);
-
+    </React.Fragment>
+  );
 }
 
 export default function Home() {
@@ -40,6 +40,6 @@ export default function Home() {
   return (
     <LanguageProvider>
       <HomeContent bookingRef={bookingRef} scrollToBooking={scrollToBooking} />
-    </LanguageProvider>);
-
-}
+    </LanguageProvider>
+  );
+  }
