@@ -23,7 +23,9 @@ export default function VehicleCard({ type, selected, onSelect, distance, priceP
     features: t.vehicleFeatures.comfort
   };
 
-  const totalPrice = distance > 0 ? (distance * config.pricePerKm + (baseFare || 0)).toFixed(2) : null;
+  // Não cobrar tarifa de base para viagens acima de 30 km
+  const baseFareToUse = distance > 30 ? 0 : (baseFare || 0);
+  const totalPrice = distance > 0 ? (distance * config.pricePerKm + baseFareToUse).toFixed(2) : null;
 
   return (
     <div
