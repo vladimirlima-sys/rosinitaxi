@@ -20,7 +20,7 @@ export default function HeroSection({ onScrollToBooking }) {
           ROSINI
         </h1>
         <p className="text-lg md:text-2xl font-semibold text-black/70 tracking-[0.3em] uppercase mb-5">
-          Transports et locations Sarl
+          Transferts
         </p>
         
         <div className="w-16 h-[2px] bg-black mx-auto mb-5" />
