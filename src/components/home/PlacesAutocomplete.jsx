@@ -3,8 +3,9 @@ import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { MapPin, Loader, X } from 'lucide-react';
 import { base44 } from '@/api/base44Client';
+import { hereCache } from '@/components/hereCache';
 
-const DEBOUNCE_DELAY = 300;
+const DEBOUNCE_DELAY = 500;
 const MIN_INPUT_LENGTH = 2;
 
 export default function PlacesAutocomplete({
