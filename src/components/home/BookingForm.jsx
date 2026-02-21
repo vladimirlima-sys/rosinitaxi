@@ -280,21 +280,22 @@ export default function BookingForm({ bookingRef }) {
         // Send confirmation email
         try {
           await base44.functions.invoke('sendBookingConfirmation', {
-            client_name: form.client_name,
-            client_email: form.client_email,
-            client_phone: form.client_phone,
-            departure_point: form.departure_point,
-            arrival_point: form.arrival_point,
-            departure_date: form.departure_date,
-            departure_time: form.departure_time,
-            flight_number: form.flight_number,
-            vehicle_type: form.vehicle_type,
-            distance_km: estimatedDistance,
-            total_price: parseFloat(totalPrice),
-            passengers: form.passengers,
-            notes: form.notes,
-            payment_method: paymentMethod
-          });
+              client_name: form.client_name,
+              client_email: form.client_email,
+              client_phone: form.client_phone,
+              departure_point: form.departure_point,
+              arrival_point: form.arrival_point,
+              departure_date: form.departure_date,
+              departure_time: form.departure_time,
+              flight_number: form.flight_number,
+              vehicle_type: form.vehicle_type,
+              distance_km: estimatedDistance,
+              total_price: parseFloat(totalPrice),
+              passengers: form.passengers,
+              notes: form.notes,
+              payment_method: paymentMethod,
+              language: lang
+            });
         } catch (err) {
           console.error('Error sending confirmation email:', err);
           toast.error('Erro ao enviar e-mail de confirmação');
