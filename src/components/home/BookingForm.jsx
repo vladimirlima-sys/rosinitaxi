@@ -430,11 +430,11 @@ export default function BookingForm({ bookingRef }) {
             </div>
 
             {/* Action Button */}
-            <div className="flex justify-end">
+            <div className="flex justify-end pt-4">
               <Button
               onClick={() => {setStep(2);scrollToTop();}}
               disabled={!canProceedStep1 || estimatedDistance === 0}
-              className="bg-black hover:bg-black/80 text-[#F5C300] font-bold px-12 h-13 rounded-xl transition-all hover:shadow-lg">
+              className="bg-blue-600 hover:bg-blue-700 text-white font-semibold px-8 py-3 rounded-lg transition-all hover:shadow-lg disabled:opacity-50 disabled:cursor-not-allowed">
 
                 {t.continueBtn}
               </Button>
