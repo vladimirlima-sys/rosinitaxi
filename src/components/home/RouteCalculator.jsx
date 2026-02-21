@@ -27,14 +27,40 @@ export default function RouteCalculator({ departure, arrival, onRouteCalculated 
   }, [departure, arrival]);
 
   useEffect(() => {
-    if (!departure || !arrival || !departureCoords.current || !arrivalCoords.current) return;
+    if (!departure || !arrival) return;
 
+    // If we don't have coords from selection, try to geocode the addresses
     const calculateRoute = async () => {
       setCalculating(true);
       try {
+        let depCoords = departureCoords.current;
+        let arrCoords = arrivalCoords.current;
+
+        // Geocode departure if not yet resolved
+        if (!depCoords) {
+          const depRes = await base44.functions.invoke('hereGeocoding', {
+            searchText: departure
+          });
+          if (depRes.data?.results?.[0]) {
+            depCoords = { lat: depRes.data.results[0].lat, lng: depRes.data.results[0].lng };
+          }
+        }
+
+        // Geocode arrival if not yet resolved
+        if (!arrCoords) {
+          const arrRes = await base44.functions.invoke('hereGeocoding', {
+            searchText: arrival
+          });
+          if (arrRes.data?.results?.[0]) {
+            arrCoords = { lat: arrRes.data.results[0].lat, lng: arrRes.data.results[0].lng };
+          }
+        }
+
+        if (!depCoords || !arrCoords) return;
+
         const response = await base44.functions.invoke('hereRoutes', {
-          departure: departureCoords.current,
-          arrival: arrivalCoords.current
+          departure: depCoords,
+          arrival: arrCoords
         });
 
         const data = response.data;
