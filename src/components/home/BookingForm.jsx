@@ -473,10 +473,15 @@ export default function BookingForm({ bookingRef }) {
           </div>
         }
 
-        {/* Step 2: Vehicle */}
+        {/* Step 2: Vehicle & Extras */}
         {step === 2 &&
         <div className="space-y-6">
             <h3 className="text-black text-xl font-bold mb-6">{t.step2Title}</h3>
+
+            <AvailabilityCalendar 
+              selectedDate={form.departure_date}
+              onDateChange={(date) => update('departure_date', date)}
+            />
             {priceSettings &&
           <VehicleCard
             type="economic"
