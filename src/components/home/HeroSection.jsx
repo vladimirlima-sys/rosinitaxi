@@ -16,14 +16,16 @@ export default function HeroSection({ onScrollToBooking }) {
       
       <div className="relative z-10 text-center px-6 max-w-5xl mx-auto">
 
-        <h1 className="text-4xl md:text-6xl lg:text-7xl font-light text-black tracking-tight mb-2">
-          ROSINI
-        </h1>
-        <p className="text-lg md:text-2xl font-light text-black/70 tracking-[0.3em] uppercase mb-5">
-          Transferts
-        </p>
-        
-        <div className="w-16 h-[2px] bg-black mx-auto mb-5" />
+        <div className="mb-6">
+          <h1 className="text-5xl md:text-7xl lg:text-8xl font-extralight text-black tracking-[0.15em] mb-1 leading-none">
+            ROSINI
+          </h1>
+          <p className="text-xl md:text-2xl font-light text-black/60 tracking-[0.25em] uppercase letter-spacing">
+            TRANSFERTS
+          </p>
+        </div>
+
+        <div className="w-12 h-[1px] bg-black mx-auto mb-6" />
         
         <p className="text-base md:text-lg text-black/70 font-medium max-w-2xl mx-auto mb-8 leading-relaxed">
           {t.heroDesc}
