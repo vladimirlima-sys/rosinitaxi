@@ -3,15 +3,15 @@ import { Clock, AlertCircle } from 'lucide-react';
 import { useLang } from '@/components/LanguageContext';
 import { translations } from '@/components/translations';
 
-export default function PricingBreakdown({ 
-  date, 
-  time, 
-  distance_km, 
-  basePrice, 
-  vehicleType, 
-  priceSettings, 
-  departure_point, 
-  arrival_point 
+export default function PricingBreakdown({
+  date,
+  time,
+  distance_km,
+  basePrice,
+  vehicleType,
+  priceSettings,
+  departure_point,
+  arrival_point
 }) {
   const { lang } = useLang();
   const t = translations[lang];
@@ -23,26 +23,26 @@ export default function PricingBreakdown({
   const hour = dateObj.getHours();
 
   // Check if night surcharge applies
-  const isNightSurcharge = 
-    dayOfWeek === priceSettings.night_surcharge_day &&
-    hour >= priceSettings.night_surcharge_start_hour &&
-    hour < priceSettings.night_surcharge_end_hour;
+  const isNightSurcharge =
+  dayOfWeek === priceSettings.night_surcharge_day &&
+  hour >= priceSettings.night_surcharge_start_hour &&
+  hour < priceSettings.night_surcharge_end_hour;
 
   // Check if airport fee applies
-  const isAirportTransfer = (
-    departure_point.toLowerCase().includes('aeroporto') ||
-    departure_point.toLowerCase().includes('aéroport') ||
-    departure_point.toLowerCase().includes('airport') ||
-    arrival_point.toLowerCase().includes('aeroporto') ||
-    arrival_point.toLowerCase().includes('aéroport') ||
-    arrival_point.toLowerCase().includes('airport')
-  );
+  const isAirportTransfer =
+  departure_point.toLowerCase().includes('aeroporto') ||
+  departure_point.toLowerCase().includes('aéroport') ||
+  departure_point.toLowerCase().includes('airport') ||
+  arrival_point.toLowerCase().includes('aeroporto') ||
+  arrival_point.toLowerCase().includes('aéroport') ||
+  arrival_point.toLowerCase().includes('airport');
+
 
   // Calculate price breakdown
   const pricePerKm = priceSettings.standard_price_per_km;
   const distancePrice = (distance_km * pricePerKm).toFixed(2);
   const baseFareAmount = priceSettings.base_fare || 0;
-  
+
   let nightSurchargeAmount = 0;
   if (isNightSurcharge && priceSettings.night_surcharge_percentage > 0) {
     nightSurchargeAmount = ((parseFloat(distancePrice) + baseFareAmount) * priceSettings.night_surcharge_percentage / 100).toFixed(2);
@@ -54,35 +54,35 @@ export default function PricingBreakdown({
   }
 
   const totalPrice = (
-    parseFloat(distancePrice) + 
-    baseFareAmount + 
-    parseFloat(nightSurchargeAmount) + 
-    airportFeeAmount
-  ).toFixed(2);
+  parseFloat(distancePrice) +
+  baseFareAmount +
+  parseFloat(nightSurchargeAmount) +
+  airportFeeAmount).
+  toFixed(2);
 
   return (
-    <div className="rounded-2xl bg-white/[0.03] border border-[#C9A96E]/20 p-5 space-y-3">
+    <div className="bg-zinc-950 p-5 rounded-2xl border border-[#C9A96E]/20 space-y-3">
       {/* Night surcharge */}
-      {isNightSurcharge && parseFloat(nightSurchargeAmount) > 0 && (
-        <div className="flex justify-between items-center text-sm">
+      {isNightSurcharge && parseFloat(nightSurchargeAmount) > 0 &&
+      <div className="flex justify-between items-center text-sm">
           <span className="flex items-center gap-2 text-white/40">
             <Clock className="w-3.5 h-3.5 text-blue-400" />
             {t.nightSurcharge} ({priceSettings.night_surcharge_percentage}%)
           </span>
           <span className="text-blue-400">+CHF {nightSurchargeAmount}</span>
         </div>
-      )}
+      }
 
       {/* Airport fee */}
-      {isAirportTransfer && airportFeeAmount > 0 && (
-        <div className="flex justify-between items-center text-sm">
+      {isAirportTransfer && airportFeeAmount > 0 &&
+      <div className="flex justify-between items-center text-sm">
           <span className="flex items-center gap-2 text-white/40">
             <AlertCircle className="w-3.5 h-3.5 text-orange-400" />
             {t.airportFee}
           </span>
           <span className="text-orange-400">+CHF {airportFeeAmount.toFixed(2)}</span>
         </div>
-      )}
+      }
 
       {/* Divider */}
       <div className="w-full h-[1px] bg-white/10" />
@@ -92,6 +92,6 @@ export default function PricingBreakdown({
         <span className="text-white font-medium">{t.total}</span>
         <span className="text-[#C9A96E] text-2xl font-semibold">CHF {totalPrice}</span>
       </div>
-    </div>
-  );
+    </div>);
+
 }
