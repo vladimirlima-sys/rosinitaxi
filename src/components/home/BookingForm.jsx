@@ -48,6 +48,7 @@ export default function BookingForm({ bookingRef }) {
   const [estimatedTime, setEstimatedTime] = useState(0);
   const [priceSettings, setPriceSettings] = useState(null);
   const [currentRoute, setCurrentRoute] = useState(null);
+  const [selectedExtras, setSelectedExtras] = useState([]);
 
 
   const update = (field, value) => setForm((prev) => ({ ...prev, [field]: value }));
