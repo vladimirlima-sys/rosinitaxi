@@ -146,6 +146,20 @@ export default function BookingForm({ bookingRef }) {
     return Math.round(km / 70 * 60);
   };
 
+  const extrasConfig = [
+    { id: 'baby_seat', price: 15 },
+    { id: 'extra_luggage', price: 25 },
+    { id: 'wheelchair_accessible', price: 30 },
+    { id: 'pet_friendly', price: 20 },
+  ];
+
+  const calculateExtrasPrice = () => {
+    return selectedExtras.reduce((total, extraId) => {
+      const extra = extrasConfig.find(e => e.id === extraId);
+      return total + (extra ? extra.price : 0);
+    }, 0);
+  };
+
   const calculateTotalPrice = () => {
     if (!priceSettings || estimatedDistance === 0) return null;
 
@@ -183,6 +197,9 @@ export default function BookingForm({ bookingRef }) {
     if (isAirportTransfer && priceSettings.airport_fee) {
       total += priceSettings.airport_fee;
     }
+
+    // Add extras price
+    total += calculateExtrasPrice();
 
     return total.toFixed(2);
   };
