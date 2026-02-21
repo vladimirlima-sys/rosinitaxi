@@ -46,35 +46,11 @@ export default function BookingForm({ bookingRef }) {
   const [estimatedTime, setEstimatedTime] = useState(0);
   const [priceSettings, setPriceSettings] = useState(null);
   const [currentRoute, setCurrentRoute] = useState(null);
-  const [departureToken, setDepartureToken] = useState(null);
-  const [arrivalToken, setArrivalToken] = useState(null);
-
-
   const update = (field, value) => setForm((prev) => ({ ...prev, [field]: value }));
 
   // Set vehicle type to economic on mount
   useEffect(() => {
     update('vehicle_type', 'economic');
-  }, []);
-
-  // Create new session token
-  const createNewToken = () => {
-    try {
-      if (typeof google !== 'undefined' && google.maps?.places?.AutocompleteSessionToken) {
-        return new google.maps.places.AutocompleteSessionToken();
-      }
-    } catch (err) {
-      console.error('Session token creation error:', err);
-    }
-    return null;
-  };
-
-  // Initialize session tokens for Places API
-  useEffect(() => {
-    const token1 = createNewToken();
-    const token2 = createNewToken();
-    setDepartureToken(token1);
-    setArrivalToken(token2);
   }, []);
 
   const locateUser = async () => {
@@ -370,8 +346,6 @@ export default function BookingForm({ bookingRef }) {
                 showLocateButton={true}
                 isLocating={isLocating}
                 onLocate={locateUser}
-                sessionToken={departureToken}
-                onTokenRefresh={() => setDepartureToken(createNewToken())}
                 t={t} />
 
 
@@ -386,8 +360,6 @@ export default function BookingForm({ bookingRef }) {
                 placeholder={t.arrivalPlaceholder}
                 label={t.arrival}
                 showLocateButton={false}
-                sessionToken={arrivalToken}
-                onTokenRefresh={() => setArrivalToken(createNewToken())}
                 t={t} />
 
 
