@@ -281,10 +281,13 @@ export default function BookingForm({ bookingRef }) {
           ...form,
           total_price: parseFloat(totalPrice),
           payment_status: 'pending',
-          payment_method: paymentMethod
+          payment_method: paymentMethod,
+          extras: selectedExtras,
+          extras_price: calculateExtrasPrice(),
+          special_notes: form.notes
         });
 
-        // Send confirmation email
+        // Send confirmation email and SMS
         try {
           await base44.functions.invoke('sendBookingConfirmation', {
             client_name: form.client_name,
@@ -299,13 +302,15 @@ export default function BookingForm({ bookingRef }) {
             distance_km: estimatedDistance,
             total_price: parseFloat(totalPrice),
             passengers: form.passengers,
+            extras: selectedExtras,
+            extras_price: calculateExtrasPrice(),
             notes: form.notes,
             payment_method: paymentMethod,
             language: lang
           });
         } catch (err) {
-          console.error('Error sending confirmation email:', err);
-          toast.error('Erro ao enviar e-mail de confirmação');
+          console.error('Error sending confirmation:', err);
+          toast.error('Erro ao enviar confirmação');
         }
 
         toast.success('Réservation confirmée!');
