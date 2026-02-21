@@ -32,17 +32,7 @@ export default function FooterSection() {
             </div>
           </div>
 
-          <div>
-            <h4 className="text-white/60 text-sm tracking-[0.2em] uppercase mb-6">{t.hours}</h4>
-            <div className="flex items-start gap-3">
-              <Clock className="w-4 h-4 text-[#C9A96E] mt-0.5" />
-              <div>
-                <p className="text-white/60 text-sm font-medium">{t.hours24}</p>
-                <p className="text-white/40 text-sm">{t.hours7}</p>
-                <p className="text-white/30 text-xs mt-2">{t.hoursHoliday}</p>
-              </div>
-            </div>
-          </div>
+
         </div>
 
         <div className="h-[1px] bg-white/5 mb-8" />
