@@ -46,8 +46,6 @@ export default function BookingForm({ bookingRef }) {
   const [estimatedTime, setEstimatedTime] = useState(0);
   const [priceSettings, setPriceSettings] = useState(null);
   const [currentRoute, setCurrentRoute] = useState(null);
-  const [departureToken, setDepartureToken] = useState(null);
-  const [arrivalToken, setArrivalToken] = useState(null);
 
 
   const update = (field, value) => setForm((prev) => ({ ...prev, [field]: value }));
@@ -57,25 +55,7 @@ export default function BookingForm({ bookingRef }) {
     update('vehicle_type', 'economic');
   }, []);
 
-  // Create new session token
-  const createNewToken = () => {
-    try {
-      if (typeof google !== 'undefined' && google.maps?.places?.AutocompleteSessionToken) {
-        return new google.maps.places.AutocompleteSessionToken();
-      }
-    } catch (err) {
-      console.error('Session token creation error:', err);
-    }
-    return null;
-  };
 
-  // Initialize session tokens for Places API
-  useEffect(() => {
-    const token1 = createNewToken();
-    const token2 = createNewToken();
-    setDepartureToken(token1);
-    setArrivalToken(token2);
-  }, []);
 
   const locateUser = async () => {
     if (!navigator.geolocation) {
@@ -360,16 +340,14 @@ export default function BookingForm({ bookingRef }) {
 
               <div className="space-y-6">
                 <PlacesAutocomplete
-                value={form.departure_point}
-                onChange={(val) => update('departure_point', val)}
-                placeholder={t.departurePlaceholder}
-                label={t.departure}
-                showLocateButton={true}
-                isLocating={isLocating}
-                onLocate={locateUser}
-                sessionToken={departureToken}
-                onTokenRefresh={() => setDepartureToken(createNewToken())}
-                t={t} />
+                  value={form.departure_point}
+                  onChange={(val) => update('departure_point', val)}
+                  placeholder={t.departurePlaceholder}
+                  label={t.departure}
+                  showLocateButton={true}
+                  isLocating={isLocating}
+                  onLocate={locateUser}
+                  t={t} />
 
 
                 {/* Route Line */}
@@ -383,8 +361,6 @@ export default function BookingForm({ bookingRef }) {
                 placeholder={t.arrivalPlaceholder}
                 label={t.arrival}
                 showLocateButton={false}
-                sessionToken={arrivalToken}
-                onTokenRefresh={() => setArrivalToken(createNewToken())}
                 t={t} />
 
 
