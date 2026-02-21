@@ -25,9 +25,9 @@ export default function HeroSection({ onScrollToBooking }) {
           </p>
         </div>
 
-        <div className="w-12 h-[1px] bg-black mx-auto mb-6" />
+        <div className="w-12 h-[1px] bg-black mx-auto mb-4" />
         
-        <p className="text-base md:text-lg text-black/70 font-medium max-w-2xl mx-auto mb-8 leading-relaxed">
+        <p className="text-base md:text-lg text-black/70 font-medium max-w-2xl mx-auto mb-6 leading-relaxed">
           {t.heroDesc}
         </p>
 
