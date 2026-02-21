@@ -335,9 +335,9 @@ export default function BookingForm({ bookingRef }) {
           {[1, 2, 3, 4].map(s => (
             <div key={s}>
               <div className={`w-8 h-8 rounded-full flex items-center justify-center text-sm font-medium transition-all ${
-                step >= s ? 'bg-gray-900 text-white' : 'bg-gray-200 text-gray-400'
+                step >= s ? 'bg-[#C9A96E] text-[#0A0A0A]' : 'bg-white/10 text-white/30'
               }`}>{s}</div>
-              {s < 4 && <div className={`w-12 h-[1px] ${step > s ? 'bg-gray-900' : 'bg-gray-200'}`} />}
+              {s < 4 && <div className={`w-12 h-[1px] ${step > s ? 'bg-[#C9A96E]' : 'bg-white/10'}`} />}
             </div>
           ))}
         </div>
