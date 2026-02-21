@@ -582,15 +582,15 @@ export default function BookingForm({ bookingRef }) {
             </div>
 
             {paymentMethod === 'stripe' &&
-          <div className="flex items-center gap-2 text-black/50 text-xs">
-                <svg className="w-3.5 h-3.5" fill="currentColor" viewBox="0 0 24 24"><path d="M12 1L3 5v6c0 5.55 3.84 10.74 9 12 5.16-1.26 9-6.45 9-12V5l-9-4z" /></svg>
+            <div className="flex items-center gap-2 text-slate-600 text-xs bg-blue-50 p-3 rounded-lg border border-blue-100">
+                <svg className="w-4 h-4 flex-shrink-0 text-blue-600" fill="currentColor" viewBox="0 0 24 24"><path d="M12 1L3 5v6c0 5.55 3.84 10.74 9 12 5.16-1.26 9-6.45 9-12V5l-9-4z" /></svg>
                 <span>{t.securePayment}</span>
               </div>
-          }
+            }
 
-            <div className="flex justify-between pt-2">
-              <Button onClick={() => {setStep(3);scrollToTop();}} className="bg-black hover:bg-black/80 text-[#F5C300] font-bold px-8 h-12">{t.backBtn}</Button>
-              <Button onClick={handlePayment} disabled={isSubmitting} className="bg-black hover:bg-black/80 text-[#F5C300] font-bold px-8 h-12 min-w-[220px]">
+            <div className="flex justify-between gap-4 pt-6">
+              <Button onClick={() => {setStep(3);scrollToTop();}} variant="outline" className="px-8 h-11 font-semibold">{t.backBtn}</Button>
+              <Button onClick={handlePayment} disabled={isSubmitting} className="bg-blue-600 hover:bg-blue-700 text-white font-semibold px-8 h-11 min-w-[220px]">
                 {isSubmitting ? <><Loader2 className="w-4 h-4 mr-2 animate-spin" />{t.redirecting}</> : `${paymentMethod === 'stripe' ? t.payBtn(totalPrice) : t.confirmBooking}`}
               </Button>
             </div>
