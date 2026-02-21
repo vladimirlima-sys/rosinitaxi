@@ -269,7 +269,7 @@ export default function PlacesAutocomplete({
           onChange={handleInputChange}
           onKeyDown={handleKeyDown}
           onFocus={handleFocus}
-          onBlur={handleBlur} className="bg-[#fff261] text-black pr-12 pl-12 px-3 py-1 text-base rounded-xl flex w-full shadow-sm file:border-0 file:bg-transparent file:text-sm file:font-medium file:text-foreground focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring disabled:cursor-not-allowed disabled:opacity-50 md:text-sm border border-black/20 placeholder:text-black/30 focus:border-black h-12 transition-all"
+          onBlur={handleBlur} className="bg-[#fcf6ab] text-black px-3 py-1 text-base rounded-xl flex w-full shadow-sm file:border-0 file:bg-transparent file:text-sm file:font-medium file:text-foreground focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring disabled:cursor-not-allowed disabled:opacity-50 md:text-sm border border-black/20 placeholder:text-black/30 focus:border-black h-12 transition-all"
 
           autoComplete="off" />
 
