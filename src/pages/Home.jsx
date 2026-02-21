@@ -4,7 +4,7 @@ import HeroSection from '@/components/home/HeroSection';
 import BookingForm from '@/components/home/BookingForm';
 import FooterSection from '@/components/home/FooterSection';
 import LanguageSwitcher from '@/components/home/LanguageSwitcher';
-import GoogleMapsLoader from '@/components/GoogleMapsLoader';
+
 import SeoHead from '@/components/SeoHead';
 import { LanguageProvider, useLang } from '@/components/LanguageContext';
 
