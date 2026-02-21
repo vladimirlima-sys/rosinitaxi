@@ -359,7 +359,8 @@ export const translations = {
     routeError: 'Error calculating route. Please check the addresses.',
     markerDeparture: 'DEPARTURE',
     markerArrival: 'ARRIVAL',
-  },
+    noTollsIncluded: '* Price does not include tolls',
+    },
   de: {
     badge: 'Verfügbar 24/7 — Jeden Tag',
     paymentMethod: 'Zahlungsmethode',
