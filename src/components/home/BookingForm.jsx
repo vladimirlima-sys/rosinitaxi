@@ -498,9 +498,9 @@ export default function BookingForm({ bookingRef }) {
               </div>
             }
 
-            <div className="flex justify-between pt-4">
-              <Button onClick={() => {setStep(1);scrollToTop();}} className="bg-black hover:bg-black/80 text-[#F5C300] font-bold px-8 h-12">{t.backBtn}</Button>
-              <Button onClick={() => {setStep(3);scrollToTop();}} disabled={!canProceedStep2} className="bg-black hover:bg-black/80 text-[#F5C300] font-bold px-8 h-12">{t.continueBtn}</Button>
+            <div className="flex justify-between gap-4 pt-8">
+              <Button onClick={() => {setStep(1);scrollToTop();}} variant="outline" className="px-8 h-11 font-semibold">{t.backBtn}</Button>
+              <Button onClick={() => {setStep(3);scrollToTop();}} disabled={!canProceedStep2} className="bg-blue-600 hover:bg-blue-700 text-white font-semibold px-8 h-11">{t.continueBtn}</Button>
             </div>
           </div>
         }
