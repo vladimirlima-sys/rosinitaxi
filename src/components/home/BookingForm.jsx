@@ -241,12 +241,18 @@ export default function BookingForm({ bookingRef }) {
           payment_method: 'stripe'
         };
 
-        await base44.entities.Booking.create(bookingData);
+        await base44.entities.Booking.create({
+          ...bookingData,
+          extras: selectedExtras,
+          extras_price: calculateExtrasPrice()
+        });
 
         sessionStorage.setItem('pendingBooking', JSON.stringify({
           ...form,
           total_price: parseFloat(totalPrice),
           distance_km: estimatedDistance,
+          extras: selectedExtras,
+          extras_price: calculateExtrasPrice(),
           language: lang
         }));
 
