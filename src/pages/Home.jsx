@@ -23,20 +23,28 @@ function HomeContent({ bookingRef, scrollToBooking }) {
         <BookingForm bookingRef={bookingRef} />
         <FooterSection />
 
-
         {/* Floating buttons - Call only */}
-                <div className="fixed top-6 left-6 z-50">
-                  <a
-                    href="tel:+41796505347"
-                    className="w-14 h-14 rounded-full bg-transparent border-2 border-[#C9A96E] hover:bg-[#C9A96E]/20 text-[#C9A96E] shadow-lg flex items-center justify-center transition-all hover:scale-110"
-                    title="Appel d'urgence"
-                  >
-                    <Phone className="w-6 h-6" />
-                  </a>
-                </div>
-
-
+        <div className="fixed top-6 left-6 z-50">
+          <a
+            href="tel:+41796505347"
+            className="w-14 h-14 rounded-full bg-transparent border-2 border-[#C9A96E] hover:bg-[#C9A96E]/20 text-[#C9A96E] shadow-lg flex items-center justify-center transition-all hover:scale-110"
+            title="Appel d'urgence"
+          >
+            <Phone className="w-6 h-6" />
+          </a>
+        </div>
       </div>
+    </>
+  );
+}
+
+export default function Home() {
+  const bookingRef = useRef(null);
+  const scrollToBooking = () => bookingRef.current?.scrollIntoView({ behavior: 'smooth' });
+
+  return (
+    <LanguageProvider>
+      <HomeContent bookingRef={bookingRef} scrollToBooking={scrollToBooking} />
     </LanguageProvider>
   );
 }
