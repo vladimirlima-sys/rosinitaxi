@@ -4,7 +4,7 @@ import { cn } from '@/lib/utils';
 import { useLang } from '@/components/LanguageContext';
 import { translations } from '@/components/translations';
 
-export default function VehicleCard({ type, selected, onSelect, distance, pricePerKm }) {
+export default function VehicleCard({ type, selected, onSelect, distance, pricePerKm, baseFare }) {
   const { lang } = useLang();
   const t = translations[lang];
   const isEconomic = type === 'economic';
@@ -23,7 +23,7 @@ export default function VehicleCard({ type, selected, onSelect, distance, priceP
     features: t.vehicleFeatures.comfort,
   };
 
-  const totalPrice = distance > 0 ? (distance * config.pricePerKm).toFixed(2) : null;
+  const totalPrice = distance > 0 ? (distance * config.pricePerKm + (baseFare || 0)).toFixed(2) : null;
 
   return (
     <div 
