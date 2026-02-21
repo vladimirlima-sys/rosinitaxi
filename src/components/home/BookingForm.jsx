@@ -244,11 +244,11 @@ export default function BookingForm({ bookingRef }) {
         await base44.entities.Booking.create(bookingData);
 
         sessionStorage.setItem('pendingBooking', JSON.stringify({
-            ...form,
-            total_price: parseFloat(totalPrice),
-            distance_km: estimatedDistance,
-            language: lang
-          }));
+          ...form,
+          total_price: parseFloat(totalPrice),
+          distance_km: estimatedDistance,
+          language: lang
+        }));
 
         const response = await base44.functions.invoke('createCheckout', {
           amount: parseFloat(totalPrice),
@@ -281,22 +281,22 @@ export default function BookingForm({ bookingRef }) {
         // Send confirmation email
         try {
           await base44.functions.invoke('sendBookingConfirmation', {
-              client_name: form.client_name,
-              client_email: form.client_email,
-              client_phone: form.client_phone,
-              departure_point: form.departure_point,
-              arrival_point: form.arrival_point,
-              departure_date: form.departure_date,
-              departure_time: form.departure_time,
-              flight_number: form.flight_number,
-              vehicle_type: form.vehicle_type,
-              distance_km: estimatedDistance,
-              total_price: parseFloat(totalPrice),
-              passengers: form.passengers,
-              notes: form.notes,
-              payment_method: paymentMethod,
-              language: lang
-            });
+            client_name: form.client_name,
+            client_email: form.client_email,
+            client_phone: form.client_phone,
+            departure_point: form.departure_point,
+            arrival_point: form.arrival_point,
+            departure_date: form.departure_date,
+            departure_time: form.departure_time,
+            flight_number: form.flight_number,
+            vehicle_type: form.vehicle_type,
+            distance_km: estimatedDistance,
+            total_price: parseFloat(totalPrice),
+            passengers: form.passengers,
+            notes: form.notes,
+            payment_method: paymentMethod,
+            language: lang
+          });
         } catch (err) {
           console.error('Error sending confirmation email:', err);
           toast.error('Erro ao enviar e-mail de confirmação');
@@ -424,8 +424,8 @@ export default function BookingForm({ bookingRef }) {
 
               <div className="bg-transparent grid grid-cols-1 md:grid-cols-3 gap-6">
                 <div className="space-y-3">
-                  <Label className="text-black/70 text-sm font-semibold flex items-center gap-2">
-                    <Calendar className="w-4 h-4 text-black" />
+                  <Label className="text-zinc-50 text-sm font-semibold peer-disabled:cursor-not-allowed peer-disabled:opacity-70 flex items-center gap-2">
+                    <Calendar className="text-[#C9A96E] lucide lucide-calendar w-4 h-4" />
                     {t.dateLabel}
                   </Label>
                   <Input
@@ -437,8 +437,8 @@ export default function BookingForm({ bookingRef }) {
                 </div>
 
                 <div className="space-y-3">
-                  <Label className="text-black/70 text-sm font-semibold flex items-center gap-2">
-                    <Clock className="w-4 h-4 text-black" />
+                  <Label className="text-zinc-50 text-sm font-semibold peer-disabled:cursor-not-allowed peer-disabled:opacity-70 flex items-center gap-2">
+                    <Clock className="text-[#C9A96E] lucide lucide-clock w-4 h-4" />
                     {t.timeLabel}
                   </Label>
                   <Input
@@ -450,8 +450,8 @@ export default function BookingForm({ bookingRef }) {
                 </div>
 
                 <div className="space-y-3">
-                  <Label className="text-black/70 text-sm font-semibold flex items-center gap-2">
-                    <Plane className="w-4 h-4 text-black" />
+                  <Label className="text-zinc-50 text-sm font-semibold peer-disabled:cursor-not-allowed peer-disabled:opacity-70 flex items-center gap-2">
+                    <Plane className="text-[#C9A96E] lucide lucide-plane w-4 h-4" />
                     {t.flightLabel}
                   </Label>
                   <Input
