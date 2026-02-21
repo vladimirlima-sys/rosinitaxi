@@ -31,7 +31,7 @@ export default function HeroSection({ onScrollToBooking }) {
           {t.heroDesc}
         </p>
 
-        <div className="flex flex-wrap justify-center gap-4 mb-14">
+        <div className="flex flex-wrap justify-center gap-4 mb-10">
           {[
             { icon: Clock, label: t.pill1 },
             { icon: Shield, label: t.pill2 },
