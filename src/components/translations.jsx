@@ -117,7 +117,8 @@ export const translations = {
     locationObtained: 'Localização obtida!',
     locationDenied: 'Permissão de localização negada',
     locationError: 'Erro ao obter localização',
-  },
+    noTollsIncluded: '* Valor não inclui pedágios',
+    },
   fr: {
     badge: 'Disponible 24h/24 — 7j/7',
     paymentMethod: 'Méthode de paiement',
