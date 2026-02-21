@@ -524,15 +524,15 @@ export default function BookingForm({ bookingRef }) {
               />
             )}
             {totalPrice && (!form.departure_date || !form.departure_time) && (
-              <div className="text-center p-6 rounded-2xl bg-gray-50 border border-gray-200">
-                <p className="text-gray-400 text-sm mb-2">{t.estimatedPrice}</p>
-                <p className="text-gray-900 text-4xl font-light">CHF {totalPrice}</p>
+              <div className="text-center p-6 rounded-2xl bg-white/[0.03] border border-white/10">
+                <p className="text-white/40 text-sm mb-2">{t.estimatedPrice}</p>
+                <p className="text-[#C9A96E] text-4xl font-light">CHF {totalPrice}</p>
               </div>
             )}
 
             <div className="flex justify-between pt-4">
-              <Button onClick={() => { setStep(1); scrollToTop(); }} className="bg-gray-900 hover:bg-black text-white font-semibold px-8 h-12">{t.backBtn}</Button>
-              <Button onClick={() => { setStep(3); scrollToTop(); }} disabled={!canProceedStep2} className="bg-gray-900 hover:bg-black text-white font-semibold px-8 h-12">{t.continueBtn}</Button>
+              <Button onClick={() => { setStep(1); scrollToTop(); }} className="bg-[#C9A96E] hover:bg-[#B8955D] text-[#0A0A0A] font-semibold px-8 h-12">{t.backBtn}</Button>
+              <Button onClick={() => { setStep(3); scrollToTop(); }} disabled={!canProceedStep2} className="bg-[#C9A96E] hover:bg-[#B8955D] text-[#0A0A0A] font-semibold px-8 h-12">{t.continueBtn}</Button>
             </div>
           </div>
         )}
