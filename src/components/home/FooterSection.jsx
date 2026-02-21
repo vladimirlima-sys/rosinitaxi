@@ -10,7 +10,7 @@ export default function FooterSection() {
   return (
     <footer className="py-16 px-6 bg-[#080808] border-t border-white/5">
       <div className="max-w-6xl mx-auto">
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-12 mb-12">
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-12 mb-12">
           <div>
             <div className="mb-4">
               <h3 className="text-white text-2xl font-light tracking-tight">ROSINI</h3>
