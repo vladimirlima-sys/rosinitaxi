@@ -559,8 +559,8 @@ export default function BookingForm({ bookingRef }) {
               <Textarea placeholder={t.notesPlaceholder} value={form.notes} onChange={e => update('notes', e.target.value)} className="bg-white/5 border-white/10 text-white placeholder:text-white/20 focus:border-[#C9A96E] min-h-[100px]" />
             </div>
             <div className="flex justify-between pt-4">
-              <Button onClick={() => setStep(2)} className="bg-[#C9A96E] hover:bg-[#B8955D] text-[#0A0A0A] font-semibold px-8 h-12">{t.backBtn}</Button>
-              <Button onClick={() => setStep(4)} disabled={!canProceedStep3} className="bg-[#C9A96E] hover:bg-[#B8955D] text-[#0A0A0A] font-semibold px-8 h-12">{t.paymentBtn}</Button>
+              <Button onClick={() => { setStep(2); scrollToTop(); }} className="bg-[#C9A96E] hover:bg-[#B8955D] text-[#0A0A0A] font-semibold px-8 h-12">{t.backBtn}</Button>
+              <Button onClick={() => { setStep(4); scrollToTop(); }} disabled={!canProceedStep3} className="bg-[#C9A96E] hover:bg-[#B8955D] text-[#0A0A0A] font-semibold px-8 h-12">{t.paymentBtn}</Button>
             </div>
           </div>
         )}
