@@ -8,7 +8,7 @@ export default function HeroSection({ onScrollToBooking }) {
   const t = translations[lang];
 
   return (
-    <section className="relative min-h-screen flex items-center justify-center overflow-hidden bg-[#0A0A0A]">
+    <section className="relative min-h-[70vh] flex items-center justify-center overflow-hidden bg-[#0A0A0A]">
       <div 
         className="absolute inset-0 bg-cover bg-center opacity-30"
         style={{ backgroundImage: "url('https://images.unsplash.com/photo-1549317661-bd32c8ce0afa?w=1920&q=80')" }}
@@ -18,20 +18,20 @@ export default function HeroSection({ onScrollToBooking }) {
       <div className="relative z-10 text-center px-6 max-w-5xl mx-auto">
 
 
-        <h1 className="text-5xl md:text-7xl lg:text-8xl font-light text-white tracking-tight mb-4">
+        <h1 className="text-4xl md:text-6xl lg:text-7xl font-light text-white tracking-tight mb-2">
           ROSINI
         </h1>
-        <p className="text-2xl md:text-3xl lg:text-4xl font-extralight text-white/60 tracking-[0.3em] uppercase mb-8">
-          Transfert
+        <p className="text-lg md:text-2xl font-extralight text-white/60 tracking-[0.3em] uppercase mb-5">
+          Transports et locations Sarl
         </p>
         
-        <div className="w-16 h-[1px] bg-[#C9A96E] mx-auto mb-8" />
+        <div className="w-16 h-[1px] bg-[#C9A96E] mx-auto mb-5" />
         
-        <p className="text-lg md:text-xl text-white/50 font-light max-w-2xl mx-auto mb-12 leading-relaxed">
+        <p className="text-base md:text-lg text-white/50 font-light max-w-2xl mx-auto mb-8 leading-relaxed">
           {t.heroDesc}
         </p>
 
-        <div className="flex flex-wrap justify-center gap-4 mb-16">
+        <div className="flex flex-wrap justify-center gap-3 mb-10">
           {[
             { icon: Clock, label: t.pill1 },
             { icon: Shield, label: t.pill2 },
@@ -46,7 +46,7 @@ export default function HeroSection({ onScrollToBooking }) {
 
         <button
           onClick={onScrollToBooking}
-          className="group inline-flex items-center gap-3 bg-[#C9A96E] hover:bg-[#B8955D] text-[#0A0A0A] font-semibold px-10 py-4 rounded-full transition-all duration-300 hover:shadow-[0_0_40px_rgba(201,169,110,0.3)]"
+          className="group inline-flex items-center gap-3 bg-[#C9A96E] hover:bg-[#B8955D] text-[#0A0A0A] font-semibold px-8 py-3 rounded-full transition-all duration-300 hover:shadow-[0_0_40px_rgba(201,169,110,0.3)]"
         >
           {t.cta}
           <ChevronDown className="w-4 h-4 group-hover:translate-y-1 transition-transform" />
