@@ -486,6 +486,7 @@ export default function BookingForm({ bookingRef }) {
                 onSelect={v => update('vehicle_type', v)} 
                 distance={estimatedDistance}
                 pricePerKm={priceSettings.standard_price_per_km}
+                baseFare={priceSettings.base_fare || 0}
               />
             )}
 
