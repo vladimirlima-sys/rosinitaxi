@@ -584,18 +584,18 @@ export default function BookingForm({ bookingRef }) {
             <div className="space-y-4 p-6 rounded-2xl bg-white/[0.06] border border-white/10">
               <Label className="text-white text-sm font-medium">{t.paymentMethod}</Label>
               <div className="space-y-3">
-                <label className="flex items-center gap-3 cursor-pointer p-4 rounded-xl border-2 transition-all" style={{borderColor: paymentMethod === 'stripe' ? '#C9A96E' : 'rgba(255,255,255,0.1)', backgroundColor: paymentMethod === 'stripe' ? 'rgba(201,169,110,0.1)' : 'rgba(255,255,255,0.03)'}}>
-                  <input type="radio" name="payment" value="stripe" checked={paymentMethod === 'stripe'} onChange={(e) => setPaymentMethod(e.target.value)} className="w-4 h-4" style={{accentColor: '#C9A96E'}} />
+                <label className="flex items-center gap-3 cursor-pointer p-4 rounded-xl border transition-all" style={{borderColor: paymentMethod === 'stripe' ? 'rgba(255,255,255,0.6)' : 'rgba(255,255,255,0.1)', backgroundColor: paymentMethod === 'stripe' ? 'rgba(255,255,255,0.1)' : 'rgba(255,255,255,0.03)'}}>
+                  <input type="radio" name="payment" value="stripe" checked={paymentMethod === 'stripe'} onChange={(e) => setPaymentMethod(e.target.value)} className="w-4 h-4" style={{accentColor: 'white'}} />
                   <span className="text-white flex-1">{t.stripeLabel}</span>
                   <span className="text-white/40 text-sm">{t.stripeDesc}</span>
                 </label>
-                <label className="flex items-center gap-3 cursor-pointer p-4 rounded-xl border-2 transition-all" style={{borderColor: paymentMethod === 'twint' ? '#C9A96E' : 'rgba(255,255,255,0.1)', backgroundColor: paymentMethod === 'twint' ? 'rgba(201,169,110,0.1)' : 'rgba(255,255,255,0.03)'}}>
-                  <input type="radio" name="payment" value="twint" checked={paymentMethod === 'twint'} onChange={(e) => setPaymentMethod(e.target.value)} className="w-4 h-4" style={{accentColor: '#C9A96E'}} />
+                <label className="flex items-center gap-3 cursor-pointer p-4 rounded-xl border transition-all" style={{borderColor: paymentMethod === 'twint' ? 'rgba(255,255,255,0.6)' : 'rgba(255,255,255,0.1)', backgroundColor: paymentMethod === 'twint' ? 'rgba(255,255,255,0.1)' : 'rgba(255,255,255,0.03)'}}>
+                  <input type="radio" name="payment" value="twint" checked={paymentMethod === 'twint'} onChange={(e) => setPaymentMethod(e.target.value)} className="w-4 h-4" style={{accentColor: 'white'}} />
                   <span className="text-white flex-1">{t.twintLabel}</span>
                   <span className="text-white/40 text-sm">{t.twintDesc}</span>
                 </label>
-                <label className="flex items-center gap-3 cursor-pointer p-4 rounded-xl border-2 transition-all" style={{borderColor: paymentMethod === 'cash' ? '#C9A96E' : 'rgba(255,255,255,0.1)', backgroundColor: paymentMethod === 'cash' ? 'rgba(201,169,110,0.1)' : 'rgba(255,255,255,0.03)'}}>
-                  <input type="radio" name="payment" value="cash" checked={paymentMethod === 'cash'} onChange={(e) => setPaymentMethod(e.target.value)} className="w-4 h-4" style={{accentColor: '#C9A96E'}} />
+                <label className="flex items-center gap-3 cursor-pointer p-4 rounded-xl border transition-all" style={{borderColor: paymentMethod === 'cash' ? 'rgba(255,255,255,0.6)' : 'rgba(255,255,255,0.1)', backgroundColor: paymentMethod === 'cash' ? 'rgba(255,255,255,0.1)' : 'rgba(255,255,255,0.03)'}}>
+                  <input type="radio" name="payment" value="cash" checked={paymentMethod === 'cash'} onChange={(e) => setPaymentMethod(e.target.value)} className="w-4 h-4" style={{accentColor: 'white'}} />
                   <span className="text-white flex-1">{t.cashLabel}</span>
                   <span className="text-white/40 text-sm">{t.cashDesc}</span>
                 </label>
