@@ -259,9 +259,9 @@ export default function PlacesAutocomplete({
 
   return (
     <div className="space-y-3 relative z-[100]">
-      <Label className="text-white/70 text-sm font-medium">{label}</Label>
+      <Label className="text-black/70 text-sm font-semibold">{label}</Label>
       <div className="relative group">
-        <div className="absolute left-4 top-1/2 -translate-y-1/2 w-2.5 h-2.5 rounded-full bg-[#C9A96E] z-10" />
+        <div className="absolute left-4 top-1/2 -translate-y-1/2 w-2.5 h-2.5 rounded-full bg-black z-10" />
         <Input
           ref={inputRef}
           placeholder={placeholder}
@@ -270,24 +270,24 @@ export default function PlacesAutocomplete({
           onKeyDown={handleKeyDown}
           onFocus={handleFocus}
           onBlur={handleBlur}
-          className="bg-white/5 border border-white/10 text-white placeholder:text-white/30 focus:border-[#C9A96E] focus:bg-white/[0.08] h-12 pl-12 pr-12 transition-all rounded-xl"
+          className="bg-[#FFF9DC] border border-black/20 text-black placeholder:text-black/30 focus:border-black h-12 pl-12 pr-12 transition-all rounded-xl"
           autoComplete="off"
         />
 
         <div className="absolute right-3 top-1/2 -translate-y-1/2 flex items-center gap-1">
           {isLoading && (
             <div className="p-1.5">
-              <Loader className="w-4 h-4 text-[#C9A96E] animate-spin" />
+              <Loader className="w-4 h-4 text-black/50 animate-spin" />
             </div>
           )}
           {!isLoading && value && (
             <button
               type="button"
               onClick={handleClear}
-              className="p-1.5 hover:bg-white/10 rounded-lg transition-all"
+              className="p-1.5 hover:bg-black/10 rounded-lg transition-all"
               title={t?.close || 'Clear'}
             >
-              <X className="w-4 h-4 text-white/40 hover:text-white/60" />
+              <X className="w-4 h-4 text-black/40 hover:text-black/60" />
             </button>
           )}
           {showLocateButton && !isLoading && !value && (
@@ -295,13 +295,13 @@ export default function PlacesAutocomplete({
               type="button"
               onClick={onLocate}
               disabled={isLocating}
-              className="p-1.5 hover:bg-white/10 rounded-lg transition-all disabled:opacity-50"
+              className="p-1.5 hover:bg-black/10 rounded-lg transition-all disabled:opacity-50"
               title={t?.availableNow || 'Use my location'}
             >
               {isLocating ? (
-                <Loader className="w-4 h-4 text-[#C9A96E] animate-spin" />
+                <Loader className="w-4 h-4 text-black/50 animate-spin" />
               ) : (
-                <MapPin className="w-4 h-4 text-[#C9A96E] hover:text-[#B8955D]" />
+                <MapPin className="w-4 h-4 text-black/60 hover:text-black" />
               )}
             </button>
           )}
