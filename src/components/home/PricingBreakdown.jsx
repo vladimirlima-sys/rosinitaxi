@@ -89,10 +89,13 @@ export default function PricingBreakdown({
       <div className="w-full h-[1px] bg-white/10" />
 
       {/* Total price */}
-      <div className="flex justify-between items-center">
+      <div className="flex justify-between items-center mb-2">
         <span className="text-white font-medium">{t.total}</span>
         <span className="text-[#C9A96E] text-2xl font-semibold">CHF {totalPrice}</span>
       </div>
+
+      {/* Disclaimer */}
+      <p className="text-white/30 text-xs italic">* Valor não inclui pedágios</p>
     </div>);
 
 }
