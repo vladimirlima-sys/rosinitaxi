@@ -492,11 +492,11 @@ export default function BookingForm({ bookingRef }) {
 
           }
             {totalPrice && (!form.departure_date || !form.departure_time) &&
-          <div className="text-center p-6 rounded-2xl bg-white border border-black/10">
-                <p className="text-black/50 text-sm mb-2">{t.estimatedPrice}</p>
-                <p className="text-black text-4xl font-bold">CHF {totalPrice}</p>
+            <div className="text-center p-8 rounded-xl bg-blue-50 border border-blue-200">
+                <p className="text-slate-600 text-sm mb-2">{t.estimatedPrice}</p>
+                <p className="text-slate-900 text-4xl font-bold">CHF {totalPrice}</p>
               </div>
-          }
+            }
 
             <div className="flex justify-between pt-4">
               <Button onClick={() => {setStep(1);scrollToTop();}} className="bg-black hover:bg-black/80 text-[#F5C300] font-bold px-8 h-12">{t.backBtn}</Button>
