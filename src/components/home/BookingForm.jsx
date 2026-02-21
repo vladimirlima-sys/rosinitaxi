@@ -147,7 +147,10 @@ export default function BookingForm({ bookingRef }) {
     if (!priceSettings || estimatedDistance === 0) return null;
 
     let total = estimatedDistance * priceSettings.standard_price_per_km;
-    total += priceSettings.base_fare || 0;
+    // Não cobrar tarifa de base para viagens acima de 30 km
+    if (estimatedDistance <= 30) {
+      total += priceSettings.base_fare || 0;
+    }
 
     // Apply night surcharge if conditions met
     if (form.departure_date && form.departure_time && priceSettings.night_surcharge_percentage > 0) {
