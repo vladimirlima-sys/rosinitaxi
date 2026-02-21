@@ -444,8 +444,11 @@ export default function BookingForm({ bookingRef }) {
 
         {/* Step 2: Vehicle */}
         {step === 2 &&
-        <div className="space-y-6">
-            <h3 className="text-black text-xl font-bold mb-6">{t.step2Title}</h3>
+        <div className="space-y-8">
+            <div>
+              <h3 className="text-slate-900 text-2xl font-bold mb-2">{t.step2Title}</h3>
+              <p className="text-slate-600 text-sm">{t.passengersLabel}</p>
+            </div>
             {priceSettings &&
           <VehicleCard
             type="economic"
