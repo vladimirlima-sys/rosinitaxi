@@ -21,26 +21,26 @@ export default function RouteCard({ departure, arrival, distance_km, estimatedTi
       {/* Info - Quilometragem e Tempo */}
       <div className="flex items-center gap-6">
         <div className="flex items-center gap-3">
-          <div className="w-10 h-10 rounded-full bg-[#C9A96E]/20 flex items-center justify-center">
-            <MapPin className="w-5 h-5 text-[#C9A96E]" />
+          <div className="w-10 h-10 rounded-full bg-black/10 flex items-center justify-center">
+            <MapPin className="w-5 h-5 text-black" />
           </div>
           <div>
-            <p className="text-white/50 text-xs uppercase tracking-wide mb-1">{t.journeyDistance}</p>
-            <p className="text-white text-lg font-light">{distance_km} {t.km}</p>
+            <p className="text-black/50 text-xs uppercase tracking-wide mb-1">{t.journeyDistance}</p>
+            <p className="text-black text-lg font-bold">{distance_km} {t.km}</p>
           </div>
         </div>
 
-        <div className="w-[1px] h-12 bg-white/10" />
+        <div className="w-[1px] h-12 bg-black/15" />
 
         <div className="flex items-center gap-3">
-          <div className="w-10 h-10 rounded-full bg-[#C9A96E]/20 flex items-center justify-center">
-            <svg className="w-5 h-5 text-[#C9A96E]" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+          <div className="w-10 h-10 rounded-full bg-black/10 flex items-center justify-center">
+            <svg className="w-5 h-5 text-black" fill="none" viewBox="0 0 24 24" stroke="currentColor">
               <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M12 8v4l3 2m6-3a9 9 0 11-18 0 9 9 0 0118 0z" />
             </svg>
           </div>
           <div>
-            <p className="text-white/50 text-xs uppercase tracking-wide mb-1">{t.journeyTime}</p>
-            <p className="text-white text-lg font-light">{formatTime(estimatedTime)}</p>
+            <p className="text-black/50 text-xs uppercase tracking-wide mb-1">{t.journeyTime}</p>
+            <p className="text-black text-lg font-bold">{formatTime(estimatedTime)}</p>
           </div>
         </div>
       </div>
