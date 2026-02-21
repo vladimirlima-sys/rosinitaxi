@@ -621,15 +621,15 @@ export default function BookingForm({ bookingRef }) {
         {/* Step 5: Confirmation */}
         {step === 5 && (
           <div className="text-center py-12">
-            <div className="w-20 h-20 rounded-full bg-gray-100 flex items-center justify-center mx-auto mb-8">
-              <svg className="w-10 h-10 text-gray-900" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+            <div className="w-20 h-20 rounded-full bg-[#C9A96E]/10 flex items-center justify-center mx-auto mb-8">
+              <svg className="w-10 h-10 text-[#C9A96E]" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
               </svg>
             </div>
-            <h3 className="text-gray-900 text-2xl font-light mb-4">{t.confirmTitle}</h3>
-            <p className="text-gray-500 max-w-md mx-auto mb-2">{t.confirmMsg(form.client_name, form.departure_point, form.arrival_point)}</p>
-            <p className="text-gray-400 text-sm mb-8">{t.confirmEmail(form.client_email)}</p>
-            <Button onClick={resetForm} variant="outline" className="border-gray-300 text-gray-900 hover:bg-gray-100">{t.newBooking}</Button>
+            <h3 className="text-white text-2xl font-light mb-4">{t.confirmTitle}</h3>
+            <p className="text-white/50 max-w-md mx-auto mb-2">{t.confirmMsg(form.client_name, form.departure_point, form.arrival_point)}</p>
+            <p className="text-white/30 text-sm mb-8">{t.confirmEmail(form.client_email)}</p>
+            <Button onClick={resetForm} variant="outline" className="border-[#C9A96E]/30 text-[#C9A96E] hover:bg-[#C9A96E]/10">{t.newBooking}</Button>
           </div>
         )}
 
