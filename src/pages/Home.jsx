@@ -23,11 +23,11 @@ function HomeContent({ bookingRef, scrollToBooking }) {
         <FooterSection />
         <div className="fixed top-6 left-6 z-50">
           <a
-            href="tel:+41796505347" className="bg-black/40 opacity-40 rounded-full group w-14 h-14 backdrop-blur-sm border border-[#F5C300]/30 shadow-lg flex items-center justify-center transition-all duration-300 hover:scale-110 hover:bg-black/60 hover:shadow-[0_0_20px_rgba(245,195,0,0.4)]"
-
-            title="Appel d'urgence">
-
-
+            href="tel:+41796505347"
+            className="group w-12 h-12 rounded-full bg-black/30 backdrop-blur-sm border border-white/20 shadow-lg flex items-center justify-center transition-all duration-300 hover:scale-110 hover:bg-black/50"
+            title="Appel d'urgence"
+          >
+            <Phone className="w-5 h-5 text-white/80 group-hover:text-white" strokeWidth={1.5} />
           </a>
         </div>
       </div>
