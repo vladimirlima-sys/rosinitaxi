@@ -304,22 +304,22 @@ export default function BookingForm({ bookingRef }) {
   };
 
   return (
-    <section ref={bookingRef} className="py-20 px-6 bg-gradient-to-b from-slate-50 to-white">
-      <div className="max-w-5xl mx-auto">
-        <div className="text-center mb-16">
-          <p className="text-blue-600 text-sm tracking-widest uppercase font-semibold mb-3">{t.bookingLabel}</p>
-            <h2 className="text-4xl md:text-5xl font-bold text-slate-900 mb-4">{t.bookingTitle}</h2>
-            <p className="text-slate-600 max-w-2xl mx-auto">{t.setYourRoute}</p>
+    <section ref={bookingRef} className="py-12 px-6 bg-[#F5C300]">
+      <div className="max-w-4xl mx-auto">
+        <div className="text-center mb-12">
+          <p className="text-black/50 text-sm tracking-[0.3em] uppercase mb-4">{t.bookingLabel}</p>
+            <h2 className="text-3xl md:text-4xl font-bold text-black mb-4">{t.bookingTitle}</h2>
+            <div className="w-12 h-[2px] bg-black mx-auto mb-6" />
         </div>
 
         {/* Steps indicator */}
-        <div className="flex items-center justify-center gap-2 mb-16">
+        <div className="flex items-center justify-center gap-2 mb-12">
           {[1, 2, 3, 4].map((s) =>
           <div key={s} className="flex items-center">
-              <div className={`w-9 h-9 rounded-full flex items-center justify-center text-sm font-bold transition-all ${
-            step >= s ? 'bg-blue-600 text-white' : 'bg-slate-200 text-slate-500'}`
+              <div className={`w-8 h-8 rounded-full flex items-center justify-center text-sm font-bold transition-all ${
+            step >= s ? 'bg-black text-[#F5C300]' : 'bg-black/20 text-black/40'}`
             }>{s}</div>
-              {s < 4 && <div className={`w-12 h-[2px] ${step > s ? 'bg-blue-600' : 'bg-slate-200'}`} />}
+              {s < 4 && <div className={`w-12 h-[2px] ${step > s ? 'bg-black' : 'bg-black/20'}`} />}
             </div>
           )}
         </div>
@@ -327,13 +327,18 @@ export default function BookingForm({ bookingRef }) {
         {/* Step 1: Route */}
         {step === 1 &&
         <div className="space-y-8">
+            <div className="text-center mb-8">
+              <h3 className="text-black text-2xl font-bold mb-2">{t.step1Title}</h3>
+              <p className="text-black/60 text-sm">{t.setYourRoute}</p>
+            </div>
+
             {/* Route Section */}
-            <div className="bg-white p-8 rounded-xl border border-slate-200 shadow-sm space-y-6">
+            <div className="bg-zinc-900 p-8 rounded-2xl border border-[#C9A96E] shadow-[0_0_30px_rgba(201,169,110,0.1)] space-y-6">
                   <div className="flex items-center gap-3 mb-6">
-                    <div className="w-10 h-10 rounded-full bg-blue-100 flex items-center justify-center">
-                      <MapPin className="w-5 h-5 text-blue-600" />
+                    <div className="w-10 h-10 rounded-full bg-[#C9A96E]/10 flex items-center justify-center">
+                      <MapPin className="w-5 h-5 text-[#C9A96E]" />
                     </div>
-                    <h4 className="text-slate-900 font-semibold">{t.yourRoute}</h4>
+                    <h4 className="text-white font-medium">{t.yourRoute}</h4>
                   </div>
 
               <div className="space-y-6">
@@ -385,56 +390,62 @@ export default function BookingForm({ bookingRef }) {
           }
 
             {/* Date, Time & Flight Section */}
-            <div className="bg-white p-8 rounded-xl border border-slate-200 shadow-sm space-y-6">
+            <div className="bg-zinc-900 p-8 opacity-100 rounded-2xl border border-[#C9A96E] shadow-[0_0_30px_rgba(201,169,110,0.1)] space-y-6">
                   <div className="flex items-center gap-3 mb-6">
-                    <div className="w-10 h-10 rounded-full bg-blue-100 flex items-center justify-center">
-                      <Calendar className="w-5 h-5 text-blue-600" />
+                    <div className="w-10 h-10 rounded-full bg-[#C9A96E]/10 flex items-center justify-center">
+                      <Calendar className="w-5 h-5 text-[#C9A96E]" />
                     </div>
-                    <h4 className="text-slate-900 font-semibold">{t.tripDetails}</h4>
+                    <h4 className="text-white font-medium">{t.tripDetails}</h4>
                   </div>
 
-              <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+              <div className="bg-transparent grid grid-cols-1 md:grid-cols-3 gap-6">
                 <div className="space-y-3">
-                  <Label className="text-slate-700 text-sm font-semibold">
-                    <Calendar className="text-blue-600 w-4 h-4 inline mr-2" />
+                  <Label className="text-zinc-50 text-sm font-semibold peer-disabled:cursor-not-allowed peer-disabled:opacity-70 flex items-center gap-2">
+                    <Calendar className="text-[#C9A96E] lucide lucide-calendar w-4 h-4" />
                     {t.dateLabel}
                   </Label>
                   <Input
                   type="date"
                   value={form.departure_date}
-                  onChange={(e) => update('departure_date', e.target.value)} className="bg-white text-slate-900 px-4 py-2.5 rounded-lg border border-slate-300 focus:border-blue-500 focus:ring-2 focus:ring-blue-200 transition-all h-11" />
+                  onChange={(e) => update('departure_date', e.target.value)} className="bg-[#fcf6ab] text-black px-3 py-1 text-base rounded-xl flex w-full shadow-sm file:border-0 file:bg-transparent file:text-sm file:font-medium file:text-foreground placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring disabled:cursor-not-allowed disabled:opacity-50 md:text-sm border border-black/20 focus:border-black h-12 transition-all" />
+
+
                 </div>
 
                 <div className="space-y-3">
-                  <Label className="text-slate-700 text-sm font-semibold">
-                    <Clock className="text-blue-600 w-4 h-4 inline mr-2" />
+                  <Label className="text-zinc-50 text-sm font-semibold peer-disabled:cursor-not-allowed peer-disabled:opacity-70 flex items-center gap-2">
+                    <Clock className="text-[#C9A96E] lucide lucide-clock w-4 h-4" />
                     {t.timeLabel}
                   </Label>
                   <Input
                   type="time"
                   value={form.departure_time}
-                  onChange={(e) => update('departure_time', e.target.value)} className="bg-white text-slate-900 px-4 py-2.5 rounded-lg border border-slate-300 focus:border-blue-500 focus:ring-2 focus:ring-blue-200 transition-all h-11" />
+                  onChange={(e) => update('departure_time', e.target.value)} className="bg-[#fcf6ab] text-black px-3 py-1 text-base rounded-xl flex w-full shadow-sm file:border-0 file:bg-transparent file:text-sm file:font-medium file:text-foreground placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring disabled:cursor-not-allowed disabled:opacity-50 md:text-sm border border-black/20 focus:border-black h-12 transition-all" />
+
+
                 </div>
 
                 <div className="space-y-3">
-                  <Label className="text-slate-700 text-sm font-semibold">
-                    <Plane className="text-blue-600 w-4 h-4 inline mr-2" />
+                  <Label className="text-zinc-50 text-sm font-semibold peer-disabled:cursor-not-allowed peer-disabled:opacity-70 flex items-center gap-2">
+                    <Plane className="text-[#C9A96E] lucide lucide-plane w-4 h-4" />
                     {t.flightLabel}
                   </Label>
                   <Input
                   placeholder={t.flightPlaceholder}
                   value={form.flight_number}
-                  onChange={(e) => update('flight_number', e.target.value)} className="bg-white text-slate-900 px-4 py-2.5 rounded-lg border border-slate-300 placeholder:text-slate-400 focus:border-blue-500 focus:ring-2 focus:ring-blue-200 transition-all h-11" />
+                  onChange={(e) => update('flight_number', e.target.value)} className="bg-[#fcf6ab] text-black px-3 py-1 text-base rounded-xl flex w-full shadow-sm file:border-0 file:bg-transparent file:text-sm file:font-medium file:text-foreground focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring disabled:cursor-not-allowed disabled:opacity-50 md:text-sm border border-black/20 placeholder:text-black/30 focus:border-black h-12 transition-all" />
+
+
                 </div>
               </div>
             </div>
 
             {/* Action Button */}
-            <div className="flex justify-end pt-4">
+            <div className="flex justify-end">
               <Button
               onClick={() => {setStep(2);scrollToTop();}}
               disabled={!canProceedStep1 || estimatedDistance === 0}
-              className="bg-blue-600 hover:bg-blue-700 text-white font-semibold px-8 py-3 rounded-lg transition-all hover:shadow-lg disabled:opacity-50 disabled:cursor-not-allowed">
+              className="bg-black hover:bg-black/80 text-[#F5C300] font-bold px-12 h-13 rounded-xl transition-all hover:shadow-lg">
 
                 {t.continueBtn}
               </Button>
@@ -444,11 +455,8 @@ export default function BookingForm({ bookingRef }) {
 
         {/* Step 2: Vehicle */}
         {step === 2 &&
-        <div className="space-y-8">
-            <div>
-              <h3 className="text-slate-900 text-2xl font-bold mb-2">{t.step2Title}</h3>
-              <p className="text-slate-600 text-sm">{t.passengersLabel}</p>
-            </div>
+        <div className="space-y-6">
+            <h3 className="text-black text-xl font-bold mb-6">{t.step2Title}</h3>
             {priceSettings &&
           <VehicleCard
             type="economic"
@@ -461,23 +469,25 @@ export default function BookingForm({ bookingRef }) {
           }
 
             {form.vehicle_type &&
-            <div className="space-y-4">
+          <div className="space-y-2 max-w-xs">
+                <Label className="text-black/70 text-sm font-semibold">{t.passengersLabel}</Label>
                 <div className="flex gap-3">
                   {[1, 2, 3, 4].map((num) =>
               <button
                 key={num}
                 onClick={() => update('passengers', num)}
-                className={`w-12 h-12 rounded-lg font-semibold transition-all ${
+                className={`w-12 h-12 rounded-lg font-bold transition-all ${
                 form.passengers === num ?
-                'bg-blue-600 text-white shadow-md' :
-                'bg-slate-100 text-slate-700 hover:bg-slate-200'}`
+                'bg-black text-[#F5C300]' :
+                'bg-black/10 text-black/40 hover:bg-black/20 hover:text-black'}`
                 }>
+
                       {num}
                     </button>
               )}
                 </div>
               </div>
-            }
+          }
 
             {totalPrice && form.departure_date && form.departure_time && priceSettings &&
           <PricingBreakdown
@@ -492,11 +502,11 @@ export default function BookingForm({ bookingRef }) {
 
           }
             {totalPrice && (!form.departure_date || !form.departure_time) &&
-            <div className="text-center p-8 rounded-xl bg-blue-50 border border-blue-200">
-                <p className="text-slate-600 text-sm mb-2">{t.estimatedPrice}</p>
-                <p className="text-slate-900 text-4xl font-bold">CHF {totalPrice}</p>
+          <div className="text-center p-6 rounded-2xl bg-white border border-black/10">
+                <p className="text-black/50 text-sm mb-2">{t.estimatedPrice}</p>
+                <p className="text-black text-4xl font-bold">CHF {totalPrice}</p>
               </div>
-            }
+          }
 
             <div className="flex justify-between pt-4">
               <Button onClick={() => {setStep(1);scrollToTop();}} className="bg-black hover:bg-black/80 text-[#F5C300] font-bold px-8 h-12">{t.backBtn}</Button>
@@ -572,11 +582,11 @@ export default function BookingForm({ bookingRef }) {
             </div>
 
             {paymentMethod === 'stripe' &&
-            <div className="flex items-center gap-2 text-black/50 text-xs">
+          <div className="flex items-center gap-2 text-black/50 text-xs">
                 <svg className="w-3.5 h-3.5" fill="currentColor" viewBox="0 0 24 24"><path d="M12 1L3 5v6c0 5.55 3.84 10.74 9 12 5.16-1.26 9-6.45 9-12V5l-9-4z" /></svg>
                 <span>{t.securePayment}</span>
               </div>
-            }
+          }
 
             <div className="flex justify-between pt-2">
               <Button onClick={() => {setStep(3);scrollToTop();}} className="bg-black hover:bg-black/80 text-[#F5C300] font-bold px-8 h-12">{t.backBtn}</Button>

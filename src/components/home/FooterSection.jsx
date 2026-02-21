@@ -1,5 +1,5 @@
 import React from 'react';
-import { Phone, Mail, MapPin } from 'lucide-react';
+import { Phone, Mail, Clock } from 'lucide-react';
 import { useLang } from '@/components/LanguageContext';
 import { translations } from '@/components/translations';
 
@@ -8,63 +8,44 @@ export default function FooterSection() {
   const t = translations[lang];
 
   return (
-    <footer className="bg-slate-900 text-white">
-      {/* Main Footer Content */}
-      <div className="max-w-6xl mx-auto px-6 py-16">
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-12 mb-12">
-          {/* Brand */}
+    <footer className="py-16 px-6 bg-black border-t border-yellow-400/20">
+      <div className="max-w-6xl mx-auto">
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-12 mb-12">
           <div>
-            <h2 className="text-2xl font-bold text-white mb-2">ROSINI</h2>
-            <p className="text-slate-400 text-sm mb-4">Premium Transfer Service</p>
-            <p className="text-slate-500 text-sm leading-relaxed">
-              {t.footerDesc}
-            </p>
-          </div>
-
-          {/* Contact Info */}
-          <div>
-            <h3 className="text-white font-semibold mb-6">{t.contact}</h3>
-            <div className="space-y-4">
-              <a href="mailto:taxirosini@gmail.com" className="flex items-center gap-3 text-slate-400 hover:text-white transition-colors group">
-                <Mail className="w-5 h-5 text-blue-400 group-hover:text-blue-300 transition-colors" />
-                <span className="text-sm">taxirosini@gmail.com</span>
-              </a>
-              <a href="tel:+41796505347" className="flex items-center gap-3 text-slate-400 hover:text-white transition-colors group">
-                <Phone className="w-5 h-5 text-blue-400 group-hover:text-blue-300 transition-colors" />
-                <span className="text-sm">+41 79 650 53 47</span>
-              </a>
-              <div className="flex items-center gap-3 text-slate-400">
-                <MapPin className="w-5 h-5 text-blue-400" />
-                <span className="text-sm">La Tour-de-Peilz, CH</span>
-              </div>
+            <div className="mb-4">
+              <h3 className="text-white text-2xl font-light tracking-tight">ROSINI</h3>
+              <p className="text-[#C9A96E] text-xs tracking-[0.15em] uppercase">Transports et locations Sarl</p>
             </div>
           </div>
 
-          {/* Hours & Status */}
           <div>
-            <h3 className="text-white font-semibold mb-6">{t.hours}</h3>
-            <div className="space-y-3">
-              <div className="flex items-start gap-2">
-                <div className="w-2 h-2 rounded-full bg-green-400 mt-1.5 flex-shrink-0 animate-pulse" />
-                <div>
-                  <p className="text-sm text-slate-400">{t.availableNow}</p>
-                  <p className="text-xs text-slate-500">{t.hours24}</p>
-                </div>
-              </div>
-              <p className="text-xs text-slate-500">{t.hours7}</p>
-              <p className="text-xs text-slate-500">{t.hoursHoliday}</p>
+            <h4 className="text-white/40 text-sm tracking-[0.2em] uppercase mb-6">{t.contact}</h4>
+            <div className="space-y-4">
+              <a href="mailto:taxirosini@gmail.com" className="flex items-center gap-3 text-white/50 hover:text-white transition-colors text-sm">
+                <Mail className="w-4 h-4" />
+                taxirosini@gmail.com
+              </a>
+              <a href="tel:+41796505347" className="flex items-center gap-3 text-white/50 hover:text-white transition-colors text-sm">
+                <Phone className="w-4 h-4" />
+                +41 79 650 53 47
+              </a>
             </div>
           </div>
         </div>
 
-        {/* Divider */}
-        <div className="h-[1px] bg-slate-700 mb-8" />
+        <div className="h-[1px] bg-white/10 mb-8" />
 
-        {/* Bottom */}
+        <div className="text-center mb-8">
+          <p className="text-white/30 text-sm">Chemin des Bulesses 16, 1814 La Tour-de-Peilz — Suisse</p>
+        </div>
+
+        <div className="h-[1px] bg-white/10 mb-8" />
+        
         <div className="flex flex-col md:flex-row justify-between items-center gap-4">
-          <p className="text-slate-500 text-sm">{t.copyright(new Date().getFullYear())}</p>
-          <div className="flex items-center gap-2 text-slate-500 text-xs">
-            <span>Powered by Base44</span>
+          <p className="text-white/30 text-sm">{t.copyright(new Date().getFullYear())}</p>
+          <div className="flex items-center gap-1">
+            <div className="w-2 h-2 rounded-full bg-green-500 animate-pulse" />
+            <span className="text-white/30 text-xs">{t.availableNow}</span>
           </div>
         </div>
       </div>

@@ -1,5 +1,5 @@
 import React from 'react';
-import { ArrowRight, MapPin, Clock, Users } from 'lucide-react';
+import { ChevronDown, Clock, Shield, MapPin } from 'lucide-react';
 import { useLang } from '@/components/LanguageContext';
 import { translations } from '@/components/translations';
 
@@ -8,60 +8,54 @@ export default function HeroSection({ onScrollToBooking }) {
   const t = translations[lang];
 
   return (
-    <section className="relative min-h-screen flex items-center justify-center pt-20 pb-12 px-6 bg-gradient-to-b from-white via-slate-50 to-white overflow-hidden">
-      {/* Subtle background elements */}
-      <div className="absolute top-0 right-0 w-96 h-96 bg-blue-100/20 rounded-full blur-3xl" />
-      <div className="absolute bottom-0 left-0 w-96 h-96 bg-slate-100/30 rounded-full blur-3xl" />
+    <section className="relative min-h-[70vh] flex items-center justify-center overflow-hidden bg-[#F5C300]">
+      <div 
+        className="absolute inset-0 bg-cover bg-center opacity-10"
+        style={{ backgroundImage: "url('https://images.unsplash.com/photo-1549317661-bd32c8ce0afa?w=1920&q=80')" }}
+      />
       
-      <div className="relative z-10 max-w-5xl mx-auto w-full">
-        <div className="text-center mb-16">
-          {/* Logo/Brand */}
-          <div className="mb-8 inline-block">
-            <div className="px-4 py-2 rounded-full bg-blue-50 border border-blue-100/50 mb-4">
-              <p className="text-blue-600 text-xs font-semibold tracking-widest uppercase">Premium Transfer Service</p>
-            </div>
-          </div>
+      <div className="relative z-10 text-center px-6 max-w-5xl mx-auto">
 
-          {/* Main Heading */}
-          <h1 className="text-5xl md:text-6xl lg:text-7xl font-bold text-slate-900 mb-6 leading-tight tracking-tight">
-            Your Journey, Our Commitment
+        <div className="mb-6">
+          <h1 className="text-5xl md:text-7xl lg:text-8xl font-extralight text-black tracking-[0.15em] mb-1 leading-none">
+            ROSINI
           </h1>
-          
-          {/* Subheading */}
-          <p className="text-lg md:text-xl text-slate-600 max-w-2xl mx-auto mb-10 leading-relaxed">
-            {t.heroDesc}
+          <p className="text-xl md:text-2xl font-light text-black/60 tracking-[0.25em] uppercase letter-spacing">
+            TRANSFERTS
           </p>
-
-          {/* Features Pills */}
-          <div className="flex flex-wrap justify-center gap-4 mb-12">
-            {[
-              { icon: Clock, label: t.pill1 },
-              { icon: MapPin, label: t.pill3 },
-              { icon: Users, label: t.pill2 },
-            ].map((item, i) => (
-              <div key={i} className="flex items-center gap-2.5 px-4 py-2 rounded-lg bg-white border border-slate-200 shadow-sm hover:shadow-md transition-shadow">
-                <item.icon className="w-4 h-4 text-blue-600" />
-                <span className="text-slate-700 text-sm font-medium">{item.label}</span>
-              </div>
-            ))}
-          </div>
-
-          {/* CTA Button */}
-          <button
-            onClick={onScrollToBooking}
-            className="inline-flex items-center justify-center gap-2 px-8 py-4 bg-blue-600 hover:bg-blue-700 text-white font-semibold rounded-lg transition-all duration-300 shadow-lg hover:shadow-xl hover:translate-y-[-2px]"
-          >
-            {t.cta}
-            <ArrowRight className="w-5 h-5" />
-          </button>
         </div>
 
-        {/* Scroll Indicator */}
-        <div className="absolute bottom-8 left-1/2 -translate-x-1/2 animate-bounce">
-          <div className="w-6 h-10 border-2 border-slate-300 rounded-full flex items-start justify-center p-2">
-            <div className="w-1 h-2 bg-slate-400 rounded-full animate-bounce" />
-          </div>
+        <div className="w-12 h-[1px] bg-black mx-auto mb-6" />
+        
+        <p className="text-base md:text-lg text-black/70 font-medium max-w-2xl mx-auto mb-8 leading-relaxed">
+          {t.heroDesc}
+        </p>
+
+        <div className="flex flex-wrap justify-center gap-3 mb-10">
+          {[
+            { icon: Clock, label: t.pill1 },
+            { icon: Shield, label: t.pill2 },
+            { icon: MapPin, label: t.pill3 },
+          ].map((item, i) => (
+            <div key={i} className="flex items-center gap-2 px-5 py-2.5 rounded-full bg-black/10 border border-black/20">
+              <item.icon className="w-4 h-4 text-black" />
+              <span className="text-black/80 text-sm font-medium">{item.label}</span>
+            </div>
+          ))}
         </div>
+
+        <button
+          onClick={onScrollToBooking}
+          className="group inline-flex items-center gap-3 bg-black hover:bg-black/80 text-[#F5C300] font-bold px-8 py-3 rounded-full transition-all duration-300 hover:shadow-lg"
+        >
+          {t.cta}
+          <ChevronDown className="w-4 h-4 group-hover:translate-y-1 transition-transform" />
+        </button>
+      </div>
+
+      <div className="absolute bottom-8 left-1/2 -translate-x-1/2 flex flex-col items-center gap-2 animate-bounce">
+        <div className="w-[1px] h-8 bg-gradient-to-b from-transparent to-black/40" />
+        <ChevronDown className="w-4 h-4 text-black/40" />
       </div>
     </section>
   );
