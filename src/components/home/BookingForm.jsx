@@ -79,35 +79,39 @@ export default function BookingForm({ bookingRef }) {
 
   const locateUser = async () => {
     if (!navigator.geolocation) {
-      toast.error('Geolocalização não disponível');
-      return;
-    }
-    setIsLocating(true);
-    navigator.geolocation.getCurrentPosition(
-      async (position) => {
-        const { latitude, longitude } = position.coords;
-        try {
-          // Use Google's Geocoder for consistent address resolution
-          if (typeof google !== 'undefined' && google.maps) {
-            const geocoder = new google.maps.Geocoder();
-            const result = await geocoder.geocode({ location: { lat: latitude, lng: longitude } });
-            if (result.results && result.results.length > 0) {
-              update('departure_point', result.results[0].formatted_address);
-              toast.success('Localização obtida!');
-            }
-          }
-        } catch (err) {
-          console.error('Geocoding error:', err);
-          toast.error('Erro ao obter localização');
-        } finally {
-          setIsLocating(false);
-        }
-      },
-      () => {
-        setIsLocating(false);
-        toast.error('Permissão de localização negada');
+        toast.error(t.locationUnavailable || 'Geolocation not available');
+        return;
       }
-    );
+      setIsLocating(true);
+      navigator.geolocation.getCurrentPosition(
+        async (position) => {
+          const { latitude, longitude } = position.coords;
+          try {
+            if (typeof google !== 'undefined' && google.maps) {
+              const geocoder = new google.maps.Geocoder();
+              geocoder.geocode({ location: { lat: latitude, lng: longitude } }, (results, status) => {
+                if (status === 'OK' && results && results.length > 0) {
+                  update('departure_point', results[0].formatted_address);
+                  toast.success(t.locationObtained || 'Location obtained!');
+                } else {
+                  toast.error(t.locationError || 'Error obtaining location');
+                }
+                setIsLocating(false);
+              });
+            } else {
+              setIsLocating(false);
+            }
+          } catch (err) {
+            console.error('Geocoding error:', err);
+            toast.error(t.locationError || 'Error obtaining location');
+            setIsLocating(false);
+          }
+        },
+        () => {
+          setIsLocating(false);
+          toast.error(t.locationDenied || 'Location permission denied');
+        }
+      );
   };
 
   // Auto-locate and fetch price settings on mount
