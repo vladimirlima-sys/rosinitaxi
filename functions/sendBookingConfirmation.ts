@@ -255,10 +255,20 @@ Deno.serve(async (req) => {
       return response.json();
     };
 
+    // Subject lines per language
+    const subjectMap = {
+      pt: `✅ Reserva confirmada — ${departure_point} → ${arrival_point}`,
+      fr: `✅ Réservation confirmée — ${departure_point} → ${arrival_point}`,
+      en: `✅ Booking confirmed — ${departure_point} → ${arrival_point}`,
+      de: `✅ Buchung bestätigt — ${departure_point} → ${arrival_point}`,
+      it: `✅ Prenotazione confermata — ${departure_point} → ${arrival_point}`,
+    };
+    const clientSubject = subjectMap[language] || subjectMap.fr;
+
     // Send confirmation email to client
     await sendEmailViaGmail(
       client_email,
-      `✅ Réservation confirmée — ${departure_point} → ${arrival_point}`,
+      clientSubject,
       clientEmailBody
     );
 
