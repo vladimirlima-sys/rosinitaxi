@@ -375,7 +375,7 @@ export default function BookingForm({ bookingRef }) {
 
                 {/* Route Line */}
                 <div className="flex justify-center py-2">
-                  <div className="w-0.5 h-8 bg-gradient-to-b from-[#C9A96E] to-transparent" />
+                  <div className="w-0.5 h-8 bg-gradient-to-b from-gray-400 to-transparent" />
                 </div>
 
                 <PlacesAutocomplete
