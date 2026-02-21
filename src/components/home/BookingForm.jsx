@@ -540,28 +540,28 @@ export default function BookingForm({ bookingRef }) {
         {/* Step 3: Personal info */}
         {step === 3 && (
           <div className="space-y-6">
-            <h3 className="text-white text-xl font-medium mb-6">{t.step3Title}</h3>
+            <h3 className="text-gray-900 text-xl font-medium mb-6">{t.step3Title}</h3>
             <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
               <div className="space-y-2">
-                <Label className="text-white/60 text-sm flex items-center gap-2"><User className="w-4 h-4 text-[#C9A96E]" /> {t.nameLabel}</Label>
-                <Input placeholder={t.namePlaceholder} value={form.client_name} onChange={e => update('client_name', e.target.value)} className="bg-white/5 border-white/10 text-white placeholder:text-white/20 focus:border-[#C9A96E] h-12" />
+                <Label className="text-gray-600 text-sm flex items-center gap-2"><User className="w-4 h-4 text-gray-500" /> {t.nameLabel}</Label>
+                <Input placeholder={t.namePlaceholder} value={form.client_name} onChange={e => update('client_name', e.target.value)} className="bg-white border-gray-200 text-gray-900 placeholder:text-gray-400 focus:border-gray-900 h-12" />
               </div>
               <div className="space-y-2">
-                <Label className="text-white/60 text-sm flex items-center gap-2"><Mail className="w-4 h-4 text-[#C9A96E]" /> {t.emailLabel}</Label>
-                <Input type="email" placeholder={t.emailPlaceholder} value={form.client_email} onChange={e => update('client_email', e.target.value)} className="bg-white/5 border-white/10 text-white placeholder:text-white/20 focus:border-[#C9A96E] h-12" />
+                <Label className="text-gray-600 text-sm flex items-center gap-2"><Mail className="w-4 h-4 text-gray-500" /> {t.emailLabel}</Label>
+                <Input type="email" placeholder={t.emailPlaceholder} value={form.client_email} onChange={e => update('client_email', e.target.value)} className="bg-white border-gray-200 text-gray-900 placeholder:text-gray-400 focus:border-gray-900 h-12" />
               </div>
             </div>
             <div className="space-y-2 max-w-sm">
-              <Label className="text-white/60 text-sm flex items-center gap-2"><Phone className="w-4 h-4 text-[#C9A96E]" /> {t.phoneLabel}</Label>
-              <Input type="tel" placeholder={t.phonePlaceholder} value={form.client_phone} onChange={e => update('client_phone', e.target.value)} className="bg-white/5 border-white/10 text-white placeholder:text-white/20 focus:border-[#C9A96E] h-12" />
+              <Label className="text-gray-600 text-sm flex items-center gap-2"><Phone className="w-4 h-4 text-gray-500" /> {t.phoneLabel}</Label>
+              <Input type="tel" placeholder={t.phonePlaceholder} value={form.client_phone} onChange={e => update('client_phone', e.target.value)} className="bg-white border-gray-200 text-gray-900 placeholder:text-gray-400 focus:border-gray-900 h-12" />
             </div>
             <div className="space-y-2">
-              <Label className="text-white/60 text-sm flex items-center gap-2"><MessageSquare className="w-4 h-4 text-[#C9A96E]" /> {t.notesLabel}</Label>
-              <Textarea placeholder={t.notesPlaceholder} value={form.notes} onChange={e => update('notes', e.target.value)} className="bg-white/5 border-white/10 text-white placeholder:text-white/20 focus:border-[#C9A96E] min-h-[100px]" />
+              <Label className="text-gray-600 text-sm flex items-center gap-2"><MessageSquare className="w-4 h-4 text-gray-500" /> {t.notesLabel}</Label>
+              <Textarea placeholder={t.notesPlaceholder} value={form.notes} onChange={e => update('notes', e.target.value)} className="bg-white border-gray-200 text-gray-900 placeholder:text-gray-400 focus:border-gray-900 min-h-[100px]" />
             </div>
             <div className="flex justify-between pt-4">
-              <Button onClick={() => { setStep(2); scrollToTop(); }} className="bg-[#C9A96E] hover:bg-[#B8955D] text-[#0A0A0A] font-semibold px-8 h-12">{t.backBtn}</Button>
-              <Button onClick={() => { setStep(4); scrollToTop(); }} disabled={!canProceedStep3} className="bg-[#C9A96E] hover:bg-[#B8955D] text-[#0A0A0A] font-semibold px-8 h-12">{t.paymentBtn}</Button>
+              <Button onClick={() => { setStep(2); scrollToTop(); }} className="bg-gray-900 hover:bg-black text-white font-semibold px-8 h-12">{t.backBtn}</Button>
+              <Button onClick={() => { setStep(4); scrollToTop(); }} disabled={!canProceedStep3} className="bg-gray-900 hover:bg-black text-white font-semibold px-8 h-12">{t.paymentBtn}</Button>
             </div>
           </div>
         )}
