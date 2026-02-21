@@ -327,20 +327,20 @@ export default function PlacesAutocomplete({
               <button
                 key={suggestion.place_id}
                 onClick={() => handleSelectSuggestion(suggestion)}
-                className={`w-full text-left px-4 py-3.5 border-b border-white/5 last:border-b-0 transition-colors ${
+                className={`w-full text-left px-4 py-3.5 border-b border-black/5 last:border-b-0 transition-colors ${
                   index === selectedIndex
-                    ? 'bg-[#C9A96E]/20'
-                    : 'hover:bg-[#C9A96E]/10'
+                    ? 'bg-[#F5C300]/30'
+                    : 'hover:bg-[#F5C300]/20'
                 }`}
               >
                 <div className="flex items-start gap-3">
-                  <MapPin className="w-4 h-4 text-[#C9A96E] mt-1 flex-shrink-0" />
+                  <MapPin className="w-4 h-4 text-black/60 mt-1 flex-shrink-0" />
                   <div className="min-w-0 flex-1">
-                    <p className="text-white text-sm font-medium">
+                    <p className="text-black text-sm font-medium">
                       {suggestion.description}
                     </p>
                     {suggestion.secondary_text && (
-                      <p className="text-white/40 text-xs mt-1">
+                      <p className="text-black/40 text-xs mt-1">
                         {suggestion.secondary_text}
                       </p>
                     )}
