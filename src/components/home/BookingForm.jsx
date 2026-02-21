@@ -244,10 +244,11 @@ export default function BookingForm({ bookingRef }) {
         await base44.entities.Booking.create(bookingData);
 
         sessionStorage.setItem('pendingBooking', JSON.stringify({
-          ...form,
-          total_price: parseFloat(totalPrice),
-          distance_km: estimatedDistance
-        }));
+            ...form,
+            total_price: parseFloat(totalPrice),
+            distance_km: estimatedDistance,
+            language: lang
+          }));
 
         const response = await base44.functions.invoke('createCheckout', {
           amount: parseFloat(totalPrice),
