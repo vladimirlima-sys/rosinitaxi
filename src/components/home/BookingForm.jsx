@@ -524,15 +524,15 @@ export default function BookingForm({ bookingRef }) {
               />
             )}
             {totalPrice && (!form.departure_date || !form.departure_time) && (
-              <div className="text-center p-6 rounded-2xl bg-white/[0.03] border border-white/10">
-                <p className="text-white/40 text-sm mb-2">{t.estimatedPrice}</p>
-                <p className="text-[#C9A96E] text-4xl font-light">CHF {totalPrice}</p>
+              <div className="text-center p-6 rounded-2xl bg-white/60 border border-black/10">
+                <p className="text-black/50 text-sm mb-2">{t.estimatedPrice}</p>
+                <p className="text-black text-4xl font-bold">CHF {totalPrice}</p>
               </div>
             )}
 
             <div className="flex justify-between pt-4">
-              <Button onClick={() => { setStep(1); scrollToTop(); }} className="bg-[#C9A96E] hover:bg-[#B8955D] text-[#0A0A0A] font-semibold px-8 h-12">{t.backBtn}</Button>
-              <Button onClick={() => { setStep(3); scrollToTop(); }} disabled={!canProceedStep2} className="bg-[#C9A96E] hover:bg-[#B8955D] text-[#0A0A0A] font-semibold px-8 h-12">{t.continueBtn}</Button>
+              <Button onClick={() => { setStep(1); scrollToTop(); }} className="bg-black hover:bg-black/80 text-[#F5C300] font-bold px-8 h-12">{t.backBtn}</Button>
+              <Button onClick={() => { setStep(3); scrollToTop(); }} disabled={!canProceedStep2} className="bg-black hover:bg-black/80 text-[#F5C300] font-bold px-8 h-12">{t.continueBtn}</Button>
             </div>
           </div>
         )}
