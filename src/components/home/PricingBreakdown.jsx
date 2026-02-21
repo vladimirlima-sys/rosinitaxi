@@ -62,6 +62,20 @@ export default function PricingBreakdown({
 
   return (
     <div className="bg-zinc-950 p-5 rounded-2xl border border-[#C9A96E]/20 space-y-3">
+      {/* Distance price */}
+      <div className="flex justify-between items-center text-sm">
+        <span className="text-white/40">{t.pricePerKm}</span>
+        <span className="text-white">CHF {distancePrice}</span>
+      </div>
+
+      {/* Base fare */}
+      {baseFareAmount > 0 &&
+      <div className="flex justify-between items-center text-sm">
+        <span className="text-white/40">{t.baseFare}</span>
+        <span className="text-white">+CHF {baseFareAmount.toFixed(2)}</span>
+      </div>
+      }
+
       {/* Night surcharge */}
       {isNightSurcharge && parseFloat(nightSurchargeAmount) > 0 &&
       <div className="flex justify-between items-center text-sm">
