@@ -304,12 +304,12 @@ export default function BookingForm({ bookingRef }) {
   };
 
   return (
-    <section ref={bookingRef} className="py-12 px-6 bg-[#F5C300]">
+    <section ref={bookingRef} className="py-28 px-6 bg-[#F5C300]">
       <div className="max-w-4xl mx-auto">
-        <div className="text-center mb-12">
+        <div className="text-center mb-16">
           <p className="text-black/50 text-sm tracking-[0.3em] uppercase mb-4">{t.bookingLabel}</p>
-            <h2 className="text-3xl md:text-4xl font-bold text-black mb-4">{t.bookingTitle}</h2>
-            <div className="w-12 h-[2px] bg-black mx-auto mb-6" />
+            <h2 className="text-4xl md:text-5xl font-bold text-black mb-6">{t.bookingTitle}</h2>
+            <div className="w-12 h-[2px] bg-black mx-auto" />
         </div>
 
         {/* Steps indicator */}
