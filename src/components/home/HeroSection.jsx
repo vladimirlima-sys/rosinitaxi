@@ -25,13 +25,13 @@ export default function HeroSection({ onScrollToBooking }) {
           </p>
         </div>
 
-        <div className="w-12 h-[1px] bg-black mx-auto mb-6" />
+        <div className="w-12 h-[1px] bg-black mx-auto mb-10" />
         
-        <p className="text-base md:text-lg text-black/70 font-medium max-w-2xl mx-auto mb-8 leading-relaxed">
+        <p className="text-base md:text-lg text-black/70 font-medium max-w-2xl mx-auto mb-12 leading-relaxed">
           {t.heroDesc}
         </p>
 
-        <div className="flex flex-wrap justify-center gap-3 mb-10">
+        <div className="flex flex-wrap justify-center gap-4 mb-14">
           {[
             { icon: Clock, label: t.pill1 },
             { icon: Shield, label: t.pill2 },
