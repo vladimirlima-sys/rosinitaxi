@@ -3,6 +3,7 @@ import { toast } from 'sonner';
 import { base44 } from '@/api/base44Client';
 import { useLang } from '@/components/LanguageContext';
 import { translations } from '@/components/translations';
+import { hereCache } from '@/components/hereCache';
 
 export default function RouteCalculator({ departure, arrival, onRouteCalculated }) {
   const { lang } = useLang();
