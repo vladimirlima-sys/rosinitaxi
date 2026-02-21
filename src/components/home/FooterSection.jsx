@@ -8,19 +8,19 @@ export default function FooterSection() {
   const t = translations[lang];
 
   return (
-    <footer className="py-16 px-6 bg-black border-t border-yellow-400/20">
+    <footer className="py-24 px-6 bg-black border-t border-yellow-400/20">
       <div className="max-w-6xl mx-auto">
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-12 mb-12">
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-16 mb-16">
           <div>
-            <div className="mb-4">
-              <h3 className="text-white text-2xl font-light tracking-tight">ROSINI</h3>
-              <p className="text-[#C9A96E] text-xs tracking-[0.15em] uppercase">Transports et locations Sarl</p>
+            <div className="mb-6">
+              <h3 className="text-white text-3xl font-light tracking-tight">ROSINI</h3>
+              <p className="text-[#C9A96E] text-xs tracking-[0.15em] uppercase mt-2">Transports et locations Sarl</p>
             </div>
           </div>
 
           <div>
-            <h4 className="text-white/40 text-sm tracking-[0.2em] uppercase mb-6">{t.contact}</h4>
-            <div className="space-y-4">
+            <h4 className="text-white/40 text-sm tracking-[0.2em] uppercase mb-8">{t.contact}</h4>
+            <div className="space-y-5">
               <a href="mailto:taxirosini@gmail.com" className="flex items-center gap-3 text-white/50 hover:text-white transition-colors text-sm">
                 <Mail className="w-4 h-4" />
                 taxirosini@gmail.com
