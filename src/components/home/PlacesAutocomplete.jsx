@@ -189,7 +189,6 @@ export default function PlacesAutocomplete({
     <div className="space-y-3 relative z-[100]">
       <Label className="bg-transparent text-gray-50 text-sm font-semibold peer-disabled:cursor-not-allowed peer-disabled:opacity-70">{label}</Label>
       <div className="relative group">
-        <div className="absolute left-4 top-1/2 -translate-y-1/2 w-2.5 h-2.5 rounded-full bg-black z-10" />
         <Input
           ref={inputRef}
           placeholder={placeholder}
