@@ -11,8 +11,10 @@ import PlacesAutocomplete from './PlacesAutocomplete';
 import RouteCalculator from './RouteCalculator';
 import RouteMapDisplay from './RouteMapDisplay';
 import RouteCard from './RouteCard';
+      import ExtrasSelector from './ExtrasSelector';
+      import AvailabilityCalendar from './AvailabilityCalendar';
 
-import { base44 } from '@/api/base44Client';
+      import { base44 } from '@/api/base44Client';
 import { toast } from 'sonner';
 import { useLang } from '@/components/LanguageContext';
 import { translations } from '@/components/translations';
