@@ -325,19 +325,19 @@ export default function BookingForm({ bookingRef }) {
     <section ref={bookingRef} className="py-24 px-6 bg-[#F5C300]">
       <div className="max-w-4xl mx-auto">
         <div className="text-center mb-12">
-          <p className="text-white/40 text-sm tracking-[0.3em] uppercase mb-4">{t.bookingLabel}</p>
-            <h2 className="text-3xl md:text-4xl font-light text-white mb-4">{t.bookingTitle}</h2>
-            <div className="w-12 h-[1px] bg-[#C9A96E] mx-auto mb-6" />
+          <p className="text-black/50 text-sm tracking-[0.3em] uppercase mb-4">{t.bookingLabel}</p>
+            <h2 className="text-3xl md:text-4xl font-bold text-black mb-4">{t.bookingTitle}</h2>
+            <div className="w-12 h-[2px] bg-black mx-auto mb-6" />
         </div>
 
         {/* Steps indicator */}
         <div className="flex items-center justify-center gap-2 mb-12">
           {[1, 2, 3, 4].map(s => (
-            <div key={s}>
-              <div className={`w-8 h-8 rounded-full flex items-center justify-center text-sm font-medium transition-all ${
-                step >= s ? 'bg-[#C9A96E] text-[#0A0A0A]' : 'bg-white/10 text-white/30'
+            <div key={s} className="flex items-center">
+              <div className={`w-8 h-8 rounded-full flex items-center justify-center text-sm font-bold transition-all ${
+                step >= s ? 'bg-black text-[#F5C300]' : 'bg-black/20 text-black/40'
               }`}>{s}</div>
-              {s < 4 && <div className={`w-12 h-[1px] ${step > s ? 'bg-[#C9A96E]' : 'bg-white/10'}`} />}
+              {s < 4 && <div className={`w-12 h-[2px] ${step > s ? 'bg-black' : 'bg-black/20'}`} />}
             </div>
           ))}
         </div>
