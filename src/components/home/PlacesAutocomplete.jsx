@@ -313,7 +313,7 @@ export default function PlacesAutocomplete({
       )}
 
       {showSuggestions && suggestions.length > 0 && (
-        <div className="fixed bg-[#1a1a1a] border border-[#C9A96E]/30 rounded-xl shadow-2xl z-[10000] max-h-72 overflow-hidden flex flex-col"
+        <div className="fixed bg-white border border-black/20 rounded-xl shadow-2xl z-[10000] max-h-72 overflow-hidden flex flex-col"
           style={{
             top: inputRef.current?.getBoundingClientRect().bottom + 8,
             left: inputRef.current?.getBoundingClientRect().left,
