@@ -43,12 +43,24 @@ export default function PlacesAutocomplete({
     setError(null);
 
     try {
-      const response = await base44.functions.invoke('hereGeocoding', {
-        searchText: input,
-        lang: 'pt'
-      });
+      // Check cache first
+      let results = hereCache.getGeocoding(input);
+      
+      if (!results) {
+        // Cache miss - fetch from API
+        const response = await base44.functions.invoke('hereGeocoding', {
+          searchText: input,
+          lang: 'pt'
+        });
 
-      const results = response.data?.results || [];
+        results = response.data?.results || [];
+        
+        // Store in cache
+        if (results.length > 0) {
+          hereCache.setGeocoding(input, results);
+        }
+      }
+
       if (results.length > 0) {
         setSuggestions(results);
         setShowSuggestions(true);
