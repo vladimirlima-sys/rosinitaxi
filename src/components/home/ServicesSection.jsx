@@ -15,15 +15,15 @@ export default function ServicesSection() {
   ];
 
   return (
-    <section className="py-20 px-6 bg-white">
+    <section className="py-32 px-6 bg-white">
       <div className="max-w-6xl mx-auto">
-        <div className="text-center mb-16">
+        <div className="text-center mb-24">
           <p className="text-black/50 text-sm tracking-[0.3em] uppercase mb-4">{t.servicesLabel}</p>
-          <h2 className="text-3xl md:text-4xl font-light text-black mb-4">{t.servicesTitle}</h2>
+          <h2 className="text-4xl md:text-5xl font-light text-black mb-6">{t.servicesTitle}</h2>
           <div className="w-12 h-[2px] bg-black mx-auto" />
         </div>
 
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-10">
           {services.map((service, idx) => (
             <div key={idx} className="text-center group hover:opacity-70 transition-opacity">
               <div className="w-16 h-16 rounded-full bg-black/5 flex items-center justify-center mx-auto mb-4 group-hover:bg-[#F5C300]/20 transition-colors">
