@@ -461,25 +461,23 @@ export default function BookingForm({ bookingRef }) {
           }
 
             {form.vehicle_type &&
-          <div className="space-y-2 max-w-xs">
-                <Label className="text-black/70 text-sm font-semibold">{t.passengersLabel}</Label>
+            <div className="space-y-4">
                 <div className="flex gap-3">
                   {[1, 2, 3, 4].map((num) =>
               <button
                 key={num}
                 onClick={() => update('passengers', num)}
-                className={`w-12 h-12 rounded-lg font-bold transition-all ${
+                className={`w-12 h-12 rounded-lg font-semibold transition-all ${
                 form.passengers === num ?
-                'bg-black text-[#F5C300]' :
-                'bg-black/10 text-black/40 hover:bg-black/20 hover:text-black'}`
+                'bg-blue-600 text-white shadow-md' :
+                'bg-slate-100 text-slate-700 hover:bg-slate-200'}`
                 }>
-
                       {num}
                     </button>
               )}
                 </div>
               </div>
-          }
+            }
 
             {totalPrice && form.departure_date && form.departure_time && priceSettings &&
           <PricingBreakdown
