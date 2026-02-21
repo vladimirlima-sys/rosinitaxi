@@ -8,15 +8,15 @@ export default function HeroSection({ onScrollToBooking }) {
   const t = translations[lang];
 
   return (
-    <section className="relative min-h-[70vh] flex items-center justify-center overflow-hidden bg-[#F5C300]">
+    <section className="relative min-h-screen flex items-center justify-center overflow-hidden bg-[#F5C300]">
       <div 
         className="absolute inset-0 bg-cover bg-center opacity-10"
         style={{ backgroundImage: "url('https://images.unsplash.com/photo-1549317661-bd32c8ce0afa?w=1920&q=80')" }}
       />
       
-      <div className="relative z-10 text-center px-6 max-w-5xl mx-auto">
+      <div className="relative z-10 text-center px-6 py-20 max-w-5xl mx-auto">
 
-        <div className="mb-6">
+        <div className="mb-8 mt-12">
           <h1 className="text-5xl md:text-7xl lg:text-8xl font-extralight text-black tracking-[0.15em] mb-1 leading-none">
             ROSINI
           </h1>
