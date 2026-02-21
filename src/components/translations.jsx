@@ -238,7 +238,8 @@ export const translations = {
     routeError: 'Erreur lors du calcul de la route. Vérifiez les adresses.',
     markerDeparture: 'DÉPART',
     markerArrival: 'ARRIVÉE',
-  },
+    noTollsIncluded: '* Valeur non inclusive des péages',
+    },
   en: {
     badge: 'Available 24/7 — Every Day',
     paymentMethod: 'Payment method',
