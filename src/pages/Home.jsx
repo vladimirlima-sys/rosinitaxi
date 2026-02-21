@@ -13,7 +13,6 @@ function HomeContent({ bookingRef, scrollToBooking }) {
   return (
     <React.Fragment>
       <SeoHead lang={lang} />
-      <GoogleMapsLoader />
       <div className="min-h-screen bg-white">
         <LanguageSwitcher />
         <HeroSection onScrollToBooking={scrollToBooking} />
