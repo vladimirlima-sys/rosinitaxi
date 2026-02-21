@@ -479,7 +479,8 @@ export const translations = {
     routeError: 'Fehler bei der Routenberechnung. Bitte überprüfen Sie die Adressen.',
     markerDeparture: 'ABFAHRT',
     markerArrival: 'ANKUNFT',
-  },
+    noTollsIncluded: '* Preis nicht inklusive Mautgebühren',
+    },
   paymentMethods: {
     stripe: 'Stripe (Carta di credito)',
     twint: 'TWINT',
