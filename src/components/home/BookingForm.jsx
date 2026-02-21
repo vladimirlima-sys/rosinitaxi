@@ -498,99 +498,89 @@ export default function BookingForm({ bookingRef }) {
               </div>
             }
 
-            <div className="flex justify-between gap-4 pt-8">
-              <Button onClick={() => {setStep(1);scrollToTop();}} variant="outline" className="px-8 h-11 font-semibold">{t.backBtn}</Button>
-              <Button onClick={() => {setStep(3);scrollToTop();}} disabled={!canProceedStep2} className="bg-blue-600 hover:bg-blue-700 text-white font-semibold px-8 h-11">{t.continueBtn}</Button>
+            <div className="flex justify-between pt-4">
+              <Button onClick={() => {setStep(1);scrollToTop();}} className="bg-black hover:bg-black/80 text-[#F5C300] font-bold px-8 h-12">{t.backBtn}</Button>
+              <Button onClick={() => {setStep(3);scrollToTop();}} disabled={!canProceedStep2} className="bg-black hover:bg-black/80 text-[#F5C300] font-bold px-8 h-12">{t.continueBtn}</Button>
             </div>
           </div>
         }
 
         {/* Step 3: Personal info */}
         {step === 3 &&
-        <div className="space-y-8">
-            <div>
-              <h3 className="text-slate-900 text-2xl font-bold mb-2">{t.step3Title}</h3>
-              <p className="text-slate-600 text-sm">{t.step3Title}</p>
-            </div>
-            <div className="bg-white p-8 rounded-xl border border-slate-200 space-y-6">
-              <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-                <div className="space-y-3">
-                  <Label className="text-slate-700 text-sm font-semibold flex items-center gap-2"><User className="w-4 h-4 text-blue-600" /> {t.nameLabel}</Label>
-                  <Input placeholder={t.namePlaceholder} value={form.client_name} onChange={(e) => update('client_name', e.target.value)} className="bg-white border-slate-300 text-slate-900 placeholder:text-slate-400 focus:border-blue-500 focus:ring-2 focus:ring-blue-200 h-11" />
-                </div>
-                <div className="space-y-3">
-                  <Label className="text-slate-700 text-sm font-semibold flex items-center gap-2"><Mail className="w-4 h-4 text-blue-600" /> {t.emailLabel}</Label>
-                  <Input type="email" placeholder={t.emailPlaceholder} value={form.client_email} onChange={(e) => update('client_email', e.target.value)} className="bg-white border-slate-300 text-slate-900 placeholder:text-slate-400 focus:border-blue-500 focus:ring-2 focus:ring-blue-200 h-11" />
-                </div>
+        <div className="space-y-6">
+            <h3 className="text-black text-xl font-bold mb-6">{t.step3Title}</h3>
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+              <div className="space-y-2">
+                <Label className="text-black/70 text-sm font-semibold flex items-center gap-2"><User className="w-4 h-4 text-black" /> {t.nameLabel}</Label>
+                <Input placeholder={t.namePlaceholder} value={form.client_name} onChange={(e) => update('client_name', e.target.value)} className="bg-white border-black/20 text-black placeholder:text-black/30 focus:border-black h-12" />
               </div>
-              <div className="space-y-3">
-                <Label className="text-slate-700 text-sm font-semibold flex items-center gap-2"><Phone className="w-4 h-4 text-blue-600" /> {t.phoneLabel}</Label>
-                <Input type="tel" placeholder={t.phonePlaceholder} value={form.client_phone} onChange={(e) => update('client_phone', e.target.value)} className="bg-white border-slate-300 text-slate-900 placeholder:text-slate-400 focus:border-blue-500 focus:ring-2 focus:ring-blue-200 h-11" />
-              </div>
-              <div className="space-y-3">
-                <Label className="text-slate-700 text-sm font-semibold flex items-center gap-2"><MessageSquare className="w-4 h-4 text-blue-600" /> {t.notesLabel}</Label>
-                <Textarea placeholder={t.notesPlaceholder} value={form.notes} onChange={(e) => update('notes', e.target.value)} className="bg-white border-slate-300 text-slate-900 placeholder:text-slate-400 focus:border-blue-500 focus:ring-2 focus:ring-blue-200 min-h-[100px]" />
+              <div className="space-y-2">
+                <Label className="text-black/70 text-sm font-semibold flex items-center gap-2"><Mail className="w-4 h-4 text-black" /> {t.emailLabel}</Label>
+                <Input type="email" placeholder={t.emailPlaceholder} value={form.client_email} onChange={(e) => update('client_email', e.target.value)} className="bg-white border-black/20 text-black placeholder:text-black/30 focus:border-black h-12" />
               </div>
             </div>
-            <div className="flex justify-between gap-4">
-              <Button onClick={() => {setStep(2);scrollToTop();}} variant="outline" className="px-8 h-11 font-semibold">{t.backBtn}</Button>
-              <Button onClick={() => {setStep(4);scrollToTop();}} disabled={!canProceedStep3} className="bg-blue-600 hover:bg-blue-700 text-white font-semibold px-8 h-11">{t.paymentBtn}</Button>
+            <div className="space-y-2 max-w-sm">
+              <Label className="text-black/70 text-sm font-semibold flex items-center gap-2"><Phone className="w-4 h-4 text-black" /> {t.phoneLabel}</Label>
+              <Input type="tel" placeholder={t.phonePlaceholder} value={form.client_phone} onChange={(e) => update('client_phone', e.target.value)} className="bg-white border-black/20 text-black placeholder:text-black/30 focus:border-black h-12" />
+            </div>
+            <div className="space-y-2">
+              <Label className="text-black/70 text-sm font-semibold flex items-center gap-2"><MessageSquare className="w-4 h-4 text-black" /> {t.notesLabel}</Label>
+              <Textarea placeholder={t.notesPlaceholder} value={form.notes} onChange={(e) => update('notes', e.target.value)} className="bg-white border-black/20 text-black placeholder:text-black/30 focus:border-black min-h-[100px]" />
+            </div>
+            <div className="flex justify-between pt-4">
+              <Button onClick={() => {setStep(2);scrollToTop();}} className="bg-black hover:bg-black/80 text-[#F5C300] font-bold px-8 h-12">{t.backBtn}</Button>
+              <Button onClick={() => {setStep(4);scrollToTop();}} disabled={!canProceedStep3} className="bg-black hover:bg-black/80 text-[#F5C300] font-bold px-8 h-12">{t.paymentBtn}</Button>
             </div>
           </div>
         }
 
         {/* Step 4: Payment */}
         {step === 4 &&
-        <div className="space-y-8">
-            <div>
-              <h3 className="text-slate-900 text-2xl font-bold mb-2">{t.step4Title}</h3>
-              <p className="text-slate-600 text-sm">Review and confirm your booking</p>
-            </div>
-            <div className="p-8 rounded-xl bg-blue-50 border border-blue-200 space-y-4">
-              <h4 className="text-slate-700 text-sm uppercase tracking-wider font-semibold">{t.summaryLabel}</h4>
-              <div className="space-y-3">
-                <div className="flex justify-between text-sm"><span className="text-slate-600">{t.summaryTrajet}</span><span className="text-slate-900 font-medium">{form.departure_point} → {form.arrival_point}</span></div>
-                <div className="flex justify-between text-sm"><span className="text-slate-600">{t.summaryDateHeure}</span><span className="text-slate-900 font-medium">{form.departure_date} — {form.departure_time}</span></div>
-                <div className="flex justify-between text-sm"><span className="text-slate-600">{t.summaryVehicle}</span><span className="text-slate-900 font-medium">Standard</span></div>
-                <div className="flex justify-between text-sm"><span className="text-slate-600">{t.summaryDistance}</span><span className="text-slate-900 font-medium">{estimatedDistance} km</span></div>
-              </div>
-              <div className="w-full h-[1px] bg-blue-200 my-4" />
-              <div className="flex justify-between"><span className="text-slate-900 font-bold">{t.summaryTotal}</span><span className="text-slate-900 text-2xl font-bold">CHF {totalPrice}</span></div>
-              <p className="text-slate-600 text-xs italic mt-4">{t.noTollsIncluded}</p>
+        <div className="space-y-6">
+            <h3 className="text-black text-xl font-bold mb-6">{t.step4Title}</h3>
+            <div className="p-6 rounded-2xl bg-white border border-black/10 space-y-3 mb-8">
+              <h4 className="text-black/60 text-sm uppercase tracking-wider font-semibold mb-4">{t.summaryLabel}</h4>
+              <div className="flex justify-between text-sm"><span className="text-black/50">{t.summaryTrajet}</span><span className="text-black font-medium">{form.departure_point} → {form.arrival_point}</span></div>
+              <div className="flex justify-between text-sm"><span className="text-black/50">{t.summaryDateHeure}</span><span className="text-black font-medium">{form.departure_date} — {form.departure_time}</span></div>
+              <div className="flex justify-between text-sm"><span className="text-black/50">{t.summaryVehicle}</span><span className="text-black font-medium">Standard</span></div>
+              <div className="flex justify-between text-sm"><span className="text-black/50">{t.summaryDistance}</span><span className="text-black font-medium">{estimatedDistance} km</span></div>
+              <div className="w-full h-[1px] bg-black/10 my-2" />
+              <div className="flex justify-between"><span className="text-black font-bold">{t.summaryTotal}</span><span className="text-black text-xl font-bold">CHF {totalPrice}</span></div>
+              <p className="text-black/40 text-xs italic mt-2">{t.noTollsIncluded}</p>
               </div>
 
             {/* Payment Method Selection */}
-            <div className="space-y-4 p-8 rounded-xl bg-white border border-slate-200">
-              <Label className="text-slate-900 font-bold text-sm block">{t.paymentMethod}</Label>
+            <div className="space-y-4 p-6 rounded-2xl bg-white border border-black/10">
+              <Label className="text-black font-bold text-sm">{t.paymentMethod}</Label>
               <div className="space-y-3">
-                <label className="flex items-center gap-3 cursor-pointer p-4 rounded-lg border-2 transition-all" style={{ borderColor: paymentMethod === 'stripe' ? '#2563eb' : '#e2e8f0', backgroundColor: paymentMethod === 'stripe' ? '#eff6ff' : '#f8fafc' }}>
-                  <input type="radio" name="payment" value="stripe" checked={paymentMethod === 'stripe'} onChange={(e) => setPaymentMethod(e.target.value)} className="w-4 h-4" style={{ accentColor: '#2563eb' }} />
-                  <span className="text-slate-900 font-semibold flex-1 text-sm">{t.stripeLabel}</span>
-                  <span className="text-slate-600 text-xs">{t.stripeDesc}</span>
+                <label className="flex items-center gap-3 cursor-pointer p-4 rounded-xl border-2 transition-all" style={{ borderColor: paymentMethod === 'stripe' ? '#000' : 'rgba(0,0,0,0.15)', backgroundColor: paymentMethod === 'stripe' ? 'rgba(0,0,0,0.08)' : 'rgba(255,255,255,0.5)' }}>
+                  <input type="radio" name="payment" value="stripe" checked={paymentMethod === 'stripe'} onChange={(e) => setPaymentMethod(e.target.value)} className="w-4 h-4" style={{ accentColor: '#000' }} />
+                  <span className="text-black font-medium flex-1">{t.stripeLabel}</span>
+                  <span className="text-black/50 text-sm">{t.stripeDesc}</span>
                 </label>
-                <label className="flex items-center gap-3 cursor-pointer p-4 rounded-lg border-2 transition-all" style={{ borderColor: paymentMethod === 'twint' ? '#2563eb' : '#e2e8f0', backgroundColor: paymentMethod === 'twint' ? '#eff6ff' : '#f8fafc' }}>
-                  <input type="radio" name="payment" value="twint" checked={paymentMethod === 'twint'} onChange={(e) => setPaymentMethod(e.target.value)} className="w-4 h-4" style={{ accentColor: '#2563eb' }} />
-                  <span className="text-slate-900 font-semibold flex-1 text-sm">{t.twintLabel}</span>
-                  <span className="text-slate-600 text-xs">{t.twintDesc}</span>
+                <label className="flex items-center gap-3 cursor-pointer p-4 rounded-xl border-2 transition-all" style={{ borderColor: paymentMethod === 'twint' ? '#000' : 'rgba(0,0,0,0.15)', backgroundColor: paymentMethod === 'twint' ? 'rgba(0,0,0,0.08)' : 'rgba(255,255,255,0.5)' }}>
+                  <input type="radio" name="payment" value="twint" checked={paymentMethod === 'twint'} onChange={(e) => setPaymentMethod(e.target.value)} className="w-4 h-4" style={{ accentColor: '#000' }} />
+                  <span className="text-black font-medium flex-1">{t.twintLabel}</span>
+                  <span className="text-black/50 text-sm">{t.twintDesc}</span>
                 </label>
-                <label className="flex items-center gap-3 cursor-pointer p-4 rounded-lg border-2 transition-all" style={{ borderColor: paymentMethod === 'cash' ? '#2563eb' : '#e2e8f0', backgroundColor: paymentMethod === 'cash' ? '#eff6ff' : '#f8fafc' }}>
-                  <input type="radio" name="payment" value="cash" checked={paymentMethod === 'cash'} onChange={(e) => setPaymentMethod(e.target.value)} className="w-4 h-4" style={{ accentColor: '#2563eb' }} />
-                  <span className="text-slate-900 font-semibold flex-1 text-sm">{t.cashLabel}</span>
-                  <span className="text-slate-600 text-xs">{t.cashDesc}</span>
+                <label className="flex items-center gap-3 cursor-pointer p-4 rounded-xl border-2 transition-all" style={{ borderColor: paymentMethod === 'cash' ? '#000' : 'rgba(0,0,0,0.15)', backgroundColor: paymentMethod === 'cash' ? 'rgba(0,0,0,0.08)' : 'rgba(255,255,255,0.5)' }}>
+                  <input type="radio" name="payment" value="cash" checked={paymentMethod === 'cash'} onChange={(e) => setPaymentMethod(e.target.value)} className="w-4 h-4" style={{ accentColor: '#000' }} />
+                  <span className="text-black font-medium flex-1">{t.cashLabel}</span>
+                  <span className="text-black/50 text-sm">{t.cashDesc}</span>
                 </label>
               </div>
             </div>
 
             {paymentMethod === 'stripe' &&
-            <div className="flex items-center gap-2 text-slate-600 text-xs bg-blue-50 p-3 rounded-lg border border-blue-100">
-                <svg className="w-4 h-4 flex-shrink-0 text-blue-600" fill="currentColor" viewBox="0 0 24 24"><path d="M12 1L3 5v6c0 5.55 3.84 10.74 9 12 5.16-1.26 9-6.45 9-12V5l-9-4z" /></svg>
+            <div className="flex items-center gap-2 text-black/50 text-xs">
+                <svg className="w-3.5 h-3.5" fill="currentColor" viewBox="0 0 24 24"><path d="M12 1L3 5v6c0 5.55 3.84 10.74 9 12 5.16-1.26 9-6.45 9-12V5l-9-4z" /></svg>
                 <span>{t.securePayment}</span>
               </div>
             }
 
-            <div className="flex justify-between gap-4 pt-6">
-              <Button onClick={() => {setStep(3);scrollToTop();}} variant="outline" className="px-8 h-11 font-semibold">{t.backBtn}</Button>
-              <Button onClick={handlePayment} disabled={isSubmitting} className="bg-blue-600 hover:bg-blue-700 text-white font-semibold px-8 h-11 min-w-[220px]">
+            <div className="flex justify-between pt-2">
+              <Button onClick={() => {setStep(3);scrollToTop();}} className="bg-black hover:bg-black/80 text-[#F5C300] font-bold px-8 h-12">{t.backBtn}</Button>
+              <Button onClick={handlePayment} disabled={isSubmitting} className="bg-black hover:bg-black/80 text-[#F5C300] font-bold px-8 h-12 min-w-[220px]">
                 {isSubmitting ? <><Loader2 className="w-4 h-4 mr-2 animate-spin" />{t.redirecting}</> : `${paymentMethod === 'stripe' ? t.payBtn(totalPrice) : t.confirmBooking}`}
               </Button>
             </div>
@@ -599,16 +589,16 @@ export default function BookingForm({ bookingRef }) {
 
         {/* Step 5: Confirmation */}
         {step === 5 &&
-        <div className="text-center py-16">
-            <div className="w-24 h-24 rounded-full bg-green-100 flex items-center justify-center mx-auto mb-8">
-              <svg className="w-12 h-12 text-green-600" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+        <div className="text-center py-12">
+            <div className="w-20 h-20 rounded-full bg-black/10 flex items-center justify-center mx-auto mb-8">
+              <svg className="w-10 h-10 text-black" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
               </svg>
             </div>
-            <h3 className="text-slate-900 text-3xl font-bold mb-4">{t.confirmTitle}</h3>
-            <p className="text-slate-600 max-w-md mx-auto mb-2">{t.confirmMsg(form.client_name, form.departure_point, form.arrival_point)}</p>
-            <p className="text-slate-500 text-sm mb-8">{t.confirmEmail(form.client_email)}</p>
-            <Button onClick={resetForm} className="bg-blue-600 hover:bg-blue-700 text-white font-semibold px-8 h-11">{t.newBooking}</Button>
+            <h3 className="text-black text-2xl font-bold mb-4">{t.confirmTitle}</h3>
+            <p className="text-black/60 max-w-md mx-auto mb-2">{t.confirmMsg(form.client_name, form.departure_point, form.arrival_point)}</p>
+            <p className="text-black/40 text-sm mb-8">{t.confirmEmail(form.client_email)}</p>
+            <Button onClick={resetForm} className="bg-black hover:bg-black/80 text-[#F5C300] font-bold">{t.newBooking}</Button>
           </div>
         }
 
