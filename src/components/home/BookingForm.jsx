@@ -430,34 +430,34 @@ export default function BookingForm({ bookingRef }) {
                     type="date" 
                     value={form.departure_date} 
                     onChange={e => update('departure_date', e.target.value)} 
-                    className="bg-white/5 border border-white/10 text-white focus:border-[#C9A96E] focus:bg-white/[0.08] h-12 rounded-xl transition-all"
-                  />
-                </div>
+                    className="bg-white/8 border border-white/15 text-white focus:border-white/40 focus:bg-white/10 h-12 rounded-xl transition-all"
+                          />
+                        </div>
 
-                <div className="space-y-3">
-                  <Label className="text-white/70 text-sm font-medium flex items-center gap-2">
-                    <Clock className="w-4 h-4 text-[#C9A96E]" />
-                    {t.timeLabel}
-                  </Label>
-                  <Input 
-                    type="time" 
-                    value={form.departure_time} 
-                    onChange={e => update('departure_time', e.target.value)} 
-                    className="bg-white/5 border border-white/10 text-white focus:border-[#C9A96E] focus:bg-white/[0.08] h-12 rounded-xl transition-all"
-                  />
-                </div>
+                        <div className="space-y-3">
+                          <Label className="text-white/60 text-sm font-medium flex items-center gap-2">
+                            <Clock className="w-4 h-4 text-white/40" />
+                            {t.timeLabel}
+                          </Label>
+                          <Input 
+                            type="time" 
+                            value={form.departure_time} 
+                            onChange={e => update('departure_time', e.target.value)} 
+                            className="bg-white/8 border border-white/15 text-white focus:border-white/40 focus:bg-white/10 h-12 rounded-xl transition-all"
+                          />
+                        </div>
 
-                <div className="space-y-3">
-                  <Label className="text-white/70 text-sm font-medium flex items-center gap-2">
-                    <Plane className="w-4 h-4 text-[#C9A96E]" />
-                    {t.flightLabel}
-                  </Label>
-                  <Input 
-                    placeholder={t.flightPlaceholder} 
-                    value={form.flight_number} 
-                    onChange={e => update('flight_number', e.target.value)} 
-                    className="bg-white/5 border border-white/10 text-white placeholder:text-white/20 focus:border-[#C9A96E] focus:bg-white/[0.08] h-12 rounded-xl transition-all"
-                  />
+                        <div className="space-y-3">
+                          <Label className="text-white/60 text-sm font-medium flex items-center gap-2">
+                            <Plane className="w-4 h-4 text-white/40" />
+                            {t.flightLabel}
+                          </Label>
+                          <Input 
+                            placeholder={t.flightPlaceholder} 
+                            value={form.flight_number} 
+                            onChange={e => update('flight_number', e.target.value)} 
+                            className="bg-white/8 border border-white/15 text-white placeholder:text-white/20 focus:border-white/40 focus:bg-white/10 h-12 rounded-xl transition-all"
+                          />
                 </div>
               </div>
             </div>
