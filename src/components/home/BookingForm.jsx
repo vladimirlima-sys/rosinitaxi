@@ -531,8 +531,8 @@ export default function BookingForm({ bookingRef }) {
             )}
 
             <div className="flex justify-between pt-4">
-              <Button onClick={() => { setStep(1); scrollToTop(); }} className="bg-[#C9A96E] hover:bg-[#B8955D] text-[#0A0A0A] font-semibold px-8 h-12">{t.backBtn}</Button>
-              <Button onClick={() => { setStep(3); scrollToTop(); }} disabled={!canProceedStep2} className="bg-[#C9A96E] hover:bg-[#B8955D] text-[#0A0A0A] font-semibold px-8 h-12">{t.continueBtn}</Button>
+              <Button onClick={() => { setStep(1); scrollToTop(); }} className="bg-white/10 hover:bg-white/20 text-white font-semibold px-8 h-12 rounded-full">{t.backBtn}</Button>
+              <Button onClick={() => { setStep(3); scrollToTop(); }} disabled={!canProceedStep2} className="bg-white hover:bg-white/90 text-black font-bold px-8 h-12 rounded-full">{t.continueBtn}</Button>
             </div>
           </div>
         )}
