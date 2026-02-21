@@ -17,7 +17,7 @@ export default function RouteCard({ departure, arrival, distance_km, estimatedTi
   };
 
   return (
-    <div className="p-8 rounded-3xl bg-gradient-to-br from-[#C9A96E]/10 to-[#C9A96E]/5 border border-[#C9A96E]/40 backdrop-blur-sm">
+    <div className="p-8 rounded-3xl bg-white/60 border border-black/10">
       {/* Info - Quilometragem e Tempo */}
       <div className="flex items-center gap-6">
         <div className="flex items-center gap-3">
