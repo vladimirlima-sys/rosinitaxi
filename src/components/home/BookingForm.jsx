@@ -393,44 +393,38 @@ export default function BookingForm({ bookingRef }) {
                     <h4 className="text-slate-900 font-semibold">{t.tripDetails}</h4>
                   </div>
 
-              <div className="bg-transparent grid grid-cols-1 md:grid-cols-3 gap-6">
+              <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
                 <div className="space-y-3">
-                  <Label className="text-zinc-50 text-sm font-semibold peer-disabled:cursor-not-allowed peer-disabled:opacity-70 flex items-center gap-2">
-                    <Calendar className="text-[#C9A96E] lucide lucide-calendar w-4 h-4" />
+                  <Label className="text-slate-700 text-sm font-semibold">
+                    <Calendar className="text-blue-600 w-4 h-4 inline mr-2" />
                     {t.dateLabel}
                   </Label>
                   <Input
                   type="date"
                   value={form.departure_date}
-                  onChange={(e) => update('departure_date', e.target.value)} className="bg-[#fcf6ab] text-black px-3 py-1 text-base rounded-xl flex w-full shadow-sm file:border-0 file:bg-transparent file:text-sm file:font-medium file:text-foreground placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring disabled:cursor-not-allowed disabled:opacity-50 md:text-sm border border-black/20 focus:border-black h-12 transition-all" />
-
-
+                  onChange={(e) => update('departure_date', e.target.value)} className="bg-white text-slate-900 px-4 py-2.5 rounded-lg border border-slate-300 focus:border-blue-500 focus:ring-2 focus:ring-blue-200 transition-all h-11" />
                 </div>
 
                 <div className="space-y-3">
-                  <Label className="text-zinc-50 text-sm font-semibold peer-disabled:cursor-not-allowed peer-disabled:opacity-70 flex items-center gap-2">
-                    <Clock className="text-[#C9A96E] lucide lucide-clock w-4 h-4" />
+                  <Label className="text-slate-700 text-sm font-semibold">
+                    <Clock className="text-blue-600 w-4 h-4 inline mr-2" />
                     {t.timeLabel}
                   </Label>
                   <Input
                   type="time"
                   value={form.departure_time}
-                  onChange={(e) => update('departure_time', e.target.value)} className="bg-[#fcf6ab] text-black px-3 py-1 text-base rounded-xl flex w-full shadow-sm file:border-0 file:bg-transparent file:text-sm file:font-medium file:text-foreground placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring disabled:cursor-not-allowed disabled:opacity-50 md:text-sm border border-black/20 focus:border-black h-12 transition-all" />
-
-
+                  onChange={(e) => update('departure_time', e.target.value)} className="bg-white text-slate-900 px-4 py-2.5 rounded-lg border border-slate-300 focus:border-blue-500 focus:ring-2 focus:ring-blue-200 transition-all h-11" />
                 </div>
 
                 <div className="space-y-3">
-                  <Label className="text-zinc-50 text-sm font-semibold peer-disabled:cursor-not-allowed peer-disabled:opacity-70 flex items-center gap-2">
-                    <Plane className="text-[#C9A96E] lucide lucide-plane w-4 h-4" />
+                  <Label className="text-slate-700 text-sm font-semibold">
+                    <Plane className="text-blue-600 w-4 h-4 inline mr-2" />
                     {t.flightLabel}
                   </Label>
                   <Input
                   placeholder={t.flightPlaceholder}
                   value={form.flight_number}
-                  onChange={(e) => update('flight_number', e.target.value)} className="bg-[#fcf6ab] text-black px-3 py-1 text-base rounded-xl flex w-full shadow-sm file:border-0 file:bg-transparent file:text-sm file:font-medium file:text-foreground focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring disabled:cursor-not-allowed disabled:opacity-50 md:text-sm border border-black/20 placeholder:text-black/30 focus:border-black h-12 transition-all" />
-
-
+                  onChange={(e) => update('flight_number', e.target.value)} className="bg-white text-slate-900 px-4 py-2.5 rounded-lg border border-slate-300 placeholder:text-slate-400 focus:border-blue-500 focus:ring-2 focus:ring-blue-200 transition-all h-11" />
                 </div>
               </div>
             </div>
