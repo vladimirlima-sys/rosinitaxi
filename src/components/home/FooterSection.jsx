@@ -33,13 +33,13 @@ export default function FooterSection() {
           </div>
         </div>
 
-        <div className="h-[1px] bg-white/10 mb-8" />
+        <div className="h-[1px] bg-white/10 mb-12" />
 
-        <div className="text-center mb-8">
+        <div className="text-center mb-12">
           <p className="text-white/30 text-sm">Chemin des Bulesses 16, 1814 La Tour-de-Peilz — Suisse</p>
         </div>
 
-        <div className="h-[1px] bg-white/10 mb-8" />
+        <div className="h-[1px] bg-white/10 mb-12" />
         
         <div className="flex flex-col md:flex-row justify-between items-center gap-4">
           <p className="text-white/30 text-sm">{t.copyright(new Date().getFullYear())}</p>
