@@ -6,8 +6,9 @@ import BookingForm from '@/components/home/BookingForm';
 import FooterSection from '@/components/home/FooterSection';
 import LanguageSwitcher from '@/components/home/LanguageSwitcher';
 import GoogleMapsLoader from '@/components/GoogleMapsLoader';
+import SeoHead from '@/components/SeoHead';
 
-import { LanguageProvider } from '@/components/LanguageContext';
+import { LanguageProvider, useLang } from '@/components/LanguageContext';
 
 export default function Home() {
   const bookingRef = useRef(null);
