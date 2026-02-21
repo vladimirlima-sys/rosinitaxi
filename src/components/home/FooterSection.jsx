@@ -55,10 +55,7 @@ export default function FooterSection() {
         
         <div className="flex flex-col md:flex-row justify-between items-center gap-4">
           <p className="text-white/20 text-sm">{t.copyright(new Date().getFullYear())}</p>
-          <div className="flex items-center gap-1">
-            <div className="w-2 h-2 rounded-full bg-green-500 animate-pulse" />
-            <span className="text-white/30 text-xs">{t.availableNow}</span>
-          </div>
+
         </div>
       </div>
     </footer>
