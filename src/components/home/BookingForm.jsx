@@ -87,22 +87,19 @@ export default function BookingForm({ bookingRef }) {
       async (position) => {
         const { latitude, longitude } = position.coords;
         try {
-          if (typeof google !== 'undefined' && google.maps) {
-            const geocoder = new google.maps.Geocoder();
-            geocoder.geocode({ location: { lat: latitude, lng: longitude } }, (results, status) => {
-              if (status === 'OK' && results && results.length > 0) {
-                update('departure_point', results[0].formatted_address);
-                toast.success(t.locationObtained || 'Location obtained!');
-              } else {
-                toast.error(t.locationError || 'Error obtaining location');
-              }
-              setIsLocating(false);
-            });
+          const response = await base44.functions.invoke('hereReverseGeocoding', {
+            lat: latitude,
+            lng: longitude
+          });
+          if (response.data?.address) {
+            update('departure_point', response.data.address);
+            toast.success(t.locationObtained || 'Location obtained!');
           } else {
-            setIsLocating(false);
+            toast.error(t.locationError || 'Error obtaining location');
           }
+          setIsLocating(false);
         } catch (err) {
-          console.error('Geocoding error:', err);
+          console.error('Reverse geocoding error:', err);
           toast.error(t.locationError || 'Error obtaining location');
           setIsLocating(false);
         }
