@@ -467,7 +467,7 @@ export default function BookingForm({ bookingRef }) {
               <Button 
                 onClick={() => { setStep(2); scrollToTop(); }}
                 disabled={!canProceedStep1 || estimatedDistance === 0} 
-                className="bg-[#C9A96E] hover:bg-[#B8955D] text-[#0A0A0A] font-semibold px-12 h-13 rounded-xl transition-all hover:shadow-lg"
+                className="bg-black hover:bg-black/80 text-[#F5C300] font-bold px-12 h-13 rounded-xl transition-all hover:shadow-lg"
               >
                 {t.continueBtn}
               </Button>
