@@ -346,17 +346,17 @@ export default function BookingForm({ bookingRef }) {
         {step === 1 && (
           <div className="space-y-8">
             <div className="text-center mb-8">
-              <h3 className="text-white text-2xl font-light mb-2">{t.step1Title}</h3>
-              <p className="text-white/40 text-sm">{t.setYourRoute}</p>
+              <h3 className="text-gray-900 text-2xl font-light mb-2">{t.step1Title}</h3>
+              <p className="text-gray-400 text-sm">{t.setYourRoute}</p>
             </div>
 
             {/* Route Section */}
-            <div className="p-8 rounded-3xl bg-gradient-to-br from-white/[0.08] to-white/[0.03] border border-[#C9A96E]/30 backdrop-blur-sm space-y-6">
+            <div className="p-8 rounded-3xl bg-gray-50 border border-gray-200 space-y-6">
               <div className="flex items-center gap-3 mb-6">
-                <div className="w-10 h-10 rounded-full bg-[#C9A96E]/20 flex items-center justify-center">
-                  <MapPin className="w-5 h-5 text-[#C9A96E]" />
+                <div className="w-10 h-10 rounded-full bg-gray-200 flex items-center justify-center">
+                  <MapPin className="w-5 h-5 text-gray-700" />
                 </div>
-                <h4 className="text-white font-medium">{t.yourRoute}</h4>
+                <h4 className="text-gray-900 font-medium">{t.yourRoute}</h4>
               </div>
 
               <div className="space-y-6">
