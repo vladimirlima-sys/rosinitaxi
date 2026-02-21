@@ -313,13 +313,13 @@ export default function BookingForm({ bookingRef }) {
         </div>
 
         {/* Steps indicator */}
-        <div className="flex items-center justify-center gap-2 mb-12">
+        <div className="flex items-center justify-center gap-2 mb-16">
           {[1, 2, 3, 4].map((s) =>
           <div key={s} className="flex items-center">
-              <div className={`w-8 h-8 rounded-full flex items-center justify-center text-sm font-bold transition-all ${
-            step >= s ? 'bg-black text-[#F5C300]' : 'bg-black/20 text-black/40'}`
+              <div className={`w-9 h-9 rounded-full flex items-center justify-center text-sm font-bold transition-all ${
+            step >= s ? 'bg-blue-600 text-white' : 'bg-slate-200 text-slate-500'}`
             }>{s}</div>
-              {s < 4 && <div className={`w-12 h-[2px] ${step > s ? 'bg-black' : 'bg-black/20'}`} />}
+              {s < 4 && <div className={`w-12 h-[2px] ${step > s ? 'bg-blue-600' : 'bg-slate-200'}`} />}
             </div>
           )}
         </div>
