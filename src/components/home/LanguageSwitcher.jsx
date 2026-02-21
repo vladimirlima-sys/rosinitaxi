@@ -13,7 +13,7 @@ export default function LanguageSwitcher() {
   const { lang, setLang } = useLang();
 
   return (
-    <div className="fixed top-5 right-5 z-50 flex items-center gap-1 bg-black shadow-[0_4px_20px_rgba(0,0,0,0.3)] border border-[#F5C300]/20 rounded-full px-3 py-2">
+    <div className="fixed top-5 right-5 z-50 flex items-center gap-1 bg-black/40 backdrop-blur-sm border border-[#F5C300]/20 shadow-lg rounded-full px-3 py-2">
       {languages.map((l, i) => (
         <div key={l.code} className="flex items-center gap-1">
           <button
