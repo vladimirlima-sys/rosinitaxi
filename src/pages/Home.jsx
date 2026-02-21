@@ -7,13 +7,12 @@ import FooterSection from '@/components/home/FooterSection';
 import LanguageSwitcher from '@/components/home/LanguageSwitcher';
 import GoogleMapsLoader from '@/components/GoogleMapsLoader';
 import SeoHead from '@/components/SeoHead';
-
 import { LanguageProvider, useLang } from '@/components/LanguageContext';
 
 function HomeContent({ bookingRef, scrollToBooking }) {
   const { lang } = useLang();
   return (
-    <>
+    <React.Fragment>
       <SeoHead lang={lang} />
       <GoogleMapsLoader />
       <div className="min-h-screen bg-[#0A0A0A]">
@@ -22,8 +21,6 @@ function HomeContent({ bookingRef, scrollToBooking }) {
         <ServicesSection />
         <BookingForm bookingRef={bookingRef} />
         <FooterSection />
-
-        {/* Floating buttons - Call only */}
         <div className="fixed top-6 left-6 z-50">
           <a
             href="tel:+41796505347"
@@ -34,7 +31,7 @@ function HomeContent({ bookingRef, scrollToBooking }) {
           </a>
         </div>
       </div>
-    </>
+    </React.Fragment>
   );
 }
 
