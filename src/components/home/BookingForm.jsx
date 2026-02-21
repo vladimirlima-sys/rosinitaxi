@@ -351,12 +351,12 @@ export default function BookingForm({ bookingRef }) {
             </div>
 
             {/* Route Section */}
-            <div className="p-8 rounded-3xl bg-gray-50 border border-gray-200 space-y-6">
+            <div className="p-8 rounded-3xl bg-white/[0.03] border border-white/10 space-y-6">
               <div className="flex items-center gap-3 mb-6">
-                <div className="w-10 h-10 rounded-full bg-gray-200 flex items-center justify-center">
-                  <MapPin className="w-5 h-5 text-gray-700" />
+                <div className="w-10 h-10 rounded-full bg-white/10 flex items-center justify-center">
+                  <MapPin className="w-5 h-5 text-[#C9A96E]" />
                 </div>
-                <h4 className="text-gray-900 font-medium">{t.yourRoute}</h4>
+                <h4 className="text-white font-medium">{t.yourRoute}</h4>
               </div>
 
               <div className="space-y-6">
