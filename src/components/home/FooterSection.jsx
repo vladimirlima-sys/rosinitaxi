@@ -8,7 +8,7 @@ export default function FooterSection() {
   const t = translations[lang];
 
   return (
-    <footer className="py-16 px-6 bg-gray-100 border-t border-gray-200">
+    <footer className="py-16 px-6 bg-[#0A0A0A] border-t border-white/10">
       <div className="max-w-6xl mx-auto">
         <div className="grid grid-cols-1 md:grid-cols-2 gap-12 mb-12">
           <div>
