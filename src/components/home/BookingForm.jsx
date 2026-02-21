@@ -556,7 +556,8 @@ export default function BookingForm({ bookingRef }) {
               <div className="flex justify-between text-sm"><span className="text-black/50">{t.summaryDistance}</span><span className="text-black font-medium">{estimatedDistance} km</span></div>
               <div className="w-full h-[1px] bg-black/10 my-2" />
               <div className="flex justify-between"><span className="text-black font-bold">{t.summaryTotal}</span><span className="text-black text-xl font-bold">CHF {totalPrice}</span></div>
-            </div>
+              <p className="text-black/40 text-xs italic mt-2">* Valor não inclui pedágios</p>
+              </div>
 
             {/* Payment Method Selection */}
             <div className="space-y-4 p-6 rounded-2xl bg-white border border-black/10">
