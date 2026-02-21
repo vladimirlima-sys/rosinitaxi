@@ -46,11 +46,35 @@ export default function BookingForm({ bookingRef }) {
   const [estimatedTime, setEstimatedTime] = useState(0);
   const [priceSettings, setPriceSettings] = useState(null);
   const [currentRoute, setCurrentRoute] = useState(null);
+  const [departureToken, setDepartureToken] = useState(null);
+  const [arrivalToken, setArrivalToken] = useState(null);
+
+
   const update = (field, value) => setForm((prev) => ({ ...prev, [field]: value }));
 
   // Set vehicle type to economic on mount
   useEffect(() => {
     update('vehicle_type', 'economic');
+  }, []);
+
+  // Create new session token
+  const createNewToken = () => {
+    try {
+      if (typeof google !== 'undefined' && google.maps?.places?.AutocompleteSessionToken) {
+        return new google.maps.places.AutocompleteSessionToken();
+      }
+    } catch (err) {
+      console.error('Session token creation error:', err);
+    }
+    return null;
+  };
+
+  // Initialize session tokens for Places API
+  useEffect(() => {
+    const token1 = createNewToken();
+    const token2 = createNewToken();
+    setDepartureToken(token1);
+    setArrivalToken(token2);
   }, []);
 
   const locateUser = async () => {
@@ -63,17 +87,20 @@ export default function BookingForm({ bookingRef }) {
       async (position) => {
         const { latitude, longitude } = position.coords;
         try {
-          const response = await fetch(
-            `https://nominatim.openstreetmap.org/reverse?format=json&lat=${latitude}&lon=${longitude}`
-          );
-          const data = await response.json();
-          if (data.address) {
-            update('departure_point', data.address.country === 'Switzerland' ? data.display_name : data.display_name);
-            toast.success(t.locationObtained || 'Location obtained!');
+          if (typeof google !== 'undefined' && google.maps) {
+            const geocoder = new google.maps.Geocoder();
+            geocoder.geocode({ location: { lat: latitude, lng: longitude } }, (results, status) => {
+              if (status === 'OK' && results && results.length > 0) {
+                update('departure_point', results[0].formatted_address);
+                toast.success(t.locationObtained || 'Location obtained!');
+              } else {
+                toast.error(t.locationError || 'Error obtaining location');
+              }
+              setIsLocating(false);
+            });
           } else {
-            toast.error(t.locationError || 'Error obtaining location');
+            setIsLocating(false);
           }
-          setIsLocating(false);
         } catch (err) {
           console.error('Geocoding error:', err);
           toast.error(t.locationError || 'Error obtaining location');
@@ -343,6 +370,8 @@ export default function BookingForm({ bookingRef }) {
                 showLocateButton={true}
                 isLocating={isLocating}
                 onLocate={locateUser}
+                sessionToken={departureToken}
+                onTokenRefresh={() => setDepartureToken(createNewToken())}
                 t={t} />
 
 
@@ -357,6 +386,8 @@ export default function BookingForm({ bookingRef }) {
                 placeholder={t.arrivalPlaceholder}
                 label={t.arrival}
                 showLocateButton={false}
+                sessionToken={arrivalToken}
+                onTokenRefresh={() => setArrivalToken(createNewToken())}
                 t={t} />
 
 
@@ -372,14 +403,15 @@ export default function BookingForm({ bookingRef }) {
             </div>
 
             {/* Route Card - Map + Journey Details */}
-            {estimatedDistance > 0 &&
-            <RouteCard
-              departure={form.departure_point}
-              arrival={form.arrival_point}
-              distance_km={estimatedDistance}
-              estimatedTime={estimatedTime} />
+            {estimatedDistance > 0 && currentRoute &&
+          <RouteCard
+            departure={form.departure_point}
+            arrival={form.arrival_point}
+            route={currentRoute}
+            distance_km={estimatedDistance}
+            estimatedTime={estimatedTime} />
 
-            }
+          }
 
             {/* Date, Time & Flight Section */}
             <div className="bg-zinc-900 p-8 opacity-100 rounded-2xl border border-[#C9A96E] shadow-[0_0_30px_rgba(201,169,110,0.1)] space-y-6">
