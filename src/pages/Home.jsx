@@ -15,7 +15,7 @@ function HomeContent({ bookingRef, scrollToBooking }) {
     <React.Fragment>
       <SeoHead lang={lang} />
       <GoogleMapsLoader />
-      <div className="min-h-screen bg-[#0A0A0A]">
+      <div className="min-h-screen bg-white">
         <LanguageSwitcher />
         <HeroSection onScrollToBooking={scrollToBooking} />
         <ServicesSection />
