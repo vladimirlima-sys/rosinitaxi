@@ -322,7 +322,7 @@ export default function BookingForm({ bookingRef }) {
   };
 
   return (
-    <section ref={bookingRef} className="py-24 px-6 bg-white">
+    <section ref={bookingRef} className="py-24 px-6 bg-[#0A0A0A]">
       <div className="max-w-4xl mx-auto">
         <div className="text-center mb-12">
           <p className="text-gray-500 text-sm tracking-[0.3em] uppercase mb-4">{t.bookingLabel}</p>
