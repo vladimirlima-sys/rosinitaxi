@@ -21,7 +21,7 @@ function HomeContent({ bookingRef, scrollToBooking }) {
         <ServicesSection />
         <BookingForm bookingRef={bookingRef} />
         <FooterSection />
-        <div className="fixed top-6 left-6 z-50">
+        <div className="fixed bottom-6 right-6 z-50">
           <a
             href="tel:+41796505347"
             className="group w-12 h-12 rounded-full bg-black/30 backdrop-blur-sm border border-white/20 shadow-lg flex items-center justify-center transition-all duration-300 hover:scale-110 hover:bg-black/50"
