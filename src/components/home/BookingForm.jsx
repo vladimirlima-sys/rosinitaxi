@@ -569,49 +569,49 @@ export default function BookingForm({ bookingRef }) {
         {/* Step 4: Payment */}
         {step === 4 && (
           <div className="space-y-6">
-            <h3 className="text-gray-900 text-xl font-medium mb-6">{t.step4Title}</h3>
-            <div className="p-6 rounded-2xl bg-gray-50 border border-gray-200 space-y-3 mb-8">
-              <h4 className="text-gray-500 text-sm uppercase tracking-wider mb-4">{t.summaryLabel}</h4>
-              <div className="flex justify-between text-sm"><span className="text-gray-400">{t.summaryTrajet}</span><span className="text-gray-900">{form.departure_point} → {form.arrival_point}</span></div>
-              <div className="flex justify-between text-sm"><span className="text-gray-400">{t.summaryDateHeure}</span><span className="text-gray-900">{form.departure_date} — {form.departure_time}</span></div>
-              <div className="flex justify-between text-sm"><span className="text-gray-400">{t.summaryVehicle}</span><span className="text-gray-900">Standard</span></div>
-              <div className="flex justify-between text-sm"><span className="text-gray-400">{t.summaryDistance}</span><span className="text-gray-900">{estimatedDistance} km</span></div>
-              <div className="w-full h-[1px] bg-gray-200 my-2" />
-              <div className="flex justify-between"><span className="text-gray-900 font-medium">{t.summaryTotal}</span><span className="text-gray-900 text-xl font-semibold">CHF {totalPrice}</span></div>
+            <h3 className="text-white text-xl font-medium mb-6">{t.step4Title}</h3>
+            <div className="p-6 rounded-2xl bg-white/[0.03] border border-white/10 space-y-3 mb-8">
+              <h4 className="text-white/60 text-sm uppercase tracking-wider mb-4">{t.summaryLabel}</h4>
+              <div className="flex justify-between text-sm"><span className="text-white/40">{t.summaryTrajet}</span><span className="text-white">{form.departure_point} → {form.arrival_point}</span></div>
+              <div className="flex justify-between text-sm"><span className="text-white/40">{t.summaryDateHeure}</span><span className="text-white">{form.departure_date} — {form.departure_time}</span></div>
+              <div className="flex justify-between text-sm"><span className="text-white/40">{t.summaryVehicle}</span><span className="text-white">Standard</span></div>
+              <div className="flex justify-between text-sm"><span className="text-white/40">{t.summaryDistance}</span><span className="text-white">{estimatedDistance} km</span></div>
+              <div className="w-full h-[1px] bg-white/10 my-2" />
+              <div className="flex justify-between"><span className="text-white font-medium">{t.summaryTotal}</span><span className="text-[#C9A96E] text-xl font-semibold">CHF {totalPrice}</span></div>
             </div>
 
             {/* Payment Method Selection */}
-            <div className="space-y-4 p-6 rounded-2xl bg-gray-50 border border-gray-200">
-              <Label className="text-gray-900 text-sm font-medium">{t.paymentMethod}</Label>
+            <div className="space-y-4 p-6 rounded-2xl bg-white/[0.03] border border-white/10">
+              <Label className="text-white text-sm font-medium">{t.paymentMethod}</Label>
               <div className="space-y-3">
-                <label className="flex items-center gap-3 cursor-pointer p-4 rounded-xl border-2 transition-all" style={{borderColor: paymentMethod === 'stripe' ? '#111827' : '#e5e7eb', backgroundColor: paymentMethod === 'stripe' ? '#f3f4f6' : 'white'}}>
-                  <input type="radio" name="payment" value="stripe" checked={paymentMethod === 'stripe'} onChange={(e) => setPaymentMethod(e.target.value)} className="w-4 h-4" style={{accentColor: '#111827'}} />
-                  <span className="text-gray-900 flex-1">{t.stripeLabel}</span>
-                  <span className="text-gray-400 text-sm">{t.stripeDesc}</span>
+                <label className="flex items-center gap-3 cursor-pointer p-4 rounded-xl border-2 transition-all" style={{borderColor: paymentMethod === 'stripe' ? '#C9A96E' : 'rgba(255,255,255,0.1)', backgroundColor: paymentMethod === 'stripe' ? 'rgba(201,169,110,0.1)' : 'rgba(255,255,255,0.03)'}}>
+                  <input type="radio" name="payment" value="stripe" checked={paymentMethod === 'stripe'} onChange={(e) => setPaymentMethod(e.target.value)} className="w-4 h-4" style={{accentColor: '#C9A96E'}} />
+                  <span className="text-white flex-1">{t.stripeLabel}</span>
+                  <span className="text-white/40 text-sm">{t.stripeDesc}</span>
                 </label>
-                <label className="flex items-center gap-3 cursor-pointer p-4 rounded-xl border-2 transition-all" style={{borderColor: paymentMethod === 'twint' ? '#111827' : '#e5e7eb', backgroundColor: paymentMethod === 'twint' ? '#f3f4f6' : 'white'}}>
-                  <input type="radio" name="payment" value="twint" checked={paymentMethod === 'twint'} onChange={(e) => setPaymentMethod(e.target.value)} className="w-4 h-4" style={{accentColor: '#111827'}} />
-                  <span className="text-gray-900 flex-1">{t.twintLabel}</span>
-                  <span className="text-gray-400 text-sm">{t.twintDesc}</span>
+                <label className="flex items-center gap-3 cursor-pointer p-4 rounded-xl border-2 transition-all" style={{borderColor: paymentMethod === 'twint' ? '#C9A96E' : 'rgba(255,255,255,0.1)', backgroundColor: paymentMethod === 'twint' ? 'rgba(201,169,110,0.1)' : 'rgba(255,255,255,0.03)'}}>
+                  <input type="radio" name="payment" value="twint" checked={paymentMethod === 'twint'} onChange={(e) => setPaymentMethod(e.target.value)} className="w-4 h-4" style={{accentColor: '#C9A96E'}} />
+                  <span className="text-white flex-1">{t.twintLabel}</span>
+                  <span className="text-white/40 text-sm">{t.twintDesc}</span>
                 </label>
-                <label className="flex items-center gap-3 cursor-pointer p-4 rounded-xl border-2 transition-all" style={{borderColor: paymentMethod === 'cash' ? '#111827' : '#e5e7eb', backgroundColor: paymentMethod === 'cash' ? '#f3f4f6' : 'white'}}>
-                  <input type="radio" name="payment" value="cash" checked={paymentMethod === 'cash'} onChange={(e) => setPaymentMethod(e.target.value)} className="w-4 h-4" style={{accentColor: '#111827'}} />
-                  <span className="text-gray-900 flex-1">{t.cashLabel}</span>
-                  <span className="text-gray-400 text-sm">{t.cashDesc}</span>
+                <label className="flex items-center gap-3 cursor-pointer p-4 rounded-xl border-2 transition-all" style={{borderColor: paymentMethod === 'cash' ? '#C9A96E' : 'rgba(255,255,255,0.1)', backgroundColor: paymentMethod === 'cash' ? 'rgba(201,169,110,0.1)' : 'rgba(255,255,255,0.03)'}}>
+                  <input type="radio" name="payment" value="cash" checked={paymentMethod === 'cash'} onChange={(e) => setPaymentMethod(e.target.value)} className="w-4 h-4" style={{accentColor: '#C9A96E'}} />
+                  <span className="text-white flex-1">{t.cashLabel}</span>
+                  <span className="text-white/40 text-sm">{t.cashDesc}</span>
                 </label>
               </div>
             </div>
 
             {paymentMethod === 'stripe' && (
-              <div className="flex items-center gap-2 text-gray-400 text-xs">
+              <div className="flex items-center gap-2 text-white/30 text-xs">
                 <svg className="w-3.5 h-3.5" fill="currentColor" viewBox="0 0 24 24"><path d="M12 1L3 5v6c0 5.55 3.84 10.74 9 12 5.16-1.26 9-6.45 9-12V5l-9-4z"/></svg>
                 <span>{t.securePayment}</span>
               </div>
             )}
 
             <div className="flex justify-between pt-2">
-              <Button onClick={() => { setStep(3); scrollToTop(); }} className="bg-gray-900 hover:bg-black text-white font-semibold px-8 h-12">{t.backBtn}</Button>
-              <Button onClick={handlePayment} disabled={isSubmitting} className="bg-gray-900 hover:bg-black text-white font-semibold px-8 h-12 min-w-[220px]">
+              <Button onClick={() => { setStep(3); scrollToTop(); }} className="bg-[#C9A96E] hover:bg-[#B8955D] text-[#0A0A0A] font-semibold px-8 h-12">{t.backBtn}</Button>
+              <Button onClick={handlePayment} disabled={isSubmitting} className="bg-[#C9A96E] hover:bg-[#B8955D] text-[#0A0A0A] font-semibold px-8 h-12 min-w-[220px]">
                 {isSubmitting ? <><Loader2 className="w-4 h-4 mr-2 animate-spin" />{t.redirecting}</> : `${paymentMethod === 'stripe' ? t.payBtn(totalPrice) : t.confirmBooking}`}
               </Button>
             </div>
