@@ -507,29 +507,34 @@ export default function BookingForm({ bookingRef }) {
 
         {/* Step 3: Personal info */}
         {step === 3 &&
-        <div className="space-y-6">
-            <h3 className="text-black text-xl font-bold mb-6">{t.step3Title}</h3>
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-              <div className="space-y-2">
-                <Label className="text-black/70 text-sm font-semibold flex items-center gap-2"><User className="w-4 h-4 text-black" /> {t.nameLabel}</Label>
-                <Input placeholder={t.namePlaceholder} value={form.client_name} onChange={(e) => update('client_name', e.target.value)} className="bg-white border-black/20 text-black placeholder:text-black/30 focus:border-black h-12" />
+        <div className="space-y-8">
+            <div>
+              <h3 className="text-slate-900 text-2xl font-bold mb-2">{t.step3Title}</h3>
+              <p className="text-slate-600 text-sm">{t.step3Title}</p>
+            </div>
+            <div className="bg-white p-8 rounded-xl border border-slate-200 space-y-6">
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                <div className="space-y-3">
+                  <Label className="text-slate-700 text-sm font-semibold flex items-center gap-2"><User className="w-4 h-4 text-blue-600" /> {t.nameLabel}</Label>
+                  <Input placeholder={t.namePlaceholder} value={form.client_name} onChange={(e) => update('client_name', e.target.value)} className="bg-white border-slate-300 text-slate-900 placeholder:text-slate-400 focus:border-blue-500 focus:ring-2 focus:ring-blue-200 h-11" />
+                </div>
+                <div className="space-y-3">
+                  <Label className="text-slate-700 text-sm font-semibold flex items-center gap-2"><Mail className="w-4 h-4 text-blue-600" /> {t.emailLabel}</Label>
+                  <Input type="email" placeholder={t.emailPlaceholder} value={form.client_email} onChange={(e) => update('client_email', e.target.value)} className="bg-white border-slate-300 text-slate-900 placeholder:text-slate-400 focus:border-blue-500 focus:ring-2 focus:ring-blue-200 h-11" />
+                </div>
               </div>
-              <div className="space-y-2">
-                <Label className="text-black/70 text-sm font-semibold flex items-center gap-2"><Mail className="w-4 h-4 text-black" /> {t.emailLabel}</Label>
-                <Input type="email" placeholder={t.emailPlaceholder} value={form.client_email} onChange={(e) => update('client_email', e.target.value)} className="bg-white border-black/20 text-black placeholder:text-black/30 focus:border-black h-12" />
+              <div className="space-y-3">
+                <Label className="text-slate-700 text-sm font-semibold flex items-center gap-2"><Phone className="w-4 h-4 text-blue-600" /> {t.phoneLabel}</Label>
+                <Input type="tel" placeholder={t.phonePlaceholder} value={form.client_phone} onChange={(e) => update('client_phone', e.target.value)} className="bg-white border-slate-300 text-slate-900 placeholder:text-slate-400 focus:border-blue-500 focus:ring-2 focus:ring-blue-200 h-11" />
+              </div>
+              <div className="space-y-3">
+                <Label className="text-slate-700 text-sm font-semibold flex items-center gap-2"><MessageSquare className="w-4 h-4 text-blue-600" /> {t.notesLabel}</Label>
+                <Textarea placeholder={t.notesPlaceholder} value={form.notes} onChange={(e) => update('notes', e.target.value)} className="bg-white border-slate-300 text-slate-900 placeholder:text-slate-400 focus:border-blue-500 focus:ring-2 focus:ring-blue-200 min-h-[100px]" />
               </div>
             </div>
-            <div className="space-y-2 max-w-sm">
-              <Label className="text-black/70 text-sm font-semibold flex items-center gap-2"><Phone className="w-4 h-4 text-black" /> {t.phoneLabel}</Label>
-              <Input type="tel" placeholder={t.phonePlaceholder} value={form.client_phone} onChange={(e) => update('client_phone', e.target.value)} className="bg-white border-black/20 text-black placeholder:text-black/30 focus:border-black h-12" />
-            </div>
-            <div className="space-y-2">
-              <Label className="text-black/70 text-sm font-semibold flex items-center gap-2"><MessageSquare className="w-4 h-4 text-black" /> {t.notesLabel}</Label>
-              <Textarea placeholder={t.notesPlaceholder} value={form.notes} onChange={(e) => update('notes', e.target.value)} className="bg-white border-black/20 text-black placeholder:text-black/30 focus:border-black min-h-[100px]" />
-            </div>
-            <div className="flex justify-between pt-4">
-              <Button onClick={() => {setStep(2);scrollToTop();}} className="bg-black hover:bg-black/80 text-[#F5C300] font-bold px-8 h-12">{t.backBtn}</Button>
-              <Button onClick={() => {setStep(4);scrollToTop();}} disabled={!canProceedStep3} className="bg-black hover:bg-black/80 text-[#F5C300] font-bold px-8 h-12">{t.paymentBtn}</Button>
+            <div className="flex justify-between gap-4">
+              <Button onClick={() => {setStep(2);scrollToTop();}} variant="outline" className="px-8 h-11 font-semibold">{t.backBtn}</Button>
+              <Button onClick={() => {setStep(4);scrollToTop();}} disabled={!canProceedStep3} className="bg-blue-600 hover:bg-blue-700 text-white font-semibold px-8 h-11">{t.paymentBtn}</Button>
             </div>
           </div>
         }
