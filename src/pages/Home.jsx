@@ -10,15 +10,11 @@ import SeoHead from '@/components/SeoHead';
 
 import { LanguageProvider, useLang } from '@/components/LanguageContext';
 
-export default function Home() {
-  const bookingRef = useRef(null);
-
-  const scrollToBooking = () => {
-    bookingRef.current?.scrollIntoView({ behavior: 'smooth' });
-  };
-
+function HomeContent({ bookingRef, scrollToBooking }) {
+  const { lang } = useLang();
   return (
-    <LanguageProvider>
+    <>
+      <SeoHead lang={lang} />
       <GoogleMapsLoader />
       <div className="min-h-screen bg-[#0A0A0A]">
         <LanguageSwitcher />
