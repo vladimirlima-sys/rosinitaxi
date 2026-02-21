@@ -19,7 +19,7 @@ export default function HeroSection({ onScrollToBooking }) {
         <h1 className="text-4xl md:text-6xl lg:text-7xl font-bold text-black tracking-tight mb-2">
           ROSINI
         </h1>
-        <p className="text-lg md:text-2xl font-semibold text-black/70 tracking-[0.3em] uppercase mb-5">
+        <p className="text-lg md:text-2xl font-light text-black/70 tracking-[0.3em] uppercase mb-5">
           Transferts
         </p>
         
