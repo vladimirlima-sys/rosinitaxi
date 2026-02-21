@@ -12,10 +12,13 @@ export default function FooterSection() {
       <div className="max-w-6xl mx-auto">
         <div className="grid grid-cols-1 md:grid-cols-2 gap-16 mb-16">
           <div>
-            <div className="mb-6">
+            <button
+              onClick={() => window.scrollTo({ top: 0, behavior: 'smooth' })}
+              className="group mb-6 hover:opacity-70 transition-opacity"
+            >
               <h3 className="text-white text-3xl font-light tracking-tight">ROSINI</h3>
               <p className="text-[#C9A96E] text-xs tracking-[0.15em] uppercase mt-2">Transports et locations Sarl</p>
-            </div>
+            </button>
           </div>
 
           <div>
