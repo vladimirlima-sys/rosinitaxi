@@ -325,9 +325,9 @@ export default function BookingForm({ bookingRef }) {
     <section ref={bookingRef} className="py-24 px-6 bg-[#0A0A0A]">
       <div className="max-w-4xl mx-auto">
         <div className="text-center mb-12">
-          <p className="text-gray-500 text-sm tracking-[0.3em] uppercase mb-4">{t.bookingLabel}</p>
-          <h2 className="text-3xl md:text-4xl font-light text-gray-900 mb-4">{t.bookingTitle}</h2>
-          <div className="w-12 h-[1px] bg-gray-900 mx-auto mb-6" />
+          <p className="text-white/40 text-sm tracking-[0.3em] uppercase mb-4">{t.bookingLabel}</p>
+            <h2 className="text-3xl md:text-4xl font-light text-white mb-4">{t.bookingTitle}</h2>
+            <div className="w-12 h-[1px] bg-[#C9A96E] mx-auto mb-6" />
         </div>
 
         {/* Steps indicator */}
