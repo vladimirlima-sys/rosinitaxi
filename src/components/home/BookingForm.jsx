@@ -346,8 +346,8 @@ export default function BookingForm({ bookingRef }) {
         {step === 1 && (
           <div className="space-y-8">
             <div className="text-center mb-8">
-              <h3 className="text-gray-900 text-2xl font-light mb-2">{t.step1Title}</h3>
-              <p className="text-gray-400 text-sm">{t.setYourRoute}</p>
+              <h3 className="text-white text-2xl font-light mb-2">{t.step1Title}</h3>
+              <p className="text-white/40 text-sm">{t.setYourRoute}</p>
             </div>
 
             {/* Route Section */}
