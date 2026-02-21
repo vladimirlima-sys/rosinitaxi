@@ -581,7 +581,7 @@ export default function BookingForm({ bookingRef }) {
             </div>
 
             {/* Payment Method Selection */}
-            <div className="space-y-4 p-6 rounded-2xl bg-white/60 border border-black/10">
+            <div className="space-y-4 p-6 rounded-2xl bg-white border border-black/10">
               <Label className="text-black font-bold text-sm">{t.paymentMethod}</Label>
               <div className="space-y-3">
                 <label className="flex items-center gap-3 cursor-pointer p-4 rounded-xl border-2 transition-all" style={{borderColor: paymentMethod === 'stripe' ? '#000' : 'rgba(0,0,0,0.15)', backgroundColor: paymentMethod === 'stripe' ? 'rgba(0,0,0,0.08)' : 'rgba(255,255,255,0.5)'}}>
