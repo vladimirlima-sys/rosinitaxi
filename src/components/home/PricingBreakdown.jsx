@@ -41,7 +41,8 @@ export default function PricingBreakdown({
   // Calculate price breakdown
   const pricePerKm = priceSettings.standard_price_per_km;
   const distancePrice = (distance_km * pricePerKm).toFixed(2);
-  const baseFareAmount = priceSettings.base_fare || 0;
+  // Não cobrar tarifa de base para viagens acima de 30 km
+  const baseFareAmount = distance_km <= 30 ? (priceSettings.base_fare || 0) : 0;
 
   let nightSurchargeAmount = 0;
   if (isNightSurcharge && priceSettings.night_surcharge_percentage > 0) {
