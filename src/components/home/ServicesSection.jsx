@@ -25,11 +25,11 @@ export default function ServicesSection() {
 
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-10">
           {services.map((service, idx) => (
-            <div key={idx} className="text-center group hover:opacity-70 transition-opacity">
-              <div className="w-16 h-16 rounded-full bg-black/5 flex items-center justify-center mx-auto mb-4 group-hover:bg-[#F5C300]/20 transition-colors">
-                <service.icon className="w-8 h-8 text-black" />
+            <div key={idx} className="text-center group hover:opacity-70 transition-opacity p-6">
+              <div className="w-20 h-20 rounded-full bg-black/5 flex items-center justify-center mx-auto mb-6 group-hover:bg-[#F5C300]/20 transition-colors">
+                <service.icon className="w-10 h-10 text-black" />
               </div>
-              <h3 className="text-black font-semibold mb-2">{service.title}</h3>
+              <h3 className="text-black font-semibold mb-3 text-lg">{service.title}</h3>
               <p className="text-black/60 text-sm leading-relaxed">{service.description}</p>
             </div>
           ))}
