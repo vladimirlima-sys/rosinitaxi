@@ -322,24 +322,24 @@ export default function BookingForm({ bookingRef }) {
   };
 
   return (
-    <section ref={bookingRef} className="py-24 px-6 bg-black">
+    <section ref={bookingRef} className="py-24 px-6 bg-[#0A0A0A]">
       <div className="max-w-4xl mx-auto">
         <div className="text-center mb-12">
-            <p className="text-white/40 text-xs tracking-[0.3em] uppercase mb-3">{t.bookingLabel}</p>
-            <h2 className="text-3xl md:text-4xl font-black text-white mb-4 tracking-tight">{t.bookingTitle}</h2>
-            <div className="w-10 h-0.5 bg-white mx-auto mb-6 rounded-full" />
-          </div>
+          <p className="text-[#C9A96E] text-sm tracking-[0.3em] uppercase mb-4">{t.bookingLabel}</p>
+          <h2 className="text-3xl md:text-4xl font-light text-white mb-4">{t.bookingTitle}</h2>
+          <div className="w-12 h-[1px] bg-[#C9A96E] mx-auto mb-6" />
+        </div>
 
-          {/* Steps indicator */}
-          <div className="flex items-center justify-center gap-2 mb-12">
-            {[1, 2, 3, 4].map(s => (
-              <div key={s} className="flex items-center">
-                <div className={`w-8 h-8 rounded-full flex items-center justify-center text-xs font-bold transition-all ${
-                  step >= s ? 'bg-white text-black' : 'bg-white/10 text-white/30'
-                }`}>{s}</div>
-                {s < 4 && <div className={`w-10 h-[1px] ${step > s ? 'bg-white' : 'bg-white/10'}`} />}
-              </div>
-            ))}
+        {/* Steps indicator */}
+        <div className="flex items-center justify-center gap-2 mb-12">
+          {[1, 2, 3, 4].map(s => (
+            <div key={s}>
+              <div className={`w-8 h-8 rounded-full flex items-center justify-center text-sm font-medium transition-all ${
+                step >= s ? 'bg-[#C9A96E] text-[#0A0A0A]' : 'bg-white/10 text-white/30'
+              }`}>{s}</div>
+              {s < 4 && <div className={`w-12 h-[1px] ${step > s ? 'bg-[#C9A96E]' : 'bg-white/10'}`} />}
+            </div>
+          ))}
         </div>
 
         {/* Step 1: Route */}
@@ -351,13 +351,13 @@ export default function BookingForm({ bookingRef }) {
             </div>
 
             {/* Route Section */}
-            <div className="p-8 rounded-2xl bg-white/[0.06] border border-white/10 backdrop-blur-sm space-y-6">
-                <div className="flex items-center gap-3 mb-6">
-                  <div className="w-9 h-9 rounded-full bg-white/10 flex items-center justify-center">
-                    <MapPin className="w-4 h-4 text-white" />
-                  </div>
-                  <h4 className="text-white font-semibold">{t.yourRoute}</h4>
+            <div className="p-8 rounded-3xl bg-gradient-to-br from-white/[0.08] to-white/[0.03] border border-[#C9A96E]/30 backdrop-blur-sm space-y-6">
+              <div className="flex items-center gap-3 mb-6">
+                <div className="w-10 h-10 rounded-full bg-[#C9A96E]/20 flex items-center justify-center">
+                  <MapPin className="w-5 h-5 text-[#C9A96E]" />
                 </div>
+                <h4 className="text-white font-medium">{t.yourRoute}</h4>
+              </div>
 
               <div className="space-y-6">
                 <PlacesAutocomplete
@@ -412,12 +412,12 @@ export default function BookingForm({ bookingRef }) {
             )}
 
             {/* Date, Time & Flight Section */}
-            <div className="p-8 rounded-2xl bg-white/[0.06] border border-white/10 backdrop-blur-sm space-y-6">
+            <div className="p-8 rounded-3xl bg-gradient-to-br from-white/[0.08] to-white/[0.03] border border-[#C9A96E]/30 backdrop-blur-sm space-y-6">
               <div className="flex items-center gap-3 mb-6">
-                <div className="w-9 h-9 rounded-full bg-white/10 flex items-center justify-center">
-                  <Calendar className="w-4 h-4 text-white" />
+                <div className="w-10 h-10 rounded-full bg-[#C9A96E]/20 flex items-center justify-center">
+                  <Calendar className="w-5 h-5 text-[#C9A96E]" />
                 </div>
-                <h4 className="text-white font-semibold">{t.tripDetails}</h4>
+                <h4 className="text-white font-medium">{t.tripDetails}</h4>
               </div>
 
               <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
@@ -430,34 +430,34 @@ export default function BookingForm({ bookingRef }) {
                     type="date" 
                     value={form.departure_date} 
                     onChange={e => update('departure_date', e.target.value)} 
-                    className="bg-white/8 border border-white/15 text-white focus:border-white/40 focus:bg-white/10 h-12 rounded-xl transition-all"
-                          />
-                        </div>
+                    className="bg-white/5 border border-white/10 text-white focus:border-[#C9A96E] focus:bg-white/[0.08] h-12 rounded-xl transition-all"
+                  />
+                </div>
 
-                        <div className="space-y-3">
-                          <Label className="text-white/60 text-sm font-medium flex items-center gap-2">
-                            <Clock className="w-4 h-4 text-white/40" />
-                            {t.timeLabel}
-                          </Label>
-                          <Input 
-                            type="time" 
-                            value={form.departure_time} 
-                            onChange={e => update('departure_time', e.target.value)} 
-                            className="bg-white/8 border border-white/15 text-white focus:border-white/40 focus:bg-white/10 h-12 rounded-xl transition-all"
-                          />
-                        </div>
+                <div className="space-y-3">
+                  <Label className="text-white/70 text-sm font-medium flex items-center gap-2">
+                    <Clock className="w-4 h-4 text-[#C9A96E]" />
+                    {t.timeLabel}
+                  </Label>
+                  <Input 
+                    type="time" 
+                    value={form.departure_time} 
+                    onChange={e => update('departure_time', e.target.value)} 
+                    className="bg-white/5 border border-white/10 text-white focus:border-[#C9A96E] focus:bg-white/[0.08] h-12 rounded-xl transition-all"
+                  />
+                </div>
 
-                        <div className="space-y-3">
-                          <Label className="text-white/60 text-sm font-medium flex items-center gap-2">
-                            <Plane className="w-4 h-4 text-white/40" />
-                            {t.flightLabel}
-                          </Label>
-                          <Input 
-                            placeholder={t.flightPlaceholder} 
-                            value={form.flight_number} 
-                            onChange={e => update('flight_number', e.target.value)} 
-                            className="bg-white/8 border border-white/15 text-white placeholder:text-white/20 focus:border-white/40 focus:bg-white/10 h-12 rounded-xl transition-all"
-                          />
+                <div className="space-y-3">
+                  <Label className="text-white/70 text-sm font-medium flex items-center gap-2">
+                    <Plane className="w-4 h-4 text-[#C9A96E]" />
+                    {t.flightLabel}
+                  </Label>
+                  <Input 
+                    placeholder={t.flightPlaceholder} 
+                    value={form.flight_number} 
+                    onChange={e => update('flight_number', e.target.value)} 
+                    className="bg-white/5 border border-white/10 text-white placeholder:text-white/20 focus:border-[#C9A96E] focus:bg-white/[0.08] h-12 rounded-xl transition-all"
+                  />
                 </div>
               </div>
             </div>
@@ -465,12 +465,12 @@ export default function BookingForm({ bookingRef }) {
             {/* Action Button */}
             <div className="flex justify-end">
               <Button 
-                  onClick={() => { setStep(2); scrollToTop(); }}
-                  disabled={!canProceedStep1 || estimatedDistance === 0} 
-                  className="bg-white hover:bg-white/90 text-black font-bold px-12 h-12 rounded-full transition-all text-sm tracking-wide"
-                >
-                  {t.continueBtn}
-                </Button>
+                onClick={() => { setStep(2); scrollToTop(); }}
+                disabled={!canProceedStep1 || estimatedDistance === 0} 
+                className="bg-[#C9A96E] hover:bg-[#B8955D] text-[#0A0A0A] font-semibold px-12 h-13 rounded-xl transition-all hover:shadow-lg hover:shadow-[#C9A96E]/20"
+              >
+                {t.continueBtn}
+              </Button>
             </div>
           </div>
         )}
@@ -531,8 +531,8 @@ export default function BookingForm({ bookingRef }) {
             )}
 
             <div className="flex justify-between pt-4">
-              <Button onClick={() => { setStep(1); scrollToTop(); }} className="bg-white/10 hover:bg-white/20 text-white font-semibold px-8 h-12 rounded-full">{t.backBtn}</Button>
-              <Button onClick={() => { setStep(3); scrollToTop(); }} disabled={!canProceedStep2} className="bg-white hover:bg-white/90 text-black font-bold px-8 h-12 rounded-full">{t.continueBtn}</Button>
+              <Button onClick={() => { setStep(1); scrollToTop(); }} className="bg-[#C9A96E] hover:bg-[#B8955D] text-[#0A0A0A] font-semibold px-8 h-12">{t.backBtn}</Button>
+              <Button onClick={() => { setStep(3); scrollToTop(); }} disabled={!canProceedStep2} className="bg-[#C9A96E] hover:bg-[#B8955D] text-[#0A0A0A] font-semibold px-8 h-12">{t.continueBtn}</Button>
             </div>
           </div>
         )}
@@ -560,8 +560,8 @@ export default function BookingForm({ bookingRef }) {
               <Textarea placeholder={t.notesPlaceholder} value={form.notes} onChange={e => update('notes', e.target.value)} className="bg-white/5 border-white/10 text-white placeholder:text-white/20 focus:border-[#C9A96E] min-h-[100px]" />
             </div>
             <div className="flex justify-between pt-4">
-              <Button onClick={() => { setStep(2); scrollToTop(); }} className="bg-white/10 hover:bg-white/20 text-white font-semibold px-8 h-12 rounded-full">{t.backBtn}</Button>
-              <Button onClick={() => { setStep(4); scrollToTop(); }} disabled={!canProceedStep3} className="bg-white hover:bg-white/90 text-black font-bold px-8 h-12 rounded-full">{t.paymentBtn}</Button>
+              <Button onClick={() => { setStep(2); scrollToTop(); }} className="bg-[#C9A96E] hover:bg-[#B8955D] text-[#0A0A0A] font-semibold px-8 h-12">{t.backBtn}</Button>
+              <Button onClick={() => { setStep(4); scrollToTop(); }} disabled={!canProceedStep3} className="bg-[#C9A96E] hover:bg-[#B8955D] text-[#0A0A0A] font-semibold px-8 h-12">{t.paymentBtn}</Button>
             </div>
           </div>
         )}
@@ -570,7 +570,7 @@ export default function BookingForm({ bookingRef }) {
         {step === 4 && (
           <div className="space-y-6">
             <h3 className="text-white text-xl font-medium mb-6">{t.step4Title}</h3>
-            <div className="p-6 rounded-2xl bg-white/[0.06] border border-white/10 space-y-3 mb-8">
+            <div className="p-6 rounded-2xl bg-white/[0.03] border border-white/10 space-y-3 mb-8">
               <h4 className="text-white/60 text-sm uppercase tracking-wider mb-4">{t.summaryLabel}</h4>
               <div className="flex justify-between text-sm"><span className="text-white/40">{t.summaryTrajet}</span><span className="text-white">{form.departure_point} → {form.arrival_point}</span></div>
               <div className="flex justify-between text-sm"><span className="text-white/40">{t.summaryDateHeure}</span><span className="text-white">{form.departure_date} — {form.departure_time}</span></div>
@@ -581,21 +581,21 @@ export default function BookingForm({ bookingRef }) {
             </div>
 
             {/* Payment Method Selection */}
-            <div className="space-y-4 p-6 rounded-2xl bg-white/[0.06] border border-white/10">
+            <div className="space-y-4 p-6 rounded-2xl bg-white/[0.03] border border-white/10">
               <Label className="text-white text-sm font-medium">{t.paymentMethod}</Label>
               <div className="space-y-3">
-                <label className="flex items-center gap-3 cursor-pointer p-4 rounded-xl border transition-all" style={{borderColor: paymentMethod === 'stripe' ? 'rgba(255,255,255,0.6)' : 'rgba(255,255,255,0.1)', backgroundColor: paymentMethod === 'stripe' ? 'rgba(255,255,255,0.1)' : 'rgba(255,255,255,0.03)'}}>
-                  <input type="radio" name="payment" value="stripe" checked={paymentMethod === 'stripe'} onChange={(e) => setPaymentMethod(e.target.value)} className="w-4 h-4" style={{accentColor: 'white'}} />
+                <label className="flex items-center gap-3 cursor-pointer p-4 rounded-xl border-2 transition-all" style={{borderColor: paymentMethod === 'stripe' ? '#C9A96E' : 'rgba(255,255,255,0.1)', backgroundColor: paymentMethod === 'stripe' ? 'rgba(201,169,110,0.1)' : 'rgba(255,255,255,0.03)'}}>
+                  <input type="radio" name="payment" value="stripe" checked={paymentMethod === 'stripe'} onChange={(e) => setPaymentMethod(e.target.value)} className="w-4 h-4" style={{accentColor: '#C9A96E'}} />
                   <span className="text-white flex-1">{t.stripeLabel}</span>
                   <span className="text-white/40 text-sm">{t.stripeDesc}</span>
                 </label>
-                <label className="flex items-center gap-3 cursor-pointer p-4 rounded-xl border transition-all" style={{borderColor: paymentMethod === 'twint' ? 'rgba(255,255,255,0.6)' : 'rgba(255,255,255,0.1)', backgroundColor: paymentMethod === 'twint' ? 'rgba(255,255,255,0.1)' : 'rgba(255,255,255,0.03)'}}>
-                  <input type="radio" name="payment" value="twint" checked={paymentMethod === 'twint'} onChange={(e) => setPaymentMethod(e.target.value)} className="w-4 h-4" style={{accentColor: 'white'}} />
+                <label className="flex items-center gap-3 cursor-pointer p-4 rounded-xl border-2 transition-all" style={{borderColor: paymentMethod === 'twint' ? '#C9A96E' : 'rgba(255,255,255,0.1)', backgroundColor: paymentMethod === 'twint' ? 'rgba(201,169,110,0.1)' : 'rgba(255,255,255,0.03)'}}>
+                  <input type="radio" name="payment" value="twint" checked={paymentMethod === 'twint'} onChange={(e) => setPaymentMethod(e.target.value)} className="w-4 h-4" style={{accentColor: '#C9A96E'}} />
                   <span className="text-white flex-1">{t.twintLabel}</span>
                   <span className="text-white/40 text-sm">{t.twintDesc}</span>
                 </label>
-                <label className="flex items-center gap-3 cursor-pointer p-4 rounded-xl border transition-all" style={{borderColor: paymentMethod === 'cash' ? 'rgba(255,255,255,0.6)' : 'rgba(255,255,255,0.1)', backgroundColor: paymentMethod === 'cash' ? 'rgba(255,255,255,0.1)' : 'rgba(255,255,255,0.03)'}}>
-                  <input type="radio" name="payment" value="cash" checked={paymentMethod === 'cash'} onChange={(e) => setPaymentMethod(e.target.value)} className="w-4 h-4" style={{accentColor: 'white'}} />
+                <label className="flex items-center gap-3 cursor-pointer p-4 rounded-xl border-2 transition-all" style={{borderColor: paymentMethod === 'cash' ? '#C9A96E' : 'rgba(255,255,255,0.1)', backgroundColor: paymentMethod === 'cash' ? 'rgba(201,169,110,0.1)' : 'rgba(255,255,255,0.03)'}}>
+                  <input type="radio" name="payment" value="cash" checked={paymentMethod === 'cash'} onChange={(e) => setPaymentMethod(e.target.value)} className="w-4 h-4" style={{accentColor: '#C9A96E'}} />
                   <span className="text-white flex-1">{t.cashLabel}</span>
                   <span className="text-white/40 text-sm">{t.cashDesc}</span>
                 </label>
@@ -610,8 +610,8 @@ export default function BookingForm({ bookingRef }) {
             )}
 
             <div className="flex justify-between pt-2">
-              <Button onClick={() => { setStep(3); scrollToTop(); }} className="bg-white/10 hover:bg-white/20 text-white font-semibold px-8 h-12 rounded-full">{t.backBtn}</Button>
-              <Button onClick={handlePayment} disabled={isSubmitting} className="bg-white hover:bg-white/90 text-black font-bold px-8 h-12 min-w-[220px] rounded-full">
+              <Button onClick={() => { setStep(3); scrollToTop(); }} className="bg-[#C9A96E] hover:bg-[#B8955D] text-[#0A0A0A] font-semibold px-8 h-12">{t.backBtn}</Button>
+              <Button onClick={handlePayment} disabled={isSubmitting} className="bg-[#C9A96E] hover:bg-[#B8955D] text-[#0A0A0A] font-semibold px-8 h-12 min-w-[220px]">
                 {isSubmitting ? <><Loader2 className="w-4 h-4 mr-2 animate-spin" />{t.redirecting}</> : `${paymentMethod === 'stripe' ? t.payBtn(totalPrice) : t.confirmBooking}`}
               </Button>
             </div>
