@@ -385,12 +385,12 @@ export default function BookingForm({ bookingRef }) {
           }
 
             {/* Date, Time & Flight Section */}
-            <div className="bg-zinc-900 p-8 opacity-100 rounded-2xl border border-[#C9A96E] shadow-[0_0_30px_rgba(201,169,110,0.1)] space-y-6">
+            <div className="bg-white p-8 rounded-xl border border-slate-200 shadow-sm space-y-6">
                   <div className="flex items-center gap-3 mb-6">
-                    <div className="w-10 h-10 rounded-full bg-[#C9A96E]/10 flex items-center justify-center">
-                      <Calendar className="w-5 h-5 text-[#C9A96E]" />
+                    <div className="w-10 h-10 rounded-full bg-blue-100 flex items-center justify-center">
+                      <Calendar className="w-5 h-5 text-blue-600" />
                     </div>
-                    <h4 className="text-white font-medium">{t.tripDetails}</h4>
+                    <h4 className="text-slate-900 font-semibold">{t.tripDetails}</h4>
                   </div>
 
               <div className="bg-transparent grid grid-cols-1 md:grid-cols-3 gap-6">
