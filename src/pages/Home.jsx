@@ -1,7 +1,6 @@
 import React, { useRef } from 'react';
 import { Phone } from 'lucide-react';
 import HeroSection from '@/components/home/HeroSection';
-import ServicesSection from '@/components/home/ServicesSection';
 import BookingForm from '@/components/home/BookingForm';
 import FooterSection from '@/components/home/FooterSection';
 import LanguageSwitcher from '@/components/home/LanguageSwitcher';
@@ -18,7 +17,6 @@ function HomeContent({ bookingRef, scrollToBooking }) {
       <div className="min-h-screen bg-white">
         <LanguageSwitcher />
         <HeroSection onScrollToBooking={scrollToBooking} />
-        <ServicesSection />
         <BookingForm bookingRef={bookingRef} />
         <FooterSection />
         <div className="fixed bottom-6 right-6 z-50">
