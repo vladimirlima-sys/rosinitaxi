@@ -524,7 +524,7 @@ export default function BookingForm({ bookingRef }) {
               />
             )}
             {totalPrice && (!form.departure_date || !form.departure_time) && (
-              <div className="text-center p-6 rounded-2xl bg-white/60 border border-black/10">
+              <div className="text-center p-6 rounded-2xl bg-white border border-black/10">
                 <p className="text-black/50 text-sm mb-2">{t.estimatedPrice}</p>
                 <p className="text-black text-4xl font-bold">CHF {totalPrice}</p>
               </div>
