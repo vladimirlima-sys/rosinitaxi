@@ -13,24 +13,24 @@ export default function LanguageSwitcher() {
   const { lang, setLang } = useLang();
 
   return (
-    <div className="fixed top-5 right-5 z-50 flex items-center gap-1 bg-white/5 border border-white/10 backdrop-blur-sm rounded-full px-2 py-1.5">
+    <div className="fixed top-5 right-5 z-50 flex items-center gap-1 bg-black shadow-[0_4px_20px_rgba(0,0,0,0.3)] border border-[#F5C300]/20 rounded-full px-3 py-2">
       {languages.map((l, i) => (
         <div key={l.code} className="flex items-center gap-1">
-           <button
+          <button
             onClick={() => setLang(l.code)}
-            className={`text-xs font-medium px-2 py-0.5 rounded-full transition-all ${
+            className={`text-xs font-bold px-2.5 py-1 rounded-full transition-all duration-200 ${
               lang === l.code
-                ? 'bg-[#C9A96E] text-[#0A0A0A]'
-                : 'text-white/40 hover:text-white/70'
+                ? 'bg-[#F5C300] text-black shadow-md'
+                : 'text-white/50 hover:text-[#F5C300]'
             }`}
           >
             {l.label}
           </button>
           {i < languages.length - 1 && (
-            <span className="text-white/10 text-xs">|</span>
+            <span className="text-[#F5C300]/20 text-xs">|</span>
           )}
-          </div>
-          ))}
+        </div>
+      ))}
     </div>
   );
 }
