@@ -3,23 +3,29 @@ Deno.serve(async (req) => {
     const { lat, lng } = await req.json();
     
     if (!lat || !lng) {
-      return Response.json({ error: 'Latitude e longitude obrigatórias' }, { status: 400 });
+      return Response.json({ error: 'lat and lng are required' }, { status: 400 });
     }
 
     const apiKey = Deno.env.get('HERE_API_KEY');
-    const url = `https://revgeocode.search.hereapi.com/v1/revgeocode?at=${lat},${lng}&apiKey=${apiKey}`;
+    if (!apiKey) {
+      return Response.json({ error: 'HERE_API_KEY not configured' }, { status: 500 });
+    }
 
+    const url = `https://revgeocode.search.hereapi.com/v1/revgeocode?at=${lat},${lng}&apikey=${apiKey}`;
+    
     const response = await fetch(url);
     const data = await response.json();
 
-    if (data.items && data.items.length > 0) {
-      const address = data.items[0].address.label;
-      return Response.json({ address });
+    if (!response.ok) {
+      console.error('HERE API error:', data);
+      return Response.json({ error: 'HERE API error', details: data }, { status: response.status });
     }
 
-    return Response.json({ address: '' });
+    const address = data.items?.[0]?.address?.label || 'Unknown location';
+    
+    return Response.json({ address });
   } catch (error) {
-    console.error('HERE Reverse Geocoding error:', error);
+    console.error('Reverse geocoding error:', error.message);
     return Response.json({ error: error.message }, { status: 500 });
   }
 });
