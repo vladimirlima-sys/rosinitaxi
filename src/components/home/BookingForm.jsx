@@ -560,23 +560,23 @@ export default function BookingForm({ bookingRef }) {
               </div>
 
             {/* Payment Method Selection */}
-            <div className="space-y-4 p-6 rounded-2xl bg-white border border-black/10">
-              <Label className="text-black font-bold text-sm">{t.paymentMethod}</Label>
+            <div className="space-y-4 p-8 rounded-xl bg-white border border-slate-200">
+              <Label className="text-slate-900 font-bold text-sm block">{t.paymentMethod}</Label>
               <div className="space-y-3">
-                <label className="flex items-center gap-3 cursor-pointer p-4 rounded-xl border-2 transition-all" style={{ borderColor: paymentMethod === 'stripe' ? '#000' : 'rgba(0,0,0,0.15)', backgroundColor: paymentMethod === 'stripe' ? 'rgba(0,0,0,0.08)' : 'rgba(255,255,255,0.5)' }}>
-                  <input type="radio" name="payment" value="stripe" checked={paymentMethod === 'stripe'} onChange={(e) => setPaymentMethod(e.target.value)} className="w-4 h-4" style={{ accentColor: '#000' }} />
-                  <span className="text-black font-medium flex-1">{t.stripeLabel}</span>
-                  <span className="text-black/50 text-sm">{t.stripeDesc}</span>
+                <label className="flex items-center gap-3 cursor-pointer p-4 rounded-lg border-2 transition-all" style={{ borderColor: paymentMethod === 'stripe' ? '#2563eb' : '#e2e8f0', backgroundColor: paymentMethod === 'stripe' ? '#eff6ff' : '#f8fafc' }}>
+                  <input type="radio" name="payment" value="stripe" checked={paymentMethod === 'stripe'} onChange={(e) => setPaymentMethod(e.target.value)} className="w-4 h-4" style={{ accentColor: '#2563eb' }} />
+                  <span className="text-slate-900 font-semibold flex-1 text-sm">{t.stripeLabel}</span>
+                  <span className="text-slate-600 text-xs">{t.stripeDesc}</span>
                 </label>
-                <label className="flex items-center gap-3 cursor-pointer p-4 rounded-xl border-2 transition-all" style={{ borderColor: paymentMethod === 'twint' ? '#000' : 'rgba(0,0,0,0.15)', backgroundColor: paymentMethod === 'twint' ? 'rgba(0,0,0,0.08)' : 'rgba(255,255,255,0.5)' }}>
-                  <input type="radio" name="payment" value="twint" checked={paymentMethod === 'twint'} onChange={(e) => setPaymentMethod(e.target.value)} className="w-4 h-4" style={{ accentColor: '#000' }} />
-                  <span className="text-black font-medium flex-1">{t.twintLabel}</span>
-                  <span className="text-black/50 text-sm">{t.twintDesc}</span>
+                <label className="flex items-center gap-3 cursor-pointer p-4 rounded-lg border-2 transition-all" style={{ borderColor: paymentMethod === 'twint' ? '#2563eb' : '#e2e8f0', backgroundColor: paymentMethod === 'twint' ? '#eff6ff' : '#f8fafc' }}>
+                  <input type="radio" name="payment" value="twint" checked={paymentMethod === 'twint'} onChange={(e) => setPaymentMethod(e.target.value)} className="w-4 h-4" style={{ accentColor: '#2563eb' }} />
+                  <span className="text-slate-900 font-semibold flex-1 text-sm">{t.twintLabel}</span>
+                  <span className="text-slate-600 text-xs">{t.twintDesc}</span>
                 </label>
-                <label className="flex items-center gap-3 cursor-pointer p-4 rounded-xl border-2 transition-all" style={{ borderColor: paymentMethod === 'cash' ? '#000' : 'rgba(0,0,0,0.15)', backgroundColor: paymentMethod === 'cash' ? 'rgba(0,0,0,0.08)' : 'rgba(255,255,255,0.5)' }}>
-                  <input type="radio" name="payment" value="cash" checked={paymentMethod === 'cash'} onChange={(e) => setPaymentMethod(e.target.value)} className="w-4 h-4" style={{ accentColor: '#000' }} />
-                  <span className="text-black font-medium flex-1">{t.cashLabel}</span>
-                  <span className="text-black/50 text-sm">{t.cashDesc}</span>
+                <label className="flex items-center gap-3 cursor-pointer p-4 rounded-lg border-2 transition-all" style={{ borderColor: paymentMethod === 'cash' ? '#2563eb' : '#e2e8f0', backgroundColor: paymentMethod === 'cash' ? '#eff6ff' : '#f8fafc' }}>
+                  <input type="radio" name="payment" value="cash" checked={paymentMethod === 'cash'} onChange={(e) => setPaymentMethod(e.target.value)} className="w-4 h-4" style={{ accentColor: '#2563eb' }} />
+                  <span className="text-slate-900 font-semibold flex-1 text-sm">{t.cashLabel}</span>
+                  <span className="text-slate-600 text-xs">{t.cashDesc}</span>
                 </label>
               </div>
             </div>
