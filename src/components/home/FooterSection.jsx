@@ -12,9 +12,7 @@ export default function FooterSection() {
       <div className="max-w-6xl mx-auto">
         <div className="grid grid-cols-1 md:grid-cols-3 gap-12 mb-12">
           <div>
-            <h3 className="text-white text-2xl font-light tracking-tight mb-2">ROSINI</h3>
-            <p className="text-white/30 text-sm tracking-[0.2em] uppercase mb-4">Transfert</p>
-            <p className="text-white/40 text-sm leading-relaxed">{t.footerDesc}</p>
+            <h3 className="text-white text-xl font-light tracking-tight mb-4">Rosini Transports et locations Sarl</h3>
           </div>
 
           <div>
