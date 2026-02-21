@@ -610,5 +610,6 @@ export const translations = {
     routeError: 'Errore nel calcolo della rotta. Verificare gli indirizzi.',
     markerDeparture: 'PARTENZA',
     markerArrival: 'ARRIVO',
-  },
-};
+    noTollsIncluded: '* Prezzo non include pedaggi',
+    },
+    };
