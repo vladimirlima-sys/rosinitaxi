@@ -494,7 +494,7 @@ export default function BookingForm({ bookingRef }) {
           }
 
             {form.vehicle_type &&
-          <div className="space-y-2 max-w-xs">
+            <div className="space-y-2 max-w-xs">
                 <Label className="text-black/70 text-sm font-semibold">{t.passengersLabel}</Label>
                 <div className="flex gap-3">
                   {[1, 2, 3, 4].map((num) =>
@@ -512,7 +512,13 @@ export default function BookingForm({ bookingRef }) {
               )}
                 </div>
               </div>
-          }
+            }
+
+            <ExtrasSelector 
+              selectedExtras={selectedExtras}
+              onExtrasChange={setSelectedExtras}
+              priceSettings={priceSettings}
+            />
 
             {totalPrice && form.departure_date && form.departure_time && priceSettings &&
           <PricingBreakdown
