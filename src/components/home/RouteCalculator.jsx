@@ -39,38 +39,56 @@ export default function RouteCalculator({ departure, arrival, onRouteCalculated 
 
         // Geocode departure if not yet resolved
         if (!depCoords) {
-          const depRes = await base44.functions.invoke('hereGeocoding', {
-            searchText: departure
-          });
-          if (depRes.data?.results?.[0]) {
-            depCoords = { lat: depRes.data.results[0].lat, lng: depRes.data.results[0].lng };
+          let cachedDep = hereCache.getGeocoding(departure);
+          if (!cachedDep) {
+            const depRes = await base44.functions.invoke('hereGeocoding', {
+              searchText: departure
+            });
+            cachedDep = depRes.data?.results || [];
+            if (cachedDep.length > 0) hereCache.setGeocoding(departure, cachedDep);
+          }
+          if (cachedDep?.[0]) {
+            depCoords = { lat: cachedDep[0].lat, lng: cachedDep[0].lng };
           }
         }
 
         // Geocode arrival if not yet resolved
         if (!arrCoords) {
-          const arrRes = await base44.functions.invoke('hereGeocoding', {
-            searchText: arrival
-          });
-          if (arrRes.data?.results?.[0]) {
-            arrCoords = { lat: arrRes.data.results[0].lat, lng: arrRes.data.results[0].lng };
+          let cachedArr = hereCache.getGeocoding(arrival);
+          if (!cachedArr) {
+            const arrRes = await base44.functions.invoke('hereGeocoding', {
+              searchText: arrival
+            });
+            cachedArr = arrRes.data?.results || [];
+            if (cachedArr.length > 0) hereCache.setGeocoding(arrival, cachedArr);
+          }
+          if (cachedArr?.[0]) {
+            arrCoords = { lat: cachedArr[0].lat, lng: cachedArr[0].lng };
           }
         }
 
         if (!depCoords || !arrCoords) return;
 
-        const response = await base44.functions.invoke('hereRoutes', {
-          departure: depCoords,
-          arrival: arrCoords
-        });
+        // Check if route is cached
+        let routeData = hereCache.getRoute(depCoords.lat, depCoords.lng, arrCoords.lat, arrCoords.lng);
+        
+        if (!routeData) {
+          const response = await base44.functions.invoke('hereRoutes', {
+            departure: depCoords,
+            arrival: arrCoords
+          });
+          routeData = response.data;
+          if (routeData && routeData.distance_km > 0) {
+            hereCache.setRoute(depCoords.lat, depCoords.lng, arrCoords.lat, arrCoords.lng, routeData);
+          }
+        }
 
-        const data = response.data;
-        if (data && data.distance_km > 0) {
+        if (routeData && routeData.distance_km > 0) {
           onRouteCalculated({
-            distance_km: data.distance_km,
-            estimated_time_minutes: data.estimated_time_minutes,
-            route: data.route,
-            polyline: data.polyline
+            distance_km: routeData.distance_km,
+            estimated_time_minutes: routeData.estimated_time_minutes,
+            route: routeData.route,
+            polyline: routeData.polyline
           });
         }
       } catch (err) {
