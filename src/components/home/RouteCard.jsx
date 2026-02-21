@@ -1,10 +1,9 @@
 import React from 'react';
 import { MapPin } from 'lucide-react';
-import EmbeddedRouteMap from './EmbeddedRouteMap';
 import { useLang } from '@/components/LanguageContext';
 import { translations } from '@/components/translations';
 
-export default function RouteCard({ departure, arrival, route, distance_km, estimatedTime }) {
+export default function RouteCard({ departure, arrival, distance_km, estimatedTime }) {
   const { lang } = useLang();
   const t = translations[lang];
 
@@ -18,16 +17,7 @@ export default function RouteCard({ departure, arrival, route, distance_km, esti
   };
 
   return (
-    <div className="p-8 rounded-3xl bg-gradient-to-br from-[#C9A96E]/10 to-[#C9A96E]/5 border border-[#C9A96E]/40 backdrop-blur-sm space-y-6">
-      {/* Mapa */}
-      <div>
-        <EmbeddedRouteMap 
-          departure={departure}
-          arrival={arrival}
-          route={route}
-        />
-      </div>
-
+    <div className="p-8 rounded-3xl bg-gradient-to-br from-[#C9A96E]/10 to-[#C9A96E]/5 border border-[#C9A96E]/40 backdrop-blur-sm">
       {/* Info - Quilometragem e Tempo */}
       <div className="flex items-center gap-6">
         <div className="flex items-center gap-3">
