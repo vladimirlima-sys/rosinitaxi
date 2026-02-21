@@ -95,7 +95,7 @@ export default function PricingBreakdown({
       </div>
 
       {/* Disclaimer */}
-      <p className="text-white/30 text-xs italic">* Valor não inclui pedágios</p>
+      <p className="text-white/30 text-xs italic">{t.noTollsIncluded}</p>
     </div>);
 
 }
