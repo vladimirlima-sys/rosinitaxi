@@ -492,7 +492,7 @@ export default function BookingForm({ bookingRef }) {
 
             {form.vehicle_type && (
               <div className="space-y-2 max-w-xs">
-                <Label className="text-gray-600 text-sm">{t.passengersLabel}</Label>
+                <Label className="text-white/60 text-sm">{t.passengersLabel}</Label>
                 <div className="flex gap-3">
                   {[1, 2, 3, 4].map((num) => (
                     <button
@@ -500,8 +500,8 @@ export default function BookingForm({ bookingRef }) {
                       onClick={() => update('passengers', num)}
                       className={`w-12 h-12 rounded-lg font-medium transition-all ${
                         form.passengers === num
-                          ? 'bg-gray-900 text-white'
-                          : 'bg-gray-100 text-gray-400 hover:bg-gray-200 hover:text-gray-600'
+                          ? 'bg-[#C9A96E] text-[#0A0A0A]'
+                          : 'bg-white/10 text-white/30 hover:bg-white/20 hover:text-white/60'
                       }`}
                     >
                       {num}
