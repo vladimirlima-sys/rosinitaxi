@@ -304,7 +304,6 @@ export default function BookingForm({ bookingRef }) {
     setEstimatedTime(0);
     setDynamicPrice(null);
     setCurrentRoute(null);
-    setSelectedExtras([]);
   };
 
   return (
