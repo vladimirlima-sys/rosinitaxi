@@ -258,8 +258,6 @@ export default function BookingForm({ bookingRef }) {
           total_price: parseFloat(totalPrice),
           payment_status: 'pending',
           payment_method: paymentMethod,
-          extras: selectedExtras,
-          extras_price: calculateExtrasPrice(),
           special_notes: form.notes
         });
 
