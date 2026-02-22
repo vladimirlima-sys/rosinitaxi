@@ -276,8 +276,6 @@ export default function BookingForm({ bookingRef }) {
             distance_km: estimatedDistance,
             total_price: parseFloat(totalPrice),
             passengers: form.passengers,
-            extras: selectedExtras,
-            extras_price: calculateExtrasPrice(),
             notes: form.notes,
             payment_method: paymentMethod,
             language: lang
