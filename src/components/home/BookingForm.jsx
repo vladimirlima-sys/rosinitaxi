@@ -229,8 +229,6 @@ export default function BookingForm({ bookingRef }) {
           ...form,
           total_price: parseFloat(totalPrice),
           distance_km: estimatedDistance,
-          extras: selectedExtras,
-          extras_price: calculateExtrasPrice(),
           language: lang
         }));
 
