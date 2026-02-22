@@ -504,12 +504,6 @@ export default function BookingForm({ bookingRef }) {
               </div>
             }
 
-            <ExtrasSelector 
-              selectedExtras={selectedExtras}
-              onExtrasChange={setSelectedExtras}
-              priceSettings={priceSettings}
-            />
-
             {totalPrice && form.departure_date && form.departure_time && priceSettings &&
           <PricingBreakdown
             date={form.departure_date}
