@@ -1,147 +1,61 @@
-import React, { useState, useEffect, useRef } from 'react';
-import { MapPin, Calendar, Clock, Plane, Loader2, Navigation2 } from 'lucide-react';
-import { Input } from '@/components/ui/input';
-import { Button } from '@/components/ui/button';
-import { Label } from '@/components/ui/label';
-import PlacesAutocomplete from './PlacesAutocomplete';
-import RouteCalculator from './RouteCalculator';
-import RouteCard from './RouteCard';
-import { base44 } from '@/api/base44Client';
-import { toast } from 'sonner';
+import React from 'react';
+import { ChevronDown, Clock, Shield, MapPin } from 'lucide-react';
 import { useLang } from '@/components/LanguageContext';
 import { translations } from '@/components/translations';
 
-export default function HeroSection({ onScrollToBooking, onRouteReady, form, update, estimatedDistance, estimatedTime, currentRoute, isLocating, locateUser, priceSettings }) {
+export default function HeroSection({ onScrollToBooking }) {
   const { lang } = useLang();
   const t = translations[lang];
 
-  const handleRouteCalculated = (routeData) => {
-    if (routeData.distance_km > 0 && onRouteReady) {
-      onRouteReady(routeData);
-    }
-  };
-
   return (
-    <section className="relative min-h-screen flex flex-col items-center justify-center overflow-hidden bg-[#F5C300]">
+    <section className="relative min-h-screen flex items-center justify-center overflow-hidden bg-[#F5C300]">
       <div 
         className="absolute inset-0 bg-cover bg-center opacity-10"
         style={{ backgroundImage: "url('https://images.unsplash.com/photo-1549317661-bd32c8ce0afa?w=1920&q=80')" }}
       />
       
-      <div className="relative z-10 text-center px-6 pt-16 pb-8 w-full max-w-3xl mx-auto">
+      <div className="relative z-10 text-center px-6 py-2 max-w-5xl mx-auto">
 
         <div className="mb-4 mt-0">
           <h1 className="text-5xl md:text-7xl lg:text-8xl font-extralight text-black tracking-[0.15em] mb-1 leading-none">
             ROSINI
           </h1>
-          <p className="text-xl md:text-2xl font-light text-black/60 tracking-[0.25em] uppercase">
+          <p className="text-xl md:text-2xl font-light text-black/60 tracking-[0.25em] uppercase letter-spacing">
             TÁXI
           </p>
         </div>
 
-        <div className="w-12 h-[1px] bg-black mx-auto mb-8" />
+        <div className="w-12 h-[1px] bg-black mx-auto mb-4" />
+        
+        <p className="text-base md:text-lg text-black/70 font-medium max-w-2xl mx-auto mb-6 leading-relaxed">
+          {t.heroDesc}
+        </p>
 
-        {/* Booking block */}
-        <div className="bg-zinc-900 p-6 md:p-8 rounded-2xl border border-[#C9A96E] shadow-[0_0_30px_rgba(201,169,110,0.15)] space-y-5 text-left">
-
-          {/* Route inputs */}
-          <PlacesAutocomplete
-            value={form.departure_point}
-            onChange={(val) => update('departure_point', val)}
-            placeholder={t.departurePlaceholder}
-            label={t.departure}
-            showLocateButton={true}
-            isLocating={isLocating}
-            onLocate={locateUser}
-            t={t}
-          />
-
-          <div className="flex justify-center py-1">
-            <div className="w-0.5 h-6 bg-gradient-to-b from-gray-400 to-transparent" />
-          </div>
-
-          <PlacesAutocomplete
-            value={form.arrival_point}
-            onChange={(val) => update('arrival_point', val)}
-            placeholder={t.arrivalPlaceholder}
-            label={t.arrival}
-            showLocateButton={false}
-            t={t}
-          />
-
-          {/* Hidden route calculator */}
-          {form.departure_point && form.arrival_point && (
-            <RouteCalculator
-              departure={form.departure_point}
-              arrival={form.arrival_point}
-              onRouteCalculated={handleRouteCalculated}
-            />
-          )}
-
-          {/* Date, Time, Flight */}
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-4 pt-2">
-            <div className="space-y-2">
-              <Label className="text-zinc-50 text-sm font-semibold flex items-center gap-2">
-                <Calendar className="text-[#C9A96E] w-4 h-4" />
-                {t.dateLabel}
-              </Label>
-              <Input
-                type="date"
-                value={form.departure_date}
-                onChange={(e) => update('departure_date', e.target.value)}
-                className="bg-[#fcf6ab] text-black rounded-xl border border-black/20 focus:border-black h-12 transition-all"
-              />
+        <div className="flex flex-wrap justify-center gap-4 mb-10">
+          {[
+            { icon: Clock, label: t.pill1 },
+            { icon: Shield, label: t.pill2 },
+            { icon: MapPin, label: t.pill3 },
+          ].map((item, i) => (
+            <div key={i} className="flex items-center gap-2 px-5 py-2.5 rounded-full bg-black/10 border border-black/20">
+              <item.icon className="w-4 h-4 text-black" />
+              <span className="text-black/80 text-sm font-medium">{item.label}</span>
             </div>
-            <div className="space-y-2">
-              <Label className="text-zinc-50 text-sm font-semibold flex items-center gap-2">
-                <Clock className="text-[#C9A96E] w-4 h-4" />
-                {t.timeLabel}
-              </Label>
-              <Input
-                type="time"
-                value={form.departure_time}
-                onChange={(e) => update('departure_time', e.target.value)}
-                className="bg-[#fcf6ab] text-black rounded-xl border border-black/20 focus:border-black h-12 transition-all"
-              />
-            </div>
-            <div className="space-y-2">
-              <Label className="text-zinc-50 text-sm font-semibold flex items-center gap-2">
-                <Plane className="text-[#C9A96E] w-4 h-4" />
-                {t.flightLabel}
-              </Label>
-              <Input
-                placeholder={t.flightPlaceholder}
-                value={form.flight_number}
-                onChange={(e) => update('flight_number', e.target.value)}
-                className="bg-[#fcf6ab] text-black rounded-xl border border-black/20 placeholder:text-black/30 focus:border-black h-12 transition-all"
-              />
-            </div>
-          </div>
-
-          {/* Continue button */}
-          <div className="flex justify-end pt-2">
-            <Button
-              onClick={onScrollToBooking}
-              disabled={!form.departure_point || !form.arrival_point || !form.departure_date || !form.departure_time || estimatedDistance === 0}
-              className="bg-black hover:bg-black/80 text-[#F5C300] font-bold px-12 h-12 rounded-xl transition-all hover:shadow-lg"
-            >
-              {t.continueBtn}
-            </Button>
-          </div>
+          ))}
         </div>
 
-        {/* Route card */}
-        {estimatedDistance > 0 && currentRoute && (
-          <div className="mt-6">
-            <RouteCard
-              departure={form.departure_point}
-              arrival={form.arrival_point}
-              route={currentRoute}
-              distance_km={estimatedDistance}
-              estimatedTime={estimatedTime}
-            />
-          </div>
-        )}
+        <button
+          onClick={onScrollToBooking}
+          className="group inline-flex items-center gap-3 bg-black hover:bg-black/80 text-[#F5C300] font-bold px-8 py-3 rounded-full transition-all duration-300 hover:shadow-lg"
+        >
+          {t.cta}
+          <ChevronDown className="w-4 h-4 group-hover:translate-y-1 transition-transform" />
+        </button>
+      </div>
+
+      <div className="absolute bottom-8 left-1/2 -translate-x-1/2 flex flex-col items-center gap-2 animate-bounce">
+        <div className="w-[1px] h-8 bg-gradient-to-b from-transparent to-black/40" />
+        <ChevronDown className="w-4 h-4 text-black/40" />
       </div>
     </section>
   );
