@@ -183,9 +183,6 @@ export default function BookingForm({ bookingRef }) {
       total += priceSettings.airport_fee;
     }
 
-    // Add extras price
-    total += calculateExtrasPrice();
-
     return total.toFixed(2);
   };
 
