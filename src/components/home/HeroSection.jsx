@@ -21,7 +21,7 @@ export default function HeroSection({ onScrollToBooking }) {
             ROSINI
           </h1>
           <p className="text-xl md:text-2xl font-light text-black/60 tracking-[0.25em] uppercase letter-spacing">
-            TRANSFERTS
+            TÁXI
           </p>
         </div>
 
