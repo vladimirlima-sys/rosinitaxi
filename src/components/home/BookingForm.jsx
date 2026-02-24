@@ -439,7 +439,7 @@ export default function BookingForm({ bookingRef }) {
                   value={form.notes}
                   onChange={(e) => update('notes', e.target.value)}
                   rows={3}
-                  className="w-full bg-black/15 border border-black/30 rounded-lg text-black text-sm p-3 outline-none placeholder:text-black/40 focus:border-black/60 resize-none"
+                  className="w-full bg-white/10 border border-white/20 rounded-lg text-white text-sm p-3 outline-none placeholder:text-white/40 focus:border-white/60 resize-none"
                 />
               </div>
             </div>
