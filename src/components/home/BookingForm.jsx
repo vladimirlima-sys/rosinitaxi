@@ -27,7 +27,7 @@ export default function BookingForm({ bookingRef }) {
     departure_date: '',
     departure_time: '',
     flight_number: '',
-    vehicle_type: 'economic',
+    vehicle_type: '',
     passengers: 1,
     client_name: '',
     client_email: '',
