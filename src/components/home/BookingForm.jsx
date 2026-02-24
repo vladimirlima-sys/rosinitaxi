@@ -239,7 +239,7 @@ export default function BookingForm({ bookingRef }) {
                   type="date"
                   value={form.departure_date}
                   onChange={(e) => update('departure_date', e.target.value)}
-                  className="w-full bg-transparent text-black text-sm outline-none border-none [color-scheme:light]"
+                  className="w-full bg-transparent text-white text-sm outline-none border-none [color-scheme:dark]"
                 />
               </div>
               <div className="bg-black border border-black/40 rounded-xl p-4">
@@ -248,7 +248,7 @@ export default function BookingForm({ bookingRef }) {
                   type="time"
                   value={form.departure_time}
                   onChange={(e) => update('departure_time', e.target.value)}
-                  className="w-full bg-transparent text-black text-sm outline-none border-none [color-scheme:light]"
+                  className="w-full bg-transparent text-white text-sm outline-none border-none [color-scheme:dark]"
                 />
               </div>
             </div>
