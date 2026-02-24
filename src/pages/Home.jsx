@@ -9,7 +9,7 @@ function HomeContent({ bookingRef }) {
   return (
     <React.Fragment>
       <SeoHead lang={lang} />
-      <div className="min-h-screen bg-[#0d0d0d]">
+      <div className="min-h-screen bg-[#F5C300]">
         <div className="fixed top-4 right-4 z-50">
           <LanguageSwitcher />
         </div>
