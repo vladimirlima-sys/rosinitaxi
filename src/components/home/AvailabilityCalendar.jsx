@@ -80,10 +80,10 @@ export default function AvailabilityCalendar({ selectedDate, onDateChange }) {
   return (
     <div className="bg-zinc-900 p-6 rounded-2xl border border-[#C9A96E] shadow-[0_0_30px_rgba(201,169,110,0.1)]">
       <div className="flex items-center justify-between mb-6">
-        <div className="flex items-center gap-2">
-          <Calendar className="w-5 h-5 text-[#C9A96E]" />
-          <h4 className="text-white font-bold">{monthNames[currentMonth.getMonth()]} {currentMonth.getFullYear()}</h4>
-        </div>
+         <div className="flex items-center gap-2 min-w-0">
+           <Calendar className="w-5 h-5 text-[#C9A96E] flex-shrink-0" />
+           <h4 className="text-white font-bold truncate">{monthNames[currentMonth.getMonth()]} {currentMonth.getFullYear()}</h4>
+         </div>
         <div className="flex gap-2">
           <button
             onClick={handlePrevMonth}
