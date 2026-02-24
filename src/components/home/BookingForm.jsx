@@ -186,7 +186,7 @@ export default function BookingForm({ bookingRef }) {
         {step === 1 && (
           <div className="space-y-3">
             {/* Departure */}
-            <div className="bg-[#141414] border border-[#2a2a2a] rounded-xl p-4">
+            <div className="bg-black/10 border border-black/20 rounded-xl p-4">
               <PlacesAutocomplete
                 value={form.departure_point}
                 onChange={(val) => update('departure_point', val)}
@@ -196,21 +196,21 @@ export default function BookingForm({ bookingRef }) {
                 isLocating={isLocating}
                 onLocate={locateUser}
                 t={t}
-                darkMode={true}
+                darkMode={false}
               />
             </div>
 
             {/* Arrow connector */}
             <div className="flex justify-center">
               <div className="flex flex-col items-center gap-1">
-                <div className="w-[1px] h-3 bg-[#333]" />
-                <div className="w-3 h-3 rounded-full border-2 border-[#F5C300] bg-[#0d0d0d]" />
-                <div className="w-[1px] h-3 bg-[#333]" />
+                <div className="w-[1px] h-3 bg-black/30" />
+                <div className="w-3 h-3 rounded-full border-2 border-black bg-[#F5C300]" />
+                <div className="w-[1px] h-3 bg-black/30" />
               </div>
             </div>
 
             {/* Arrival */}
-            <div className="bg-[#141414] border border-[#2a2a2a] rounded-xl p-4">
+            <div className="bg-black/10 border border-black/20 rounded-xl p-4">
               <PlacesAutocomplete
                 value={form.arrival_point}
                 onChange={(val) => update('arrival_point', val)}
@@ -218,7 +218,7 @@ export default function BookingForm({ bookingRef }) {
                 label={t.arrival}
                 showLocateButton={false}
                 t={t}
-                darkMode={true}
+                darkMode={false}
               />
             </div>
 
