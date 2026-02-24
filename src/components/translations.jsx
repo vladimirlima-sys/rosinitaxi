@@ -242,6 +242,7 @@ export const translations = {
     markerArrival: 'ARRIVÉE',
     noTollsIncluded: '* Valeur non inclusive des péages',
     shortNoticeWarning: 'Les réservations avec moins de 90 minutes de préavis seront confirmées par téléphone par notre bureau dans les 10 minutes.',
+    luggageLabel: 'bagages',
   },
   en: {
     badge: 'Available 24/7 — Every Day',
