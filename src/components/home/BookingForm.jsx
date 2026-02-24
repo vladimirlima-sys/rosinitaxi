@@ -161,7 +161,7 @@ export default function BookingForm({ bookingRef }) {
   const labelClass = "text-gray-400 text-xs uppercase tracking-wider mb-1 block";
 
   return (
-    <div ref={bookingRef} className="min-h-screen bg-[#0d0d0d] flex flex-col items-center justify-start py-8 px-4">
+    <div ref={bookingRef} className="min-h-screen bg-[#F5C300] flex flex-col items-center justify-start py-8 px-4">
       {/* Header */}
       <div className="w-full max-w-md mb-6 text-center">
         <h1 className="text-white text-3xl font-extralight tracking-[0.3em] uppercase">ROSINI</h1>
