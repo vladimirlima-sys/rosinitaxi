@@ -365,6 +365,7 @@ export const translations = {
     markerArrival: 'ARRIVAL',
     noTollsIncluded: '* Price does not include tolls',
     shortNoticeWarning: 'Bookings with less than 90 minutes notice will be confirmed by phone by our office within 10 minutes.',
+    luggageLabel: 'luggage',
   },
   de: {
     badge: 'Verfügbar 24/7 — Jeden Tag',
