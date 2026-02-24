@@ -481,7 +481,10 @@ export default function BookingForm({ bookingRef }) {
             {/* Summary */}
             <div className="bg-black border border-black/40 rounded-xl p-4 space-y-2">
               <h3 className="text-white/60 text-xs uppercase tracking-wider mb-3">{t.summaryLabel}</h3>
-              <div className="flex justify-between text-sm"><span className="text-white/50">{t.summaryTrajet}</span><span className="text-white text-right max-w-[60%] truncate">{form.departure_point} → {form.arrival_point}</span></div>
+              <div className="space-y-2">
+                <div className="flex justify-between text-sm"><span className="text-white/50">{t.departure}</span><span className="text-white text-right max-w-[60%] truncate">{form.departure_point}</span></div>
+                <div className="flex justify-between text-sm"><span className="text-white/50">{t.arrival}</span><span className="text-white text-right max-w-[60%] truncate">{form.arrival_point}</span></div>
+              </div>
               <div className="flex justify-between text-sm"><span className="text-white/50">{t.summaryDateHeure}</span><span className="text-white">{form.departure_date} {form.departure_time}</span></div>
               <div className="flex justify-between text-sm"><span className="text-white/50">{t.summaryVehicle}</span><span className="text-white">{form.vehicle_type === 'comfort' ? 'COMFORT' : 'STANDARD'}</span></div>
               <div className="flex justify-between text-sm"><span className="text-white/50">{t.summaryDistance}</span><span className="text-white">{estimatedDistance} km</span></div>
