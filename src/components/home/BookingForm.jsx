@@ -409,7 +409,7 @@ export default function BookingForm({ bookingRef }) {
                   placeholder={t.namePlaceholder}
                   value={form.client_name}
                   onChange={(e) => update('client_name', e.target.value)}
-                  className="w-full bg-black/15 border border-black/30 rounded-lg text-black text-sm p-3 outline-none placeholder:text-black/40 focus:border-black/60"
+                  className="w-full bg-white/10 border border-white/20 rounded-lg text-white text-sm p-3 outline-none placeholder:text-white/40 focus:border-white/60"
                 />
               </div>
               <div>
@@ -419,7 +419,7 @@ export default function BookingForm({ bookingRef }) {
                   placeholder={t.emailPlaceholder}
                   value={form.client_email}
                   onChange={(e) => update('client_email', e.target.value)}
-                  className="w-full bg-black/15 border border-black/30 rounded-lg text-black text-sm p-3 outline-none placeholder:text-black/40 focus:border-black/60"
+                  className="w-full bg-white/10 border border-white/20 rounded-lg text-white text-sm p-3 outline-none placeholder:text-white/40 focus:border-white/60"
                 />
               </div>
               <div>
@@ -429,7 +429,7 @@ export default function BookingForm({ bookingRef }) {
                   placeholder={t.phonePlaceholder}
                   value={form.client_phone}
                   onChange={(e) => update('client_phone', e.target.value)}
-                  className="w-full bg-black/15 border border-black/30 rounded-lg text-black text-sm p-3 outline-none placeholder:text-black/40 focus:border-black/60"
+                  className="w-full bg-white/10 border border-white/20 rounded-lg text-white text-sm p-3 outline-none placeholder:text-white/40 focus:border-white/60"
                 />
               </div>
               <div>
