@@ -347,7 +347,7 @@ export default function BookingForm({ bookingRef }) {
             >
               <div className="flex items-center justify-between mb-2">
                 <div className="flex items-center gap-3">
-                  <img src="https://images.unsplash.com/photo-1552519507-da3b142c6e3d?w=120&h=70&fit=crop&crop=center" alt="Citroën C4" className="w-16 h-10 object-cover rounded-lg" />
+                  <img src="https://qtrypzzcjebvfcihiynt.supabase.co/storage/v1/object/public/base44-prod/public/6997aac0bfa41b14d425e0d3/a8f5c7b17_255867_1.jpg" alt="Citroën C4" className="w-20 h-12 object-contain mix-blend-multiply" />
                   <div>
                     <p className={`font-semibold text-sm ${form.vehicle_type === 'economic' ? 'text-white' : 'text-black'}`}>STANDARD</p>
                     <p className={`text-xs ${form.vehicle_type === 'economic' ? 'text-white/60' : 'text-black/50'}`}>1–4 {t.persons} · {t.vehicleFeatures.economic[0]}</p>
