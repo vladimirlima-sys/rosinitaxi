@@ -164,12 +164,12 @@ export default function BookingForm({ bookingRef }) {
     setEstimatedTime(0);
   };
 
-  const inputClass = "bg-black/20 border border-black/30 text-black placeholder:text-black/40 focus:border-black/60 focus:ring-0 h-12 rounded-lg text-sm";
-  const labelClass = "text-black/70 text-xs uppercase tracking-wider mb-1 block";
+  const inputClass = "bg-white/10 border border-white/20 text-white placeholder:text-white/40 focus:border-white/60 focus:ring-0 h-12 rounded-lg text-sm";
+  const labelClass = "text-white/70 text-xs uppercase tracking-wider mb-1 block";
 
   const cardClass = "bg-black border border-black/40 rounded-xl p-4";
-  const darkInputClass = "w-full bg-black/20 border border-black/30 rounded-lg text-black text-sm p-3 outline-none placeholder:text-black/40 focus:border-black/60";
-  const darkLabelClass = "text-black/60 text-xs uppercase tracking-wider mb-1 block";
+  const darkInputClass = "w-full bg-white/10 border border-white/20 rounded-lg text-white text-sm p-3 outline-none placeholder:text-white/40 focus:border-white/60";
+  const darkLabelClass = "text-white/60 text-xs uppercase tracking-wider mb-1 block";
 
   return (
     <div ref={bookingRef} className="min-h-screen bg-[#F5C300] flex flex-col items-center justify-start py-8 px-4">
