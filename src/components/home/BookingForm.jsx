@@ -524,7 +524,7 @@ export default function BookingForm({ bookingRef }) {
               <button
                 onClick={handlePayment}
                 disabled={isSubmitting}
-                className="flex-[2] h-12 rounded-xl bg-black text-[#F5C300] font-bold text-sm uppercase tracking-wider hover:bg-black/80 transition-all disabled:opacity-60 flex items-center justify-center gap-2"
+                className="flex-[2] h-12 rounded-xl bg-[#F5C300] text-black font-bold text-sm uppercase tracking-wider hover:bg-[#e6b800] transition-all disabled:opacity-60 flex items-center justify-center gap-2"
               >
                 {isSubmitting ? <><Loader2 className="w-4 h-4 animate-spin" />{t.redirecting}</> : (paymentMethod === 'stripe' ? t.payBtn(totalPrice) : t.confirmBooking)}
               </button>
