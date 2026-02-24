@@ -486,7 +486,7 @@ export default function BookingForm({ bookingRef }) {
 
             {/* Payment method */}
             <div className="bg-black border border-black/40 rounded-xl p-4 space-y-2">
-              <h3 className="text-black/60 text-xs uppercase tracking-wider mb-3">{t.paymentMethod}</h3>
+              <h3 className="text-white/60 text-xs uppercase tracking-wider mb-3">{t.paymentMethod}</h3>
               {[
                 { value: 'stripe', label: t.stripeLabel, desc: t.stripeDesc },
                 { value: 'twint', label: t.twintLabel, desc: t.twintDesc },
@@ -496,8 +496,8 @@ export default function BookingForm({ bookingRef }) {
                   key={opt.value}
                   className={`flex items-center gap-3 cursor-pointer p-3 rounded-lg border transition-all ${
                     paymentMethod === opt.value
-                      ? 'border-black bg-black/20'
-                      : 'border-black/30 hover:bg-black/20'
+                      ? 'border-[#F5C300] bg-white/10'
+                      : 'border-white/20 hover:bg-white/10'
                   }`}
                 >
                   <input
@@ -506,10 +506,10 @@ export default function BookingForm({ bookingRef }) {
                     value={opt.value}
                     checked={paymentMethod === opt.value}
                     onChange={(e) => setPaymentMethod(e.target.value)}
-                    className="w-4 h-4 accent-black"
+                    className="w-4 h-4 accent-[#F5C300]"
                   />
-                  <span className="text-black text-sm font-medium flex-1">{opt.label}</span>
-                  <span className="text-black/50 text-xs">{opt.desc}</span>
+                  <span className="text-white text-sm font-medium flex-1">{opt.label}</span>
+                  <span className="text-white/50 text-xs">{opt.desc}</span>
                 </label>
               ))}
             </div>
