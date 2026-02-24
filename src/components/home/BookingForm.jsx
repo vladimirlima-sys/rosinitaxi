@@ -375,7 +375,7 @@ export default function BookingForm({ bookingRef }) {
               <div className="flex items-center justify-between mb-2">
                 <div>
                   <p className={`font-semibold text-sm ${form.vehicle_type === 'comfort' ? 'text-white' : 'text-black'}`}>COMFORT</p>
-                  <p className={`text-xs ${form.vehicle_type === 'comfort' ? 'text-white/60' : 'text-black/50'}`}>1–4 {t.persons} · {t.vehicleFeatures.comfort[0]}</p>
+                  <p className={`text-xs ${form.vehicle_type === 'comfort' ? 'text-white/60' : 'text-black/50'}`}>1–4 {t.persons} · 3 {t.luggageLabel}</p>
                 </div>
                 <div className="text-right">
                   {priceSettings && estimatedDistance > 0 && (
