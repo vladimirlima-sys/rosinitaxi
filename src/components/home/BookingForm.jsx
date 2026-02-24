@@ -186,7 +186,7 @@ export default function BookingForm({ bookingRef }) {
         {step === 1 && (
           <div className="space-y-3">
             {/* Departure */}
-            <div className="bg-black/20 border border-black/30 rounded-xl p-4">
+            <div className="bg-black border border-black/40 rounded-xl p-4">
               <PlacesAutocomplete
                 value={form.departure_point}
                 onChange={(val) => update('departure_point', val)}
@@ -210,7 +210,7 @@ export default function BookingForm({ bookingRef }) {
             </div>
 
             {/* Arrival */}
-            <div className="bg-black/20 border border-black/30 rounded-xl p-4">
+            <div className="bg-black border border-black/40 rounded-xl p-4">
               <PlacesAutocomplete
                 value={form.arrival_point}
                 onChange={(val) => update('arrival_point', val)}
@@ -233,7 +233,7 @@ export default function BookingForm({ bookingRef }) {
 
             {/* Date & Time */}
             <div className="grid grid-cols-2 gap-3">
-              <div className="bg-black/20 border border-black/30 rounded-xl p-4">
+              <div className="bg-black border border-black/40 rounded-xl p-4">
                 <label className={labelClass}>{t.dateLabel}</label>
                 <input
                   type="date"
@@ -242,7 +242,7 @@ export default function BookingForm({ bookingRef }) {
                   className="w-full bg-transparent text-black text-sm outline-none border-none [color-scheme:light]"
                 />
               </div>
-              <div className="bg-black/20 border border-black/30 rounded-xl p-4">
+              <div className="bg-black border border-black/40 rounded-xl p-4">
                 <label className={labelClass}>{t.timeLabel}</label>
                 <input
                   type="time"
@@ -254,7 +254,7 @@ export default function BookingForm({ bookingRef }) {
             </div>
 
             {/* Flight (optional) */}
-            <div className="bg-black/20 border border-black/30 rounded-xl p-4">
+            <div className="bg-black border border-black/40 rounded-xl p-4">
               <label className={labelClass}><Plane className="inline w-3 h-3 mr-1" />{t.flightLabel}</label>
               <input
                 type="text"
@@ -266,7 +266,7 @@ export default function BookingForm({ bookingRef }) {
             </div>
 
             {/* Passengers */}
-            <div className="bg-black/20 border border-black/30 rounded-xl p-4">
+            <div className="bg-black border border-black/40 rounded-xl p-4">
               <label className={labelClass}>{t.passengersLabel}</label>
               <div className="flex gap-2 mt-2">
                 {[1, 2, 3, 4].map((num) => (
