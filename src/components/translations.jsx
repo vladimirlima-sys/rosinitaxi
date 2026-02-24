@@ -847,5 +847,6 @@ export const translations = {
     markerDeparture: 'VERTREK',
     markerArrival: 'AANKOMST',
     noTollsIncluded: '* Prijs exclusief tolkosten',
+    shortNoticeWarning: 'Boekingen met minder dan 90 minuten vooraankondiging worden telefonisch bevestigd door ons kantoor binnen 10 minuten.',
   },
 };
