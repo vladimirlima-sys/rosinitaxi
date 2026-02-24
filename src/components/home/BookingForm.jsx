@@ -373,12 +373,9 @@ export default function BookingForm({ bookingRef }) {
               }`}
             >
               <div className="flex items-center justify-between mb-2">
-                <div className="flex items-center gap-2">
-                  <span className="text-lg">🚙</span>
-                  <div>
-                    <p className={`font-semibold text-sm ${form.vehicle_type === 'comfort' ? 'text-white' : 'text-black'}`}>COMFORT</p>
-                    <p className={`text-xs ${form.vehicle_type === 'comfort' ? 'text-white/60' : 'text-black/50'}`}>1–4 {t.persons} · {t.vehicleFeatures.comfort[0]}</p>
-                  </div>
+                <div>
+                  <p className={`font-semibold text-sm ${form.vehicle_type === 'comfort' ? 'text-white' : 'text-black'}`}>COMFORT</p>
+                  <p className={`text-xs ${form.vehicle_type === 'comfort' ? 'text-white/60' : 'text-black/50'}`}>1–4 {t.persons} · {t.vehicleFeatures.comfort[0]}</p>
                 </div>
                 <div className="text-right">
                   {priceSettings && estimatedDistance > 0 && (
@@ -386,7 +383,6 @@ export default function BookingForm({ bookingRef }) {
                       CHF {(estimatedDistance * (priceSettings.comfort_price_per_km || priceSettings.standard_price_per_km * 1.3) + (estimatedDistance <= 30 ? (priceSettings.base_fare || 0) : 0)).toFixed(2)}
                     </p>
                   )}
-                  <p className={`text-xs ${form.vehicle_type === 'comfort' ? 'text-white/40' : 'text-black/40'}`}>CHF {(priceSettings?.comfort_price_per_km || (priceSettings?.standard_price_per_km * 1.3))?.toFixed(2)}/km</p>
                 </div>
               </div>
               <div className="flex flex-wrap gap-2 mt-2">
