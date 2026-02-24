@@ -471,17 +471,17 @@ export default function BookingForm({ bookingRef }) {
           <div className="space-y-3">
             {/* Summary */}
             <div className="bg-black border border-black/40 rounded-xl p-4 space-y-2">
-              <h3 className="text-black/60 text-xs uppercase tracking-wider mb-3">{t.summaryLabel}</h3>
-              <div className="flex justify-between text-sm"><span className="text-black/50">{t.summaryTrajet}</span><span className="text-black text-right max-w-[60%] truncate">{form.departure_point} → {form.arrival_point}</span></div>
-              <div className="flex justify-between text-sm"><span className="text-black/50">{t.summaryDateHeure}</span><span className="text-black">{form.departure_date} {form.departure_time}</span></div>
-              <div className="flex justify-between text-sm"><span className="text-black/50">{t.summaryVehicle}</span><span className="text-black">{form.vehicle_type === 'comfort' ? 'COMFORT' : 'STANDARD'}</span></div>
-              <div className="flex justify-between text-sm"><span className="text-black/50">{t.summaryDistance}</span><span className="text-black">{estimatedDistance} km</span></div>
-              <div className="w-full h-[1px] bg-black/20 my-2" />
+              <h3 className="text-white/60 text-xs uppercase tracking-wider mb-3">{t.summaryLabel}</h3>
+              <div className="flex justify-between text-sm"><span className="text-white/50">{t.summaryTrajet}</span><span className="text-white text-right max-w-[60%] truncate">{form.departure_point} → {form.arrival_point}</span></div>
+              <div className="flex justify-between text-sm"><span className="text-white/50">{t.summaryDateHeure}</span><span className="text-white">{form.departure_date} {form.departure_time}</span></div>
+              <div className="flex justify-between text-sm"><span className="text-white/50">{t.summaryVehicle}</span><span className="text-white">{form.vehicle_type === 'comfort' ? 'COMFORT' : 'STANDARD'}</span></div>
+              <div className="flex justify-between text-sm"><span className="text-white/50">{t.summaryDistance}</span><span className="text-white">{estimatedDistance} km</span></div>
+              <div className="w-full h-[1px] bg-white/20 my-2" />
               <div className="flex justify-between items-center">
-                <span className="text-black font-semibold text-sm">{t.summaryTotal}</span>
-                <span className="text-black text-2xl font-bold">CHF {totalPrice}</span>
+                <span className="text-white font-semibold text-sm">{t.summaryTotal}</span>
+                <span className="text-[#F5C300] text-2xl font-bold">CHF {totalPrice}</span>
               </div>
-              <p className="text-black/40 text-xs italic">{t.noTollsIncluded}</p>
+              <p className="text-white/40 text-xs italic">{t.noTollsIncluded}</p>
             </div>
 
             {/* Payment method */}
