@@ -233,40 +233,40 @@ export default function BookingForm({ bookingRef }) {
 
             {/* Date & Time */}
             <div className="grid grid-cols-2 gap-3">
-              <div className="bg-[#141414] border border-[#2a2a2a] rounded-xl p-4">
+              <div className="bg-black/10 border border-black/20 rounded-xl p-4">
                 <label className={labelClass}>{t.dateLabel}</label>
                 <input
                   type="date"
                   value={form.departure_date}
                   onChange={(e) => update('departure_date', e.target.value)}
-                  className="w-full bg-transparent text-white text-sm outline-none border-none [color-scheme:dark]"
+                  className="w-full bg-transparent text-black text-sm outline-none border-none [color-scheme:light]"
                 />
               </div>
-              <div className="bg-[#141414] border border-[#2a2a2a] rounded-xl p-4">
+              <div className="bg-black/10 border border-black/20 rounded-xl p-4">
                 <label className={labelClass}>{t.timeLabel}</label>
                 <input
                   type="time"
                   value={form.departure_time}
                   onChange={(e) => update('departure_time', e.target.value)}
-                  className="w-full bg-transparent text-white text-sm outline-none border-none [color-scheme:dark]"
+                  className="w-full bg-transparent text-black text-sm outline-none border-none [color-scheme:light]"
                 />
               </div>
             </div>
 
             {/* Flight (optional) */}
-            <div className="bg-[#141414] border border-[#2a2a2a] rounded-xl p-4">
+            <div className="bg-black/10 border border-black/20 rounded-xl p-4">
               <label className={labelClass}><Plane className="inline w-3 h-3 mr-1" />{t.flightLabel}</label>
               <input
                 type="text"
                 placeholder={t.flightPlaceholder}
                 value={form.flight_number}
                 onChange={(e) => update('flight_number', e.target.value)}
-                className="w-full bg-transparent text-white text-sm outline-none border-none placeholder:text-gray-600"
+                className="w-full bg-transparent text-black text-sm outline-none border-none placeholder:text-black/40"
               />
             </div>
 
             {/* Passengers */}
-            <div className="bg-[#141414] border border-[#2a2a2a] rounded-xl p-4">
+            <div className="bg-black/10 border border-black/20 rounded-xl p-4">
               <label className={labelClass}>{t.passengersLabel}</label>
               <div className="flex gap-2 mt-2">
                 {[1, 2, 3, 4].map((num) => (
@@ -275,8 +275,8 @@ export default function BookingForm({ bookingRef }) {
                     onClick={() => update('passengers', num)}
                     className={`flex-1 h-10 rounded-lg text-sm font-bold transition-all ${
                       form.passengers === num
-                        ? 'bg-[#F5C300] text-black'
-                        : 'bg-[#222] text-gray-400 hover:bg-[#2a2a2a]'
+                        ? 'bg-black text-[#F5C300]'
+                        : 'bg-black/10 text-black/60 hover:bg-black/20'
                     }`}
                   >
                     {num}
@@ -287,16 +287,16 @@ export default function BookingForm({ bookingRef }) {
 
             {/* Price preview */}
             {estimatedDistance > 0 && (
-              <div className="bg-[#141414] border border-[#2a2a2a] rounded-xl p-4 flex items-center justify-between">
+              <div className="bg-black/10 border border-black/20 rounded-xl p-4 flex items-center justify-between">
                 <div>
-                  <p className="text-gray-500 text-xs uppercase tracking-wider">{t.estimatedPrice}</p>
-                  <p className="text-white text-sm mt-0.5">{estimatedDistance} km · {Math.floor(estimatedTime / 60)}h{estimatedTime % 60}min</p>
+                  <p className="text-black/60 text-xs uppercase tracking-wider">{t.estimatedPrice}</p>
+                  <p className="text-black text-sm mt-0.5">{estimatedDistance} km · {Math.floor(estimatedTime / 60)}h{estimatedTime % 60}min</p>
                 </div>
                 <div className="text-right">
                   {totalPrice ? (
-                    <p className="text-[#F5C300] text-2xl font-bold">CHF {totalPrice}</p>
+                    <p className="text-black text-2xl font-bold">CHF {totalPrice}</p>
                   ) : (
-                    <p className="text-gray-500 text-sm">—</p>
+                    <p className="text-black/40 text-sm">—</p>
                   )}
                 </div>
               </div>
@@ -307,8 +307,8 @@ export default function BookingForm({ bookingRef }) {
               disabled={!canProceedStep1}
               className={`w-full h-14 rounded-xl font-bold text-base tracking-wider uppercase transition-all ${
                 canProceedStep1
-                  ? 'bg-[#F5C300] text-black hover:bg-yellow-400'
-                  : 'bg-[#1a1a1a] text-gray-600 cursor-not-allowed'
+                  ? 'bg-black text-[#F5C300] hover:bg-black/80'
+                  : 'bg-black/20 text-black/40 cursor-not-allowed'
               }`}
             >
               {t.continueBtn}
