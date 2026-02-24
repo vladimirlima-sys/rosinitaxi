@@ -275,8 +275,8 @@ export default function BookingForm({ bookingRef }) {
                     onClick={() => update('passengers', num)}
                     className={`flex-1 h-10 rounded-lg text-sm font-bold transition-all ${
                       form.passengers === num
-                        ? 'bg-black text-[#F5C300]'
-                        : 'bg-black/20 text-black/70 hover:bg-black/30'
+                        ? 'bg-[#F5C300] text-black'
+                        : 'bg-white/10 text-white/70 hover:bg-white/20'
                     }`}
                   >
                     {num}
