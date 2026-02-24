@@ -820,7 +820,7 @@ export const translations = {
     availableNow: 'Nu beschikbaar',
     vehicleFeatures: {
       economic: ['Comfortabele sedan', 'Airconditioning', 'Gratis Wi-Fi', 'Bagage inbegrepen'],
-      comfort: ['Premium voertuig', 'Lederen stoelen', 'Gratis Wi-Fi', 'Water & versnaperingen', 'USB-laadgeraats'],
+      comfort: ['Ruimere voertuigen', 'Gratis Wi-Fi', 'Water', '3 koffers inbegrepen'],
     },
     perKm: '/km',
     journeyDistance: 'Afstand',
