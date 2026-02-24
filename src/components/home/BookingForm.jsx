@@ -276,7 +276,7 @@ export default function BookingForm({ bookingRef }) {
                     className={`flex-1 h-10 rounded-lg text-sm font-bold transition-all ${
                       form.passengers === num
                         ? 'bg-black text-[#F5C300]'
-                        : 'bg-black/10 text-black/60 hover:bg-black/20'
+                        : 'bg-black/20 text-black/70 hover:bg-black/30'
                     }`}
                   >
                     {num}
