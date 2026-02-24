@@ -82,9 +82,15 @@ export default function BookingForm({ bookingRef }) {
     }
   };
 
+  const getPricePerKm = () => {
+    if (!priceSettings) return 0;
+    if (form.vehicle_type === 'comfort') return priceSettings.comfort_price_per_km || priceSettings.standard_price_per_km * 1.3;
+    return priceSettings.standard_price_per_km;
+  };
+
   const calculateTotalPrice = () => {
-    if (!priceSettings || estimatedDistance === 0) return null;
-    let total = estimatedDistance * priceSettings.standard_price_per_km;
+    if (!priceSettings || estimatedDistance === 0 || !form.vehicle_type) return null;
+    let total = estimatedDistance * getPricePerKm();
     if (estimatedDistance <= 30) total += priceSettings.base_fare || 0;
 
     if (form.departure_date && form.departure_time && priceSettings.night_surcharge_percentage > 0) {
