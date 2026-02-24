@@ -167,7 +167,7 @@ export default function BookingForm({ bookingRef }) {
   const inputClass = "bg-black/20 border border-black/30 text-black placeholder:text-black/40 focus:border-black/60 focus:ring-0 h-12 rounded-lg text-sm";
   const labelClass = "text-black/70 text-xs uppercase tracking-wider mb-1 block";
 
-  const cardClass = "bg-black/10 border border-black/20 rounded-xl p-4";
+  const cardClass = "bg-black border border-black/40 rounded-xl p-4";
   const darkInputClass = "w-full bg-black/20 border border-black/30 rounded-lg text-black text-sm p-3 outline-none placeholder:text-black/40 focus:border-black/60";
   const darkLabelClass = "text-black/60 text-xs uppercase tracking-wider mb-1 block";
 
