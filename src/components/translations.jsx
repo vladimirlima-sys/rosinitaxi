@@ -698,7 +698,7 @@ export const translations = {
     availableNow: 'Disponible ahora',
     vehicleFeatures: {
       economic: ['Sedán cómodo', 'Aire acondicionado', 'Wi-Fi gratuito', 'Equipaje incluido'],
-      comfort: ['Wi-Fi gratuito', 'Agua', '3 equipajes incluidos'],
+      comfort: ['Vehículos más espaciosos', 'Wi-Fi gratuito', 'Agua', '3 equipajes incluidos'],
     },
     perKm: '/km',
     journeyDistance: 'Distancia',
