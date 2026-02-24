@@ -325,7 +325,7 @@ export default function BookingForm({ bookingRef }) {
             <div
               onClick={() => update('vehicle_type', 'economic')}
               className={`rounded-xl p-4 cursor-pointer transition-all border-2 ${
-                form.vehicle_type === 'economic' ? 'bg-black text-white border-black' : 'bg-black/10 border-transparent hover:bg-black/20'
+                form.vehicle_type === 'economic' ? 'bg-black text-white border-black' : 'bg-black/20 border-transparent hover:bg-black/30'
               }`}
             >
               <div className="flex items-center justify-between mb-2">
