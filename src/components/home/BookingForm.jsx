@@ -167,13 +167,17 @@ export default function BookingForm({ bookingRef }) {
   const inputClass = "bg-[#1a1a1a] border border-[#333] text-white placeholder:text-gray-500 focus:border-[#F5C300] focus:ring-0 h-12 rounded-lg text-sm";
   const labelClass = "text-gray-400 text-xs uppercase tracking-wider mb-1 block";
 
+  const cardClass = "bg-black/10 border border-black/20 rounded-xl p-4";
+  const darkInputClass = "w-full bg-black/20 border border-black/30 rounded-lg text-black text-sm p-3 outline-none placeholder:text-black/40 focus:border-black/60";
+  const darkLabelClass = "text-black/60 text-xs uppercase tracking-wider mb-1 block";
+
   return (
-    <div ref={bookingRef} className="min-h-screen bg-[#0d0d0d] flex flex-col items-center justify-start py-8 px-4">
+    <div ref={bookingRef} className="min-h-screen bg-[#F5C300] flex flex-col items-center justify-start py-8 px-4">
       {/* Header */}
       <div className="w-full max-w-md mb-6 text-center">
-        <h1 className="text-white text-3xl font-extralight tracking-[0.3em] uppercase">ROSINI</h1>
-        <p className="text-[#F5C300] text-xs tracking-[0.5em] uppercase mt-1">TÁXI</p>
-        <div className="w-8 h-[1px] bg-[#F5C300] mx-auto mt-3" />
+        <h1 className="text-black text-3xl font-extralight tracking-[0.3em] uppercase">ROSINI</h1>
+        <p className="text-black/60 text-xs tracking-[0.5em] uppercase mt-1">TÁXI</p>
+        <div className="w-8 h-[1px] bg-black/40 mx-auto mt-3" />
       </div>
 
       <div className="w-full max-w-md">
