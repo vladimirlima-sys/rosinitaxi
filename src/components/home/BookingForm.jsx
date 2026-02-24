@@ -496,8 +496,8 @@ export default function BookingForm({ bookingRef }) {
                   key={opt.value}
                   className={`flex items-center gap-3 cursor-pointer p-3 rounded-lg border transition-all ${
                     paymentMethod === opt.value
-                      ? 'border-black bg-black/10'
-                      : 'border-black/20 hover:bg-black/10'
+                      ? 'border-black bg-black/20'
+                      : 'border-black/30 hover:bg-black/20'
                   }`}
                 >
                   <input
