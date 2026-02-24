@@ -48,7 +48,7 @@ export default function FooterSection() {
         <div className="h-[1px] bg-white/10 mb-12" />
         
         <div className="flex flex-col md:flex-row justify-between items-center gap-4">
-          <p className="text-white/30 text-sm">{t.copyright(new Date().getFullYear())}</p>
+          <p className="text-white/30 text-sm">© 2026 Rosini transports et locations SARL. {t.copyright(new Date().getFullYear())}</p>
           <div className="flex items-center gap-1">
             <div className="w-2 h-2 rounded-full bg-green-500 animate-pulse" />
             <span className="text-white/30 text-xs">{t.availableNow}</span>
