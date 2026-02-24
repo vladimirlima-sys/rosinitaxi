@@ -535,15 +535,15 @@ export default function BookingForm({ bookingRef }) {
         {/* STEP 5 — Confirmation */}
         {step === 5 && (
           <div className="text-center py-12 space-y-4">
-            <div className="w-20 h-20 rounded-full bg-[#F5C300]/10 border border-[#F5C300]/30 flex items-center justify-center mx-auto">
-              <CheckCircle className="w-10 h-10 text-[#F5C300]" />
+            <div className="w-20 h-20 rounded-full bg-black/10 border border-black/30 flex items-center justify-center mx-auto">
+              <CheckCircle className="w-10 h-10 text-black" />
             </div>
-            <h3 className="text-white text-xl font-bold">{t.confirmTitle}</h3>
-            <p className="text-gray-400 text-sm max-w-xs mx-auto">{t.confirmMsg(form.client_name, form.departure_point, form.arrival_point)}</p>
-            <p className="text-gray-600 text-xs">{t.confirmEmail(form.client_email)}</p>
+            <h3 className="text-black text-xl font-bold">{t.confirmTitle}</h3>
+            <p className="text-black/60 text-sm max-w-xs mx-auto">{t.confirmMsg(form.client_name, form.departure_point, form.arrival_point)}</p>
+            <p className="text-black/40 text-xs">{t.confirmEmail(form.client_email)}</p>
             <button
               onClick={resetForm}
-              className="mt-4 px-8 h-12 rounded-xl bg-[#F5C300] text-black font-bold text-sm uppercase tracking-wider hover:bg-yellow-400 transition-all"
+              className="mt-4 px-8 h-12 rounded-xl bg-black text-[#F5C300] font-bold text-sm uppercase tracking-wider hover:bg-black/80 transition-all"
             >
               {t.newBooking}
             </button>
