@@ -347,17 +347,27 @@ export default function BookingForm({ bookingRef }) {
             >
               <div className="flex items-center justify-between mb-2">
                 <div className="flex items-center gap-3">
-                  <svg viewBox="0 0 100 40" className="w-20 h-12" fill="none" xmlns="http://www.w3.org/2000/svg">
-                    <path d="M8 28h84M15 28l5-10h42l8 10" stroke={form.vehicle_type === 'economic' ? '#ffffff' : '#111111'} strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
-                    <path d="M20 18l4-7h30l6 7" stroke={form.vehicle_type === 'economic' ? '#ffffff' : '#111111'} strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"/>
-                    <rect x="21" y="11" width="12" height="7" rx="1" fill={form.vehicle_type === 'economic' ? '#F5C300' : '#d1d5db'} opacity="0.7"/>
-                    <rect x="35" y="11" width="14" height="7" rx="1" fill={form.vehicle_type === 'economic' ? '#F5C300' : '#d1d5db'} opacity="0.7"/>
-                    <rect x="51" y="11" width="10" height="7" rx="1" fill={form.vehicle_type === 'economic' ? '#F5C300' : '#d1d5db'} opacity="0.7"/>
-                    <circle cx="24" cy="28" r="4.5" stroke={form.vehicle_type === 'economic' ? '#ffffff' : '#111111'} strokeWidth="2" fill={form.vehicle_type === 'economic' ? '#333' : '#e5e7eb'}/>
-                    <circle cx="24" cy="28" r="1.5" fill={form.vehicle_type === 'economic' ? '#F5C300' : '#9ca3af'}/>
-                    <circle cx="68" cy="28" r="4.5" stroke={form.vehicle_type === 'economic' ? '#ffffff' : '#111111'} strokeWidth="2" fill={form.vehicle_type === 'economic' ? '#333' : '#e5e7eb'}/>
-                    <circle cx="68" cy="28" r="1.5" fill={form.vehicle_type === 'economic' ? '#F5C300' : '#9ca3af'}/>
-                    <path d="M8 26h4M88 26h4" stroke={form.vehicle_type === 'economic' ? '#F5C300' : '#6b7280'} strokeWidth="2.5" strokeLinecap="round"/>
+                  <svg viewBox="0 0 124 40" className="w-24 h-12" fill="none" xmlns="http://www.w3.org/2000/svg">
+                    {/* Body */}
+                    <path d="M6 27 C6 27 10 27 14 27 L16 20 C18 15 22 12 28 11 L52 10 C60 10 66 12 70 16 L82 20 L94 21 C100 21 104 23 106 27 L118 27" 
+                      stroke={form.vehicle_type === 'economic' ? '#ffffff' : '#1a1a1a'} strokeWidth="2" strokeLinecap="round" fill="none"/>
+                    {/* Roof */}
+                    <path d="M28 21 C30 16 35 12 42 11 L66 11 C72 11 77 14 80 21" 
+                      stroke={form.vehicle_type === 'economic' ? '#ffffff' : '#1a1a1a'} strokeWidth="2" strokeLinecap="round" fill={form.vehicle_type === 'economic' ? '#333' : '#e5e7eb'}/>
+                    {/* Windows */}
+                    <path d="M32 21 C33 17 37 13 42 12 L54 12 L52 21Z" fill={form.vehicle_type === 'economic' ? '#F5C300' : '#93c5fd'} opacity="0.8"/>
+                    <path d="M55 12 L65 12 C70 13 74 16 76 21 L55 21Z" fill={form.vehicle_type === 'economic' ? '#F5C300' : '#93c5fd'} opacity="0.8"/>
+                    {/* Wheels */}
+                    <circle cx="30" cy="27" r="6" fill={form.vehicle_type === 'economic' ? '#555' : '#374151'}/>
+                    <circle cx="30" cy="27" r="3" fill={form.vehicle_type === 'economic' ? '#F5C300' : '#d1d5db'}/>
+                    <circle cx="94" cy="27" r="6" fill={form.vehicle_type === 'economic' ? '#555' : '#374151'}/>
+                    <circle cx="94" cy="27" r="3" fill={form.vehicle_type === 'economic' ? '#F5C300' : '#d1d5db'}/>
+                    {/* Ground line */}
+                    <line x1="2" y1="33" x2="122" y2="33" stroke={form.vehicle_type === 'economic' ? '#ffffff22' : '#11111122'} strokeWidth="1"/>
+                    {/* Headlight */}
+                    <path d="M104 24 L110 25" stroke={form.vehicle_type === 'economic' ? '#F5C300' : '#fbbf24'} strokeWidth="2" strokeLinecap="round"/>
+                    {/* Tail light */}
+                    <path d="M14 24 L18 25" stroke={form.vehicle_type === 'economic' ? '#ff4444' : '#ef4444'} strokeWidth="2" strokeLinecap="round"/>
                   </svg>
                   <div>
                     <p className={`font-semibold text-sm ${form.vehicle_type === 'economic' ? 'text-white' : 'text-black'}`}>STANDARD</p>
