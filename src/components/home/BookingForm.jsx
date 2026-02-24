@@ -470,23 +470,23 @@ export default function BookingForm({ bookingRef }) {
         {step === 4 && (
           <div className="space-y-3">
             {/* Summary */}
-            <div className="bg-[#141414] border border-[#2a2a2a] rounded-xl p-4 space-y-2">
-              <h3 className="text-gray-500 text-xs uppercase tracking-wider mb-3">{t.summaryLabel}</h3>
-              <div className="flex justify-between text-sm"><span className="text-gray-500">{t.summaryTrajet}</span><span className="text-white text-right max-w-[60%] truncate">{form.departure_point} → {form.arrival_point}</span></div>
-              <div className="flex justify-between text-sm"><span className="text-gray-500">{t.summaryDateHeure}</span><span className="text-white">{form.departure_date} {form.departure_time}</span></div>
-              <div className="flex justify-between text-sm"><span className="text-gray-500">{t.summaryVehicle}</span><span className="text-white capitalize">{form.vehicle_type === 'comfort' ? 'COMFORT' : 'STANDARD'}</span></div>
-              <div className="flex justify-between text-sm"><span className="text-gray-500">{t.summaryDistance}</span><span className="text-white">{estimatedDistance} km</span></div>
-              <div className="w-full h-[1px] bg-[#222] my-2" />
+            <div className="bg-black/10 border border-black/20 rounded-xl p-4 space-y-2">
+              <h3 className="text-black/60 text-xs uppercase tracking-wider mb-3">{t.summaryLabel}</h3>
+              <div className="flex justify-between text-sm"><span className="text-black/50">{t.summaryTrajet}</span><span className="text-black text-right max-w-[60%] truncate">{form.departure_point} → {form.arrival_point}</span></div>
+              <div className="flex justify-between text-sm"><span className="text-black/50">{t.summaryDateHeure}</span><span className="text-black">{form.departure_date} {form.departure_time}</span></div>
+              <div className="flex justify-between text-sm"><span className="text-black/50">{t.summaryVehicle}</span><span className="text-black">{form.vehicle_type === 'comfort' ? 'COMFORT' : 'STANDARD'}</span></div>
+              <div className="flex justify-between text-sm"><span className="text-black/50">{t.summaryDistance}</span><span className="text-black">{estimatedDistance} km</span></div>
+              <div className="w-full h-[1px] bg-black/20 my-2" />
               <div className="flex justify-between items-center">
-                <span className="text-gray-400 font-semibold text-sm">{t.summaryTotal}</span>
-                <span className="text-[#F5C300] text-2xl font-bold">CHF {totalPrice}</span>
+                <span className="text-black font-semibold text-sm">{t.summaryTotal}</span>
+                <span className="text-black text-2xl font-bold">CHF {totalPrice}</span>
               </div>
-              <p className="text-gray-600 text-xs italic">{t.noTollsIncluded}</p>
+              <p className="text-black/40 text-xs italic">{t.noTollsIncluded}</p>
             </div>
 
             {/* Payment method */}
-            <div className="bg-[#141414] border border-[#2a2a2a] rounded-xl p-4 space-y-2">
-              <h3 className="text-gray-500 text-xs uppercase tracking-wider mb-3">{t.paymentMethod}</h3>
+            <div className="bg-black/10 border border-black/20 rounded-xl p-4 space-y-2">
+              <h3 className="text-black/60 text-xs uppercase tracking-wider mb-3">{t.paymentMethod}</h3>
               {[
                 { value: 'stripe', label: t.stripeLabel, desc: t.stripeDesc },
                 { value: 'twint', label: t.twintLabel, desc: t.twintDesc },
@@ -496,8 +496,8 @@ export default function BookingForm({ bookingRef }) {
                   key={opt.value}
                   className={`flex items-center gap-3 cursor-pointer p-3 rounded-lg border transition-all ${
                     paymentMethod === opt.value
-                      ? 'border-[#F5C300] bg-[#F5C300]/10'
-                      : 'border-[#2a2a2a] hover:border-[#444]'
+                      ? 'border-black bg-black/10'
+                      : 'border-black/20 hover:bg-black/10'
                   }`}
                 >
                   <input
@@ -506,10 +506,10 @@ export default function BookingForm({ bookingRef }) {
                     value={opt.value}
                     checked={paymentMethod === opt.value}
                     onChange={(e) => setPaymentMethod(e.target.value)}
-                    className="w-4 h-4 accent-[#F5C300]"
+                    className="w-4 h-4 accent-black"
                   />
-                  <span className="text-white text-sm font-medium flex-1">{opt.label}</span>
-                  <span className="text-gray-500 text-xs">{opt.desc}</span>
+                  <span className="text-black text-sm font-medium flex-1">{opt.label}</span>
+                  <span className="text-black/50 text-xs">{opt.desc}</span>
                 </label>
               ))}
             </div>
@@ -517,14 +517,14 @@ export default function BookingForm({ bookingRef }) {
             <div className="flex gap-3">
               <button
                 onClick={() => setStep(3)}
-                className="flex-1 h-12 rounded-xl border border-[#333] text-gray-400 font-semibold text-sm hover:border-[#555] transition-all"
+                className="flex-1 h-12 rounded-xl border border-black/30 text-black/60 font-semibold text-sm hover:bg-black/10 transition-all"
               >
                 {t.backBtn}
               </button>
               <button
                 onClick={handlePayment}
                 disabled={isSubmitting}
-                className="flex-[2] h-12 rounded-xl bg-[#F5C300] text-black font-bold text-sm uppercase tracking-wider hover:bg-yellow-400 transition-all disabled:opacity-60 flex items-center justify-center gap-2"
+                className="flex-[2] h-12 rounded-xl bg-black text-[#F5C300] font-bold text-sm uppercase tracking-wider hover:bg-black/80 transition-all disabled:opacity-60 flex items-center justify-center gap-2"
               >
                 {isSubmitting ? <><Loader2 className="w-4 h-4 animate-spin" />{t.redirecting}</> : (paymentMethod === 'stripe' ? t.payBtn(totalPrice) : t.confirmBooking)}
               </button>
