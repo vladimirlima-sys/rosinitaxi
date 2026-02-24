@@ -165,7 +165,7 @@ export default function BookingForm({ bookingRef }) {
       {/* Header */}
       <div className="w-full max-w-md mb-6 text-center">
         <h1 className="text-white text-3xl font-extralight tracking-[0.3em] uppercase">ROSINI</h1>
-        <p className="text-[#F5C300] text-xs tracking-[0.5em] uppercase mt-1">TÁXI</p>
+        <p className="text-black text-xs tracking-[0.5em] uppercase mt-1">TÁXI</p>
         <div className="w-8 h-[1px] bg-[#F5C300] mx-auto mt-3" />
       </div>
 
