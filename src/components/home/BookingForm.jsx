@@ -246,11 +246,9 @@ export default function BookingForm({ bookingRef }) {
             <div className="grid grid-cols-2 gap-3">
               <div className="bg-black border border-black/40 rounded-xl p-4">
                 <label className={labelClass}>{t.dateLabel}</label>
-                <input
-                  type="date"
+                <DatePicker
                   value={form.departure_date}
-                  onChange={(e) => update('departure_date', e.target.value)}
-                  className="w-full bg-transparent text-white text-sm outline-none border-none [color-scheme:dark]"
+                  onChange={(date) => update('departure_date', date)}
                 />
               </div>
               <div className="bg-black border border-black/40 rounded-xl p-4">
