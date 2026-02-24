@@ -463,9 +463,9 @@ export default function BookingForm({ bookingRef }) {
               <button
                 onClick={() => setStep(4)}
                 disabled={!canProceedStep3}
-                className={`flex-[2] h-12 rounded-xl font-bold text-sm uppercase tracking-wider transition-all ${
+                className={`flex-[2] h-12 rounded-xl border border-white/50 font-bold text-sm uppercase tracking-wider transition-all ${
                   canProceedStep3
-                    ? 'bg-[#F5C300] text-black hover:bg-black hover:text-white'
+                    ? 'bg-[#F5C300]/95 text-black hover:bg-black hover:text-white hover:border-black'
                     : 'bg-white/10 text-white/40 cursor-not-allowed'
                 }`}
               >
