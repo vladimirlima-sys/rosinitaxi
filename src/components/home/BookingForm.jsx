@@ -346,58 +346,9 @@ export default function BookingForm({ bookingRef }) {
               }`}
             >
               <div className="flex items-center justify-between mb-2">
-                <div className="flex items-center gap-3">
-                  <svg viewBox="0 0 160 60" className="w-28 h-14" fill="none" xmlns="http://www.w3.org/2000/svg">
-                    {/* Shadow */}
-                    <ellipse cx="80" cy="54" rx="60" ry="4" fill={form.vehicle_type === 'economic' ? '#ffffff18' : '#00000018'}/>
-                    {/* Main body lower */}
-                    <path d="M14 38 C14 38 18 34 22 34 L138 34 C142 34 146 38 146 38 L146 44 C146 46 144 48 142 48 L18 48 C16 48 14 46 14 44 Z" 
-                      fill={form.vehicle_type === 'economic' ? '#2a2a2a' : '#1a1a1a'}/>
-                    {/* Main body upper */}
-                    <path d="M36 34 C38 26 44 18 52 15 L80 13 L108 15 C116 18 120 26 122 34 Z" 
-                      fill={form.vehicle_type === 'economic' ? '#222' : '#111'}/>
-                    {/* Roof highlight */}
-                    <path d="M52 15 C56 13 64 12 80 12 C96 12 104 13 108 15 C112 17 116 22 118 28 L42 28 C44 22 48 17 52 15Z" 
-                      fill={form.vehicle_type === 'economic' ? '#333' : '#222'}/>
-                    {/* Windshield */}
-                    <path d="M54 28 C56 20 62 14 72 13 L88 13 C98 14 104 20 106 28 Z" 
-                      fill={form.vehicle_type === 'economic' ? 'rgba(245,195,0,0.15)' : 'rgba(147,197,253,0.25)'} stroke={form.vehicle_type === 'economic' ? '#F5C30044' : '#93c5fd44'} strokeWidth="1"/>
-                    {/* Side windows */}
-                    <rect x="38" y="29" width="22" height="5" rx="1.5" fill={form.vehicle_type === 'economic' ? 'rgba(245,195,0,0.12)' : 'rgba(147,197,253,0.2)'} stroke={form.vehicle_type === 'economic' ? '#F5C30033' : '#93c5fd33'} strokeWidth="0.8"/>
-                    <rect x="100" y="29" width="22" height="5" rx="1.5" fill={form.vehicle_type === 'economic' ? 'rgba(245,195,0,0.12)' : 'rgba(147,197,253,0.2)'} stroke={form.vehicle_type === 'economic' ? '#F5C30033' : '#93c5fd33'} strokeWidth="0.8"/>
-                    {/* Door line */}
-                    <line x1="80" y1="34" x2="80" y2="48" stroke={form.vehicle_type === 'economic' ? '#444' : '#333'} strokeWidth="0.8"/>
-                    {/* Body line / crease */}
-                    <path d="M20 40 L140 40" stroke={form.vehicle_type === 'economic' ? '#444' : '#2a2a2a'} strokeWidth="0.6" opacity="0.6"/>
-                    {/* Front bumper */}
-                    <path d="M142 38 L148 40 C150 41 152 43 152 45 L152 47 L142 47" fill={form.vehicle_type === 'economic' ? '#1a1a1a' : '#111'} stroke={form.vehicle_type === 'economic' ? '#333' : '#222'} strokeWidth="0.8"/>
-                    {/* Rear bumper */}
-                    <path d="M18 38 L12 40 C10 41 8 43 8 45 L8 47 L18 47" fill={form.vehicle_type === 'economic' ? '#1a1a1a' : '#111'} stroke={form.vehicle_type === 'economic' ? '#333' : '#222'} strokeWidth="0.8"/>
-                    {/* Headlights */}
-                    <path d="M144 37 L150 39" stroke={form.vehicle_type === 'economic' ? '#F5C300' : '#fde68a'} strokeWidth="2.5" strokeLinecap="round" opacity="0.9"/>
-                    <path d="M144 40 L151 41" stroke={form.vehicle_type === 'economic' ? '#F5C300' : '#fde68a'} strokeWidth="1.5" strokeLinecap="round" opacity="0.5"/>
-                    {/* Taillights */}
-                    <path d="M16 37 L10 39" stroke="#ef4444" strokeWidth="2.5" strokeLinecap="round" opacity="0.9"/>
-                    <path d="M16 40 L9 41" stroke="#dc2626" strokeWidth="1.5" strokeLinecap="round" opacity="0.5"/>
-                    {/* Front wheel arch */}
-                    <path d="M112 48 C112 40 120 36 128 36 C136 36 144 40 144 48" fill={form.vehicle_type === 'economic' ? '#1a1a1a' : '#111'} stroke={form.vehicle_type === 'economic' ? '#444' : '#333'} strokeWidth="1"/>
-                    {/* Rear wheel arch */}
-                    <path d="M16 48 C16 40 24 36 32 36 C40 36 48 40 48 48" fill={form.vehicle_type === 'economic' ? '#1a1a1a' : '#111'} stroke={form.vehicle_type === 'economic' ? '#444' : '#333'} strokeWidth="1"/>
-                    {/* Front wheel */}
-                    <circle cx="128" cy="48" r="9" fill={form.vehicle_type === 'economic' ? '#111' : '#0a0a0a'} stroke={form.vehicle_type === 'economic' ? '#555' : '#444'} strokeWidth="1.5"/>
-                    <circle cx="128" cy="48" r="5.5" fill={form.vehicle_type === 'economic' ? '#222' : '#1a1a1a'} stroke={form.vehicle_type === 'economic' ? '#666' : '#555'} strokeWidth="1"/>
-                    <circle cx="128" cy="48" r="2" fill={form.vehicle_type === 'economic' ? '#F5C300' : '#9ca3af'}/>
-                    {/* Rear wheel */}
-                    <circle cx="32" cy="48" r="9" fill={form.vehicle_type === 'economic' ? '#111' : '#0a0a0a'} stroke={form.vehicle_type === 'economic' ? '#555' : '#444'} strokeWidth="1.5"/>
-                    <circle cx="32" cy="48" r="5.5" fill={form.vehicle_type === 'economic' ? '#222' : '#1a1a1a'} stroke={form.vehicle_type === 'economic' ? '#666' : '#555'} strokeWidth="1"/>
-                    <circle cx="32" cy="48" r="2" fill={form.vehicle_type === 'economic' ? '#F5C300' : '#9ca3af'}/>
-                    {/* Roof highlight streak */}
-                    <path d="M62 14 C70 12 90 12 98 14" stroke={form.vehicle_type === 'economic' ? '#ffffff18' : '#ffffff10'} strokeWidth="3" strokeLinecap="round"/>
-                  </svg>
-                  <div>
-                    <p className={`font-semibold text-sm ${form.vehicle_type === 'economic' ? 'text-white' : 'text-black'}`}>STANDARD</p>
-                    <p className={`text-xs ${form.vehicle_type === 'economic' ? 'text-white/60' : 'text-black/50'}`}>1–4 {t.persons} · {t.vehicleFeatures.economic[0]}</p>
-                  </div>
+                <div>
+                  <p className={`font-semibold text-sm ${form.vehicle_type === 'economic' ? 'text-white' : 'text-black'}`}>STANDARD</p>
+                  <p className={`text-xs ${form.vehicle_type === 'economic' ? 'text-white/60' : 'text-black/50'}`}>1–4 {t.persons} · {t.vehicleFeatures.economic[0]}</p>
                 </div>
                 <div className="text-right">
                   {priceSettings && estimatedDistance > 0 && (
@@ -405,7 +356,6 @@ export default function BookingForm({ bookingRef }) {
                       CHF {(estimatedDistance * priceSettings.standard_price_per_km + (estimatedDistance <= 30 ? (priceSettings.base_fare || 0) : 0)).toFixed(2)}
                     </p>
                   )}
-                  <p className={`text-xs ${form.vehicle_type === 'economic' ? 'text-white/40' : 'text-black/40'}`}>CHF {priceSettings?.standard_price_per_km?.toFixed(2)}/km</p>
                 </div>
               </div>
               <div className="flex flex-wrap gap-2 mt-2">
