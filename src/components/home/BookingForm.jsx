@@ -470,7 +470,7 @@ export default function BookingForm({ bookingRef }) {
         {step === 4 && (
           <div className="space-y-3">
             {/* Summary */}
-            <div className="bg-black/10 border border-black/20 rounded-xl p-4 space-y-2">
+            <div className="bg-black/20 border border-black/30 rounded-xl p-4 space-y-2">
               <h3 className="text-black/60 text-xs uppercase tracking-wider mb-3">{t.summaryLabel}</h3>
               <div className="flex justify-between text-sm"><span className="text-black/50">{t.summaryTrajet}</span><span className="text-black text-right max-w-[60%] truncate">{form.departure_point} → {form.arrival_point}</span></div>
               <div className="flex justify-between text-sm"><span className="text-black/50">{t.summaryDateHeure}</span><span className="text-black">{form.departure_date} {form.departure_time}</span></div>
@@ -485,7 +485,7 @@ export default function BookingForm({ bookingRef }) {
             </div>
 
             {/* Payment method */}
-            <div className="bg-black/10 border border-black/20 rounded-xl p-4 space-y-2">
+            <div className="bg-black/20 border border-black/30 rounded-xl p-4 space-y-2">
               <h3 className="text-black/60 text-xs uppercase tracking-wider mb-3">{t.paymentMethod}</h3>
               {[
                 { value: 'stripe', label: t.stripeLabel, desc: t.stripeDesc },
