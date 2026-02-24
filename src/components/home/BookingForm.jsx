@@ -347,7 +347,18 @@ export default function BookingForm({ bookingRef }) {
             >
               <div className="flex items-center justify-between mb-2">
                 <div className="flex items-center gap-3">
-                  <img src="https://qtrypzzcjebvfcihiynt.supabase.co/storage/v1/object/public/base44-prod/public/6997aac0bfa41b14d425e0d3/a8f5c7b17_255867_1.jpg" alt="Citroën C4" className="w-20 h-12 object-contain mix-blend-multiply" />
+                  <svg viewBox="0 0 100 40" className="w-20 h-12" fill="none" xmlns="http://www.w3.org/2000/svg">
+                    <path d="M8 28h84M15 28l5-10h42l8 10" stroke={form.vehicle_type === 'economic' ? '#ffffff' : '#111111'} strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
+                    <path d="M20 18l4-7h30l6 7" stroke={form.vehicle_type === 'economic' ? '#ffffff' : '#111111'} strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"/>
+                    <rect x="21" y="11" width="12" height="7" rx="1" fill={form.vehicle_type === 'economic' ? '#F5C300' : '#d1d5db'} opacity="0.7"/>
+                    <rect x="35" y="11" width="14" height="7" rx="1" fill={form.vehicle_type === 'economic' ? '#F5C300' : '#d1d5db'} opacity="0.7"/>
+                    <rect x="51" y="11" width="10" height="7" rx="1" fill={form.vehicle_type === 'economic' ? '#F5C300' : '#d1d5db'} opacity="0.7"/>
+                    <circle cx="24" cy="28" r="4.5" stroke={form.vehicle_type === 'economic' ? '#ffffff' : '#111111'} strokeWidth="2" fill={form.vehicle_type === 'economic' ? '#333' : '#e5e7eb'}/>
+                    <circle cx="24" cy="28" r="1.5" fill={form.vehicle_type === 'economic' ? '#F5C300' : '#9ca3af'}/>
+                    <circle cx="68" cy="28" r="4.5" stroke={form.vehicle_type === 'economic' ? '#ffffff' : '#111111'} strokeWidth="2" fill={form.vehicle_type === 'economic' ? '#333' : '#e5e7eb'}/>
+                    <circle cx="68" cy="28" r="1.5" fill={form.vehicle_type === 'economic' ? '#F5C300' : '#9ca3af'}/>
+                    <path d="M8 26h4M88 26h4" stroke={form.vehicle_type === 'economic' ? '#F5C300' : '#6b7280'} strokeWidth="2.5" strokeLinecap="round"/>
+                  </svg>
                   <div>
                     <p className={`font-semibold text-sm ${form.vehicle_type === 'economic' ? 'text-white' : 'text-black'}`}>STANDARD</p>
                     <p className={`text-xs ${form.vehicle_type === 'economic' ? 'text-white/60' : 'text-black/50'}`}>1–4 {t.persons} · {t.vehicleFeatures.economic[0]}</p>
