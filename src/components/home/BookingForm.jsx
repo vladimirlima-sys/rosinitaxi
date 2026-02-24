@@ -392,8 +392,8 @@ export default function BookingForm({ bookingRef }) {
           </div>
         )}
 
-        {/* STEP 2 — Personal Info */}
-        {step === 2 && (
+        {/* STEP 3 — Personal Info */}
+        {step === 3 && (
           <div className="space-y-3">
             <div className="bg-[#141414] border border-[#2a2a2a] rounded-xl p-4 space-y-4">
               <h3 className="text-white font-semibold text-sm uppercase tracking-wider">{t.step3Title}</h3>
