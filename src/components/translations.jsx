@@ -732,6 +732,7 @@ export const translations = {
     markerArrival: 'LLEGADA',
     noTollsIncluded: '* Precio no incluye peajes',
     shortNoticeWarning: 'Las reservas con menos de 90 minutos de antelación serán confirmadas por teléfono por nuestra oficina en un plazo de 10 minutos.',
+    luggageLabel: 'equipajes',
   },
   nl: {
     badge: 'Beschikbaar 24/7 — Elke dag',
