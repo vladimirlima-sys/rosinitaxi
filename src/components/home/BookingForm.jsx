@@ -109,6 +109,15 @@ export default function BookingForm({ bookingRef }) {
   };
 
   const totalPrice = calculateTotalPrice();
+
+  const isShortNotice = () => {
+    if (!form.departure_date || !form.departure_time) return false;
+    const departure = new Date(`${form.departure_date}T${form.departure_time}:00`);
+    const now = new Date();
+    const diffMinutes = (departure - now) / 60000;
+    return diffMinutes > 0 && diffMinutes < 90;
+  };
+
   const canProceedStep1 = form.departure_point && form.arrival_point && form.departure_date && form.departure_time && estimatedDistance > 0;
   const canProceedStep2 = !!form.vehicle_type;
   const canProceedStep3 = form.client_name && form.client_email && form.client_phone;
