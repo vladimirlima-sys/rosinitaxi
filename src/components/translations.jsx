@@ -487,6 +487,7 @@ export const translations = {
     markerArrival: 'ANKUNFT',
     noTollsIncluded: '* Preis nicht inklusive Mautgebühren',
     shortNoticeWarning: 'Buchungen mit weniger als 90 Minuten Vorlauf werden telefonisch von unserem Büro innerhalb von 10 Minuten bestätigt.',
+    luggageLabel: 'Gepäckstücke',
   },
   it: {
     badge: 'Disponibile 24/7 — Ogni giorno',
