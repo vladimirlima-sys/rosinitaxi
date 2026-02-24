@@ -470,6 +470,7 @@ export default function BookingForm({ bookingRef }) {
               <h3 className="text-gray-500 text-xs uppercase tracking-wider mb-3">{t.summaryLabel}</h3>
               <div className="flex justify-between text-sm"><span className="text-gray-500">{t.summaryTrajet}</span><span className="text-white text-right max-w-[60%] truncate">{form.departure_point} → {form.arrival_point}</span></div>
               <div className="flex justify-between text-sm"><span className="text-gray-500">{t.summaryDateHeure}</span><span className="text-white">{form.departure_date} {form.departure_time}</span></div>
+              <div className="flex justify-between text-sm"><span className="text-gray-500">{t.summaryVehicle}</span><span className="text-white capitalize">{form.vehicle_type === 'comfort' ? 'COMFORT' : 'STANDARD'}</span></div>
               <div className="flex justify-between text-sm"><span className="text-gray-500">{t.summaryDistance}</span><span className="text-white">{estimatedDistance} km</span></div>
               <div className="w-full h-[1px] bg-[#222] my-2" />
               <div className="flex justify-between items-center">
