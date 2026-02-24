@@ -118,6 +118,7 @@ export const translations = {
     locationDenied: 'Permissão de localização negada',
     locationError: 'Erro ao obter localização',
     noTollsIncluded: '* Valor não inclui pedágios',
+    shortNoticeWarning: 'Reservas com menos de 90 minutos de antecedência serão confirmadas por telefone pelo nosso escritório em até 10 minutos.',
   },
   fr: {
     badge: 'Disponible 24h/24 — 7j/7',
