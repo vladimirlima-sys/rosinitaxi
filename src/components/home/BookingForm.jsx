@@ -465,7 +465,7 @@ export default function BookingForm({ bookingRef }) {
                 disabled={!canProceedStep3}
                 className={`flex-[2] h-12 rounded-xl font-bold text-sm uppercase tracking-wider transition-all ${
                   canProceedStep3
-                    ? 'bg-[#F5C300] text-black hover:bg-[#e6b800]'
+                    ? 'bg-[#F5C300] text-black hover:bg-black hover:text-white'
                     : 'bg-white/10 text-white/40 cursor-not-allowed'
                 }`}
               >
