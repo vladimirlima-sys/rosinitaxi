@@ -561,7 +561,8 @@ export default function BookingForm({ bookingRef }) {
 
         {/* Footer links */}
         <div className="mt-8 text-center">
-          <a href="tel:+41796505347" className="text-white/40 text-xs hover:text-white transition-colors">
+          <p className="text-black text-xs mb-1">La Tour-de-Peilz</p>
+          <a href="tel:+41796505347" className="text-black text-xs hover:text-black/70 transition-colors">
             +41 79 650 53 47
           </a>
         </div>
