@@ -261,7 +261,7 @@ export default function BookingForm({ bookingRef }) {
                 placeholder={t.flightPlaceholder}
                 value={form.flight_number}
                 onChange={(e) => update('flight_number', e.target.value)}
-                className="w-full bg-transparent text-black text-sm outline-none border-none placeholder:text-black/40"
+                className="w-full bg-transparent text-white text-sm outline-none border-none placeholder:text-white/40"
               />
             </div>
 
