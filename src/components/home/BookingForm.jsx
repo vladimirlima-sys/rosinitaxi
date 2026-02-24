@@ -289,14 +289,14 @@ export default function BookingForm({ bookingRef }) {
             {estimatedDistance > 0 && (
               <div className="bg-black border border-black/40 rounded-xl p-4 flex items-center justify-between">
                 <div>
-                  <p className="text-black/60 text-xs uppercase tracking-wider">{t.estimatedPrice}</p>
-                  <p className="text-black text-sm mt-0.5">{estimatedDistance} km · {Math.floor(estimatedTime / 60)}h{estimatedTime % 60}min</p>
+                  <p className="text-white/60 text-xs uppercase tracking-wider">{t.estimatedPrice}</p>
+                  <p className="text-white text-sm mt-0.5">{estimatedDistance} km · {Math.floor(estimatedTime / 60)}h{estimatedTime % 60}min</p>
                 </div>
                 <div className="text-right">
                   {totalPrice ? (
-                    <p className="text-black text-2xl font-bold">CHF {totalPrice}</p>
+                    <p className="text-[#F5C300] text-2xl font-bold">CHF {totalPrice}</p>
                   ) : (
-                    <p className="text-black/40 text-sm">—</p>
+                    <p className="text-white/40 text-sm">—</p>
                   )}
                 </div>
               </div>
