@@ -511,7 +511,7 @@ export default function BookingForm({ bookingRef }) {
 
             <div className="flex gap-3">
               <button
-                onClick={() => setStep(2)}
+                onClick={() => setStep(3)}
                 className="flex-1 h-12 rounded-xl border border-[#333] text-gray-400 font-semibold text-sm hover:border-[#555] transition-all"
               >
                 {t.backBtn}
