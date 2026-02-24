@@ -178,6 +178,7 @@ export default function BookingForm({ bookingRef }) {
         <h1 className="text-black text-3xl font-extralight tracking-[0.3em] uppercase">ROSINI</h1>
         <p className="text-black/60 text-xs tracking-[0.5em] uppercase mt-1">TÁXI</p>
         <div className="w-8 h-[1px] bg-black/40 mx-auto mt-3" />
+
       </div>
 
       <div className="w-full max-w-md">
