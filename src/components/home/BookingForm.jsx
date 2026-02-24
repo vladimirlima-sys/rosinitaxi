@@ -456,7 +456,7 @@ export default function BookingForm({ bookingRef }) {
             <div className="flex gap-3">
               <button
                 onClick={() => setStep(2)}
-                className="flex-1 h-12 rounded-xl border-2 border-[#F5C300] bg-[#F5C300] text-black font-bold text-sm uppercase tracking-wider hover:bg-[#e6b800] transition-all"
+                className="flex-1 h-12 rounded-xl border-2 border-[#F5C300] bg-[#F5C300] text-black font-bold text-sm uppercase tracking-wider hover:bg-black hover:text-white hover:border-black transition-all"
               >
                 {t.backBtn}
               </button>
@@ -526,7 +526,7 @@ export default function BookingForm({ bookingRef }) {
             <div className="flex gap-3">
               <button
                 onClick={() => setStep(3)}
-                className="flex-1 h-12 rounded-xl border-2 border-[#F5C300] bg-[#F5C300] text-black font-bold text-sm uppercase tracking-wider hover:bg-[#e6b800] transition-all"
+                className="flex-1 h-12 rounded-xl border-2 border-[#F5C300] bg-[#F5C300] text-black font-bold text-sm uppercase tracking-wider hover:bg-black hover:text-white hover:border-black transition-all"
               >
                 {t.backBtn}
               </button>
