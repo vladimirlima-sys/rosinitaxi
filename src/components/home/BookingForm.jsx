@@ -346,8 +346,8 @@ export default function BookingForm({ bookingRef }) {
               }`}
             >
               <div className="flex items-center justify-between mb-2">
-                <div className="flex items-center gap-2">
-                  <span className="text-lg">🚗</span>
+                <div className="flex items-center gap-3">
+                  <img src="https://images.unsplash.com/photo-1609521263047-f8f205293f24?w=80&h=50&fit=crop&crop=center" alt="Citroën C4" className="w-16 h-10 object-cover rounded-lg" />
                   <div>
                     <p className={`font-semibold text-sm ${form.vehicle_type === 'economic' ? 'text-white' : 'text-black'}`}>STANDARD</p>
                     <p className={`text-xs ${form.vehicle_type === 'economic' ? 'text-white/60' : 'text-black/50'}`}>1–4 {t.persons} · {t.vehicleFeatures.economic[0]}</p>
