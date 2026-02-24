@@ -24,14 +24,17 @@ export default function FooterSection() {
           <div>
             <h4 className="text-white/40 text-sm tracking-[0.2em] uppercase mb-8">{t.contact}</h4>
             <div className="space-y-5">
-              <a href="mailto:taxirosini@gmail.com" className="flex items-center gap-3 text-white/50 hover:text-white transition-colors text-sm">
+              <a href="mailto:info@taxirosini.com" className="flex items-center gap-3 text-white/50 hover:text-white transition-colors text-sm">
                 <Mail className="w-4 h-4" />
-                taxirosini@gmail.com
+                info@taxirosini.com
               </a>
               <a href="tel:+41796505347" className="flex items-center gap-3 text-white/50 hover:text-white transition-colors text-sm">
                 <Phone className="w-4 h-4" />
                 +41 79 650 53 47
               </a>
+              <div className="text-white/50 text-sm">
+                <p>La Tour-de-Peilz</p>
+              </div>
             </div>
           </div>
         </div>
