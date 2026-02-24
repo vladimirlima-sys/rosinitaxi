@@ -312,6 +312,86 @@ export default function BookingForm({ bookingRef }) {
           </div>
         )}
 
+        {/* STEP 2 — Vehicle Selection */}
+        {step === 2 && (
+          <div className="space-y-3">
+            <h3 className="text-white font-semibold text-sm uppercase tracking-wider mb-2">{t.step2Title}</h3>
+
+            {/* Standard */}
+            <div
+              onClick={() => update('vehicle_type', 'economic')}
+              className={`bg-[#141414] border rounded-xl p-4 cursor-pointer transition-all ${
+                form.vehicle_type === 'economic' ? 'border-[#F5C300]' : 'border-[#2a2a2a] hover:border-[#444]'
+              }`}
+            >
+              <div className="flex items-center justify-between mb-2">
+                <div className="flex items-center gap-2">
+                  <span className="text-lg">🚗</span>
+                  <div>
+                    <p className="text-white font-semibold text-sm">STANDARD</p>
+                    <p className="text-gray-500 text-xs">1–4 {t.persons} · {t.vehicleFeatures.economic[0]}</p>
+                  </div>
+                </div>
+                <div className="text-right">
+                  {priceSettings && estimatedDistance > 0 && (
+                    <p className="text-[#F5C300] font-bold">
+                      CHF {(estimatedDistance * priceSettings.standard_price_per_km + (estimatedDistance <= 30 ? (priceSettings.base_fare || 0) : 0)).toFixed(2)}
+                    </p>
+                  )}
+                  <p className="text-gray-600 text-xs">CHF {priceSettings?.standard_price_per_km?.toFixed(2)}/km</p>
+                </div>
+              </div>
+              <div className="flex flex-wrap gap-2 mt-2">
+                {t.vehicleFeatures.economic.map((f, i) => (
+                  <span key={i} className="text-xs text-gray-500 bg-[#0d0d0d] px-2 py-0.5 rounded-full">{f}</span>
+                ))}
+              </div>
+            </div>
+
+            {/* Comfort */}
+            <div
+              onClick={() => update('vehicle_type', 'comfort')}
+              className={`bg-[#141414] border rounded-xl p-4 cursor-pointer transition-all ${
+                form.vehicle_type === 'comfort' ? 'border-[#F5C300]' : 'border-[#2a2a2a] hover:border-[#444]'
+              }`}
+            >
+              <div className="flex items-center justify-between mb-2">
+                <div className="flex items-center gap-2">
+                  <span className="text-lg">🚙</span>
+                  <div>
+                    <p className="text-white font-semibold text-sm">COMFORT</p>
+                    <p className="text-gray-500 text-xs">1–4 {t.persons} · {t.vehicleFeatures.comfort[0]}</p>
+                  </div>
+                </div>
+                <div className="text-right">
+                  {priceSettings && estimatedDistance > 0 && (
+                    <p className="text-[#F5C300] font-bold">
+                      CHF {(estimatedDistance * (priceSettings.comfort_price_per_km || priceSettings.standard_price_per_km * 1.3) + (estimatedDistance <= 30 ? (priceSettings.base_fare || 0) : 0)).toFixed(2)}
+                    </p>
+                  )}
+                  <p className="text-gray-600 text-xs">CHF {(priceSettings?.comfort_price_per_km || (priceSettings?.standard_price_per_km * 1.3))?.toFixed(2)}/km</p>
+                </div>
+              </div>
+              <div className="flex flex-wrap gap-2 mt-2">
+                {t.vehicleFeatures.comfort.map((f, i) => (
+                  <span key={i} className="text-xs text-gray-500 bg-[#0d0d0d] px-2 py-0.5 rounded-full">{f}</span>
+                ))}
+              </div>
+            </div>
+
+            <div className="flex gap-3">
+              <button onClick={() => setStep(1)} className="flex-1 h-12 rounded-xl border border-[#333] text-gray-400 font-semibold text-sm hover:border-[#555] transition-all">{t.backBtn}</button>
+              <button
+                onClick={() => setStep(3)}
+                disabled={!canProceedStep2}
+                className={`flex-[2] h-12 rounded-xl font-bold text-sm uppercase tracking-wider transition-all ${canProceedStep2 ? 'bg-[#F5C300] text-black hover:bg-yellow-400' : 'bg-[#1a1a1a] text-gray-600 cursor-not-allowed'}`}
+              >
+                {t.continueBtn}
+              </button>
+            </div>
+          </div>
+        )}
+
         {/* STEP 2 — Personal Info */}
         {step === 2 && (
           <div className="space-y-3">
