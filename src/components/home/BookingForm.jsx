@@ -50,7 +50,7 @@ export default function BookingForm({ bookingRef }) {
   React.useEffect(() => {
     const params = new URLSearchParams(window.location.search);
     if (params.get('booking') === 'success') {
-      setStep(4);
+      setStep(5);
       window.history.replaceState({}, '', window.location.pathname);
       const savedBooking = JSON.parse(sessionStorage.getItem('pendingBooking') || '{}');
       if (savedBooking.client_email) {
