@@ -527,7 +527,7 @@ export default function BookingForm({ bookingRef }) {
           </div>
         )}
 
-        {/* STEP 4 — Confirmation */}
+        {/* STEP 5 — Confirmation */}
         {step === 4 && (
           <div className="text-center py-12 space-y-4">
             <div className="w-20 h-20 rounded-full bg-[#F5C300]/10 border border-[#F5C300]/30 flex items-center justify-center mx-auto">
