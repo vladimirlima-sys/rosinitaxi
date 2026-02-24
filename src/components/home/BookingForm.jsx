@@ -399,8 +399,8 @@ export default function BookingForm({ bookingRef }) {
         {/* STEP 3 — Personal Info */}
         {step === 3 && (
           <div className="space-y-3">
-            <div className="bg-[#141414] border border-[#2a2a2a] rounded-xl p-4 space-y-4">
-              <h3 className="text-white font-semibold text-sm uppercase tracking-wider">{t.step3Title}</h3>
+            <div className="bg-black/10 border border-black/20 rounded-xl p-4 space-y-4">
+              <h3 className="text-black font-semibold text-sm uppercase tracking-wider">{t.step3Title}</h3>
 
               <div>
                 <label className={labelClass}><User className="inline w-3 h-3 mr-1" />{t.nameLabel}</label>
@@ -409,7 +409,7 @@ export default function BookingForm({ bookingRef }) {
                   placeholder={t.namePlaceholder}
                   value={form.client_name}
                   onChange={(e) => update('client_name', e.target.value)}
-                  className="w-full bg-[#0d0d0d] border border-[#333] rounded-lg text-white text-sm p-3 outline-none placeholder:text-gray-600 focus:border-[#F5C300]"
+                  className="w-full bg-black/10 border border-black/20 rounded-lg text-black text-sm p-3 outline-none placeholder:text-black/40 focus:border-black/60"
                 />
               </div>
               <div>
@@ -419,7 +419,7 @@ export default function BookingForm({ bookingRef }) {
                   placeholder={t.emailPlaceholder}
                   value={form.client_email}
                   onChange={(e) => update('client_email', e.target.value)}
-                  className="w-full bg-[#0d0d0d] border border-[#333] rounded-lg text-white text-sm p-3 outline-none placeholder:text-gray-600 focus:border-[#F5C300]"
+                  className="w-full bg-black/10 border border-black/20 rounded-lg text-black text-sm p-3 outline-none placeholder:text-black/40 focus:border-black/60"
                 />
               </div>
               <div>
@@ -429,7 +429,7 @@ export default function BookingForm({ bookingRef }) {
                   placeholder={t.phonePlaceholder}
                   value={form.client_phone}
                   onChange={(e) => update('client_phone', e.target.value)}
-                  className="w-full bg-[#0d0d0d] border border-[#333] rounded-lg text-white text-sm p-3 outline-none placeholder:text-gray-600 focus:border-[#F5C300]"
+                  className="w-full bg-black/10 border border-black/20 rounded-lg text-black text-sm p-3 outline-none placeholder:text-black/40 focus:border-black/60"
                 />
               </div>
               <div>
@@ -439,7 +439,7 @@ export default function BookingForm({ bookingRef }) {
                   value={form.notes}
                   onChange={(e) => update('notes', e.target.value)}
                   rows={3}
-                  className="w-full bg-[#0d0d0d] border border-[#333] rounded-lg text-white text-sm p-3 outline-none placeholder:text-gray-600 focus:border-[#F5C300] resize-none"
+                  className="w-full bg-black/10 border border-black/20 rounded-lg text-black text-sm p-3 outline-none placeholder:text-black/40 focus:border-black/60 resize-none"
                 />
               </div>
             </div>
@@ -447,7 +447,7 @@ export default function BookingForm({ bookingRef }) {
             <div className="flex gap-3">
               <button
                 onClick={() => setStep(2)}
-                className="flex-1 h-12 rounded-xl border border-[#333] text-gray-400 font-semibold text-sm hover:border-[#555] transition-all"
+                className="flex-1 h-12 rounded-xl border border-black/30 text-black/60 font-semibold text-sm hover:bg-black/10 transition-all"
               >
                 {t.backBtn}
               </button>
@@ -456,8 +456,8 @@ export default function BookingForm({ bookingRef }) {
                 disabled={!canProceedStep3}
                 className={`flex-[2] h-12 rounded-xl font-bold text-sm uppercase tracking-wider transition-all ${
                   canProceedStep3
-                    ? 'bg-[#F5C300] text-black hover:bg-yellow-400'
-                    : 'bg-[#1a1a1a] text-gray-600 cursor-not-allowed'
+                    ? 'bg-black text-[#F5C300] hover:bg-black/80'
+                    : 'bg-black/20 text-black/40 cursor-not-allowed'
                 }`}
               >
                 {t.paymentBtn}
