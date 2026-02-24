@@ -442,16 +442,16 @@ export default function BookingForm({ bookingRef }) {
 
             <div className="flex gap-3">
               <button
-                onClick={() => setStep(1)}
+                onClick={() => setStep(2)}
                 className="flex-1 h-12 rounded-xl border border-[#333] text-gray-400 font-semibold text-sm hover:border-[#555] transition-all"
               >
                 {t.backBtn}
               </button>
               <button
-                onClick={() => setStep(3)}
-                disabled={!canProceedStep2}
+                onClick={() => setStep(4)}
+                disabled={!canProceedStep3}
                 className={`flex-[2] h-12 rounded-xl font-bold text-sm uppercase tracking-wider transition-all ${
-                  canProceedStep2
+                  canProceedStep3
                     ? 'bg-[#F5C300] text-black hover:bg-yellow-400'
                     : 'bg-[#1a1a1a] text-gray-600 cursor-not-allowed'
                 }`}
@@ -462,8 +462,8 @@ export default function BookingForm({ bookingRef }) {
           </div>
         )}
 
-        {/* STEP 3 — Payment */}
-        {step === 3 && (
+        {/* STEP 4 — Payment */}
+        {step === 4 && (
           <div className="space-y-3">
             {/* Summary */}
             <div className="bg-[#141414] border border-[#2a2a2a] rounded-xl p-4 space-y-2">
