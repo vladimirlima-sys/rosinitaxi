@@ -1,9 +1,11 @@
 import React, { useState, useRef, useEffect } from 'react';
 import { ChevronLeft, ChevronRight, Calendar } from 'lucide-react';
 import { useLang } from '@/components/LanguageContext';
+import { translations } from '@/components/translations';
 
 export default function DatePicker({ value, onChange }) {
   const { lang } = useLang();
+  const t = translations[lang];
   const [isOpen, setIsOpen] = useState(false);
   const [currentMonth, setCurrentMonth] = useState(new Date());
   const pickerRef = useRef(null);
@@ -106,7 +108,7 @@ export default function DatePicker({ value, onChange }) {
         onClick={() => setIsOpen(!isOpen)}
         className="w-full bg-white/10 border border-white/20 rounded-lg text-white text-sm p-3 outline-none placeholder:text-white/40 focus:border-white/60 flex items-center justify-between"
       >
-        <span>{value ? formatDisplayDate(value) : 'Selecione uma data'}</span>
+        <span>{value ? formatDisplayDate(value) : t.selectDate}</span>
         <Calendar className="w-4 h-4 text-white/40" />
       </button>
 

@@ -120,6 +120,7 @@ export const translations = {
     noTollsIncluded: '* Valor não inclui pedágios',
     shortNoticeWarning: 'Reservas com menos de 90 minutos de antecedência serão confirmadas por telefone pelo nosso escritório em até 10 minutos.',
     luggageLabel: 'bagagens',
+    selectDate: 'Selecione uma data',
   },
   fr: {
     badge: 'Disponible 24h/24 — 7j/7',
@@ -243,6 +244,7 @@ export const translations = {
     noTollsIncluded: '* Valeur non inclusive des péages',
     shortNoticeWarning: 'Les réservations avec moins de 90 minutes de préavis seront confirmées par téléphone par notre bureau dans les 10 minutes.',
     luggageLabel: 'bagages',
+    selectDate: 'Sélectionnez une date',
   },
   en: {
     badge: 'Available 24/7 — Every Day',
@@ -366,6 +368,7 @@ export const translations = {
     noTollsIncluded: '* Price does not include tolls',
     shortNoticeWarning: 'Bookings with less than 90 minutes notice will be confirmed by phone by our office within 10 minutes.',
     luggageLabel: 'luggage',
+    selectDate: 'Select a date',
   },
   de: {
     badge: 'Verfügbar 24/7 — Jeden Tag',
@@ -488,6 +491,7 @@ export const translations = {
     noTollsIncluded: '* Preis nicht inklusive Mautgebühren',
     shortNoticeWarning: 'Buchungen mit weniger als 90 Minuten Vorlauf werden telefonisch von unserem Büro innerhalb von 10 Minuten bestätigt.',
     luggageLabel: 'Gepäckstücke',
+    selectDate: 'Wählen Sie ein Datum',
   },
   it: {
     badge: 'Disponibile 24/7 — Ogni giorno',
@@ -611,6 +615,7 @@ export const translations = {
     noTollsIncluded: '* Prezzo non include pedaggi',
     shortNoticeWarning: 'Le prenotazioni con meno di 90 minuti di preavviso saranno confermate telefonicamente dal nostro ufficio entro 10 minuti.',
     luggageLabel: 'bagagli',
+    selectDate: 'Seleziona una data',
   },
   es: {
     badge: 'Disponible 24/7 — Todos los días',
@@ -733,6 +738,7 @@ export const translations = {
     noTollsIncluded: '* Precio no incluye peajes',
     shortNoticeWarning: 'Las reservas con menos de 90 minutos de antelación serán confirmadas por teléfono por nuestra oficina en un plazo de 10 minutos.',
     luggageLabel: 'equipajes',
+    selectDate: 'Selecciona una fecha',
   },
   nl: {
     badge: 'Beschikbaar 24/7 — Elke dag',
@@ -855,5 +861,10 @@ export const translations = {
     noTollsIncluded: '* Prijs exclusief tolkosten',
     shortNoticeWarning: 'Boekingen met minder dan 90 minuten vooraankondiging worden telefonisch bevestigd door ons kantoor binnen 10 minuten.',
     luggageLabel: 'koffers',
+    selectDate: 'Selecteer een datum',
+  },
+  it: {
+    badge: 'Disponibile 24/7 — Ogni giorno',
+    selectDate: 'Seleziona una data',
   },
 };
