@@ -726,6 +726,7 @@ export const translations = {
     markerDeparture: 'SALIDA',
     markerArrival: 'LLEGADA',
     noTollsIncluded: '* Precio no incluye peajes',
+    shortNoticeWarning: 'Las reservas con menos de 90 minutos de antelación serán confirmadas por teléfono por nuestra oficina en un plazo de 10 minutos.',
   },
   nl: {
     badge: 'Beschikbaar 24/7 — Elke dag',
