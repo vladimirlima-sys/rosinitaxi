@@ -14,7 +14,7 @@ export default function BookingForm({ bookingRef }) {
   const { lang } = useLang();
   const t = translations[lang];
 
-  const [step, setStep] = useState(1); // 1=booking form, 2=personal info, 3=payment, 4=confirm
+  const [step, setStep] = useState(1); // 1=booking form, 2=vehicle, 3=personal info, 4=payment, 5=confirm
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [paymentMethod, setPaymentMethod] = useState('stripe');
   const [isLocating, setIsLocating] = useState(false);
