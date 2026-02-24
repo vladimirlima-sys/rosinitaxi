@@ -453,7 +453,7 @@ export const translations = {
     availableNow: 'Jetzt verfügbar',
     vehicleFeatures: {
       economic: ['Komfortable Limousine', 'Klimaanlage', 'Kostenloses WLAN', 'Gepäck inklusive'],
-      comfort: ['Geräumigere Fahrzeuge', 'Kostenloses WLAN', 'Wasser', '3 Gepäckstücke inklusive'],
+      comfort: ['Kostenloses WLAN', 'Wasser', '3 Gepäckstücke inklusive'],
     },
     perKm: '/km',
     journeyDistance: 'Entfernung',
