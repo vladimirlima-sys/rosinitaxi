@@ -552,7 +552,7 @@ export default function BookingForm({ bookingRef }) {
 
         {/* Footer links */}
         <div className="mt-8 text-center">
-          <a href="tel:+41796505347" className="text-black/40 text-xs hover:text-black transition-colors">
+          <a href="tel:+41796505347" className="text-white/40 text-xs hover:text-white transition-colors">
             +41 79 650 53 47
           </a>
         </div>
