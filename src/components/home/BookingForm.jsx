@@ -146,7 +146,7 @@ export default function BookingForm({ bookingRef }) {
           passengers: form.passengers, notes: form.notes, payment_method: paymentMethod, language: lang
         });
         toast.success('Réservation confirmée!');
-        setStep(4);
+        setStep(5);
         setIsSubmitting(false);
       }
     } catch (err) {
