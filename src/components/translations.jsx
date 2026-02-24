@@ -605,6 +605,7 @@ export const translations = {
     markerDeparture: 'PARTENZA',
     markerArrival: 'ARRIVO',
     noTollsIncluded: '* Prezzo non include pedaggi',
+    shortNoticeWarning: 'Le prenotazioni con meno di 90 minuti di preavviso saranno confermate telefonicamente dal nostro ufficio entro 10 minuti.',
   },
   es: {
     badge: 'Disponible 24/7 — Todos los días',
