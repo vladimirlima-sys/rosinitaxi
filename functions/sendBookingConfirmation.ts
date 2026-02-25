@@ -212,18 +212,9 @@ Deno.serve(async (req) => {
     const sendGmailEmail = async (to, subject, htmlBody) => {
       const accessToken = await base44.asServiceRole.connectors.getAccessToken('gmail');
       
-      const emailMessage = `From: taxirosini@gmail.com\r\nTo: ${to}\r\nSubject: ${subject}\r\nMIME-Version: 1.0\r\nContent-Type: text/html; charset=UTF-8\r\n\r\n${htmlBody}`;
+      const emailMessage = `From: taxirosini@gmail.com\r\nTo: ${to}\r\nSubject: =?UTF-8?B?${btoa(subject)}?=\r\nMIME-Version: 1.0\r\nContent-Type: text/html; charset=UTF-8\r\nContent-Transfer-Encoding: base64\r\n\r\n${btoa(htmlBody)}`;
       
-      // Encode using TextEncoder for proper UTF-8 handling
-      const encoder = new TextEncoder();
-      const messageBytes = encoder.encode(emailMessage);
-      
-      // Convert to base64url
-      let binaryString = '';
-      for (let i = 0; i < messageBytes.length; i++) {
-        binaryString += String.fromCharCode(messageBytes[i]);
-      }
-      const base64 = btoa(binaryString).replace(/\+/g, '-').replace(/\//g, '_').replace(/=/g, '');
+      const base64Message = btoa(emailMessage).replace(/\+/g, '-').replace(/\//g, '_').replace(/=/g, '');
       
       const response = await fetch('https://www.googleapis.com/gmail/v1/users/me/messages/send', {
         method: 'POST',
@@ -231,7 +222,7 @@ Deno.serve(async (req) => {
           'Authorization': `Bearer ${accessToken}`,
           'Content-Type': 'application/json'
         },
-        body: JSON.stringify({ raw: base64 })
+        body: JSON.stringify({ raw: base64Message })
       });
       
       if (!response.ok) {
