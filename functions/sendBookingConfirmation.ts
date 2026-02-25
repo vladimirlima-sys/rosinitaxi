@@ -212,13 +212,11 @@ Deno.serve(async (req) => {
     const sendGmailEmail = async (to, subject, htmlBody) => {
       const accessToken = await base44.asServiceRole.connectors.getAccessToken('gmail');
       
-      // Encode subject with UTF-8 header for proper display of special characters
-      const encodedSubject = `=?UTF-8?B?${encode(subject, true)}?=`;
+      // Build MIME message with proper UTF-8 encoding
+      const emailMessage = `From: taxirosini@gmail.com\r\nTo: ${to}\r\nSubject: ${subject}\r\nMIME-Version: 1.0\r\nContent-Type: text/html; charset=UTF-8\r\n\r\n${htmlBody}`;
       
-      const emailMessage = `From: taxirosini@gmail.com\r\nTo: ${to}\r\nSubject: ${encodedSubject}\r\nMIME-Version: 1.0\r\nContent-Type: text/html; charset=UTF-8\r\nContent-Transfer-Encoding: base64\r\n\r\n${encode(htmlBody, true)}`;
-      
-      // Encode the entire message
-      const base64Message = encode(emailMessage, true).replace(/\+/g, '-').replace(/\//g, '_').replace(/=/g, '');
+      // Encode to base64url for Gmail raw API
+      const base64Message = encode(emailMessage).replace(/\+/g, '-').replace(/\//g, '_').replace(/=/g, '');
       
       const response = await fetch('https://www.googleapis.com/gmail/v1/users/me/messages/send', {
         method: 'POST',
