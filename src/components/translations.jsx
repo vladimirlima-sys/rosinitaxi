@@ -1,3 +1,4 @@
+
 export const translations = {
   pt: {
     badge: 'Disponível 24h/24 — 7 dias/7',
@@ -118,9 +119,9 @@ export const translations = {
     locationDenied: 'Permissão de localização negada',
     locationError: 'Erro ao obter localização',
     noTollsIncluded: '* Valor não inclui pedágios',
-    shortNoticeWarning: '⚠️ Atenção: A viagem está marcada em menos de 75 minutos. Nenhum e-mail de confirmação será enviado. A nossa equipa ligará para confirmar a disponibilidade em até 10 minutos.',
+    shortNoticeWarning: '⚠️ Atenção: Reservas com menos de 90 minutos para a hora de partida serão confirmadas em até 10 minutos via telefone ou e-mail pela nossa equipa.',
     shortNoticeConfirmTitle: 'Pedido recebido!',
-    shortNoticeConfirmMsg: (name) => `Obrigado ${name}. Seu pedido foi recebido. Como a viagem é em menos de 75 minutos, não será enviado e-mail de confirmação. Nossa equipe entrará em contato por telefone em até 10 minutos para confirmar a disponibilidade.`,
+    shortNoticeConfirmMsg: (name) => `Obrigado ${name}. Seu pedido foi recebido. Nossa equipa irá confirmar a disponibilidade em até 10 minutos via telefone ou e-mail.`,
     luggageLabel: 'bagagens',
     selectDate: 'Selecione uma data',
   },
