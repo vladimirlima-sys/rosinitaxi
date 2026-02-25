@@ -207,14 +207,27 @@ Deno.serve(async (req) => {
     </body>
     </html>`;
 
-    // Send emails using Base44 SendEmail integration
-    const sendEmail = async (to, subject, htmlBody) => {
-      return await base44.integrations.Core.SendEmail({
-        to,
-        subject,
-        body: htmlBody,
-        from_name: 'Rosini Transfert'
+    // Send emails using Gmail connector
+    const sendGmailEmail = async (to, subject, htmlBody) => {
+      const accessToken = await base44.asServiceRole.connectors.getAccessToken('gmail');
+      
+      const email = `To: ${to}\r\nSubject: ${subject}\r\nMIME-Version: 1.0\r\nContent-Type: text/html; charset=UTF-8\r\n\r\n${htmlBody}`;
+      const encodedEmail = btoa(email).replace(/\+/g, '-').replace(/\//g, '_').replace(/=/g, '');
+      
+      const response = await fetch('https://www.googleapis.com/gmail/v1/users/me/messages/send', {
+        method: 'POST',
+        headers: {
+          'Authorization': `Bearer ${accessToken}`,
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({ raw: encodedEmail })
       });
+      
+      if (!response.ok) {
+        const error = await response.text();
+        throw new Error(`Gmail API error: ${response.status} - ${error}`);
+      }
+      return response.json();
     };
 
     // Subject lines per language
@@ -230,7 +243,7 @@ Deno.serve(async (req) => {
     // Send confirmation email to client (only if not short notice)
     if (!skip_client_email && client_email) {
       try {
-        await sendEmail(client_email, clientSubject, clientEmailBody);
+        await sendGmailEmail(client_email, clientSubject, clientEmailBody);
         console.log(`Confirmation email sent to ${client_email}`);
       } catch (emailError) {
         console.error(`Error sending client email to ${client_email}:`, emailError);
@@ -243,8 +256,8 @@ Deno.serve(async (req) => {
     if (client_name && departure_point && arrival_point) {
       const adminSubjectPrefix = skip_client_email ? '⚡ URGENTE — Moins de 90 min' : '🔔 Nouvelle réservation';
       try {
-        await sendEmail(
-          'info@taxirosini.com',
+        await sendGmailEmail(
+          'taxirosini@gmail.com',
           `${adminSubjectPrefix} — ${client_name} | ${departure_point} → ${arrival_point} | CHF ${total_price}`,
           adminEmailBody
         );
