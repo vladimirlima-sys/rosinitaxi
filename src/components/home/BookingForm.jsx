@@ -119,12 +119,25 @@ export default function BookingForm({ bookingRef }) {
 
   const totalPrice = calculateTotalPrice();
 
-  const isShortNotice = (() => {
-    if (!form.departure_date || !form.departure_time) return false;
-    const departure = new Date(`${form.departure_date}T${form.departure_time}`);
-    const diffMinutes = (departure - new Date()) / 60000;
-    return diffMinutes >= 0 && diffMinutes < 90;
-  })();
+  const [isShortNotice, setIsShortNotice] = useState(false);
+
+  useEffect(() => {
+    if (!form.departure_date || !form.departure_time) {
+      setIsShortNotice(false);
+      return;
+    }
+    try {
+      const [year, month, day] = form.departure_date.split('-').map(Number);
+      const [hours, minutes] = form.departure_time.split(':').map(Number);
+      const departure = new Date(year, month - 1, day, hours, minutes);
+      const now = new Date();
+      const diffMinutes = (departure.getTime() - now.getTime()) / 60000;
+      console.log('[ShortNotice] departure:', departure, 'now:', now, 'diffMinutes:', diffMinutes);
+      setIsShortNotice(diffMinutes >= 0 && diffMinutes < 90);
+    } catch(e) {
+      setIsShortNotice(false);
+    }
+  }, [form.departure_date, form.departure_time]);
 
   const canProceedStep1 = form.departure_point && form.arrival_point && form.departure_date && form.departure_time && estimatedDistance > 0;
   const canProceedStep2 = !!form.vehicle_type;
