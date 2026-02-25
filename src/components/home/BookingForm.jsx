@@ -287,6 +287,14 @@ export default function BookingForm({ bookingRef }) {
               </div>
             </div>
 
+            {/* Short notice warning - below date/time */}
+            {isShortNotice && (
+              <div className="bg-[#F5C300]/20 border border-[#F5C300] rounded-xl p-4 flex gap-3 items-start">
+                <span className="text-black text-lg mt-0.5">⚠️</span>
+                <p className="text-black text-sm leading-relaxed font-medium">{t.shortNoticeWarning}</p>
+              </div>
+            )}
+
             {/* Flight (optional) */}
             <div className="bg-black border border-black/40 rounded-xl p-4">
               <label className={labelClass}><Plane className="inline w-3 h-3 mr-1" />{t.flightLabel}</label>
