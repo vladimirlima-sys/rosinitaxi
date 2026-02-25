@@ -1,4 +1,5 @@
 import { createClientFromRequest } from 'npm:@base44/sdk@0.8.6';
+import { encode as btoa } from 'npm:js-base64';
 
 Deno.serve(async (req) => {
   try {
