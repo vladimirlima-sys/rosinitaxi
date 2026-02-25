@@ -111,13 +111,18 @@ export default function BookingForm({ bookingRef }) {
 
   const totalPrice = calculateTotalPrice();
 
-  const isShortNotice = (() => {
-    if (!form.departure_date || !form.departure_time) return false;
+  const [isShortNotice, setIsShortNotice] = useState(false);
+
+  useEffect(() => {
+    if (!form.departure_date || !form.departure_time) {
+      setIsShortNotice(false);
+      return;
+    }
     const departure = new Date(`${form.departure_date}T${form.departure_time}`);
     const now = new Date();
     const diffMinutes = (departure - now) / 60000;
-    return diffMinutes >= 0 && diffMinutes < 75;
-  })();
+    setIsShortNotice(diffMinutes >= 0 && diffMinutes < 75);
+  }, [form.departure_date, form.departure_time]);
 
   const canProceedStep1 = form.departure_point && form.arrival_point && form.departure_date && form.departure_time && estimatedDistance > 0;
   const canProceedStep2 = !!form.vehicle_type;
