@@ -207,25 +207,14 @@ Deno.serve(async (req) => {
     </body>
     </html>`;
 
-    // Send emails using Gmail connector
+    // Send emails using Base44 SendEmail integration
     const sendEmail = async (to, subject, htmlBody) => {
-      const accessToken = await base44.asServiceRole.connectors.getAccessToken('gmail');
-      const message = `To: ${to}\r\nSubject: ${subject}\r\nContent-Type: text/html; charset=UTF-8\r\n\r\n${htmlBody}`;
-      const encodedMessage = btoa(message).replace(/\+/g, '-').replace(/\//g, '_').replace(/=/g, '');
-      
-      const response = await fetch('https://www.googleapis.com/gmail/v1/users/me/messages/send', {
-        method: 'POST',
-        headers: {
-          'Authorization': `Bearer ${accessToken}`,
-          'Content-Type': 'application/json'
-        },
-        body: JSON.stringify({ raw: encodedMessage })
+      return await base44.integrations.Core.SendEmail({
+        to,
+        subject,
+        body: htmlBody,
+        from_name: 'Rosini Transfert'
       });
-      
-      if (!response.ok) {
-        throw new Error(`Gmail API error: ${response.statusText}`);
-      }
-      return response.json();
     };
 
     // Subject lines per language
