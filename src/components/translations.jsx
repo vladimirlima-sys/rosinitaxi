@@ -863,9 +863,7 @@ export const translations = {
     luggageLabel: 'koffers',
     selectDate: 'Selecteer een datum',
   },
-  it: {
-    badge: 'Disponibile 24/7 — Ogni giorno',
-    paymentMethod: 'Metodo di pagamento',
+};
     stripeLabel: 'Stripe (Carta di credito)',
     stripeDesc: 'Sicuro',
     twintLabel: 'TWINT',
