@@ -366,13 +366,13 @@ export default function BookingForm({ bookingRef }) {
             <div
               onClick={() => update('vehicle_type', 'economic')}
               className={`rounded-xl p-4 cursor-pointer transition-all border-2 ${
-                form.vehicle_type === 'economic' ? 'bg-black text-white border-black' : 'bg-black/20 border-transparent hover:bg-black/30'
+                form.vehicle_type === 'economic' ? 'bg-black text-white border-black' : 'bg-[#F5C300] border-[#F5C300] hover:bg-[#e6b800]'
               }`}
             >
               <div className="flex items-center justify-between mb-2">
                 <div>
-                  <p className={`font-semibold text-sm ${form.vehicle_type === 'economic' ? 'text-white' : 'text-black'}`}>STANDARD</p>
-                  <p className={`text-xs ${form.vehicle_type === 'economic' ? 'text-white/60' : 'text-black/50'}`}>1–3 {t.persons} · 2 {t.luggageLabel}</p>
+                  <p className={`font-bold text-base ${form.vehicle_type === 'economic' ? 'text-white' : 'text-black'}`}>STANDARD</p>
+                  <p className={`text-xs ${form.vehicle_type === 'economic' ? 'text-white/60' : 'text-black/60'}`}>1–3 {t.persons} · 2 {t.luggageLabel}</p>
                 </div>
                 <div className="text-right">
                   {priceSettings && estimatedDistance > 0 && (
