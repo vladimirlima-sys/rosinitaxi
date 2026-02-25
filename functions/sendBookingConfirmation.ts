@@ -344,18 +344,17 @@ Deno.serve(async (req) => {
       console.log(`Short notice booking — skipping client email for ${client_email}`);
     }
 
-    // Send notification email to admin
+    // Send receipt to company
     if (client_name && departure_point && arrival_point) {
-      const adminSubjectPrefix = skip_client_email ? '⚡ URGENTE — Moins de 90 min' : '🔔 Nouvelle réservation';
       try {
         await sendGmailEmail(
           'taxirosini@gmail.com',
-          `${adminSubjectPrefix} — ${client_name} | ${departure_point} → ${arrival_point} | CHF ${total_price}`,
-          adminEmailBody
+          `REÇU - ${client_name} | ${departure_point} → ${arrival_point} | ${departure_date}`,
+          receiptBody
         );
-        console.log(`Admin notification sent for booking by ${client_name}`);
-      } catch (adminEmailError) {
-        console.error(`Error sending admin email:`, adminEmailError);
+        console.log(`Receipt sent to company for booking by ${client_name}`);
+      } catch (receiptError) {
+        console.error(`Error sending receipt:`, receiptError);
       }
     }
 
