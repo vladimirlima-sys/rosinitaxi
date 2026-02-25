@@ -863,7 +863,7 @@ export const translations = {
     luggageLabel: 'koffers',
     selectDate: 'Selecteer een datum',
   },
-};
+  REMOVE_BELOW_MARKER: true,
     stripeLabel: 'Stripe (Carta di credito)',
     stripeDesc: 'Sicuro',
     twintLabel: 'TWINT',
