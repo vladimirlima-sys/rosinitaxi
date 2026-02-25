@@ -338,13 +338,6 @@ export default function BookingForm({ bookingRef }) {
               </div>
             )}
 
-            {isShortNotice && (
-              <div className="bg-[#F5C300]/20 border border-[#F5C300] rounded-xl p-4 flex gap-3 items-start">
-                <span className="text-black text-lg mt-0.5">⚠️</span>
-                <p className="text-black text-sm leading-relaxed font-medium">{t.shortNoticeWarning}</p>
-              </div>
-            )}
-
             <button
               onClick={() => setStep(2)}
               disabled={!canProceedStep1}
