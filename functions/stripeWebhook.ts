@@ -3,42 +3,6 @@ import { createClientFromRequest } from 'npm:@base44/sdk@0.8.6';
 
 const stripe = new Stripe(Deno.env.get("STRIPE_SECRET_KEY"));
 
-const base64Encode = (str) => {
-  const encoder = new TextEncoder();
-  const bytes = encoder.encode(str);
-  let binary = '';
-  for (let i = 0; i < bytes.byteLength; i++) {
-    binary += String.fromCharCode(bytes[i]);
-  }
-  return btoa(binary);
-};
-
-const sendEmailViaGmail = async (accessToken, to, subject, htmlBody) => {
-  const emailMessage =
-    `From: Rosini Transfert <taxirosini@gmail.com>\r\n` +
-    `To: ${to}\r\n` +
-    `Subject: =?UTF-8?B?${base64Encode(subject)}?=\r\n` +
-    `MIME-Version: 1.0\r\n` +
-    `Content-Type: text/html; charset="UTF-8"\r\n` +
-    `Content-Transfer-Encoding: base64\r\n\r\n` +
-    base64Encode(htmlBody);
-
-  const encodedMessage = base64Encode(emailMessage)
-    .replace(/\+/g, '-').replace(/\//g, '_').replace(/=/g, '');
-
-  const response = await fetch('https://www.googleapis.com/gmail/v1/users/me/messages/send', {
-    method: 'POST',
-    headers: { 'Authorization': `Bearer ${accessToken}`, 'Content-Type': 'application/json' },
-    body: JSON.stringify({ raw: encodedMessage }),
-  });
-
-  if (!response.ok) {
-    const error = await response.json();
-    throw new Error(`Gmail send failed: ${error.error?.message}`);
-  }
-  return response.json();
-};
-
 Deno.serve(async (req) => {
   const body = await req.text();
   const signature = req.headers.get("stripe-signature");
@@ -87,7 +51,7 @@ Deno.serve(async (req) => {
   </div>
   <div style="text-align:center;padding:24px;background:#111;border:1px solid #222;border-radius:12px;">
     <p style="color:#888;margin:0 0 4px;font-size:13px;">Des questions ? Contactez-nous</p>
-    <a href="mailto:taxirosini@gmail.com" style="color:#C9A96E;text-decoration:none;">taxirosini@gmail.com</a>
+    <a href="mailto:info@taxirosini.com" style="color:#C9A96E;text-decoration:none;">info@taxirosini.com</a>
   </div>
   <p style="color:#444;text-align:center;font-size:11px;margin-top:24px;">© ${year} Rosini Transfert. Tous droits réservés.</p>
 </div></body></html>`;
@@ -120,22 +84,25 @@ Deno.serve(async (req) => {
     const base44 = createClientFromRequest(req);
 
     try {
-      const accessToken = await base44.asServiceRole.connectors.getAccessToken('gmail');
-
       if (clientEmail) {
-        await sendEmailViaGmail(accessToken, clientEmail, `✅ Réservation confirmée — ${departure} → ${arrival}`, clientHtml);
+        await base44.integrations.Core.SendEmail({
+          to: clientEmail,
+          subject: `✅ Réservation confirmée — ${departure} → ${arrival}`,
+          body: clientHtml,
+          from_name: 'Rosini Transfert'
+        });
         console.log("Confirmation email sent to client:", clientEmail);
       }
 
-      await sendEmailViaGmail(
-        accessToken,
-        'taxirosini@gmail.com',
-        `🔔 Nouvelle réservation Stripe — ${clientName} | ${departure} → ${arrival} | CHF ${amount}`,
-        adminHtml
-      );
+      await base44.integrations.Core.SendEmail({
+        to: 'info@taxirosini.com',
+        subject: `🔔 Nouvelle réservation Stripe — ${clientName} | ${departure} → ${arrival} | CHF ${amount}`,
+        body: adminHtml,
+        from_name: 'Rosini Transfert'
+      });
       console.log("Admin notification sent");
     } catch (err) {
-      console.error("Failed to send emails via Gmail:", err.message);
+      console.error("Failed to send emails:", err.message);
     }
 
     // Update booking payment status
