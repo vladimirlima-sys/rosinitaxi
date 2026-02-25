@@ -265,14 +265,13 @@ Deno.serve(async (req) => {
     };
     const clientSubject = subjectMap[language] || subjectMap.fr;
 
-    // Send confirmation email to client
-    await sendEmailViaGmail(
-      client_email,
-      clientSubject,
-      clientEmailBody
-    );
-
-    console.log(`Confirmation email sent to ${client_email}`);
+    // Send confirmation email to client (only if not short notice)
+    if (!skip_client_email) {
+      await sendEmailViaGmail(client_email, clientSubject, clientEmailBody);
+      console.log(`Confirmation email sent to ${client_email}`);
+    } else {
+      console.log(`Short notice booking — skipping client email for ${client_email}`);
+    }
 
     // Send notification email to admin
     await sendEmailViaGmail(
