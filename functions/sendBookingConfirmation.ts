@@ -7,8 +7,7 @@ Deno.serve(async (req) => {
 
     const { client_name, client_email, client_phone, departure_point, arrival_point, departure_date, departure_time, flight_number, vehicle_type, distance_km, total_price, passengers, notes, payment_method, language = 'fr', skip_client_email = false } = body;
 
-    // Get Gmail access token from OAuth
-    const accessToken = await base44.asServiceRole.connectors.getAccessToken('gmail');
+
 
     const vehicleLabel = vehicle_type === 'economic' ? 'Standard' : 'Confort';
     const flightInfo = flight_number ? `<tr><td style="padding:6px 0;color:#888;">Vol</td><td style="padding:6px 0;color:#fff;">${flight_number}</td></tr>` : '';
@@ -163,7 +162,7 @@ Deno.serve(async (req) => {
 
     <div style="text-align:center;padding:24px;background:#111;border:1px solid #222;border-radius:12px;">
       <p style="color:#888;margin:0 0 4px;font-size:13px;">${t.contactText}</p>
-      <a href="mailto:taxirosini@gmail.com" style="color:#C9A96E;text-decoration:none;">taxirosini@gmail.com</a>
+      <a href="mailto:info@taxirosini.com" style="color:#C9A96E;text-decoration:none;">info@taxirosini.com</a>
     </div>
 
     <p style="color:#444;text-align:center;font-size:11px;margin-top:24px;">${t.copyright(new Date().getFullYear())}</p>
@@ -208,51 +207,14 @@ Deno.serve(async (req) => {
     </body>
     </html>`;
 
-    // Helper to base64 encode strings
-    const base64Encode = (str) => {
-      const encoder = new TextEncoder();
-      const bytes = encoder.encode(str);
-      let binary = '';
-      for (let i = 0; i < bytes.byteLength; i++) {
-        binary += String.fromCharCode(bytes[i]);
-      }
-      return btoa(binary);
-    };
-
-    // Send emails using Gmail API
-    const sendEmailViaGmail = async (to, subject, htmlBody) => {
-      // Encode email message properly for RFC 2822 format
-      const emailMessage = 
-        `From: Rosini Transfert <taxirosini@gmail.com>\r\n` +
-        `To: ${to}\r\n` +
-        `Subject: =?UTF-8?B?${base64Encode(subject)}?=\r\n` +
-        `MIME-Version: 1.0\r\n` +
-        `Content-Type: text/html; charset="UTF-8"\r\n` +
-        `Content-Transfer-Encoding: base64\r\n\r\n` +
-        base64Encode(htmlBody);
-
-      const encodedMessage = base64Encode(emailMessage)
-        .replace(/\+/g, '-')
-        .replace(/\//g, '_')
-        .replace(/=/g, '');
-
-      const response = await fetch('https://www.googleapis.com/gmail/v1/users/me/messages/send', {
-        method: 'POST',
-        headers: {
-          'Authorization': `Bearer ${accessToken}`,
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({
-          raw: encodedMessage,
-        }),
+    // Send emails using Base44 SendEmail integration
+    const sendEmail = async (to, subject, htmlBody) => {
+      return await base44.integrations.Core.SendEmail({
+        to,
+        subject,
+        body: htmlBody,
+        from_name: 'Rosini Transfert'
       });
-
-      if (!response.ok) {
-        const error = await response.json();
-        throw new Error(`Failed to send email: ${error.error.message}`);
-      }
-
-      return response.json();
     };
 
     // Subject lines per language
@@ -267,7 +229,7 @@ Deno.serve(async (req) => {
 
     // Send confirmation email to client (only if not short notice)
     if (!skip_client_email) {
-      await sendEmailViaGmail(client_email, clientSubject, clientEmailBody);
+      await sendEmail(client_email, clientSubject, clientEmailBody);
       console.log(`Confirmation email sent to ${client_email}`);
     } else {
       console.log(`Short notice booking — skipping client email for ${client_email}`);
@@ -275,8 +237,8 @@ Deno.serve(async (req) => {
 
     // Send notification email to admin
     const adminSubjectPrefix = skip_client_email ? '⚡ URGENTE — Moins de 75 min' : '🔔 Nouvelle réservation';
-    await sendEmailViaGmail(
-      'taxirosini@gmail.com',
+    await sendEmail(
+      'info@taxirosini.com',
       `${adminSubjectPrefix} — ${client_name} | ${departure_point} → ${arrival_point} | CHF ${total_price}`,
       adminEmailBody
     );
