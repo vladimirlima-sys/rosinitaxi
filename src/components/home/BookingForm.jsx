@@ -524,13 +524,7 @@ export default function BookingForm({ bookingRef }) {
               <p className="text-white/40 text-xs italic">{t.noTollsIncluded}</p>
             </div>
 
-            {/* Short notice warning on payment step */}
-            {isShortNotice && (
-              <div className="bg-[#F5C300]/20 border border-[#F5C300] rounded-xl p-4 flex gap-3 items-start">
-                <span className="text-black text-lg mt-0.5">⚠️</span>
-                <p className="text-black text-sm leading-relaxed font-medium">{t.shortNoticeWarning}</p>
-              </div>
-            )}
+
 
             {/* Payment method */}
             <div className="bg-black border border-black/40 rounded-xl p-4 space-y-2">
