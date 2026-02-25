@@ -212,15 +212,24 @@ Deno.serve(async (req) => {
     const sendGmailEmail = async (to, subject, htmlBody) => {
       const accessToken = await base44.asServiceRole.connectors.getAccessToken('gmail');
       
-      // Encode subject header properly
-      const subjectEncoded = Buffer.from(subject, 'utf8').toString('base64');
-      const subjectHeader = `=?UTF-8?B?${subjectEncoded}?=`;
+      // Create MIME message with proper headers
+      const lines = [
+        `From: taxirosini@gmail.com`,
+        `To: ${to}`,
+        `Subject: ${subject}`,
+        `MIME-Version: 1.0`,
+        `Content-Type: text/html; charset="UTF-8"`,
+        ``,
+        htmlBody
+      ];
       
-      // Build MIME message - keep body as plain UTF-8
-      const emailMessage = `From: taxirosini@gmail.com\r\nTo: ${to}\r\nSubject: ${subjectHeader}\r\nMIME-Version: 1.0\r\nContent-Type: text/html; charset=UTF-8\r\nContent-Transfer-Encoding: 8bit\r\n\r\n${htmlBody}`;
+      const emailMessage = lines.join('\r\n');
       
-      // Encode entire message to base64url for Gmail API
-      const base64Message = Buffer.from(emailMessage, 'utf8').toString('base64').replace(/\+/g, '-').replace(/\//g, '_').replace(/=/g, '');
+      // Convert to base64url for Gmail API
+      const base64Message = btoa(unescape(encodeURIComponent(emailMessage)))
+        .replace(/\+/g, '-')
+        .replace(/\//g, '_')
+        .replace(/=/g, '');
       
       const response = await fetch('https://www.googleapis.com/gmail/v1/users/me/messages/send', {
         method: 'POST',
