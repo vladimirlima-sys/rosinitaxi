@@ -1,4 +1,3 @@
-
 export const translations = {
   pt: {
     badge: 'Disponível 24h/24 — 7 dias/7',
@@ -119,7 +118,9 @@ export const translations = {
     locationDenied: 'Permissão de localização negada',
     locationError: 'Erro ao obter localização',
     noTollsIncluded: '* Valor não inclui pedágios',
-    shortNoticeWarning: 'Reservas com menos de 90 minutos de antecedência serão confirmadas por telefone pelo nosso escritório em até 10 minutos.',
+    shortNoticeWarning: '⚠️ Atenção: Esta reserva será confirmada por telefone pelo nosso escritório em no máximo 10 minutos.',
+    shortNoticeConfirmTitle: 'Pedido recebido!',
+    shortNoticeConfirmMsg: (name) => `Obrigado ${name}. Seu pedido de reserva foi recebido. Nossa equipe entrará em contato por telefone em até 10 minutos para confirmar.`,
     luggageLabel: 'bagagens',
     selectDate: 'Selecione uma data',
   },
