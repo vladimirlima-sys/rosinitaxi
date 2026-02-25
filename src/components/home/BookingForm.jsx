@@ -129,7 +129,7 @@ export default function BookingForm({ bookingRef }) {
     const departure = new Date(`${form.departure_date}T${form.departure_time}`);
     const now = new Date();
     const diffMinutes = (departure - now) / 60000;
-    setIsShortNotice(diffMinutes >= 0 && diffMinutes < 75);
+    setIsShortNotice(diffMinutes >= 0 && diffMinutes < 90);
   }, [form.departure_date, form.departure_time]);
 
   const canProceedStep1 = form.departure_point && form.arrival_point && form.departure_date && form.departure_time && estimatedDistance > 0;
