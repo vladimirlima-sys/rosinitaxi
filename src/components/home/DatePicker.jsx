@@ -63,8 +63,11 @@ export default function DatePicker({ value, onChange }) {
   };
 
   const handleDateClick = (day) => {
-    const date = new Date(currentMonth.getFullYear(), currentMonth.getMonth(), day);
-    const dateString = date.toISOString().split('T')[0];
+    const year = currentMonth.getFullYear();
+    const month = String(currentMonth.getMonth() + 1).padStart(2, '0');
+    const dayStr = String(day).padStart(2, '0');
+    const dateString = `${year}-${month}-${dayStr}`;
+    console.log('[DatePicker] selected:', dateString);
     onChange(dateString);
     setIsOpen(false);
   };
