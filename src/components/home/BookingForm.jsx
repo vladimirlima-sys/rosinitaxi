@@ -147,15 +147,27 @@ export default function BookingForm({ bookingRef }) {
         else throw new Error(response.data?.error || 'Erreur de paiement');
       } else {
         await base44.entities.Booking.create({ ...form, total_price: parseFloat(totalPrice), payment_status: 'pending', payment_method: paymentMethod, special_notes: form.notes });
-        await base44.functions.invoke('sendBookingConfirmation', {
-          client_name: form.client_name, client_email: form.client_email, client_phone: form.client_phone,
-          departure_point: form.departure_point, arrival_point: form.arrival_point,
-          departure_date: form.departure_date, departure_time: form.departure_time,
-          flight_number: form.flight_number, vehicle_type: form.vehicle_type,
-          distance_km: estimatedDistance, total_price: parseFloat(totalPrice),
-          passengers: form.passengers, notes: form.notes, payment_method: paymentMethod, language: lang
-        });
-        toast.success('Réservation confirmée!');
+        if (isShortNotice) {
+          // Short notice: only notify company, no client email
+          await base44.functions.invoke('sendBookingConfirmation', {
+            client_name: form.client_name, client_email: form.client_email, client_phone: form.client_phone,
+            departure_point: form.departure_point, arrival_point: form.arrival_point,
+            departure_date: form.departure_date, departure_time: form.departure_time,
+            flight_number: form.flight_number, vehicle_type: form.vehicle_type,
+            distance_km: estimatedDistance, total_price: parseFloat(totalPrice),
+            passengers: form.passengers, notes: form.notes, payment_method: paymentMethod, language: lang,
+            skip_client_email: true
+          });
+        } else {
+          await base44.functions.invoke('sendBookingConfirmation', {
+            client_name: form.client_name, client_email: form.client_email, client_phone: form.client_phone,
+            departure_point: form.departure_point, arrival_point: form.arrival_point,
+            departure_date: form.departure_date, departure_time: form.departure_time,
+            flight_number: form.flight_number, vehicle_type: form.vehicle_type,
+            distance_km: estimatedDistance, total_price: parseFloat(totalPrice),
+            passengers: form.passengers, notes: form.notes, payment_method: paymentMethod, language: lang
+          });
+        }
         setStep(5);
         setIsSubmitting(false);
       }
