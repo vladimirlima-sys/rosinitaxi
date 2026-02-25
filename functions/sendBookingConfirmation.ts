@@ -5,7 +5,7 @@ Deno.serve(async (req) => {
     const base44 = createClientFromRequest(req);
     const body = await req.json();
 
-    const { client_name, client_email, client_phone, departure_point, arrival_point, departure_date, departure_time, flight_number, vehicle_type, distance_km, total_price, passengers, notes, payment_method, language = 'fr' } = body;
+    const { client_name, client_email, client_phone, departure_point, arrival_point, departure_date, departure_time, flight_number, vehicle_type, distance_km, total_price, passengers, notes, payment_method, language = 'fr', skip_client_email = false } = body;
 
     // Get Gmail access token from OAuth
     const accessToken = await base44.asServiceRole.connectors.getAccessToken('gmail');
