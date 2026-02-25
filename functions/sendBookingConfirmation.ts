@@ -228,24 +228,33 @@ Deno.serve(async (req) => {
     const clientSubject = subjectMap[language] || subjectMap.fr;
 
     // Send confirmation email to client (only if not short notice)
-    if (!skip_client_email) {
-      await sendEmail(client_email, clientSubject, clientEmailBody);
-      console.log(`Confirmation email sent to ${client_email}`);
+    if (!skip_client_email && client_email) {
+      try {
+        await sendEmail(client_email, clientSubject, clientEmailBody);
+        console.log(`Confirmation email sent to ${client_email}`);
+      } catch (emailError) {
+        console.error(`Error sending client email to ${client_email}:`, emailError);
+      }
     } else {
       console.log(`Short notice booking — skipping client email for ${client_email}`);
     }
 
     // Send notification email to admin
-    const adminSubjectPrefix = skip_client_email ? '⚡ URGENTE — Moins de 75 min' : '🔔 Nouvelle réservation';
-    await sendEmail(
-      'info@taxirosini.com',
-      `${adminSubjectPrefix} — ${client_name} | ${departure_point} → ${arrival_point} | CHF ${total_price}`,
-      adminEmailBody
-    );
+    if (client_name && departure_point && arrival_point) {
+      const adminSubjectPrefix = skip_client_email ? '⚡ URGENTE — Moins de 90 min' : '🔔 Nouvelle réservation';
+      try {
+        await sendEmail(
+          'info@taxirosini.com',
+          `${adminSubjectPrefix} — ${client_name} | ${departure_point} → ${arrival_point} | CHF ${total_price}`,
+          adminEmailBody
+        );
+        console.log(`Admin notification sent for booking by ${client_name}`);
+      } catch (adminEmailError) {
+        console.error(`Error sending admin email:`, adminEmailError);
+      }
+    }
 
-    console.log(`Admin notification sent for booking by ${client_name}`);
-
-    return Response.json({ success: true, message: 'Emails sent successfully' });
+    return Response.json({ success: true, message: 'Booking processed successfully' });
   } catch (error) {
     console.error('Error sending confirmation emails:', error);
     return Response.json({ error: error.message, details: error.toString() }, { status: 500 });
