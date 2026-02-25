@@ -101,7 +101,8 @@ export default function RouteCalculator({ departure, arrival, onRouteCalculated 
     };
 
     calculateRoute();
-  }, [departure, arrival, onRouteCalculated, t]);
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [departure, arrival]);
 
   return null;
 }
