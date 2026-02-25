@@ -355,6 +355,8 @@ export default function BookingForm({ bookingRef }) {
             >
               {t.continueBtn}
             </button>
+
+            <PriceExamplesCards priceSettings={priceSettings} />
           </div>
         )}
 
