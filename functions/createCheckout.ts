@@ -6,14 +6,21 @@ Deno.serve(async (req) => {
   try {
     const { amount, currency, client_name, client_email, departure, arrival, vehicle_type, distance_km, departure_date, departure_time, origin } = await req.json();
 
+    // Validate currency
+    const validCurrencies = ['usd', 'eur', 'chf', 'gbp'];
+    const normalizedCurrency = (currency || 'chf').toLowerCase();
+    if (!validCurrencies.includes(normalizedCurrency)) {
+     throw new Error(`Unsupported currency: ${currency}`);
+    }
+
     const session = await stripe.checkout.sessions.create({
-      payment_method_types: ['card'],
-      mode: 'payment',
-      customer_email: client_email,
-      line_items: [
-        {
-          price_data: {
-            currency: (currency || 'chf').toLowerCase(),
+     payment_method_types: ['card'],
+     mode: 'payment',
+     customer_email: client_email,
+     line_items: [
+       {
+         price_data: {
+           currency: normalizedCurrency,
             unit_amount: Math.round(amount * 100),
             product_data: {
               name: `Rosini Transfert — ${vehicle_type === 'economic' ? 'Standard' : 'Confort'}`,
