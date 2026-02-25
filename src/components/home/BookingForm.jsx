@@ -384,7 +384,7 @@ export default function BookingForm({ bookingRef }) {
               </div>
               <div className="flex flex-wrap gap-2 mt-2">
                 {t.vehicleFeatures.economic.map((f, i) => (
-                  <span key={i} className={`text-xs px-2 py-0.5 rounded-full ${form.vehicle_type === 'economic' ? 'bg-white/10 text-white/70' : 'bg-black/10 text-black/50'}`}>{f}</span>
+                  <span key={i} className={`text-xs px-2 py-0.5 rounded-full ${form.vehicle_type === 'economic' ? 'bg-white/10 text-white/70' : 'bg-black/20 text-black/60'}`}>{f}</span>
                 ))}
               </div>
             </div>
@@ -393,13 +393,13 @@ export default function BookingForm({ bookingRef }) {
             <div
               onClick={() => update('vehicle_type', 'comfort')}
               className={`rounded-xl p-4 cursor-pointer transition-all border-2 ${
-                form.vehicle_type === 'comfort' ? 'bg-black text-white border-black' : 'bg-black/20 border-transparent hover:bg-black/30'
+                form.vehicle_type === 'comfort' ? 'bg-black text-white border-black' : 'bg-[#F5C300] border-[#F5C300] hover:bg-[#e6b800]'
               }`}
             >
               <div className="flex items-center justify-between mb-2">
                 <div>
-                  <p className={`font-semibold text-sm ${form.vehicle_type === 'comfort' ? 'text-white' : 'text-black'}`}>COMFORT</p>
-                  <p className={`text-xs ${form.vehicle_type === 'comfort' ? 'text-white/60' : 'text-black/50'}`}>1–4 {t.persons} · 3 {t.luggageLabel}</p>
+                  <p className={`font-bold text-base ${form.vehicle_type === 'comfort' ? 'text-white' : 'text-black'}`}>COMFORT</p>
+                  <p className={`text-xs ${form.vehicle_type === 'comfort' ? 'text-white/60' : 'text-black/60'}`}>1–4 {t.persons} · 3 {t.luggageLabel}</p>
                 </div>
                 <div className="text-right">
                   {priceSettings && estimatedDistance > 0 && (
@@ -411,7 +411,7 @@ export default function BookingForm({ bookingRef }) {
               </div>
               <div className="flex flex-wrap gap-2 mt-2">
                 {t.vehicleFeatures.comfort.map((f, i) => (
-                  <span key={i} className={`text-xs px-2 py-0.5 rounded-full ${form.vehicle_type === 'comfort' ? 'bg-white/10 text-white/70' : 'bg-black/10 text-black/50'}`}>{f}</span>
+                  <span key={i} className={`text-xs px-2 py-0.5 rounded-full ${form.vehicle_type === 'comfort' ? 'bg-white/10 text-white/70' : 'bg-black/20 text-black/60'}`}>{f}</span>
                 ))}
               </div>
             </div>
