@@ -53,11 +53,19 @@ export default function BookingForm({ bookingRef }) {
     if (params.get('booking') === 'success') {
       setStep(5);
       window.history.replaceState({}, '', window.location.pathname);
+      // Restore form data for confirmation screen display
       const savedBooking = JSON.parse(sessionStorage.getItem('pendingBooking') || '{}');
-      if (savedBooking.client_email) {
-        base44.functions.invoke('sendBookingConfirmation', savedBooking).catch(() => {});
-        sessionStorage.removeItem('pendingBooking');
+      if (savedBooking.client_name) {
+        setForm(prev => ({
+          ...prev,
+          client_name: savedBooking.client_name || '',
+          client_email: savedBooking.client_email || '',
+          departure_point: savedBooking.departure_point || '',
+          arrival_point: savedBooking.arrival_point || '',
+        }));
       }
+      sessionStorage.removeItem('pendingBooking');
+      // Note: emails are sent by the Stripe webhook, not here
     }
   }, []);
 
