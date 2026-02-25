@@ -216,9 +216,11 @@ export default function BookingForm({ bookingRef }) {
 
       </div>
 
+      {step === 1 && <PriceExamplesCards priceSettings={priceSettings} />}
+
       <div className="w-full max-w-md">
 
-        {/* STEP 1 — Booking form */}
+      {/* STEP 1 — Booking form */}
         {step === 1 && (
           <div className="space-y-3">
             {/* Departure */}
