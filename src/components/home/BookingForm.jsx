@@ -210,8 +210,8 @@ export default function BookingForm({ bookingRef }) {
     <div ref={bookingRef} className="min-h-screen bg-[#F5C300] flex flex-col items-center justify-start py-8 px-4">
       {/* Header */}
       <div className="w-full max-w-md mb-6 text-center">
-        <h1 className="text-black text-3xl font-extralight tracking-[0.3em] uppercase">ROSINI</h1>
-        <p className="text-black/60 text-xs tracking-[0.5em] uppercase mt-1">TÁXI</p>
+        <h1 className="text-black text-5xl font-extralight tracking-[0.3em] uppercase">ROSINI</h1>
+        <p className="text-black/60 text-sm tracking-[0.5em] uppercase mt-1">TÁXI</p>
         <div className="w-8 h-[1px] bg-black/40 mx-auto mt-3" />
 
       </div>
