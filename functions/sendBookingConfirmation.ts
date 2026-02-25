@@ -274,9 +274,10 @@ Deno.serve(async (req) => {
     }
 
     // Send notification email to admin
+    const adminSubjectPrefix = skip_client_email ? '⚡ URGENTE — Moins de 75 min' : '🔔 Nouvelle réservation';
     await sendEmailViaGmail(
       'taxirosini@gmail.com',
-      `🔔 Nouvelle réservation — ${client_name} | ${departure_point} → ${arrival_point} | CHF ${total_price}`,
+      `${adminSubjectPrefix} — ${client_name} | ${departure_point} → ${arrival_point} | CHF ${total_price}`,
       adminEmailBody
     );
 
