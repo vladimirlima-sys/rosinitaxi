@@ -22,7 +22,7 @@ Deno.serve(async (req) => {
     }
 
     if (!data.routes || data.routes.length === 0) {
-      return Response.json({ error: 'No route found' }, { status: 404 });
+      return Response.json({ error: 'No route found', distance_km: 0, estimated_time_minutes: 0 }, { status: 200 });
     }
 
     const route = data.routes[0];
