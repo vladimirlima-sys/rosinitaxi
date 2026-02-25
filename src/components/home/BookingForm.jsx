@@ -419,13 +419,6 @@ export default function BookingForm({ bookingRef }) {
               </div>
             </div>
 
-            {isShortNotice && (
-              <div className="bg-[#F5C300]/20 border border-[#F5C300] rounded-xl p-4 flex gap-3 items-start">
-                <span className="text-black text-lg mt-0.5">⚠️</span>
-                <p className="text-black text-sm leading-relaxed font-medium">{t.shortNoticeWarning}</p>
-              </div>
-            )}
-
             <div className="flex gap-3">
               <button onClick={() => setStep(1)} className="flex-1 h-12 rounded-xl border border-white/50 bg-[#F5C300]/95 text-black font-bold text-sm uppercase tracking-wider hover:bg-black hover:text-white hover:border-black transition-all">{t.backBtn}</button>
               <button
