@@ -205,6 +205,7 @@ Deno.serve(async (req) => {
     };
 
     const t = texts[language] || texts.fr;
+    const vehicleLabel = t.vehicleLabel;
 
     const flightRow = flight_number ? `<tr><td style="padding:6px 0;color:#888;">${t.flight}</td><td style="padding:6px 0;color:#fff;">${flight_number}</td></tr>` : '';
     const notesRow = notes ? `<tr><td style="padding:6px 0;color:#888;">${t.notes}</td><td style="padding:6px 0;color:#fff;">${notes}</td></tr>` : '';
