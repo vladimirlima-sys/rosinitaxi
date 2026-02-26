@@ -16,6 +16,13 @@ export default function BookingRow({ booking, onStatusChange, onDelete, selected
           onClick={() => setExpanded(!expanded)}
         >
           <div className="flex items-center gap-3">
+            <input
+              type="checkbox"
+              checked={selected}
+              onChange={(e) => { e.stopPropagation(); onToggleSelect(booking.id); }}
+              onClick={(e) => e.stopPropagation()}
+              className="w-4 h-4 accent-[#C9A96E] cursor-pointer flex-shrink-0"
+            />
             {expanded ? (
               <ChevronUp className="w-4 h-4 text-[#C9A96E]" />
             ) : (
