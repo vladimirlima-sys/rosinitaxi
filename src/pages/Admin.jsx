@@ -1,7 +1,5 @@
 import React, { useEffect, useState } from 'react';
 import { base44 } from '@/api/base44Client';
-import { Settings, BookOpen } from 'lucide-react';
-import PriceSettingsForm from '@/components/admin/PriceSettingsForm';
 import BookingsTable from '@/components/admin/BookingsTable';
 
 export default function Admin() {
