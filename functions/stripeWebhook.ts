@@ -85,7 +85,7 @@ Deno.serve(async (req) => {
     const base44 = createClientFromRequest(req);
 
     try {
-      if (clientEmail) {
+      if (clientEmail && !isShortNotice) {
         await base44.integrations.Core.SendEmail({
           to: clientEmail,
           subject: `✅ Réservation confirmée — ${departure} → ${arrival}`,
@@ -93,6 +93,8 @@ Deno.serve(async (req) => {
           from_name: 'Rosini Transfert'
         });
         console.log("Confirmation email sent to client:", clientEmail);
+      } else if (isShortNotice) {
+        console.log("Short notice booking — skipping client confirmation email for:", clientEmail);
       }
 
       await base44.integrations.Core.SendEmail({
