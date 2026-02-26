@@ -7,7 +7,7 @@ import { LanguageProvider, useLang } from '@/components/LanguageContext';
 function HomeContent({ bookingRef }) {
   const { lang } = useLang();
   return (
-    <React.Fragment>
+    <>
       <SeoHead lang={lang} />
       <div className="min-h-screen bg-[#F5C300]">
         <div className="fixed top-4 right-4 z-50">
@@ -15,7 +15,7 @@ function HomeContent({ bookingRef }) {
         </div>
         <BookingForm bookingRef={bookingRef} />
       </div>
-    </React.Fragment>
+    </>
   );
 }
 
