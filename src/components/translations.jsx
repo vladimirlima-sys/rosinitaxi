@@ -1,4 +1,3 @@
-
 export const translations = {
   pt: {
     badge: 'Disponível 24h/24 — 7 dias/7',
@@ -124,6 +123,8 @@ export const translations = {
     shortNoticeConfirmMsg: (name) => `Obrigado ${name}. O seu pedido foi recebido. Como a viagem é para daqui a menos de 90 minutos, não será enviado um e-mail de confirmação. A nossa equipa entrará em contacto por telefone no máximo em 10 minutos para confirmar a disponibilidade.`,
     luggageLabel: 'bagagens',
     selectDate: 'Selecione uma data',
+    priceExamples: 'Exemplos de preços',
+    priceExamplesNote: '* Preços indicativos, sem pedágios',
   },
   fr: {
     badge: 'Disponible 24h/24 — 7j/7',
