@@ -106,9 +106,31 @@ export default function BookingsTable() {
         onReset={() => setFilters({ date: '', status: 'all', vehicle: 'all' })}
       />
 
+      {selectedIds.length > 0 && (
+        <div className="flex items-center justify-between mb-3 px-4 py-3 bg-red-950/40 border border-red-500/30 rounded-xl">
+          <span className="text-red-300 text-sm">{selectedIds.length} reserva(s) selecionada(s)</span>
+          <button
+            onClick={handleDeleteSelected}
+            disabled={deletingMultiple}
+            className="flex items-center gap-2 px-4 py-2 bg-red-600 hover:bg-red-700 text-white text-sm rounded-lg transition-colors disabled:opacity-50"
+          >
+            {deletingMultiple ? <Loader2 className="w-4 h-4 animate-spin" /> : <Trash2 className="w-4 h-4" />}
+            Deletar selecionadas
+          </button>
+        </div>
+      )}
+
       <div className="bg-white/[0.03] border border-white/10 rounded-2xl overflow-hidden">
         <div className="hidden md:grid grid-cols-5 gap-4 px-6 py-4 bg-white/[0.05] border-b border-white/10">
-          <div className="text-white/60 text-sm font-medium">Cliente</div>
+          <div className="flex items-center gap-3">
+            <input
+              type="checkbox"
+              checked={filteredBookings.length > 0 && selectedIds.length === filteredBookings.length}
+              onChange={toggleSelectAll}
+              className="w-4 h-4 accent-[#C9A96E] cursor-pointer"
+            />
+            <span className="text-white/60 text-sm font-medium">Cliente</span>
+          </div>
           <div className="text-white/60 text-sm font-medium">Trajeto</div>
           <div className="text-white/60 text-sm font-medium">Data & Hora</div>
           <div className="text-white/60 text-sm font-medium">Valor</div>
@@ -126,6 +148,8 @@ export default function BookingsTable() {
               booking={booking}
               onStatusChange={handleStatusChange}
               onDelete={handleDelete}
+              selected={selectedIds.includes(booking.id)}
+              onToggleSelect={toggleSelect}
             />
           ))
         )}
