@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { base44 } from '@/api/base44Client';
-import { Loader2 } from 'lucide-react';
+import { Loader2, Trash2 } from 'lucide-react';
 import { toast } from 'sonner';
 import BookingRow from './BookingRow';
 import BookingsFilters from './BookingsFilters';
@@ -13,6 +13,8 @@ export default function BookingsTable() {
     status: 'all',
     vehicle: 'all',
   });
+  const [selectedIds, setSelectedIds] = useState([]);
+  const [deletingMultiple, setDeletingMultiple] = useState(false);
 
   useEffect(() => {
     const fetchBookings = async () => {
