@@ -18,6 +18,8 @@ function calcPrice(km, pricePerKm, baseFare, airportFee, isAirport) {
 }
 
 export default function PriceExamplesCards({ priceSettings }) {
+  const { lang } = useLang();
+  const t = translations[lang] || translations.fr;
   const [current, setCurrent] = useState(0);
   const [animating, setAnimating] = useState(false);
   const [direction, setDirection] = useState(1);
