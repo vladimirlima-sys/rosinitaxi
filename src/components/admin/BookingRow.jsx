@@ -4,7 +4,7 @@ import { Button } from '@/components/ui/button';
 import BookingStatusBadge from './BookingStatusBadge';
 import BookingDetailsModal from './BookingDetailsModal';
 
-export default function BookingRow({ booking, onStatusChange, onDelete }) {
+export default function BookingRow({ booking, onStatusChange, onDelete, selected, onToggleSelect }) {
   const [expanded, setExpanded] = useState(false);
   const [showModal, setShowModal] = useState(false);
 
