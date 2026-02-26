@@ -506,6 +506,8 @@ export const translations = {
     shortNoticeConfirmMsg: (name) => `Danke ${name}. Ihre Anfrage wurde erhalten. Da die Fahrt weniger als 90 Minuten entfernt ist, wird keine Bestätigungs-E-Mail gesendet. Unser Team wird Sie innerhalb von 10 Minuten telefonisch kontaktieren, um die Verfügbarkeit zu bestätigen.`,
     luggageLabel: 'Gepäckstücke',
     selectDate: 'Wählen Sie ein Datum',
+    priceExamples: 'Preisbeispiele',
+    priceExamplesNote: '* Richtpreise, ohne Mautgebühren',
   },
   it: {
     badge: 'Disponibile 24/7 — Ogni giorno',
