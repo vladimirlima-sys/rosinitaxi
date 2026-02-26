@@ -49,11 +49,13 @@
  */
 import Admin from './pages/Admin';
 import Home from './pages/Home';
+import Settings from './pages/Settings';
 
 
 export const PAGES = {
     "Admin": Admin,
     "Home": Home,
+    "Settings": Settings,
 }
 
 export const pagesConfig = {
