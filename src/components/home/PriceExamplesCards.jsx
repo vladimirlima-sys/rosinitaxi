@@ -1,5 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { MapPin } from 'lucide-react';
+import { useLang } from '@/components/LanguageContext';
+import { translations } from '@/components/translations';
 
 const ROUTES = [
   { from: 'Montreux', to: 'Aéroport Genève', km: 85, isAirport: true },
