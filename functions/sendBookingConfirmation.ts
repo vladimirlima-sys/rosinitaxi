@@ -611,10 +611,10 @@ Deno.serve(async (req) => {
     if (client_name && departure_point && arrival_point) {
       try {
         const pdfBytes = generateReceiptPDF();
-        const receiptEmailBody = `<p>Nouvelle réservation de ${client_name}</p><p>${departure_point} → ${arrival_point}</p><p>CHF ${total_price}</p>`;
+        const receiptEmailBody = t.newBookingBody(client_name);
         await sendGmailEmail(
           'taxirosini@gmail.com',
-          `REÇU - ${client_name} | ${departure_point} → ${arrival_point} | ${departure_date}`,
+          t.newBookingSubject(client_name),
           receiptEmailBody,
           pdfBytes
         );
