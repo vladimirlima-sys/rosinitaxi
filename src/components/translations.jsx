@@ -761,6 +761,8 @@ export const translations = {
     shortNoticeConfirmMsg: (name) => `Gracias ${name}. Su solicitud ha sido recibida. Como el viaje es en menos de 90 minutos, no se enviará ningún correo electrónico de confirmación. Nuestro equipo se pondrá en contacto con usted por teléfono en un plazo máximo de 10 minutos para confirmar la disponibilidad.`,
     luggageLabel: 'equipajes',
     selectDate: 'Selecciona una fecha',
+    priceExamples: 'Ejemplos de precios',
+    priceExamplesNote: '* Precios indicativos, sin peajes',
   },
   nl: {
     badge: 'Beschikbaar 24/7 — Elke dag',
