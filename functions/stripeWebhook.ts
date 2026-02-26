@@ -28,6 +28,7 @@ Deno.serve(async (req) => {
     const vehicleType = meta.vehicle_type === "comfort" ? "Confort" : "Standard";
     const distanceKm = meta.distance_km || "";
     const amount = (session.amount_total / 100).toFixed(2);
+    const isShortNotice = meta.is_short_notice === 'true';
     const year = new Date().getFullYear();
 
     const clientHtml = `<!DOCTYPE html><html><head><meta charset="UTF-8"></head>
