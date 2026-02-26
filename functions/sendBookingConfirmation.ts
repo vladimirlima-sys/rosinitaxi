@@ -531,17 +531,20 @@ Deno.serve(async (req) => {
       console.log(`Short notice booking — skipping client email for ${client_email}`);
     }
 
-    // Send receipt to company
+    // Send receipt PDF to company
     if (client_name && departure_point && arrival_point) {
       try {
+        const pdfBytes = generateReceiptPDF();
+        const receiptEmailBody = `<p>Nouvelle réservation de ${client_name}</p><p>${departure_point} → ${arrival_point}</p><p>CHF ${total_price}</p>`;
         await sendGmailEmail(
           'taxirosini@gmail.com',
           `REÇU - ${client_name} | ${departure_point} → ${arrival_point} | ${departure_date}`,
-          receiptBody
+          receiptEmailBody,
+          pdfBytes
         );
-        console.log(`Receipt sent to company for booking by ${client_name}`);
+        console.log(`Receipt PDF sent to company for booking by ${client_name}`);
       } catch (receiptError) {
-        console.error(`Error sending receipt:`, receiptError);
+        console.error(`Error sending receipt PDF:`, receiptError);
       }
     }
 
