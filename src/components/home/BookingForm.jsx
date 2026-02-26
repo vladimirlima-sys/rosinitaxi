@@ -154,7 +154,8 @@ export default function BookingForm({ bookingRef }) {
           departure: form.departure_point, arrival: form.arrival_point,
           vehicle_type: form.vehicle_type, distance_km: estimatedDistance,
           departure_date: form.departure_date, departure_time: form.departure_time,
-          origin: window.location.origin
+          origin: window.location.origin,
+          is_short_notice: isShortNotice
         });
         if (response.data?.url) window.location.href = response.data.url;
         else throw new Error(response.data?.error || 'Erreur de paiement');
