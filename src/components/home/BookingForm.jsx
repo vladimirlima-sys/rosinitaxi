@@ -114,8 +114,8 @@ export default function BookingForm({ bookingRef }) {
     const isValaisFribourg = ['valais', 'fribourg', 'wallis', 'freiburg'].some(canton =>
       form.departure_point.toLowerCase().includes(canton)
     );
-    if (isValaisFribourg) {
-      total *= 1.15;
+    if (isValaisFribourg && priceSettings?.valais_fribourg_surcharge_percentage > 0) {
+      total *= 1 + priceSettings.valais_fribourg_surcharge_percentage / 100;
     }
 
     const isAirport = ['aeroporto', 'aéroport', 'airport'].some(k =>

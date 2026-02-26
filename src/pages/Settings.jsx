@@ -38,6 +38,7 @@ export default function SettingsPage() {
     night_surcharge_day: 6,
     night_surcharge_start_hour: 22,
     night_surcharge_end_hour: 6,
+    valais_fribourg_surcharge_percentage: 15,
   });
   const [isLoading, setIsLoading] = useState(true);
   const [isSaving, setIsSaving] = useState(false);
@@ -148,6 +149,23 @@ export default function SettingsPage() {
                 onChange={e => set('airport_fee', e.target.value)}
                 className="bg-white/5 border-white/10 text-white focus:border-[#C9A96E] h-12" />
             </Field>
+          </Section>
+
+          {/* Adicional Valais & Fribourg */}
+          <Section title="Adicional Regional — Valais & Fribourg">
+            <Field label="Percentual do adicional (%)" hint="Aplicado automaticamente para corridas originadas nesses cantões">
+              <Input type="number" step="0.1" value={settings.valais_fribourg_surcharge_percentage}
+                onChange={e => set('valais_fribourg_surcharge_percentage', e.target.value)}
+                className="bg-white/5 border-white/10 text-white focus:border-[#C9A96E] h-12" />
+            </Field>
+            {settings.valais_fribourg_surcharge_percentage > 0 && (
+              <div className="bg-[#C9A96E]/10 border border-[#C9A96E]/20 rounded-xl p-4">
+                <p className="text-[#C9A96E] text-xs font-semibold uppercase tracking-wider mb-1">Adicional ativo</p>
+                <p className="text-white/60 text-sm">
+                  +{settings.valais_fribourg_surcharge_percentage}% em todas as corridas originadas de Valais ou Fribourg — <strong className="text-white">não visível ao cliente</strong>
+                </p>
+              </div>
+            )}
           </Section>
 
           {/* Adicional noturno */}
