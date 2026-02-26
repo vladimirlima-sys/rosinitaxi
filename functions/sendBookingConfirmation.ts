@@ -360,26 +360,26 @@ Deno.serve(async (req) => {
 </body>
 </html>`;
 
-    // Generate receipt PDF
+    // Generate receipt PDF (translated)
     const generateReceiptPDF = () => {
       const doc = new jsPDF('p', 'mm', 'a4');
       const pageWidth = doc.internal.pageSize.getWidth();
       const pageHeight = doc.internal.pageSize.getHeight();
       let yPos = 15;
 
-      // Header with company info
+      // Header
       doc.setFontSize(24);
       doc.setTextColor(201, 169, 110);
       doc.text('ROSINI', 15, yPos);
       doc.setFontSize(9);
       doc.text('TRANSPORTS ET LOCATIONS SARL', 15, yPos + 7);
       
-      // Receipt title on right
+      // Receipt title (translated)
       doc.setFontSize(18);
       doc.setTextColor(201, 169, 110);
-      doc.text('REÇU', pageWidth - 40, yPos + 3);
+      doc.text(t.receiptTitle, pageWidth - 40, yPos + 3);
       
-      // Company details
+      // Company details (always in French/address format)
       doc.setFontSize(9);
       doc.setTextColor(100, 100, 100);
       yPos += 20;
@@ -388,28 +388,27 @@ Deno.serve(async (req) => {
       doc.text('IDE: CHE-264.039.709', 15, yPos + 10);
       doc.text('+41 79 650 53 47 | info@taxirosini.com', 15, yPos + 15);
       
-      // Receipt date and trip date
       doc.setTextColor(150, 150, 150);
-      doc.text(`Date: ${new Date().toLocaleDateString('fr-CH')}`, pageWidth - 60, yPos + 5);
-      doc.text(`Trajet: ${departure_date}`, pageWidth - 60, yPos + 10);
+      doc.text(`${t.dateLabel} ${new Date().toLocaleDateString('fr-CH')}`, pageWidth - 60, yPos + 5);
+      doc.text(`${t.tripDateLabel} ${departure_date}`, pageWidth - 60, yPos + 10);
       
       // Separator
       yPos += 25;
       doc.setDrawColor(201, 169, 110);
       doc.line(15, yPos, pageWidth - 15, yPos);
       
-      // Client info
+      // Client info (translated)
       yPos += 8;
       doc.setFontSize(11);
       doc.setTextColor(51, 51, 51);
       doc.setFont(undefined, 'bold');
-      doc.text('INFORMATIONS DU CLIENT', 15, yPos);
+      doc.text(t.clientInfoTitle, 15, yPos);
       
       doc.setFont(undefined, 'normal');
       doc.setFontSize(10);
       yPos += 7;
       doc.setTextColor(100, 100, 100);
-      doc.text('Nom:', 15, yPos);
+      doc.text(t.nameLabel, 15, yPos);
       doc.setTextColor(0, 0, 0);
       doc.text(client_name, 45, yPos);
       
@@ -421,59 +420,59 @@ Deno.serve(async (req) => {
       
       yPos += 6;
       doc.setTextColor(100, 100, 100);
-      doc.text('Téléphone:', 15, yPos);
+      doc.text(`${t.phone}:`, 15, yPos);
       doc.setTextColor(0, 0, 0);
       doc.text(client_phone || '—', 45, yPos);
       
-      // Journey details
+      // Journey details (translated)
       yPos += 12;
       doc.setFontSize(11);
       doc.setTextColor(51, 51, 51);
       doc.setFont(undefined, 'bold');
-      doc.text('DÉTAILS DU TRAJET', 15, yPos);
+      doc.text(t.journeyDetailsTitle, 15, yPos);
       
       doc.setFont(undefined, 'normal');
       doc.setFontSize(10);
       yPos += 7;
       doc.setTextColor(100, 100, 100);
-      doc.text('Départ:', 15, yPos);
+      doc.text(t.dep, 15, yPos);
       doc.setTextColor(0, 0, 0);
       doc.text(departure_point, 45, yPos);
       
       yPos += 6;
       doc.setTextColor(100, 100, 100);
-      doc.text('Arrivée:', 15, yPos);
+      doc.text(t.arr, 15, yPos);
       doc.setTextColor(0, 0, 0);
       doc.text(arrival_point, 45, yPos);
       
       yPos += 6;
       doc.setTextColor(100, 100, 100);
-      doc.text('Date/Heure:', 15, yPos);
+      doc.text(t.dateTime, 15, yPos);
       doc.setTextColor(0, 0, 0);
-      doc.text(`${departure_date} à ${departure_time}`, 45, yPos);
+      doc.text(`${departure_date} ${t.atLabel} ${departure_time}`, 45, yPos);
       
       yPos += 6;
       doc.setTextColor(100, 100, 100);
-      doc.text('Véhicule:', 15, yPos);
+      doc.text(`${t.vehicle}:`, 15, yPos);
       doc.setTextColor(0, 0, 0);
       doc.text(vehicleLabel, 45, yPos);
       
       yPos += 6;
       doc.setTextColor(100, 100, 100);
-      doc.text('Distance:', 15, yPos);
+      doc.text(`${t.distance}:`, 15, yPos);
       doc.setTextColor(0, 0, 0);
       doc.text(`${distance_km} km`, 45, yPos);
       
       yPos += 6;
       doc.setTextColor(100, 100, 100);
-      doc.text('Passagers:', 15, yPos);
+      doc.text(`${t.passengers}:`, 15, yPos);
       doc.setTextColor(0, 0, 0);
       doc.text(String(passengers || 1), 45, yPos);
       
       if (flight_number) {
         yPos += 6;
         doc.setTextColor(100, 100, 100);
-        doc.text('Vol:', 15, yPos);
+        doc.text(`${t.flight}:`, 15, yPos);
         doc.setTextColor(0, 0, 0);
         doc.text(flight_number, 45, yPos);
       }
@@ -487,19 +486,19 @@ Deno.serve(async (req) => {
       doc.setFontSize(12);
       doc.setTextColor(100, 100, 100);
       doc.setFont(undefined, 'bold');
-      doc.text('Montant total:', 15, yPos);
+      doc.text(t.totalAmount, 15, yPos);
       doc.setTextColor(201, 169, 110);
       doc.setFontSize(20);
       doc.text(`CHF ${total_price}`, pageWidth - 40, yPos - 2);
       
-      // Payment info
+      // Payment info (translated)
       yPos += 10;
       doc.setFontSize(9);
       doc.setTextColor(100, 100, 100);
       doc.setFont(undefined, 'normal');
-      const paymentLabel = payment_method === 'stripe' ? 'Stripe (en ligne)' : payment_method === 'twint' ? 'TWINT' : 'Espèces';
-      const statusLabel = payment_method === 'stripe' ? 'PAYÉ' : 'À ENCAISSER';
-      doc.text(`Méthode: ${paymentLabel}`, 15, yPos);
+      const payMethodLabel = payment_method === 'stripe' ? t.paymentStripe : payment_method === 'twint' ? t.paymentTwint : t.paymentCash;
+      const statusLabel = payment_method === 'stripe' ? t.paid : t.toPay;
+      doc.text(`${t.paymentMethodLabel} ${payMethodLabel}`, 15, yPos);
       doc.setTextColor(201, 169, 110);
       doc.setFont(undefined, 'bold');
       doc.text(statusLabel, pageWidth - 40, yPos);
@@ -513,7 +512,7 @@ Deno.serve(async (req) => {
       doc.setFontSize(8);
       doc.setTextColor(150, 150, 150);
       doc.text('Rosini Transports et locations Sarl | Chemin des Bulesses 16 | 1814 La Tour-de-Peilz', 15, yPos, { maxWidth: pageWidth - 30, align: 'center' });
-      doc.text(`© ${new Date().getFullYear()} Rosini Transfert. Tous droits réservés.`, pageWidth / 2, yPos + 5, { align: 'center' });
+      doc.text(t.copyright(new Date().getFullYear()), pageWidth / 2, yPos + 5, { align: 'center' });
       
       return doc.output('arraybuffer');
     };
