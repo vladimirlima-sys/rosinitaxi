@@ -57,9 +57,9 @@ export default function PriceExamplesCards({ priceSettings }) {
             <div className="flex items-start gap-2">
               <MapPin className="w-3.5 h-3.5 text-[#F5C300] mt-0.5 shrink-0" />
               <div>
-                <p className="text-white text-sm font-semibold leading-tight">{route.from}</p>
-                <p className="text-white/40 text-xs leading-tight mt-0.5">→ {route.to}</p>
-                <p className="text-white/30 text-xs mt-1">{route.km} km</p>
+                <p className="text-white text-base font-semibold leading-tight">{route.from}</p>
+                <p className="text-white/40 text-sm leading-tight mt-0.5">→ {route.to}</p>
+                <p className="text-white/30 text-sm mt-1">{route.km} km</p>
               </div>
             </div>
             <div className="border-t border-white/10 pt-3 flex justify-between items-end">
