@@ -251,6 +251,8 @@ export const translations = {
     shortNoticeConfirmMsg: (name) => `Merci ${name}. Votre demande a bien été reçue. Étant donné que le trajet est prévu dans moins de 90 minutes, aucun e-mail de confirmation ne vous sera envoyé. Notre équipe vous contactera par téléphone dans les 10 minutes maximum pour confirmer la disponibilité.`,
     luggageLabel: 'bagages',
     selectDate: 'Sélectionnez une date',
+    priceExamples: 'Exemples de prix',
+    priceExamplesNote: '* Prix indicatifs, hors péages',
   },
   en: {
     badge: 'Available 24/7 — Every Day',
