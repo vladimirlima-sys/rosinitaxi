@@ -379,6 +379,8 @@ export const translations = {
     shortNoticeConfirmMsg: (name) => `Thank you ${name}. Your request has been received. As your journey is less than 90 minutes away, no confirmation email will be sent. Our team will contact you by phone within 10 minutes to confirm availability.`,
     luggageLabel: 'luggage',
     selectDate: 'Select a date',
+    priceExamples: 'Price examples',
+    priceExamplesNote: '* Indicative prices, tolls not included',
   },
   de: {
     badge: 'Verfügbar 24/7 — Jeden Tag',
