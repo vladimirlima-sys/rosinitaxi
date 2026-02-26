@@ -47,7 +47,7 @@ export default function PriceExamplesCards({ priceSettings }) {
 
   return (
     <div className="w-full max-w-md mt-4 mb-2">
-      <p className="text-black/50 text-xs uppercase tracking-[0.2em] text-center mb-3">Exemples de prix</p>
+      <p className="text-black/50 text-xs uppercase tracking-[0.2em] text-center mb-3">{t.priceExamples}</p>
 
       <div className="overflow-hidden">
         <div
