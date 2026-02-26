@@ -42,6 +42,7 @@ Deno.serve(async (req) => {
         distance_km: String(distance_km),
         departure_date,
         departure_time,
+        is_short_notice: is_short_notice ? 'true' : 'false',
       },
     });
 
