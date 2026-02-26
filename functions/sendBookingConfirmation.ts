@@ -283,43 +283,230 @@ Deno.serve(async (req) => {
 </body>
 </html>`;
 
-    // Send emails using Gmail connector
-    const sendGmailEmail = async (to, subject, htmlBody) => {
+    // Generate receipt PDF
+    const generateReceiptPDF = () => {
+      const doc = new jsPDF('p', 'mm', 'a4');
+      const pageWidth = doc.internal.pageSize.getWidth();
+      const pageHeight = doc.internal.pageSize.getHeight();
+      let yPos = 15;
+
+      // Header with company info
+      doc.setFontSize(24);
+      doc.setTextColor(201, 169, 110);
+      doc.text('ROSINI', 15, yPos);
+      doc.setFontSize(9);
+      doc.text('TRANSPORTS ET LOCATIONS SARL', 15, yPos + 7);
+      
+      // Receipt title on right
+      doc.setFontSize(18);
+      doc.setTextColor(201, 169, 110);
+      doc.text('REÇU', pageWidth - 40, yPos + 3);
+      
+      // Company details
+      doc.setFontSize(9);
+      doc.setTextColor(100, 100, 100);
+      yPos += 20;
+      doc.text('Chemin des Bulesses 16', 15, yPos);
+      doc.text('1814 La Tour-de-Peilz', 15, yPos + 5);
+      doc.text('IDE: CHE-264.039.709', 15, yPos + 10);
+      doc.text('+41 79 650 53 47 | info@taxirosini.com', 15, yPos + 15);
+      
+      // Receipt date and trip date
+      doc.setTextColor(150, 150, 150);
+      doc.text(`Date: ${new Date().toLocaleDateString('fr-CH')}`, pageWidth - 60, yPos + 5);
+      doc.text(`Trajet: ${departure_date}`, pageWidth - 60, yPos + 10);
+      
+      // Separator
+      yPos += 25;
+      doc.setDrawColor(201, 169, 110);
+      doc.line(15, yPos, pageWidth - 15, yPos);
+      
+      // Client info
+      yPos += 8;
+      doc.setFontSize(11);
+      doc.setTextColor(51, 51, 51);
+      doc.setFont(undefined, 'bold');
+      doc.text('INFORMATIONS DU CLIENT', 15, yPos);
+      
+      doc.setFont(undefined, 'normal');
+      doc.setFontSize(10);
+      yPos += 7;
+      doc.setTextColor(100, 100, 100);
+      doc.text('Nom:', 15, yPos);
+      doc.setTextColor(0, 0, 0);
+      doc.text(client_name, 45, yPos);
+      
+      yPos += 6;
+      doc.setTextColor(100, 100, 100);
+      doc.text('Email:', 15, yPos);
+      doc.setTextColor(0, 0, 0);
+      doc.text(client_email, 45, yPos);
+      
+      yPos += 6;
+      doc.setTextColor(100, 100, 100);
+      doc.text('Téléphone:', 15, yPos);
+      doc.setTextColor(0, 0, 0);
+      doc.text(client_phone || '—', 45, yPos);
+      
+      // Journey details
+      yPos += 12;
+      doc.setFontSize(11);
+      doc.setTextColor(51, 51, 51);
+      doc.setFont(undefined, 'bold');
+      doc.text('DÉTAILS DU TRAJET', 15, yPos);
+      
+      doc.setFont(undefined, 'normal');
+      doc.setFontSize(10);
+      yPos += 7;
+      doc.setTextColor(100, 100, 100);
+      doc.text('Départ:', 15, yPos);
+      doc.setTextColor(0, 0, 0);
+      doc.text(departure_point, 45, yPos);
+      
+      yPos += 6;
+      doc.setTextColor(100, 100, 100);
+      doc.text('Arrivée:', 15, yPos);
+      doc.setTextColor(0, 0, 0);
+      doc.text(arrival_point, 45, yPos);
+      
+      yPos += 6;
+      doc.setTextColor(100, 100, 100);
+      doc.text('Date/Heure:', 15, yPos);
+      doc.setTextColor(0, 0, 0);
+      doc.text(`${departure_date} à ${departure_time}`, 45, yPos);
+      
+      yPos += 6;
+      doc.setTextColor(100, 100, 100);
+      doc.text('Véhicule:', 15, yPos);
+      doc.setTextColor(0, 0, 0);
+      doc.text(vehicleLabel, 45, yPos);
+      
+      yPos += 6;
+      doc.setTextColor(100, 100, 100);
+      doc.text('Distance:', 15, yPos);
+      doc.setTextColor(0, 0, 0);
+      doc.text(`${distance_km} km`, 45, yPos);
+      
+      yPos += 6;
+      doc.setTextColor(100, 100, 100);
+      doc.text('Passagers:', 15, yPos);
+      doc.setTextColor(0, 0, 0);
+      doc.text(String(passengers || 1), 45, yPos);
+      
+      if (flight_number) {
+        yPos += 6;
+        doc.setTextColor(100, 100, 100);
+        doc.text('Vol:', 15, yPos);
+        doc.setTextColor(0, 0, 0);
+        doc.text(flight_number, 45, yPos);
+      }
+      
+      // Amount section
+      yPos += 15;
+      doc.setDrawColor(201, 169, 110);
+      doc.line(15, yPos, pageWidth - 15, yPos);
+      
+      yPos += 8;
+      doc.setFontSize(12);
+      doc.setTextColor(100, 100, 100);
+      doc.setFont(undefined, 'bold');
+      doc.text('Montant total:', 15, yPos);
+      doc.setTextColor(201, 169, 110);
+      doc.setFontSize(20);
+      doc.text(`CHF ${total_price}`, pageWidth - 40, yPos - 2);
+      
+      // Payment info
+      yPos += 10;
+      doc.setFontSize(9);
+      doc.setTextColor(100, 100, 100);
+      doc.setFont(undefined, 'normal');
+      const paymentLabel = payment_method === 'stripe' ? 'Stripe (en ligne)' : payment_method === 'twint' ? 'TWINT' : 'Espèces';
+      const statusLabel = payment_method === 'stripe' ? 'PAYÉ' : 'À ENCAISSER';
+      doc.text(`Méthode: ${paymentLabel}`, 15, yPos);
+      doc.setTextColor(201, 169, 110);
+      doc.setFont(undefined, 'bold');
+      doc.text(statusLabel, pageWidth - 40, yPos);
+      
+      // Footer
+      yPos = pageHeight - 20;
+      doc.setDrawColor(220, 220, 220);
+      doc.line(15, yPos, pageWidth - 15, yPos);
+      
+      yPos += 5;
+      doc.setFontSize(8);
+      doc.setTextColor(150, 150, 150);
+      doc.text('Rosini Transports et locations Sarl | Chemin des Bulesses 16 | 1814 La Tour-de-Peilz', 15, yPos, { maxWidth: pageWidth - 30, align: 'center' });
+      doc.text(`© ${new Date().getFullYear()} Rosini Transfert. Tous droits réservés.`, pageWidth / 2, yPos + 5, { align: 'center' });
+      
+      return doc.output('arraybuffer');
+    };
+
+    // Send emails using Gmail connector with PDF attachment
+    const sendGmailEmail = async (to, subject, htmlBody, pdfBytes = null) => {
       const accessToken = await base44.asServiceRole.connectors.getAccessToken('gmail');
       
-      // Create MIME message with proper headers
-      const lines = [
-        `From: taxirosini@gmail.com`,
-        `To: ${to}`,
-        `Subject: ${subject}`,
-        `MIME-Version: 1.0`,
-        `Content-Type: text/html; charset="UTF-8"`,
-        ``,
-        htmlBody
-      ];
-      
-      const emailMessage = lines.join('\r\n');
-      
-      // Convert to base64url for Gmail API
-      const base64Message = btoa(unescape(encodeURIComponent(emailMessage)))
-        .replace(/\+/g, '-')
-        .replace(/\//g, '_')
-        .replace(/=/g, '');
-      
-      const response = await fetch('https://www.googleapis.com/gmail/v1/users/me/messages/send', {
-        method: 'POST',
-        headers: {
-          'Authorization': `Bearer ${accessToken}`,
-          'Content-Type': 'application/json'
-        },
-        body: JSON.stringify({ raw: base64Message })
-      });
-      
-      if (!response.ok) {
-        const error = await response.text();
-        throw new Error(`Gmail API error: ${response.status} - ${error}`);
+      if (!pdfBytes) {
+        // Send simple HTML email
+        const lines = [
+          `From: taxirosini@gmail.com`,
+          `To: ${to}`,
+          `Subject: ${subject}`,
+          `MIME-Version: 1.0`,
+          `Content-Type: text/html; charset="UTF-8"`,
+          ``,
+          htmlBody
+        ];
+        
+        const emailMessage = lines.join('\r\n');
+        const base64Message = btoa(unescape(encodeURIComponent(emailMessage)))
+          .replace(/\+/g, '-')
+          .replace(/\//g, '_')
+          .replace(/=/g, '');
+        
+        const response = await fetch('https://www.googleapis.com/gmail/v1/users/me/messages/send', {
+          method: 'POST',
+          headers: {
+            'Authorization': `Bearer ${accessToken}`,
+            'Content-Type': 'application/json'
+          },
+          body: JSON.stringify({ raw: base64Message })
+        });
+        
+        if (!response.ok) {
+          const error = await response.text();
+          throw new Error(`Gmail API error: ${response.status} - ${error}`);
+        }
+        return response.json();
+      } else {
+        // Send email with PDF attachment
+        const boundary = '==boundary_' + Date.now();
+        const pdfBase64 = Array.from(new Uint8Array(pdfBytes))
+          .map(b => String.fromCharCode(b))
+          .join('');
+        const pdfBase64Encoded = btoa(pdfBase64);
+        
+        const emailContent = `From: taxirosini@gmail.com\r\nTo: ${to}\r\nSubject: ${subject}\r\nMIME-Version: 1.0\r\nContent-Type: multipart/mixed; boundary="${boundary}"\r\n\r\n--${boundary}\r\nContent-Type: text/html; charset="UTF-8"\r\nContent-Transfer-Encoding: 7bit\r\n\r\n${htmlBody}\r\n\r\n--${boundary}\r\nContent-Type: application/pdf; name="receipt.pdf"\r\nContent-Disposition: attachment; filename="receipt.pdf"\r\nContent-Transfer-Encoding: base64\r\n\r\n${pdfBase64Encoded}\r\n\r\n--${boundary}--`;
+        
+        const base64Message = btoa(unescape(encodeURIComponent(emailContent)))
+          .replace(/\+/g, '-')
+          .replace(/\//g, '_')
+          .replace(/=/g, '');
+        
+        const response = await fetch('https://www.googleapis.com/gmail/v1/users/me/messages/send', {
+          method: 'POST',
+          headers: {
+            'Authorization': `Bearer ${accessToken}`,
+            'Content-Type': 'application/json'
+          },
+          body: JSON.stringify({ raw: base64Message })
+        });
+        
+        if (!response.ok) {
+          const error = await response.text();
+          throw new Error(`Gmail API error: ${response.status} - ${error}`);
+        }
+        return response.json();
       }
-      return response.json();
     };
 
     // Subject lines per language
