@@ -4,7 +4,7 @@ import BookingsTable from '@/components/admin/BookingsTable';
 
 export default function Admin() {
   const [isAdmin, setIsAdmin] = useState(null);
-  const [activeTab, setActiveTab] = useState('bookings');
+
 
   useEffect(() => {
     const checkAuth = async () => {
