@@ -90,7 +90,7 @@ export default function PriceExamplesCards({ priceSettings }) {
         ))}
       </div>
 
-      <p className="text-black/30 text-[10px] text-center mt-2">* Prix indicatifs, hors péages</p>
+      <p className="text-black/30 text-[10px] text-center mt-2">{t.priceExamplesNote}</p>
     </div>
   );
 }
