@@ -55,10 +55,38 @@ export default function BookingsTable() {
       try {
         await base44.entities.Booking.delete(bookingId);
         setBookings((prev) => prev.filter((b) => b.id !== bookingId));
+        setSelectedIds((prev) => prev.filter((id) => id !== bookingId));
         toast.success('Reserva deletada com sucesso');
       } catch (error) {
         toast.error('Erro ao deletar reserva');
       }
+    }
+  };
+
+  const handleDeleteSelected = async () => {
+    if (!confirm(`Tem certeza que deseja deletar ${selectedIds.length} reserva(s)?`)) return;
+    setDeletingMultiple(true);
+    try {
+      await Promise.all(selectedIds.map((id) => base44.entities.Booking.delete(id)));
+      setBookings((prev) => prev.filter((b) => !selectedIds.includes(b.id)));
+      setSelectedIds([]);
+      toast.success(`${selectedIds.length} reserva(s) deletada(s) com sucesso`);
+    } catch (error) {
+      toast.error('Erro ao deletar reservas');
+    } finally {
+      setDeletingMultiple(false);
+    }
+  };
+
+  const toggleSelect = (id) => {
+    setSelectedIds((prev) => prev.includes(id) ? prev.filter((x) => x !== id) : [...prev, id]);
+  };
+
+  const toggleSelectAll = () => {
+    if (selectedIds.length === filteredBookings.length) {
+      setSelectedIds([]);
+    } else {
+      setSelectedIds(filteredBookings.map((b) => b.id));
     }
   };
 
