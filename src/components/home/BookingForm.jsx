@@ -111,6 +111,13 @@ export default function BookingForm({ bookingRef }) {
       }
     }
 
+    const isValaisFribourg = ['valais', 'fribourg', 'wallis', 'freiburg'].some(canton =>
+      form.departure_point.toLowerCase().includes(canton)
+    );
+    if (isValaisFribourg) {
+      total *= 1.15;
+    }
+
     const isAirport = ['aeroporto', 'aéroport', 'airport'].some(k =>
       form.departure_point.toLowerCase().includes(k) || form.arrival_point.toLowerCase().includes(k)
     );
