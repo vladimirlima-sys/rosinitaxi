@@ -590,12 +590,19 @@ export default function BookingForm({ bookingRef }) {
           </div>
         )}
 
-        {/* Footer links */}
-        <div className="mt-8 text-center">
-          <p className="text-black text-xs mb-1">La Tour-de-Peilz</p>
-          <a href="tel:+41796505347" className="text-black text-xs hover:text-black/70 transition-colors">
-            +41 79 650 53 47
-          </a>
+        {/* Footer */}
+        <div className="mt-10 border-t border-black/20 pt-6 text-center space-y-1">
+          <p className="text-black font-semibold text-sm tracking-wide">Rosini Transports et Locations Sàrl</p>
+          <p className="text-black/60 text-xs">La Tour-de-Peilz, Suisse</p>
+          <div className="flex justify-center gap-4 mt-2">
+            <a href="tel:+41796505347" className="text-black/70 text-xs hover:text-black transition-colors">
+              +41 79 650 53 47
+            </a>
+            <span className="text-black/30">|</span>
+            <a href="mailto:info@taxirosini.com" className="text-black/70 text-xs hover:text-black transition-colors">
+              info@taxirosini.com
+            </a>
+          </div>
         </div>
       </div>
     </div>
