@@ -888,5 +888,7 @@ export const translations = {
     shortNoticeConfirmMsg: (name) => `Dank u ${name}. Uw aanvraag is ontvangen. Aangezien de rit minder dan 90 minuten verwijderd is, wordt er geen bevestigingsmail verzonden. Ons team neemt binnen 10 minuten telefonisch contact met u op om de beschikbaarheid te bevestigen.`,
     luggageLabel: 'koffers',
     selectDate: 'Selecteer een datum',
+    priceExamples: 'Prijsvoorbeelden',
+    priceExamplesNote: '* Indicatieve prijzen, tol niet inbegrepen',
   },
 };
