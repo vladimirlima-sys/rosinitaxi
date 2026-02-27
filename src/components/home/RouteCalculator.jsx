@@ -33,6 +33,7 @@ export default function RouteCalculator({ departure, arrival, onRouteCalculated,
     // If we don't have coords from selection, try to geocode the addresses
     const calculateRoute = async () => {
       setCalculating(true);
+      onCalculating?.();
       try {
         let depCoords = departureCoords.current;
         let arrCoords = arrivalCoords.current;
