@@ -70,21 +70,34 @@ export default function BookingForm({ bookingRef }) {
   }, []);
 
   const locateUser = async () => {
-    if (!navigator.geolocation) return;
+    if (!navigator.geolocation) {
+      toast.error(t.locationUnavailable);
+      return;
+    }
     setIsLocating(true);
     navigator.geolocation.getCurrentPosition(
       async (position) => {
         try {
           const { latitude, longitude } = position.coords;
           const response = await base44.functions.invoke('hereReverseGeocoding', { lat: latitude, lng: longitude });
-          if (response.data?.address) update('departure_point', response.data.address);
+          if (response.data?.address) {
+            update('departure_point', response.data.address);
+          } else {
+            toast.error(t.locationError);
+          }
         } catch (e) {
-          console.warn('Reverse geocoding failed:', e.message);
+          console.error('Reverse geocoding failed:', e);
+          toast.error(t.locationError);
         } finally {
           setIsLocating(false);
         }
       },
-      () => setIsLocating(false)
+      (err) => {
+        console.error('Geolocation error:', err);
+        toast.error(t.locationDenied);
+        setIsLocating(false);
+      },
+      { timeout: 10000, enableHighAccuracy: false }
     );
   };
 
