@@ -24,6 +24,7 @@ export default function BookingForm({ bookingRef }) {
   const [estimatedDistance, setEstimatedDistance] = useState(0);
   const [estimatedTime, setEstimatedTime] = useState(0);
   const [priceSettings, setPriceSettings] = useState(null);
+  const [selectedDriver, setSelectedDriver] = useState(null);
   const [form, setForm] = useState({
     departure_point: '',
     arrival_point: '',
