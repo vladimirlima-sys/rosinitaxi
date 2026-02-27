@@ -383,6 +383,7 @@ export const translations = {
     selectDate: 'Select a date',
     priceExamples: 'Price examples',
     priceExamplesNote: '* Indicative prices, tolls not included',
+    ridesCompleted: 'rides completed',
   },
   de: {
     badge: 'Verfügbar 24/7 — Jeden Tag',
