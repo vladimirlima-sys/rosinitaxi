@@ -138,6 +138,18 @@ export default function BookingRow({ booking, onStatusChange, onDelete, onAssign
           onClose={() => setShowModal(false)}
         />
       )}
+
+      {showAssignModal && (
+        <AssignDriverModal
+          booking={booking}
+          drivers={drivers}
+          onAssign={(driver) => {
+            onAssignDriver(booking.id, driver);
+            setShowAssignModal(false);
+          }}
+          onCancel={() => setShowAssignModal(false)}
+        />
+      )}
     </>
   );
 }
