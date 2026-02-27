@@ -158,12 +158,14 @@ export default function BookingsTable() {
         ) : (
           filteredBookings.map((booking) => (
             <BookingRow
-              key={booking.id}
-              booking={booking}
-              onStatusChange={handleStatusChange}
-              onDelete={handleDelete}
-              selected={selectedIds.includes(booking.id)}
-              onToggleSelect={toggleSelect}
+            key={booking.id}
+            booking={booking}
+            onStatusChange={handleStatusChange}
+            onDelete={handleDelete}
+            onAssignDriver={handleAssignDriver}
+            drivers={drivers}
+            selected={selectedIds.includes(booking.id)}
+            onToggleSelect={toggleSelect}
             />
           ))
         )}
