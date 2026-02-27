@@ -14,7 +14,7 @@ Deno.serve(async (req) => {
       return Response.json({ error: 'HERE_API_KEY not configured' }, { status: 500 });
     }
 
-    const url = `https://geocode.search.hereapi.com/v1/geocode?q=${encodeURIComponent(searchText)}&apikey=${apiKey}&limit=5&lang=${lang}&in=countryCode:CHE,FRA,ITA,DEU,AUT,LIE&types=address,city,locality`;
+    const url = `https://geocode.search.hereapi.com/v1/geocode?q=${encodeURIComponent(searchText)}&apikey=${apiKey}&limit=5&lang=${lang}&in=countryCode:CHE,FRA,ITA,DEU,AUT,LIE`;
     
     console.log('[hereGeocoding] Fetching:', searchText);
     const response = await fetch(url);
