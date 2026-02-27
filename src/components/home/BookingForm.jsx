@@ -218,9 +218,8 @@ export default function BookingForm({ bookingRef }) {
       {/* Header */}
       <div className="w-full max-w-md mb-6 text-center">
         <h1 className="text-black text-6xl font-extralight tracking-[0.3em] uppercase">ROSINI</h1>
-        <p className="text-black/60 text-lg tracking-[0.5em] uppercase mt-2">TÁXI</p>
+        <p className="text-black/60 text-sm tracking-[0.2em] uppercase mt-2">TRANSPORTS DE PERSONNES</p>
         <div className="w-8 h-[1px] bg-black/40 mx-auto mt-3" />
-
       </div>
 
       <div className="w-full max-w-md">
@@ -530,8 +529,6 @@ export default function BookingForm({ bookingRef }) {
               </div>
               <p className="text-white/40 text-xs italic">{t.noTollsIncluded}</p>
             </div>
-
-
 
             {/* Payment method */}
             <div className="bg-black border border-black/40 rounded-xl p-4 space-y-2">
