@@ -51,6 +51,7 @@ import Admin from './pages/Admin';
 import Finance from './pages/Finance';
 import Home from './pages/Home';
 import Settings from './pages/Settings';
+import Drivers from './pages/Drivers';
 
 
 export const PAGES = {
@@ -58,6 +59,7 @@ export const PAGES = {
     "Finance": Finance,
     "Home": Home,
     "Settings": Settings,
+    "Drivers": Drivers,
 }
 
 export const pagesConfig = {
