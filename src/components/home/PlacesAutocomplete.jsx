@@ -246,6 +246,7 @@ export default function PlacesAutocomplete({
             {suggestions.map((suggestion, index) =>
               <button
                 key={suggestion.id}
+                onMouseDown={(e) => e.preventDefault()}
                 onClick={() => handleSelectSuggestion(suggestion)}
                 className={`w-full text-left px-4 py-3.5 border-b border-black/5 last:border-b-0 transition-colors ${
                   index === selectedIndex ?
