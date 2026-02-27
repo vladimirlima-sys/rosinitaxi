@@ -1,119 +1,91 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState, useRef } from 'react';
 import { base44 } from '@/api/base44Client';
-import { UserCheck } from 'lucide-react';
+import { ChevronLeft, ChevronRight, User } from 'lucide-react';
 
-const preferredDriverLabels = {
-  pt: {
-    title: 'Tem um motorista preferido?',
-    subtitle: 'Escolha aqui',
-    noPreference: 'Sem preferência',
-    noPreferenceDesc: 'Qualquer motorista disponível',
-  },
-  fr: {
-    title: 'Vous avez un chauffeur préféré ?',
-    subtitle: 'Choisissez ici',
-    noPreference: 'Aucune préférence',
-    noPreferenceDesc: 'Tout chauffeur disponible',
-  },
-  en: {
-    title: 'Do you have a preferred driver?',
-    subtitle: 'Choose here',
-    noPreference: 'No preference',
-    noPreferenceDesc: 'Any available driver',
-  },
-  de: {
-    title: 'Haben Sie einen bevorzugten Fahrer?',
-    subtitle: 'Hier auswählen',
-    noPreference: 'Keine Präferenz',
-    noPreferenceDesc: 'Jeder verfügbare Fahrer',
-  },
-  it: {
-    title: 'Hai un autista preferito?',
-    subtitle: 'Scegli qui',
-    noPreference: 'Nessuna preferenza',
-    noPreferenceDesc: 'Qualsiasi autista disponibile',
-  },
-  es: {
-    title: '¿Tienes un conductor preferido?',
-    subtitle: 'Elige aquí',
-    noPreference: 'Sin preferencia',
-    noPreferenceDesc: 'Cualquier conductor disponible',
-  },
-  nl: {
-    title: 'Heeft u een voorkeurschauffeur?',
-    subtitle: 'Kies hier',
-    noPreference: 'Geen voorkeur',
-    noPreferenceDesc: 'Elke beschikbare chauffeur',
-  },
+const LABELS = {
+  fr: { title: 'Chauffeur préféré (optionnel)', none: 'Aucune préférence', selected: 'Sélectionné' },
+  pt: { title: 'Motorista preferido (opcional)', none: 'Sem preferência', selected: 'Selecionado' },
+  en: { title: 'Preferred driver (optional)', none: 'No preference', selected: 'Selected' },
+  de: { title: 'Bevorzugter Fahrer (optional)', none: 'Keine Präferenz', selected: 'Ausgewählt' },
+  it: { title: 'Autista preferito (opzionale)', none: 'Nessuna preferenza', selected: 'Selezionato' },
+  es: { title: 'Conductor preferido (opcional)', none: 'Sin preferencia', selected: 'Seleccionado' },
+  nl: { title: 'Voorkeurschauffeur (optioneel)', none: 'Geen voorkeur', selected: 'Geselecteerd' },
 };
 
 export default function PreferredDriverSelector({ lang = 'fr', selectedDriverId, onSelect }) {
   const [drivers, setDrivers] = useState([]);
-  const tl = preferredDriverLabels[lang] || preferredDriverLabels['fr'];
+  const [index, setIndex] = useState(0);
+  const l = LABELS[lang] || LABELS.fr;
 
   useEffect(() => {
     base44.entities.Driver.filter({ status: 'active' }).then(setDrivers).catch(() => {});
   }, []);
 
-  if (drivers.length === 0) return null;
+  if (!drivers.length) return null;
+
+  // All items: [null = no preference, ...drivers]
+  const items = [null, ...drivers];
+  const current = items[index];
+
+  const prev = () => setIndex((i) => (i - 1 + items.length) % items.length);
+  const next = () => setIndex((i) => (i + 1) % items.length);
+
+  const isSelected = (item) =>
+    item === null ? selectedDriverId === null || selectedDriverId === undefined : item.id === selectedDriverId;
+
+  const handleSelect = () => {
+    if (current === null) {
+      onSelect(null);
+    } else {
+      onSelect(current);
+    }
+  };
 
   return (
-    <div className="space-y-3">
-      <div className="text-center">
-        <p className="text-white font-semibold text-sm uppercase tracking-wider">{tl.title}</p>
-        <p className="text-[#F5C300] text-xs mt-0.5">{tl.subtitle}</p>
-      </div>
+    <div>
+      <p className="text-white/60 text-xs uppercase tracking-wider mb-3">{l.title}</p>
+      <div className="flex items-center gap-3">
+        <button onClick={prev} className="w-8 h-8 flex items-center justify-center rounded-full bg-white/10 hover:bg-white/20 transition-colors flex-shrink-0">
+          <ChevronLeft className="w-4 h-4 text-white" />
+        </button>
 
-      <div className="grid grid-cols-1 gap-2">
-        {/* No preference option */}
-        <div
-          onClick={() => onSelect(null)}
-          className={`flex items-center gap-3 p-3 rounded-xl border cursor-pointer transition-all ${
-            !selectedDriverId
-              ? 'bg-white/10 border-white/40'
-              : 'bg-black border-white/10 hover:border-white/30'
+        <button
+          onClick={handleSelect}
+          className={`flex-1 flex items-center gap-3 p-3 rounded-lg border transition-all ${
+            isSelected(current)
+              ? 'border-[#F5C300] bg-[#F5C300]/10'
+              : 'border-white/20 hover:border-white/40'
           }`}
         >
-          <div className={`w-8 h-8 rounded-full flex items-center justify-center flex-shrink-0 ${!selectedDriverId ? 'bg-white/20' : 'bg-white/5'}`}>
-            <UserCheck className={`w-4 h-4 ${!selectedDriverId ? 'text-white' : 'text-white/40'}`} />
+          <div className="w-9 h-9 rounded-full bg-white/10 flex items-center justify-center flex-shrink-0">
+            <User className="w-4 h-4 text-white/60" />
           </div>
-          <div>
-            <p className={`text-sm font-medium ${!selectedDriverId ? 'text-white' : 'text-white/60'}`}>{tl.noPreference}</p>
-            <p className="text-white/30 text-xs">{tl.noPreferenceDesc}</p>
-          </div>
-          {!selectedDriverId && (
-            <div className="ml-auto w-4 h-4 rounded-full bg-[#F5C300] flex items-center justify-center">
-              <div className="w-2 h-2 rounded-full bg-black" />
-            </div>
-          )}
-        </div>
-
-        {/* Driver cards */}
-        {drivers.map((driver) => (
-          <div
-            key={driver.id}
-            onClick={() => onSelect(driver)}
-            className={`flex items-center gap-3 p-3 rounded-xl border cursor-pointer transition-all ${
-              selectedDriverId === driver.id
-                ? 'bg-[#F5C300]/10 border-[#F5C300]/60'
-                : 'bg-black border-white/10 hover:border-white/30'
-            }`}
-          >
-            <div className={`w-10 h-10 rounded-full flex items-center justify-center flex-shrink-0 font-bold text-sm ${
-              selectedDriverId === driver.id ? 'bg-[#F5C300] text-black' : 'bg-white/10 text-white/60'
-            }`}>
-              {driver.name.charAt(0).toUpperCase()}
-            </div>
-            <div className="flex-1 min-w-0">
-              <p className={`text-sm font-semibold ${selectedDriverId === driver.id ? 'text-[#F5C300]' : 'text-white'}`}>{driver.name}</p>
-              {driver.vehicle && <p className="text-white/40 text-xs truncate">{driver.vehicle}</p>}
-            </div>
-            {selectedDriverId === driver.id && (
-              <div className="ml-auto w-4 h-4 rounded-full bg-[#F5C300] flex items-center justify-center flex-shrink-0">
-                <div className="w-2 h-2 rounded-full bg-black" />
-              </div>
+          <div className="text-left flex-1 min-w-0">
+            <p className={`text-sm font-medium truncate ${current === null ? 'text-white/50 italic' : 'text-white'}`}>
+              {current === null ? l.none : current.name}
+            </p>
+            {current !== null && current.vehicle && (
+              <p className="text-white/40 text-xs truncate">{current.vehicle}</p>
             )}
           </div>
+          {isSelected(current) && (
+            <span className="text-[#F5C300] text-xs flex-shrink-0">{l.selected}</span>
+          )}
+        </button>
+
+        <button onClick={next} className="w-8 h-8 flex items-center justify-center rounded-full bg-white/10 hover:bg-white/20 transition-colors flex-shrink-0">
+          <ChevronRight className="w-4 h-4 text-white" />
+        </button>
+      </div>
+
+      {/* Dots */}
+      <div className="flex justify-center gap-1 mt-3">
+        {items.map((_, i) => (
+          <button
+            key={i}
+            onClick={() => setIndex(i)}
+            className={`w-1.5 h-1.5 rounded-full transition-all ${i === index ? 'bg-[#F5C300]' : 'bg-white/20'}`}
+          />
         ))}
       </div>
     </div>
