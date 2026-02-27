@@ -768,6 +768,7 @@ export const translations = {
     selectDate: 'Selecciona una fecha',
     priceExamples: 'Ejemplos de precios',
     priceExamplesNote: '* Precios indicativos, sin peajes',
+    ridesCompleted: 'viajes realizados',
   },
   nl: {
     badge: 'Beschikbaar 24/7 — Elke dag',
