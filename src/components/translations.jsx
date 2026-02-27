@@ -125,6 +125,7 @@ export const translations = {
     selectDate: 'Selecione uma data',
     priceExamples: 'Exemplos de preços',
     priceExamplesNote: '* Preços indicativos, sem pedágios',
+    ridesCompleted: 'corridas realizadas',
   },
   fr: {
     badge: 'Disponible 24h/24 — 7j/7',
