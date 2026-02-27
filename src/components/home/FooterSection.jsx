@@ -28,9 +28,9 @@ export default function FooterSection() {
                 <Mail className="w-4 h-4" />
                 info@taxirosini.com
               </a>
-              <a href="tel:+41796505347" className="flex items-center gap-3 text-white/50 hover:text-white transition-colors text-sm">
+              <a href="tel:+41772492245" className="flex items-center gap-3 text-white/50 hover:text-white transition-colors text-sm">
                 <Phone className="w-4 h-4" />
-                +41 79 650 53 47
+                +41 77 249 22 45
               </a>
               <div className="text-white/50 text-sm">
                 <p>La Tour-de-Peilz</p>

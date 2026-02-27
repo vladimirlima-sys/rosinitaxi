@@ -266,7 +266,7 @@ Deno.serve(async (req) => {
             <p style="margin:0;">Chemin des Bulesses 16</p>
             <p style="margin:0;">1814 La Tour-de-Peilz</p>
             <p style="margin:8px 0 0;">IDE: CHE-264.039.709</p>
-            <p style="margin:8px 0 0;"><strong>Téléphone:</strong> +41 79 650 53 47</p>
+            <p style="margin:8px 0 0;"><strong>Téléphone:</strong> +41 77 249 22 45</p>
             <p style="margin:4px 0 0;"><strong>Email:</strong> info@taxirosini.com</p>
           </div>
         </td>
@@ -386,7 +386,7 @@ Deno.serve(async (req) => {
       doc.text('Chemin des Bulesses 16', 15, yPos);
       doc.text('1814 La Tour-de-Peilz', 15, yPos + 5);
       doc.text('IDE: CHE-264.039.709', 15, yPos + 10);
-      doc.text('+41 79 650 53 47 | info@taxirosini.com', 15, yPos + 15);
+      doc.text('+41 77 249 22 45 | info@taxirosini.com', 15, yPos + 15);
       
       doc.setTextColor(150, 150, 150);
       doc.text(`${t.dateLabel} ${new Date().toLocaleDateString('fr-CH')}`, pageWidth - 60, yPos + 5);
