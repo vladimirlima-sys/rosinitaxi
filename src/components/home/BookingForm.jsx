@@ -160,6 +160,8 @@ export default function BookingForm({ bookingRef }) {
   const isShortNotice = checkShortNotice();
   console.log('[ShortNotice] isShortNotice:', isShortNotice, 'date:', form.departure_date, 'time:', form.departure_time);
 
+  const [isCalculatingRoute, setIsCalculatingRoute] = useState(false);
+
   const canProceedStep1 = form.departure_point && form.arrival_point && form.departure_date && form.departure_time && estimatedDistance > 0;
   const canProceedStep2 = !!form.vehicle_type;
   const canProceedStep3 = form.client_name && form.client_email && form.client_phone;
