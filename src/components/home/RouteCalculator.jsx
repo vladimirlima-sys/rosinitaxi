@@ -16,9 +16,13 @@ export default function RouteCalculator({ departure, arrival, onRouteCalculated,
   useEffect(() => {
     const handlePlaceSelected = (event) => {
       const detail = event.detail;
-      if (departure && detail.address === departure) {
-        departureCoords.current = { lat: detail.lat, lng: detail.lng };
-      } else if (arrival && detail.address === arrival) {
+      // Match by address OR store the latest coords for each field
+      if (detail.address === departure || (!departureCoords.current && departure && detail.address)) {
+        if (detail.address === departure) {
+          departureCoords.current = { lat: detail.lat, lng: detail.lng };
+        }
+      }
+      if (detail.address === arrival) {
         arrivalCoords.current = { lat: detail.lat, lng: detail.lng };
       }
     };
