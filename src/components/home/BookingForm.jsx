@@ -84,7 +84,12 @@ export default function BookingForm({ bookingRef }) {
           const { latitude, longitude } = position.coords;
           const response = await base44.functions.invoke('hereReverseGeocoding', { lat: latitude, lng: longitude });
           if (response.data?.address) {
-            update('departure_point', response.data.address);
+            const address = response.data.address;
+            update('departure_point', address);
+            // Dispatch placeSelected so RouteCalculator gets the coords directly
+            window.dispatchEvent(new CustomEvent('placeSelected', {
+              detail: { address, lat: latitude, lng: longitude }
+            }));
           } else {
             toast.error(t.locationError);
           }
@@ -103,6 +108,12 @@ export default function BookingForm({ bookingRef }) {
       { timeout: 10000, enableHighAccuracy: false }
     );
   };
+
+  // Auto-locate on mount
+  useEffect(() => {
+    locateUser();
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
 
   const handleRouteCalculated = (routeData) => {
     setIsCalculatingRoute(false);
