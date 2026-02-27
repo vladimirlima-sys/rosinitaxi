@@ -7,6 +7,7 @@ import BookingsFilters from './BookingsFilters';
 
 export default function BookingsTable() {
   const [bookings, setBookings] = useState([]);
+  const [drivers, setDrivers] = useState([]);
   const [loading, setLoading] = useState(true);
   const [filters, setFilters] = useState({
     date: '',
