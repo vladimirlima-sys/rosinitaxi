@@ -75,10 +75,15 @@ export default function BookingForm({ bookingRef }) {
     setIsLocating(true);
     navigator.geolocation.getCurrentPosition(
       async (position) => {
-        const { latitude, longitude } = position.coords;
-        const response = await base44.functions.invoke('hereReverseGeocoding', { lat: latitude, lng: longitude });
-        if (response.data?.address) update('departure_point', response.data.address);
-        setIsLocating(false);
+        try {
+          const { latitude, longitude } = position.coords;
+          const response = await base44.functions.invoke('hereReverseGeocoding', { lat: latitude, lng: longitude });
+          if (response.data?.address) update('departure_point', response.data.address);
+        } catch (e) {
+          console.warn('Reverse geocoding failed:', e.message);
+        } finally {
+          setIsLocating(false);
+        }
       },
       () => setIsLocating(false)
     );
