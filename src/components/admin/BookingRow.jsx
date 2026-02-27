@@ -51,8 +51,11 @@ export default function BookingRow({ booking, onStatusChange, onDelete, onAssign
             <p className="text-white/40 text-xs">{booking.distance_km} km</p>
           </div>
 
-          <div className="flex items-center justify-between">
+          <div className="flex items-center justify-between gap-2">
             <BookingStatusBadge status={booking.payment_status} />
+            {booking.driver_name && (
+              <span className="text-xs text-[#F5C300]/80 truncate hidden lg:block">{booking.driver_name}</span>
+            )}
           </div>
         </div>
 
