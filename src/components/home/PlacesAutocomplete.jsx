@@ -186,7 +186,7 @@ export default function PlacesAutocomplete({
   }, [selectedIndex]);
 
   return (
-    <div className="space-y-3 relative z-[100]">
+    <div className="space-y-3 relative z-[100]" style={{overflow: 'visible'}}>
       <Label className="bg-transparent text-gray-50 text-sm font-semibold peer-disabled:cursor-not-allowed peer-disabled:opacity-70">{label}</Label>
       <div className="relative group">
         <Input
