@@ -192,7 +192,7 @@ export default function BookingForm({ bookingRef }) {
         else throw new Error(response.data?.error || 'Erreur de paiement');
       } else {
         // TWINT or Cash payment
-        const bookingData = { ...form, total_price: parseFloat(totalPrice), payment_status: 'pending', payment_method: paymentMethod, special_notes: form.notes };
+        const bookingData = { ...form, ...driverFields, total_price: parseFloat(totalPrice), payment_status: 'pending', payment_method: paymentMethod, special_notes: form.notes };
         const createdBooking = await base44.entities.Booking.create(bookingData);
         
         try {
