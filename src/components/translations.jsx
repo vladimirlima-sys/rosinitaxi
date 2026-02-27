@@ -254,6 +254,7 @@ export const translations = {
     selectDate: 'Sélectionnez une date',
     priceExamples: 'Exemples de prix',
     priceExamplesNote: '* Prix indicatifs, hors péages',
+    ridesCompleted: 'trajets effectués',
   },
   en: {
     badge: 'Available 24/7 — Every Day',
