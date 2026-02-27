@@ -640,6 +640,7 @@ export const translations = {
     selectDate: 'Seleziona una data',
     priceExamples: 'Esempi di prezzi',
     priceExamplesNote: '* Prezzi indicativi, pedaggi esclusi',
+    ridesCompleted: 'corse effettuate',
   },
   es: {
     badge: 'Disponible 24/7 — Todos los días',
