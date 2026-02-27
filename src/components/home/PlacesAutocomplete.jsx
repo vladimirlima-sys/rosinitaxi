@@ -264,12 +264,7 @@ export default function PlacesAutocomplete({
       }
 
       {showSuggestions && isLoading &&
-        <div className="fixed bg-white border border-black/20 rounded-xl shadow-2xl z-[10000] p-4 flex items-center justify-center"
-          style={{
-            top: inputRef.current?.getBoundingClientRect().bottom + 8,
-            left: inputRef.current?.getBoundingClientRect().left,
-            width: inputRef.current?.getBoundingClientRect().width
-          }}>
+        <div className="absolute top-full left-0 right-0 mt-1 bg-white border border-black/20 rounded-xl shadow-2xl z-[10000] p-4 flex items-center justify-center">
           <Loader className="w-4 h-4 text-black/50 animate-spin mr-2" />
           <span className="text-black/60 text-sm">{t?.autocompleteLoading || 'Searching...'}</span>
         </div>
