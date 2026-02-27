@@ -175,7 +175,7 @@ export default function PlacesAutocomplete({
   const handleBlur = () => {
     setTimeout(() => {
       setShowSuggestions(false);
-    }, 200);
+    }, 300);
   };
 
   // Scroll selected suggestion into view
