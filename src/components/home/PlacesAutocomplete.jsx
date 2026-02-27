@@ -215,7 +215,7 @@ export default function PlacesAutocomplete({
               <X className="w-4 h-4 text-black/40 hover:text-black/60" />
             </button>
           }
-          {showLocateButton && !isLoading && !value &&
+          {showLocateButton && !isLoading &&
             <button
               type="button"
               onClick={onLocate}
