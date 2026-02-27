@@ -105,6 +105,7 @@ export default function BookingForm({ bookingRef }) {
   };
 
   const handleRouteCalculated = (routeData) => {
+    setIsCalculatingRoute(false);
     if (routeData.distance_km > 0) {
       setEstimatedDistance(routeData.distance_km);
       setEstimatedTime(routeData.estimated_time_minutes);
