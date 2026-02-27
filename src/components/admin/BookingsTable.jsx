@@ -21,8 +21,12 @@ export default function BookingsTable() {
     const fetchBookings = async () => {
       try {
         setLoading(true);
-        const data = await base44.entities.Booking.list('-created_date', 100);
+        const [data, driversData] = await Promise.all([
+          base44.entities.Booking.list('-created_date', 100),
+          base44.entities.Driver.list(),
+        ]);
         setBookings(data);
+        setDrivers(driversData);
       } catch (error) {
         toast.error('Erro ao carregar reservas');
       } finally {
