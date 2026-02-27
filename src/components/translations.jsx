@@ -896,5 +896,6 @@ export const translations = {
     selectDate: 'Selecteer een datum',
     priceExamples: 'Prijsvoorbeelden',
     priceExamplesNote: '* Indicatieve prijzen, tol niet inbegrepen',
+    ridesCompleted: 'ritten voltooid',
   },
 };
