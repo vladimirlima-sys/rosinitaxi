@@ -2,7 +2,6 @@ import React, { useRef } from 'react';
 import BookingForm from '@/components/home/BookingForm';
 import LanguageSwitcher from '@/components/home/LanguageSwitcher';
 import SeoHead from '@/components/SeoHead';
-import RideCounter from '@/components/home/RideCounter';
 import { LanguageProvider, useLang } from '@/components/LanguageContext';
 
 function HomeContent({ bookingRef }) {
@@ -13,9 +12,6 @@ function HomeContent({ bookingRef }) {
       <div className="min-h-screen bg-[#F5C300]">
         <div className="fixed top-4 right-4 z-50">
           <LanguageSwitcher />
-        </div>
-        <div className="fixed top-4 left-4 z-50">
-          <RideCounter />
         </div>
         <BookingForm bookingRef={bookingRef} />
       </div>
