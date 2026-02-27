@@ -8,6 +8,7 @@ import AssignDriverModal from '@/components/drivers/AssignDriverModal';
 export default function BookingRow({ booking, onStatusChange, onDelete, onAssignDriver, drivers = [], selected, onToggleSelect }) {
   const [expanded, setExpanded] = useState(false);
   const [showModal, setShowModal] = useState(false);
+  const [showAssignModal, setShowAssignModal] = useState(false);
 
   return (
     <>
