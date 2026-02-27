@@ -24,9 +24,9 @@ export default function FooterSection() {
           <div>
             <h4 className="text-white/40 text-sm tracking-[0.2em] uppercase mb-8">{t.contact}</h4>
             <div className="space-y-5">
-              <a href="mailto:info@taxirosini.com" className="flex items-center gap-3 text-white/50 hover:text-white transition-colors text-sm">
+              <a href="mailto:info@rosini.online" className="flex items-center gap-3 text-white/50 hover:text-white transition-colors text-sm">
                 <Mail className="w-4 h-4" />
-                info@taxirosini.com
+                info@rosini.online
               </a>
               <a href="tel:+41772492245" className="flex items-center gap-3 text-white/50 hover:text-white transition-colors text-sm">
                 <Phone className="w-4 h-4" />

@@ -240,7 +240,7 @@ Deno.serve(async (req) => {
 
     <div style="text-align:center;padding:24px;background:#111;border:1px solid #222;border-radius:12px;">
       <p style="color:#888;margin:0 0 4px;font-size:13px;">${t.contactText}</p>
-      <a href="mailto:info@taxirosini.com" style="color:#C9A96E;text-decoration:none;">info@taxirosini.com</a>
+      <a href="mailto:info@rosini.online" style="color:#C9A96E;text-decoration:none;">info@rosini.online</a>
     </div>
 
     <p style="color:#444;text-align:center;font-size:11px;margin-top:24px;">${t.copyright(new Date().getFullYear())}</p>
@@ -267,7 +267,7 @@ Deno.serve(async (req) => {
             <p style="margin:0;">1814 La Tour-de-Peilz</p>
             <p style="margin:8px 0 0;">IDE: CHE-264.039.709</p>
             <p style="margin:8px 0 0;"><strong>Téléphone:</strong> +41 77 249 22 45</p>
-            <p style="margin:4px 0 0;"><strong>Email:</strong> info@taxirosini.com</p>
+            <p style="margin:4px 0 0;"><strong>Email:</strong> info@rosini.online</p>
           </div>
         </td>
         <td style="vertical-align:top;text-align:right;">
@@ -386,7 +386,7 @@ Deno.serve(async (req) => {
       doc.text('Chemin des Bulesses 16', 15, yPos);
       doc.text('1814 La Tour-de-Peilz', 15, yPos + 5);
       doc.text('IDE: CHE-264.039.709', 15, yPos + 10);
-      doc.text('+41 77 249 22 45 | info@taxirosini.com', 15, yPos + 15);
+      doc.text('+41 77 249 22 45 | info@rosini.online', 15, yPos + 15);
       
       doc.setTextColor(150, 150, 150);
       doc.text(`${t.dateLabel} ${new Date().toLocaleDateString('fr-CH')}`, pageWidth - 60, yPos + 5);
@@ -613,7 +613,7 @@ Deno.serve(async (req) => {
         const pdfBytes = generateReceiptPDF();
         const receiptEmailBody = t.newBookingBody(client_name);
         await sendGmailEmail(
-          'taxirosini@gmail.com',
+          'info@rosini.online',
           t.newBookingSubject(client_name),
           receiptEmailBody,
           pdfBytes

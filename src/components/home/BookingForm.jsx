@@ -609,8 +609,8 @@ export default function BookingForm({ bookingRef }) {
               +41 77 249 22 45
             </a>
             <span className="text-black/30">|</span>
-            <a href="mailto:info@taxirosini.com" className="text-black/70 text-xs hover:text-black transition-colors">
-              info@taxirosini.com
+            <a href="mailto:info@rosini.online" className="text-black/70 text-xs hover:text-black transition-colors">
+              info@rosini.online
             </a>
           </div>
         </div>
