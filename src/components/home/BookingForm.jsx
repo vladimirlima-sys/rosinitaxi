@@ -41,7 +41,6 @@ export default function BookingForm({ bookingRef }) {
   const update = (field, value) => setForm((prev) => ({ ...prev, [field]: value }));
 
   useEffect(() => {
-    locateUser();
     const fetchSettings = async () => {
       const settings = await base44.entities.PriceSettings.list();
       if (settings?.length > 0) setPriceSettings(settings[0]);
