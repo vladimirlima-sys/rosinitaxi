@@ -1,10 +1,11 @@
 import React, { useState } from 'react';
-import { ChevronDown, ChevronUp, Edit2, Trash2 } from 'lucide-react';
+import { ChevronDown, ChevronUp, Edit2, Trash2, UserCheck } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import BookingStatusBadge from './BookingStatusBadge';
 import BookingDetailsModal from './BookingDetailsModal';
+import AssignDriverModal from '@/components/drivers/AssignDriverModal';
 
-export default function BookingRow({ booking, onStatusChange, onDelete, selected, onToggleSelect }) {
+export default function BookingRow({ booking, onStatusChange, onDelete, onAssignDriver, drivers = [], selected, onToggleSelect }) {
   const [expanded, setExpanded] = useState(false);
   const [showModal, setShowModal] = useState(false);
 
