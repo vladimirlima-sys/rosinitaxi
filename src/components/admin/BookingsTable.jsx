@@ -87,6 +87,15 @@ export default function BookingsTable() {
     setSelectedIds((prev) => prev.includes(id) ? prev.filter((x) => x !== id) : [...prev, id]);
   };
 
+  const handleAssignDriver = async (bookingId, driver) => {
+    const update = driver
+      ? { driver_id: driver.id, driver_name: driver.name }
+      : { driver_id: '', driver_name: '' };
+    await base44.entities.Booking.update(bookingId, update);
+    setBookings(prev => prev.map(b => b.id === bookingId ? { ...b, ...update } : b));
+    toast.success(driver ? `Motorista ${driver.name} atribuído` : 'Motorista removido');
+  };
+
   const toggleSelectAll = () => {
     if (selectedIds.length === filteredBookings.length) {
       setSelectedIds([]);
