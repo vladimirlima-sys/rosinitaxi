@@ -48,11 +48,13 @@ export default function PlacesAutocomplete({
       
       if (!results) {
         // Cache miss - fetch from API
+        console.log('[PlacesAutocomplete] Fetching suggestions for:', input);
         const response = await base44.functions.invoke('hereGeocoding', {
           searchText: input,
-          lang: 'pt'
+          lang: 'fr'
         });
 
+        console.log('[PlacesAutocomplete] Response:', response.data);
         results = response.data?.results || [];
         
         // Store in cache
@@ -68,9 +70,10 @@ export default function PlacesAutocomplete({
       } else {
         setSuggestions([]);
         setShowSuggestions(false);
+        setError(t?.autocompleteService || 'Aucun résultat');
       }
     } catch (err) {
-      console.error('HERE Geocoding error:', err);
+      console.error('[PlacesAutocomplete] HERE Geocoding error:', err);
       setError(t?.autocompleteService || 'Service unavailable');
       setSuggestions([]);
     } finally {
