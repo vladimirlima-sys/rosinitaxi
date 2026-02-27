@@ -24,10 +24,10 @@ export default function RideCounter() {
   if (count === null) return null;
 
   return (
-    <div className="flex items-center gap-2 bg-black/80 text-white px-3 py-2 rounded-full text-sm font-semibold shadow-lg">
+    <div className="bg-black/80 text-white px-3 py-2 text-sm font-semibold opacity-30 rounded-full flex items-center gap-2 shadow-lg">
       <Car className="w-4 h-4 text-[#F5C300]" />
       <span className="text-[#F5C300] font-bold">{count.toLocaleString()}</span>
       <span className="text-white/80 text-xs">{t.ridesCompleted}</span>
-    </div>
-  );
+    </div>);
+
 }
