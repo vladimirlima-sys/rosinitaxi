@@ -14,7 +14,7 @@ function HomeContent({ bookingRef }) {
         <div className="fixed top-4 right-4 z-50">
           <LanguageSwitcher />
         </div>
-        <div className="fixed bottom-6 left-1/2 -translate-x-1/2 z-50">
+        <div className="fixed top-4 left-4 z-50">
           <RideCounter />
         </div>
         <BookingForm bookingRef={bookingRef} />
