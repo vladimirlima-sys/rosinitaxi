@@ -5,7 +5,7 @@ import { useLang } from '@/components/LanguageContext';
 import { translations } from '@/components/translations';
 import { hereCache } from '@/components/hereCache';
 
-export default function RouteCalculator({ departure, arrival, onRouteCalculated }) {
+export default function RouteCalculator({ departure, arrival, onRouteCalculated, onCalculating }) {
   const { lang } = useLang();
   const t = translations[lang];
   const [calculating, setCalculating] = useState(false);
