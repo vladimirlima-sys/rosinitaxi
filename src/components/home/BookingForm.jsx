@@ -296,7 +296,14 @@ export default function BookingForm({ bookingRef }) {
               <RouteCalculator
                 departure={form.departure_point}
                 arrival={form.arrival_point}
-                onRouteCalculated={handleRouteCalculated}
+                onRouteCalculated={(data) => {
+                  setIsCalculatingRoute(false);
+                  handleRouteCalculated(data);
+                }}
+                onCalculating={() => {
+                  setEstimatedDistance(0);
+                  setIsCalculatingRoute(true);
+                }}
               />
             )}
 
