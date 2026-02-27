@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { base44 } from '@/api/base44Client';
-import { Car } from 'lucide-react';
+import { Route } from 'lucide-react';
 import { useLang } from '@/components/LanguageContext';
 import { translations } from '@/components/translations';
 
@@ -24,10 +24,16 @@ export default function RideCounter() {
   if (count === null) return null;
 
   return (
-    <div className="bg-black/80 text-white px-3 py-2 text-sm font-semibold opacity-30 rounded-full flex items-center gap-2 shadow-lg">
-      <Car className="w-4 h-4 text-[#F5C300]" />
-      <span className="text-[#F5C300] font-bold">{count.toLocaleString()}</span>
-      <span className="text-white/80 text-xs">{t.ridesCompleted}</span>
-    </div>);
-
+    <div className="w-full max-w-md mt-2 mb-4">
+      <div className="bg-black rounded-xl px-5 py-4 flex items-center gap-4">
+        <div className="w-10 h-10 rounded-full bg-[#F5C300]/10 flex items-center justify-center flex-shrink-0">
+          <Route className="w-5 h-5 text-[#F5C300]" />
+        </div>
+        <div>
+          <p className="text-[#F5C300] text-2xl font-bold leading-none">{count.toLocaleString()}+</p>
+          <p className="text-white/50 text-xs mt-1 uppercase tracking-wider">{t.ridesCompleted}</p>
+        </div>
+      </div>
+    </div>
+  );
 }
