@@ -511,6 +511,7 @@ export const translations = {
     selectDate: 'Wählen Sie ein Datum',
     priceExamples: 'Preisbeispiele',
     priceExamplesNote: '* Richtpreise, ohne Mautgebühren',
+    ridesCompleted: 'Fahrten absolviert',
   },
   it: {
     badge: 'Disponibile 24/7 — Ogni giorno',
