@@ -36,7 +36,7 @@ export default function Admin() {
   return (
     <div className="min-h-screen bg-[#0A0A0A] py-12 px-6">
       <div className="max-w-6xl mx-auto">
-        <h1 className="text-4xl font-light text-white mb-2">Painel Admin</h1>
+        <h1 className="text-4xl font-light text-white mb-2">Reservas</h1>
         <p className="text-white/50 mb-8">Gerencie reservas e configurações da plataforma</p>
 
         <BookingsTable />
