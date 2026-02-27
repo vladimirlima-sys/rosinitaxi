@@ -89,6 +89,13 @@ export default function BookingRow({ booking, onStatusChange, onDelete, onAssign
               </div>
             )}
 
+            {booking.driver_name && (
+              <div className="mb-3">
+                <p className="text-white/40 text-xs mb-1">Motorista</p>
+                <p className="text-[#F5C300] text-sm font-medium">{booking.driver_name}</p>
+              </div>
+            )}
+
             <div className="flex gap-2 pt-2 border-t border-white/5">
               <Button
                 onClick={() => setShowModal(true)}
@@ -97,6 +104,15 @@ export default function BookingRow({ booking, onStatusChange, onDelete, onAssign
               >
                 <Edit2 className="w-4 h-4 mr-1" />
                 Editar status
+              </Button>
+              <Button
+                onClick={() => setShowAssignModal(true)}
+                size="sm"
+                variant="outline"
+                className="border-[#F5C300]/30 text-[#F5C300] hover:bg-[#F5C300]/10"
+              >
+                <UserCheck className="w-4 h-4 mr-1" />
+                {booking.driver_name ? 'Trocar motorista' : 'Atribuir motorista'}
               </Button>
               <Button
                 onClick={() => onDelete(booking.id)}
