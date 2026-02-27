@@ -322,6 +322,8 @@ export default function BookingForm({ bookingRef }) {
                   type="time"
                   value={form.departure_time}
                   onChange={(e) => update('departure_time', e.target.value)}
+                  onBlur={(e) => e.target.blur()}
+                  onKeyDown={(e) => { if (e.key === 'Enter') e.target.blur(); }}
                   className="w-full bg-transparent text-white text-sm outline-none border-none [color-scheme:dark]"
                 />
               </div>
