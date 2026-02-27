@@ -1,6 +1,8 @@
 Deno.serve(async (req) => {
   try {
-    const { lat, lng } = await req.json();
+    const body = await req.json();
+    const lat = body.lat;
+    const lng = body.lng;
     
     if (lat === undefined || lat === null || lng === undefined || lng === null) {
       return Response.json({ error: 'lat and lng are required' }, { status: 400 });

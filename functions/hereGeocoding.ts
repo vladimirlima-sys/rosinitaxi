@@ -1,6 +1,8 @@
 Deno.serve(async (req) => {
   try {
-    const { searchText, lang = 'fr' } = await req.json();
+    const body = await req.json();
+    const searchText = body.searchText;
+    const lang = body.lang || 'fr';
     
     if (!searchText) {
       return Response.json({ error: 'searchText is required' }, { status: 400 });
