@@ -167,6 +167,10 @@ export default function BookingForm({ bookingRef }) {
     if (!totalPrice) return;
     setIsSubmitting(true);
     try {
+      const driverFields = selectedDriver
+        ? { driver_id: selectedDriver.id, driver_name: selectedDriver.name }
+        : {};
+
       if (paymentMethod === 'stripe') {
         if (window.self !== window.top) {
           toast.error(t.checkoutFromPublishedApp);
