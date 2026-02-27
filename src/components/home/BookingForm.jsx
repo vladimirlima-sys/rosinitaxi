@@ -444,6 +444,15 @@ export default function BookingForm({ bookingRef }) {
               </div>
             </div>
 
+            {/* Preferred driver selection */}
+            <div className="bg-black border border-black/40 rounded-xl p-4">
+              <PreferredDriverSelector
+                lang={lang}
+                selectedDriverId={selectedDriver?.id || null}
+                onSelect={(driver) => setSelectedDriver(driver)}
+              />
+            </div>
+
             <div className="flex gap-3">
               <button onClick={() => setStep(1)} className="flex-1 h-12 rounded-xl border border-white/50 bg-[#F5C300]/95 text-black font-bold text-sm uppercase tracking-wider hover:bg-black hover:text-white hover:border-black transition-all">{t.backBtn}</button>
               <button
