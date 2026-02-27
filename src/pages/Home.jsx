@@ -2,6 +2,7 @@ import React, { useRef } from 'react';
 import BookingForm from '@/components/home/BookingForm';
 import LanguageSwitcher from '@/components/home/LanguageSwitcher';
 import SeoHead from '@/components/SeoHead';
+import RideCounter from '@/components/home/RideCounter';
 import { LanguageProvider, useLang } from '@/components/LanguageContext';
 
 function HomeContent({ bookingRef }) {
