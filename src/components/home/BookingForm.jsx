@@ -547,17 +547,16 @@ export default function BookingForm({ bookingRef }) {
             <div className="flex gap-3">
               <button
                 onClick={() => setStep(2)}
-                className="flex-1 h-12 rounded-xl border border-white/50 bg-[#F5C300]/95 text-black font-bold text-sm uppercase tracking-wider hover:bg-black hover:text-white hover:border-black transition-all"
+                className="flex-1 h-12 rounded-xl border border-[#F5C300]/50 bg-white/5 text-[#F5C300] font-bold text-sm uppercase tracking-wider hover:bg-[#F5C300] hover:text-black hover:border-[#F5C300] transition-all"
               >
                 {t.backBtn}
               </button>
               <button
                 onClick={() => setStep(4)}
                 disabled={!canProceedStep3}
-                style={canProceedStep3 ? { backgroundColor: '#000000', color: '#ffffff' } : {}}
                 className={`flex-[2] h-12 rounded-xl border font-bold text-sm uppercase tracking-wider transition-all ${
                   canProceedStep3
-                    ? 'border-black hover:opacity-80'
+                    ? 'bg-[#F5C300] text-black border-[#F5C300] hover:bg-[#e6b800]'
                     : 'bg-white/10 text-white/40 border-white/50 cursor-not-allowed'
                 }`}
               >
