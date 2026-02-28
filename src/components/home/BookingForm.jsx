@@ -570,7 +570,7 @@ export default function BookingForm({ bookingRef }) {
         {step === 4 && (
           <div className="space-y-3">
             {/* Summary */}
-            <div className="bg-black border border-black/40 rounded-xl p-4 space-y-2">
+            <div className="bg-white/5 border border-white/10 rounded-xl p-4 space-y-2">
               <h3 className="text-white/60 text-xs uppercase tracking-wider mb-3">{t.summaryLabel}</h3>
               <div className="space-y-2">
                 <div className="flex justify-between text-sm"><span className="text-white/50">{t.departure}</span><span className="text-white text-right max-w-[60%] truncate">{form.departure_point}</span></div>
