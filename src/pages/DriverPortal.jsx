@@ -1,6 +1,7 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { base44 } from '@/api/base44Client';
-import { Car, MapPin, Clock, User, Phone, Calendar, CheckCircle, AlertCircle, Bell, BellOff, Loader2, LogOut } from 'lucide-react';
+import { Car, MapPin, Phone, Bell, BellOff, Loader2, LogOut, Navigation } from 'lucide-react';
+import { toast } from 'sonner';
 
 const statusLabels = {
   pending: { label: 'Pendente', color: 'text-yellow-400 bg-yellow-400/10' },
@@ -15,7 +16,27 @@ function formatDate(dateStr, timeStr) {
   return `${d}/${m}/${y}${timeStr ? ' às ' + timeStr : ''}`;
 }
 
+function getMapsUrl(address) {
+  return `https://www.google.com/maps/dir/?api=1&destination=${encodeURIComponent(address)}&travelmode=driving`;
+}
+
 function BookingCard({ booking, isNew }) {
+  const [notifying, setNotifying] = useState(null); // 'on_the_way' | 'arrived' | null
+  const [notified, setNotified] = useState({ on_the_way: false, arrived: false });
+
+  const sendClientNotification = async (type) => {
+    setNotifying(type);
+    try {
+      await base44.functions.invoke('notifyClientDriverStatus', { booking_id: booking.id, type });
+      setNotified(prev => ({ ...prev, [type]: true }));
+      toast.success(type === 'on_the_way' ? 'Cliente notificado: motorista a caminho!' : 'Cliente notificado: motorista chegou!');
+    } catch (e) {
+      toast.error('Erro ao enviar notificação. Tente novamente.');
+    } finally {
+      setNotifying(null);
+    }
+  };
+
   return (
     <div className={`bg-[#111] border rounded-2xl p-5 transition-all ${isNew ? 'border-[#F5C300] shadow-[0_0_20px_rgba(245,195,0,0.15)]' : 'border-white/10'}`}>
       {isNew && (
@@ -43,19 +64,39 @@ function BookingCard({ booking, isNew }) {
           <div className="w-5 h-5 rounded-full bg-[#F5C300]/20 flex items-center justify-center shrink-0 mt-0.5">
             <MapPin className="w-3 h-3 text-[#F5C300]" />
           </div>
-          <div>
+          <div className="flex-1 min-w-0">
             <p className="text-white/40 text-xs uppercase tracking-wider">Partida</p>
             <p className="text-white text-sm">{booking.departure_point}</p>
           </div>
+          <a
+            href={getMapsUrl(booking.departure_point)}
+            target="_blank"
+            rel="noopener noreferrer"
+            title="Navegar até ao ponto de partida"
+            className="flex items-center gap-1 bg-blue-500/10 border border-blue-500/20 text-blue-400 text-xs px-2 py-1 rounded-lg hover:bg-blue-500/20 transition-all shrink-0"
+          >
+            <Navigation className="w-3 h-3" />
+            GPS
+          </a>
         </div>
         <div className="flex items-start gap-3">
           <div className="w-5 h-5 rounded-full bg-white/10 flex items-center justify-center shrink-0 mt-0.5">
             <MapPin className="w-3 h-3 text-white/60" />
           </div>
-          <div>
+          <div className="flex-1 min-w-0">
             <p className="text-white/40 text-xs uppercase tracking-wider">Destino</p>
             <p className="text-white text-sm">{booking.arrival_point}</p>
           </div>
+          <a
+            href={getMapsUrl(booking.arrival_point)}
+            target="_blank"
+            rel="noopener noreferrer"
+            title="Navegar até ao destino"
+            className="flex items-center gap-1 bg-blue-500/10 border border-blue-500/20 text-blue-400 text-xs px-2 py-1 rounded-lg hover:bg-blue-500/20 transition-all shrink-0"
+          >
+            <Navigation className="w-3 h-3" />
+            GPS
+          </a>
         </div>
       </div>
 
@@ -81,6 +122,45 @@ function BookingCard({ booking, isNew }) {
       <div className="mt-4 flex items-center justify-between">
         <span className="text-white/40 text-xs">{booking.distance_km ? `${booking.distance_km} km` : ''}</span>
         <span className="text-[#F5C300] font-bold text-lg">CHF {booking.total_price?.toFixed(2)}</span>
+      </div>
+
+      {/* Client notification buttons */}
+      <div className="mt-4 pt-4 border-t border-white/10 space-y-2">
+        <p className="text-white/30 text-xs uppercase tracking-wider mb-2">Notificar o cliente</p>
+        <button
+          onClick={() => sendClientNotification('on_the_way')}
+          disabled={!!notifying || notified.on_the_way}
+          className={`w-full h-11 rounded-xl font-semibold text-sm flex items-center justify-center gap-2 transition-all ${
+            notified.on_the_way
+              ? 'bg-green-500/10 border border-green-500/20 text-green-400 cursor-default'
+              : 'bg-[#F5C300]/10 border border-[#F5C300]/20 text-[#F5C300] hover:bg-[#F5C300]/20'
+          } disabled:opacity-60`}
+        >
+          {notifying === 'on_the_way' ? (
+            <Loader2 className="w-4 h-4 animate-spin" />
+          ) : notified.on_the_way ? (
+            '✓ Notificado: a caminho'
+          ) : (
+            '🚗 Estou a caminho'
+          )}
+        </button>
+        <button
+          onClick={() => sendClientNotification('arrived')}
+          disabled={!!notifying || notified.arrived}
+          className={`w-full h-11 rounded-xl font-semibold text-sm flex items-center justify-center gap-2 transition-all ${
+            notified.arrived
+              ? 'bg-green-500/10 border border-green-500/20 text-green-400 cursor-default'
+              : 'bg-white/5 border border-white/10 text-white hover:bg-white/10'
+          } disabled:opacity-60`}
+        >
+          {notifying === 'arrived' ? (
+            <Loader2 className="w-4 h-4 animate-spin" />
+          ) : notified.arrived ? (
+            '✓ Notificado: chegou'
+          ) : (
+            '📍 Cheguei ao ponto de partida'
+          )}
+        </button>
       </div>
     </div>
   );
