@@ -219,7 +219,7 @@ export default function CancelBooking() {
             <div className="text-center space-y-3 py-4">
               <CheckCircle className="w-12 h-12 text-green-400 mx-auto" />
               <p className="text-white font-semibold">{t.successTitle}</p>
-              <p className="text-white/60 text-sm">{t.successMsg}</p>
+              <p className="text-white/60 text-sm">{refundIssued ? t.successMsgRefund : t.successMsg}</p>
               <a href="mailto:info@rosini.online" className="inline-block mt-2 text-[#F5C300] text-sm hover:underline">{t.contact}</a>
             </div>
           )}
