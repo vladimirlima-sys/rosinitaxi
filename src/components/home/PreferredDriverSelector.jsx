@@ -1,6 +1,6 @@
-import React, { useEffect, useState, useRef } from 'react';
+import React, { useEffect, useState } from 'react';
 import { base44 } from '@/api/base44Client';
-import { ChevronLeft, ChevronRight, User } from 'lucide-react';
+import { User } from 'lucide-react';
 
 const LABELS = {
   fr: { title: 'Chauffeur préféré (optionnel)', none: 'Aucune préférence', selected: 'Sélectionné' },
@@ -14,7 +14,6 @@ const LABELS = {
 
 export default function PreferredDriverSelector({ lang = 'fr', selectedDriverId, onSelect }) {
   const [drivers, setDrivers] = useState([]);
-  const [index, setIndex] = useState(0);
   const l = LABELS[lang] || LABELS.fr;
 
   useEffect(() => {
@@ -23,69 +22,40 @@ export default function PreferredDriverSelector({ lang = 'fr', selectedDriverId,
 
   if (!drivers.length) return null;
 
-  // All items: [null = no preference, ...drivers]
   const items = [null, ...drivers];
-  const current = items[index];
-
-  const prev = () => setIndex((i) => (i - 1 + items.length) % items.length);
-  const next = () => setIndex((i) => (i + 1) % items.length);
 
   const isSelected = (item) =>
     item === null ? selectedDriverId === null || selectedDriverId === undefined : item.id === selectedDriverId;
 
-  const handleSelect = () => {
-    if (current === null) {
-      onSelect(null);
-    } else {
-      onSelect(current);
-    }
-  };
-
   return (
     <div>
       <p className="text-white/60 text-xs uppercase tracking-wider mb-3">{l.title}</p>
-      <div className="flex items-center gap-3">
-        <button onClick={prev} className="w-8 h-8 flex items-center justify-center rounded-full bg-white/10 hover:bg-white/20 transition-colors flex-shrink-0">
-          <ChevronLeft className="w-4 h-4 text-white" />
-        </button>
-
-        <button
-          onClick={handleSelect}
-          className={`flex-1 flex items-center gap-3 p-3 rounded-lg border transition-all ${
-            isSelected(current)
-              ? 'border-[#F5C300] bg-[#F5C300]/10'
-              : 'border-white/20 hover:border-white/40'
-          }`}
-        >
-          <div className="w-9 h-9 rounded-full bg-white/10 flex items-center justify-center flex-shrink-0">
-            <User className="w-4 h-4 text-white/60" />
-          </div>
-          <div className="text-left flex-1 min-w-0">
-            <p className={`text-sm font-medium truncate ${current === null ? 'text-white/50 italic' : 'text-white'}`}>
-              {current === null ? l.none : current.name}
-            </p>
-            {current !== null && current.vehicle && (
-              <p className="text-white/40 text-xs truncate">{current.vehicle}</p>
-            )}
-          </div>
-          {isSelected(current) && (
-            <span className="text-[#F5C300] text-xs flex-shrink-0">{l.selected}</span>
-          )}
-        </button>
-
-        <button onClick={next} className="w-8 h-8 flex items-center justify-center rounded-full bg-white/10 hover:bg-white/20 transition-colors flex-shrink-0">
-          <ChevronRight className="w-4 h-4 text-white" />
-        </button>
-      </div>
-
-      {/* Dots */}
-      <div className="flex justify-center gap-1 mt-3">
-        {items.map((_, i) => (
+      <div className="flex flex-col gap-2">
+        {items.map((item, i) => (
           <button
             key={i}
-            onClick={() => setIndex(i)}
-            className={`w-1.5 h-1.5 rounded-full transition-all ${i === index ? 'bg-[#F5C300]' : 'bg-white/20'}`}
-          />
+            onClick={() => onSelect(item)}
+            className={`flex items-center gap-3 p-3 rounded-lg border transition-all w-full text-left ${
+              isSelected(item)
+                ? 'border-[#F5C300] bg-[#F5C300]/10'
+                : 'border-white/20 hover:border-white/40'
+            }`}
+          >
+            <div className="w-9 h-9 rounded-full bg-white/10 flex items-center justify-center flex-shrink-0">
+              <User className="w-4 h-4 text-white/60" />
+            </div>
+            <div className="text-left flex-1 min-w-0">
+              <p className={`text-sm font-medium truncate ${item === null ? 'text-white/50 italic' : 'text-white'}`}>
+                {item === null ? l.none : item.name}
+              </p>
+              {item !== null && item.vehicle && (
+                <p className="text-white/40 text-xs truncate">{item.vehicle}</p>
+              )}
+            </div>
+            {isSelected(item) && (
+              <span className="text-[#F5C300] text-xs flex-shrink-0">{l.selected}</span>
+            )}
+          </button>
         ))}
       </div>
     </div>
