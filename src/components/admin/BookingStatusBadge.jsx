@@ -6,6 +6,7 @@ export default function BookingStatusBadge({ status }) {
     pending: { bg: 'bg-yellow-500/20', text: 'text-yellow-400', icon: Clock, label: 'Pendente' },
     paid: { bg: 'bg-green-500/20', text: 'text-green-400', icon: CheckCircle2, label: 'Pago' },
     cancelled: { bg: 'bg-red-500/20', text: 'text-red-400', icon: AlertCircle, label: 'Cancelado' },
+    refunded: { bg: 'bg-blue-500/20', text: 'text-blue-400', icon: AlertCircle, label: 'Reembolsado' },
   };
 
   const current = config[status] || config.pending;
