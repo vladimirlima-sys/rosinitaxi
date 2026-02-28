@@ -509,38 +509,38 @@ export default function BookingForm({ bookingRef }) {
                   placeholder={t.namePlaceholder}
                   value={form.client_name}
                   onChange={(e) => update('client_name', e.target.value)}
-                  className="w-full bg-white/10 border border-white/20 rounded-lg text-white text-sm p-3 outline-none placeholder:text-white/40 focus:border-white/60"
-                />
-              </div>
-              <div>
-                <label className={labelClass}><Mail className="inline w-3 h-3 mr-1" />{t.emailLabel}</label>
-                <input
-                  type="email"
-                  placeholder={t.emailPlaceholder}
-                  value={form.client_email}
-                  onChange={(e) => update('client_email', e.target.value)}
-                  className="w-full bg-white/10 border border-white/20 rounded-lg text-white text-sm p-3 outline-none placeholder:text-white/40 focus:border-white/60"
-                />
-              </div>
-              <div>
-                <label className={labelClass}><Phone className="inline w-3 h-3 mr-1" />{t.phoneLabel}</label>
-                <input
-                  type="tel"
-                  placeholder={t.phonePlaceholder}
-                  value={form.client_phone}
-                  onChange={(e) => update('client_phone', e.target.value)}
-                  className="w-full bg-white/10 border border-white/20 rounded-lg text-white text-sm p-3 outline-none placeholder:text-white/40 focus:border-white/60"
-                />
-              </div>
-              <div>
-                <label className={labelClass}><MessageSquare className="inline w-3 h-3 mr-1" />{t.notesLabel}</label>
-                <textarea
-                  placeholder={t.notesPlaceholder}
-                  value={form.notes}
-                  onChange={(e) => update('notes', e.target.value)}
-                  rows={3}
-                  className="w-full bg-white/10 border border-white/20 rounded-lg text-white text-sm p-3 outline-none placeholder:text-white/40 focus:border-white/60 resize-none"
-                />
+                  className="w-full bg-white/10 border border-white/20 rounded-lg text-white text-sm p-3 outline-none placeholder:text-white/40 focus:border-[#F5C300]/60"
+                  />
+                  </div>
+                  <div>
+                  <label className={labelClass}><Mail className="inline w-3 h-3 mr-1" />{t.emailLabel}</label>
+                  <input
+                    type="email"
+                    placeholder={t.emailPlaceholder}
+                    value={form.client_email}
+                    onChange={(e) => update('client_email', e.target.value)}
+                    className="w-full bg-white/10 border border-white/20 rounded-lg text-white text-sm p-3 outline-none placeholder:text-white/40 focus:border-[#F5C300]/60"
+                  />
+                  </div>
+                  <div>
+                  <label className={labelClass}><Phone className="inline w-3 h-3 mr-1" />{t.phoneLabel}</label>
+                  <input
+                    type="tel"
+                    placeholder={t.phonePlaceholder}
+                    value={form.client_phone}
+                    onChange={(e) => update('client_phone', e.target.value)}
+                    className="w-full bg-white/10 border border-white/20 rounded-lg text-white text-sm p-3 outline-none placeholder:text-white/40 focus:border-[#F5C300]/60"
+                  />
+                  </div>
+                  <div>
+                  <label className={labelClass}><MessageSquare className="inline w-3 h-3 mr-1" />{t.notesLabel}</label>
+                  <textarea
+                    placeholder={t.notesPlaceholder}
+                    value={form.notes}
+                    onChange={(e) => update('notes', e.target.value)}
+                    rows={3}
+                    className="w-full bg-white/10 border border-white/20 rounded-lg text-white text-sm p-3 outline-none placeholder:text-white/40 focus:border-[#F5C300]/60 resize-none"
+                  />
               </div>
             </div>
 
