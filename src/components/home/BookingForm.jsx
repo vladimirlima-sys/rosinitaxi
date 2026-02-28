@@ -321,7 +321,7 @@ export default function BookingForm({ bookingRef }) {
 
             {/* Date & Time */}
             <div className="grid grid-cols-2 gap-3">
-              <div className="bg-black border border-black/40 rounded-xl p-4">
+              <div className="bg-[#F5C300] border border-[#F5C300]/40 rounded-xl p-4">
                 <label className={labelClass}>{t.dateLabel}</label>
                 <DatePicker
                   value={form.departure_date}
