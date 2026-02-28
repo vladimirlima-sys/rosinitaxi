@@ -621,14 +621,14 @@ export default function BookingForm({ bookingRef }) {
             <div className="flex gap-3">
               <button
                 onClick={() => setStep(3)}
-                className="flex-1 h-12 rounded-xl border border-white/50 bg-[#F5C300]/95 text-black font-bold text-sm uppercase tracking-wider hover:bg-black hover:text-white hover:border-black transition-all"
+                className="flex-1 h-12 rounded-xl border border-[#F5C300]/50 bg-white/5 text-[#F5C300] font-bold text-sm uppercase tracking-wider hover:bg-[#F5C300] hover:text-black hover:border-[#F5C300] transition-all"
               >
                 {t.backBtn}
               </button>
               <button
                 onClick={handlePayment}
                 disabled={isSubmitting || !totalPrice}
-                className="flex-[2] h-12 rounded-xl border border-white/50 bg-[#F5C300]/95 text-black font-bold text-sm uppercase tracking-wider hover:bg-black hover:text-white hover:border-black transition-all disabled:opacity-60 disabled:cursor-not-allowed flex items-center justify-center gap-2"
+                className="flex-[2] h-12 rounded-xl border border-[#F5C300] bg-[#F5C300] text-black font-bold text-sm uppercase tracking-wider hover:bg-[#e6b800] transition-all disabled:opacity-60 disabled:cursor-not-allowed flex items-center justify-center gap-2"
               >
                 {isSubmitting ? <><Loader2 className="w-4 h-4 animate-spin" />{t.redirecting}</> : (paymentMethod === 'stripe' ? t.payBtn(totalPrice) : t.confirmBooking)}
               </button>
