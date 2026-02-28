@@ -300,7 +300,7 @@ export default function DriverPortal() {
                 onChange={e => setDriverCode(e.target.value)}
                 onKeyDown={e => e.key === 'Enter' && loginWithId(driverCode.trim())}
                 placeholder="Insira o seu código ou nome"
-                className="w-full bg-white/5 border border-white/10 rounded-xl text-white text-sm p-3 outline-none placeholder:text-white/20 focus:border-[#F5C300]/50"
+                className="w-full bg-black/10 border border-black/20 rounded-xl text-black text-sm p-3 outline-none placeholder:text-black/40 focus:border-black/60"
               />
             </div>
 
