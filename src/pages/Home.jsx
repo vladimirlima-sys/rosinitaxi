@@ -9,7 +9,7 @@ function HomeContent({ bookingRef }) {
   return (
     <>
       <SeoHead lang={lang} />
-      <div className="min-h-screen bg-[#F5C300]">
+      <div className="min-h-screen bg-[#0A0A0A]">
         <div className="fixed top-4 right-4 z-50">
           <LanguageSwitcher />
         </div>
