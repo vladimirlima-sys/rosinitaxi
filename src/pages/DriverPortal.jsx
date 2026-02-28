@@ -304,18 +304,18 @@ export default function DriverPortal() {
               />
             </div>
 
-            {error && <p className="text-red-400 text-sm">{error}</p>}
+            {error && <p className="text-red-700 text-sm">{error}</p>}
 
             <button
               onClick={() => loginWithId(driverCode.trim())}
               disabled={loading || !driverCode.trim()}
-              className="w-full h-12 rounded-xl bg-[#F5C300] text-black font-bold text-sm uppercase tracking-wider hover:bg-[#e6b800] transition-all disabled:opacity-50 flex items-center justify-center gap-2"
+              className="w-full h-12 rounded-xl bg-black text-[#F5C300] font-bold text-sm uppercase tracking-wider hover:bg-black/80 transition-all disabled:opacity-50 flex items-center justify-center gap-2"
             >
               {loading ? <Loader2 className="w-4 h-4 animate-spin" /> : 'Entrar'}
             </button>
           </div>
 
-          <p className="text-black/40 text-xs text-center">
+          <p className="text-white/30 text-xs text-center">
             O código é fornecido pelo administrador da Rosini Transfert.
           </p>
         </div>
