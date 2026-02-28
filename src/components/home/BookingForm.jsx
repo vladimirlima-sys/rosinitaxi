@@ -343,9 +343,9 @@ export default function BookingForm({ bookingRef }) {
 
             {/* Short notice warning - below date/time */}
             {isShortNotice && (
-              <div className="bg-black border-2 border-red-500 rounded-xl p-4 flex gap-3 items-start">
-                <span className="text-red-400 text-lg mt-0.5">⚠️</span>
-                <p className="text-white text-sm leading-relaxed font-medium">{t.shortNoticeWarning}</p>
+              <div className="bg-[#F5C300] border-2 border-red-500 rounded-xl p-4 flex gap-3 items-start">
+                <span className="text-red-600 text-lg mt-0.5">⚠️</span>
+                <p className="text-black text-sm leading-relaxed font-medium">{t.shortNoticeWarning}</p>
               </div>
             )}
 
