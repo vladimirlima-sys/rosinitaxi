@@ -1,6 +1,8 @@
 Deno.serve(async (req) => {
   try {
-    const { departure, arrival } = await req.json();
+    const body = await req.json();
+    const departure = body.departure;
+    const arrival = body.arrival;
     
     if (!departure || !arrival) {
       return Response.json({ error: 'departure and arrival are required' }, { status: 400 });
