@@ -284,14 +284,14 @@ export default function DriverPortal() {
   // LOGIN SCREEN
   if (!driver) {
     return (
-      <div className="min-h-screen bg-[#F5C300] flex flex-col items-center justify-center px-6">
+      <div className="min-h-screen bg-[#0A0A0A] flex flex-col items-center justify-center px-6">
         <div className="w-full max-w-sm space-y-6">
           <div className="text-center">
-            <h1 className="text-4xl font-extralight tracking-[0.3em] text-black uppercase">ROSINI</h1>
-            <p className="text-black/50 text-xs tracking-[0.2em] uppercase mt-1">Portal do Motorista</p>
+            <h1 className="text-4xl font-extralight tracking-[0.3em] text-white uppercase">ROSINI</h1>
+            <p className="text-white/40 text-xs tracking-[0.2em] uppercase mt-1">Portal do Motorista</p>
           </div>
 
-          <div className="bg-black rounded-2xl p-6 space-y-4">
+          <div className="bg-[#F5C300] rounded-2xl p-6 space-y-4">
             <div>
               <label className="text-white/50 text-xs uppercase tracking-wider block mb-2">Código / Nome do Motorista</label>
               <input
