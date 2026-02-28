@@ -4,10 +4,10 @@ import { Car, MapPin, Phone, Bell, BellOff, Loader2, LogOut, Navigation } from '
 import { toast } from 'sonner';
 
 const statusLabels = {
-  pending: { label: 'Pendente', color: 'text-yellow-700 bg-yellow-700/10' },
-  paid: { label: 'Pago', color: 'text-green-700 bg-green-700/10' },
-  cancelled: { label: 'Cancelado', color: 'text-red-600 bg-red-600/10' },
-  refunded: { label: 'Reembolsado', color: 'text-blue-700 bg-blue-700/10' },
+  pending: { label: 'Pendente', color: 'text-yellow-400 bg-yellow-400/10' },
+  paid: { label: 'Pago', color: 'text-green-400 bg-green-400/10' },
+  cancelled: { label: 'Cancelado', color: 'text-red-400 bg-red-400/10' },
+  refunded: { label: 'Reembolsado', color: 'text-blue-400 bg-blue-400/10' },
 };
 
 function formatDate(dateStr, timeStr) {
@@ -21,7 +21,7 @@ function getMapsUrl(address) {
 }
 
 function BookingCard({ booking, isNew }) {
-  const [notifying, setNotifying] = useState(null);
+  const [notifying, setNotifying] = useState(null); // 'on_the_way' | 'arrived' | null
   const [notified, setNotified] = useState({ on_the_way: false, arrived: false });
 
   const sendClientNotification = async (type) => {
@@ -38,61 +38,61 @@ function BookingCard({ booking, isNew }) {
   };
 
   return (
-    <div className={`bg-[#F5C300] border-2 rounded-2xl p-5 transition-all ${isNew ? 'border-black shadow-[0_0_20px_rgba(0,0,0,0.2)]' : 'border-black/20'}`}>
+    <div className={`bg-[#111] border rounded-2xl p-5 transition-all ${isNew ? 'border-[#F5C300] shadow-[0_0_20px_rgba(245,195,0,0.15)]' : 'border-white/10'}`}>
       {isNew && (
-        <div className="flex items-center gap-2 mb-3 text-black text-xs font-semibold uppercase tracking-wider">
-          <span className="w-2 h-2 rounded-full bg-black animate-pulse" />
+        <div className="flex items-center gap-2 mb-3 text-[#F5C300] text-xs font-semibold uppercase tracking-wider">
+          <span className="w-2 h-2 rounded-full bg-[#F5C300] animate-pulse" />
           Nova corrida atribuída
         </div>
       )}
       <div className="flex items-start justify-between mb-4">
         <div>
-          <p className="text-black font-semibold text-lg">{booking.client_name}</p>
+          <p className="text-white font-semibold text-lg">{booking.client_name}</p>
           {booking.client_phone && (
-            <a href={`tel:${booking.client_phone}`} className="flex items-center gap-1 text-black/50 text-sm hover:text-black transition-colors mt-0.5">
+            <a href={`tel:${booking.client_phone}`} className="flex items-center gap-1 text-white/50 text-sm hover:text-[#F5C300] transition-colors mt-0.5">
               <Phone className="w-3 h-3" />{booking.client_phone}
             </a>
           )}
         </div>
-        <div className={`text-xs px-2 py-1 rounded-full font-medium ${statusLabels[booking.payment_status]?.color || 'text-black/40 bg-black/5'}`}>
+        <div className={`text-xs px-2 py-1 rounded-full font-medium ${statusLabels[booking.payment_status]?.color || 'text-white/40 bg-white/5'}`}>
           {statusLabels[booking.payment_status]?.label || booking.payment_status}
         </div>
       </div>
 
       <div className="space-y-2">
         <div className="flex items-start gap-3">
-          <div className="w-5 h-5 rounded-full bg-black/20 flex items-center justify-center shrink-0 mt-0.5">
-            <MapPin className="w-3 h-3 text-black" />
+          <div className="w-5 h-5 rounded-full bg-[#F5C300]/20 flex items-center justify-center shrink-0 mt-0.5">
+            <MapPin className="w-3 h-3 text-[#F5C300]" />
           </div>
           <div className="flex-1 min-w-0">
-            <p className="text-black/50 text-xs uppercase tracking-wider">Partida</p>
-            <p className="text-black text-sm">{booking.departure_point}</p>
+            <p className="text-white/40 text-xs uppercase tracking-wider">Partida</p>
+            <p className="text-white text-sm">{booking.departure_point}</p>
           </div>
           <a
             href={getMapsUrl(booking.departure_point)}
             target="_blank"
             rel="noopener noreferrer"
             title="Navegar até ao ponto de partida"
-            className="flex items-center gap-1 bg-black/10 border border-black/20 text-black text-xs px-2 py-1 rounded-lg hover:bg-black/20 transition-all shrink-0"
+            className="flex items-center gap-1 bg-blue-500/10 border border-blue-500/20 text-blue-400 text-xs px-2 py-1 rounded-lg hover:bg-blue-500/20 transition-all shrink-0"
           >
             <Navigation className="w-3 h-3" />
             GPS
           </a>
         </div>
         <div className="flex items-start gap-3">
-          <div className="w-5 h-5 rounded-full bg-black/10 flex items-center justify-center shrink-0 mt-0.5">
-            <MapPin className="w-3 h-3 text-black/60" />
+          <div className="w-5 h-5 rounded-full bg-white/10 flex items-center justify-center shrink-0 mt-0.5">
+            <MapPin className="w-3 h-3 text-white/60" />
           </div>
           <div className="flex-1 min-w-0">
-            <p className="text-black/50 text-xs uppercase tracking-wider">Destino</p>
-            <p className="text-black text-sm">{booking.arrival_point}</p>
+            <p className="text-white/40 text-xs uppercase tracking-wider">Destino</p>
+            <p className="text-white text-sm">{booking.arrival_point}</p>
           </div>
           <a
             href={getMapsUrl(booking.arrival_point)}
             target="_blank"
             rel="noopener noreferrer"
             title="Navegar até ao destino"
-            className="flex items-center gap-1 bg-black/10 border border-black/20 text-black text-xs px-2 py-1 rounded-lg hover:bg-black/20 transition-all shrink-0"
+            className="flex items-center gap-1 bg-blue-500/10 border border-blue-500/20 text-blue-400 text-xs px-2 py-1 rounded-lg hover:bg-blue-500/20 transition-all shrink-0"
           >
             <Navigation className="w-3 h-3" />
             GPS
@@ -101,18 +101,18 @@ function BookingCard({ booking, isNew }) {
       </div>
 
       <div className="grid grid-cols-2 gap-3 mt-4">
-        <div className="bg-black/10 rounded-xl p-3">
-          <p className="text-black/50 text-xs mb-1">Data & Hora</p>
-          <p className="text-black text-sm font-medium">{formatDate(booking.departure_date, booking.departure_time)}</p>
+        <div className="bg-white/5 rounded-xl p-3">
+          <p className="text-white/40 text-xs mb-1">Data & Hora</p>
+          <p className="text-white text-sm font-medium">{formatDate(booking.departure_date, booking.departure_time)}</p>
         </div>
-        <div className="bg-black/10 rounded-xl p-3">
-          <p className="text-black/50 text-xs mb-1">Veículo</p>
-          <p className="text-black text-sm font-medium">{booking.vehicle_type === 'comfort' ? 'COMFORT' : 'STANDARD'}</p>
+        <div className="bg-white/5 rounded-xl p-3">
+          <p className="text-white/40 text-xs mb-1">Veículo</p>
+          <p className="text-white text-sm font-medium">{booking.vehicle_type === 'comfort' ? 'COMFORT' : 'STANDARD'}</p>
         </div>
       </div>
 
       {(booking.passengers || booking.flight_number || booking.notes) && (
-        <div className="mt-3 pt-3 border-t border-black/10 space-y-1 text-sm text-black/60">
+        <div className="mt-3 pt-3 border-t border-white/10 space-y-1 text-sm text-white/50">
           {booking.passengers && <p>👥 {booking.passengers} passageiro(s)</p>}
           {booking.flight_number && <p>✈️ Voo: {booking.flight_number}</p>}
           {booking.notes && <p>📝 {booking.notes}</p>}
@@ -120,20 +120,20 @@ function BookingCard({ booking, isNew }) {
       )}
 
       <div className="mt-4 flex items-center justify-between">
-        <span className="text-black/40 text-xs">{booking.distance_km ? `${booking.distance_km} km` : ''}</span>
-        <span className="text-black font-bold text-lg">CHF {booking.total_price?.toFixed(2)}</span>
+        <span className="text-white/40 text-xs">{booking.distance_km ? `${booking.distance_km} km` : ''}</span>
+        <span className="text-[#F5C300] font-bold text-lg">CHF {booking.total_price?.toFixed(2)}</span>
       </div>
 
       {/* Client notification buttons */}
-      <div className="mt-4 pt-4 border-t border-black/10 space-y-2">
-        <p className="text-black/40 text-xs uppercase tracking-wider mb-2">Notificar o cliente</p>
+      <div className="mt-4 pt-4 border-t border-white/10 space-y-2">
+        <p className="text-white/30 text-xs uppercase tracking-wider mb-2">Notificar o cliente</p>
         <button
           onClick={() => sendClientNotification('on_the_way')}
           disabled={!!notifying || notified.on_the_way}
           className={`w-full h-11 rounded-xl font-semibold text-sm flex items-center justify-center gap-2 transition-all ${
             notified.on_the_way
-              ? 'bg-green-600/10 border border-green-600/20 text-green-700 cursor-default'
-              : 'bg-black text-[#F5C300] border border-black hover:bg-black/80'
+              ? 'bg-green-500/10 border border-green-500/20 text-green-400 cursor-default'
+              : 'bg-[#F5C300]/10 border border-[#F5C300]/20 text-[#F5C300] hover:bg-[#F5C300]/20'
           } disabled:opacity-60`}
         >
           {notifying === 'on_the_way' ? (
@@ -149,8 +149,8 @@ function BookingCard({ booking, isNew }) {
           disabled={!!notifying || notified.arrived}
           className={`w-full h-11 rounded-xl font-semibold text-sm flex items-center justify-center gap-2 transition-all ${
             notified.arrived
-              ? 'bg-green-600/10 border border-green-600/20 text-green-700 cursor-default'
-              : 'bg-black/10 border border-black/20 text-black hover:bg-black/20'
+              ? 'bg-green-500/10 border border-green-500/20 text-green-400 cursor-default'
+              : 'bg-white/5 border border-white/10 text-white hover:bg-white/10'
           } disabled:opacity-60`}
         >
           {notifying === 'arrived' ? (
@@ -177,9 +177,12 @@ export default function DriverPortal() {
   const prevBookingIds = useRef(new Set());
   const audioRef = useRef(null);
 
+  // Load saved driver from sessionStorage
   useEffect(() => {
     const saved = sessionStorage.getItem('driver_portal_id');
-    if (saved) loginWithId(saved);
+    if (saved) {
+      loginWithId(saved);
+    }
   }, []);
 
   const requestNotifications = async () => {
@@ -190,7 +193,11 @@ export default function DriverPortal() {
 
   const sendNotification = (title, body) => {
     if (Notification.permission === 'granted') {
-      new Notification(title, { body, icon: '/favicon.ico', badge: '/favicon.ico' });
+      new Notification(title, {
+        body,
+        icon: '/favicon.ico',
+        badge: '/favicon.ico',
+      });
     }
   };
 
@@ -234,6 +241,8 @@ export default function DriverPortal() {
   const loadBookings = async (driverId) => {
     const all = await base44.entities.Booking.list('-departure_date', 200);
     const mine = all.filter(b => b.driver_id === driverId && b.payment_status !== 'cancelled' && b.payment_status !== 'refunded');
+    
+    // Detect new bookings
     const currentIds = new Set(mine.map(b => b.id));
     if (prevBookingIds.current.size > 0) {
       const newIds = new Set([...currentIds].filter(id => !prevBookingIds.current.has(id)));
@@ -249,16 +258,20 @@ export default function DriverPortal() {
     setBookings(mine);
   };
 
+  // Poll for updates every 30 seconds
   useEffect(() => {
     if (!driver) return;
     const interval = setInterval(() => loadBookings(driver.id), 30000);
     return () => clearInterval(interval);
   }, [driver]);
 
+  // Real-time subscription
   useEffect(() => {
     if (!driver) return;
     const unsubscribe = base44.entities.Booking.subscribe((event) => {
-      if (event.data?.driver_id === driver.id) loadBookings(driver.id);
+      if (event.data?.driver_id === driver.id) {
+        loadBookings(driver.id);
+      }
     });
     return unsubscribe;
   }, [driver]);
@@ -291,7 +304,7 @@ export default function DriverPortal() {
             <p className="text-white/40 text-xs tracking-[0.2em] uppercase mt-1">Portal do Motorista</p>
           </div>
 
-          <div className="bg-[#F5C300] rounded-2xl p-6 space-y-4">
+          <div className="bg-[#111] border border-white/10 rounded-2xl p-6 space-y-4">
             <div>
               <label className="text-white/50 text-xs uppercase tracking-wider block mb-2">Código / Nome do Motorista</label>
               <input
@@ -300,22 +313,22 @@ export default function DriverPortal() {
                 onChange={e => setDriverCode(e.target.value)}
                 onKeyDown={e => e.key === 'Enter' && loginWithId(driverCode.trim())}
                 placeholder="Insira o seu código ou nome"
-                className="w-full bg-black/10 border border-black/20 rounded-xl text-black text-sm p-3 outline-none placeholder:text-black/40 focus:border-black/60"
+                className="w-full bg-white/5 border border-white/10 rounded-xl text-white text-sm p-3 outline-none placeholder:text-white/20 focus:border-[#F5C300]/50"
               />
             </div>
 
-            {error && <p className="text-red-700 text-sm">{error}</p>}
+            {error && <p className="text-red-400 text-sm">{error}</p>}
 
             <button
               onClick={() => loginWithId(driverCode.trim())}
               disabled={loading || !driverCode.trim()}
-              className="w-full h-12 rounded-xl bg-black text-[#F5C300] font-bold text-sm uppercase tracking-wider hover:bg-black/80 transition-all disabled:opacity-50 flex items-center justify-center gap-2"
+              className="w-full h-12 rounded-xl bg-[#F5C300] text-black font-bold text-sm uppercase tracking-wider hover:bg-[#e6b800] transition-all disabled:opacity-50 flex items-center justify-center gap-2"
             >
               {loading ? <Loader2 className="w-4 h-4 animate-spin" /> : 'Entrar'}
             </button>
           </div>
 
-          <p className="text-white/30 text-xs text-center">
+          <p className="text-white/20 text-xs text-center">
             O código é fornecido pelo administrador da Rosini Transfert.
           </p>
         </div>

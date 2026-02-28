@@ -48,24 +48,24 @@
  * The mainPage value must match a key in the PAGES object exactly.
  */
 import Admin from './pages/Admin';
-import CancelBooking from './pages/CancelBooking';
-import DriverPortal from './pages/DriverPortal';
 import Drivers from './pages/Drivers';
-import FAQ from './pages/FAQ';
 import Finance from './pages/Finance';
 import Home from './pages/Home';
 import Settings from './pages/Settings';
+import CancelBooking from './pages/CancelBooking';
+import FAQ from './pages/FAQ';
+import DriverPortal from './pages/DriverPortal';
 
 
 export const PAGES = {
     "Admin": Admin,
-    "CancelBooking": CancelBooking,
-    "DriverPortal": DriverPortal,
     "Drivers": Drivers,
-    "FAQ": FAQ,
     "Finance": Finance,
     "Home": Home,
     "Settings": Settings,
+    "CancelBooking": CancelBooking,
+    "FAQ": FAQ,
+    "DriverPortal": DriverPortal,
 }
 
 export const pagesConfig = {

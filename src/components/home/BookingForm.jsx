@@ -245,20 +245,20 @@ export default function BookingForm({ bookingRef }) {
     setEstimatedTime(0);
   };
 
-  const inputClass = "bg-[#F5C300]/10 border border-[#F5C300]/20 text-[#F5C300] placeholder:text-[#F5C300]/40 focus:border-[#F5C300]/60 focus:ring-0 h-12 rounded-lg text-sm";
-  const labelClass = "text-[#F5C300]/70 text-xs uppercase tracking-wider mb-1 block";
+  const inputClass = "bg-white/10 border border-white/20 text-white placeholder:text-white/40 focus:border-white/60 focus:ring-0 h-12 rounded-lg text-sm";
+  const labelClass = "text-white/70 text-xs uppercase tracking-wider mb-1 block";
 
   const cardClass = "bg-black border border-black/40 rounded-xl p-4";
   const darkInputClass = "w-full bg-white/10 border border-white/20 rounded-lg text-white text-sm p-3 outline-none placeholder:text-white/40 focus:border-white/60";
   const darkLabelClass = "text-white/60 text-xs uppercase tracking-wider mb-1 block";
 
   return (
-    <div ref={bookingRef} className="min-h-screen bg-[#0A0A0A] flex flex-col items-center justify-start py-8 px-4">
+    <div ref={bookingRef} className="min-h-screen bg-[#F5C300] flex flex-col items-center justify-start py-8 px-4">
       {/* Header */}
       <div className="w-full max-w-md mb-6 text-center">
-        <h1 className="text-[#F5C300] text-6xl font-extralight tracking-[0.3em] uppercase">ROSINI</h1>
-        <p className="text-[#F5C300]/60 text-sm tracking-[0.2em] uppercase mt-2">TRANSPORTS DE PERSONNES</p>
-        <div className="w-8 h-[1px] bg-[#F5C300]/40 mx-auto mt-3" />
+        <h1 className="text-black text-6xl font-extralight tracking-[0.3em] uppercase">ROSINI</h1>
+        <p className="text-black/60 text-sm tracking-[0.2em] uppercase mt-2">TRANSPORTS DE PERSONNES</p>
+        <div className="w-8 h-[1px] bg-black/40 mx-auto mt-3" />
       </div>
 
       <div className="w-full max-w-md">
@@ -267,7 +267,7 @@ export default function BookingForm({ bookingRef }) {
         {step === 1 && (
           <div className="space-y-3">
             {/* Departure */}
-            <div className="bg-[#F5C300] border border-[#F5C300]/40 rounded-xl p-4">
+            <div className="bg-black border border-black/40 rounded-xl p-4">
               <PlacesAutocomplete
                 value={form.departure_point}
                 onChange={(val) => update('departure_point', val)}
@@ -284,14 +284,14 @@ export default function BookingForm({ bookingRef }) {
             {/* Arrow connector */}
             <div className="flex justify-center">
               <div className="flex flex-col items-center gap-1">
-                <div className="w-[1px] h-3 bg-[#F5C300]/30" />
-                <div className="w-3 h-3 rounded-full border-2 border-[#F5C300] bg-[#0A0A0A]" />
-                <div className="w-[1px] h-3 bg-[#F5C300]/30" />
+                <div className="w-[1px] h-3 bg-black/30" />
+                <div className="w-3 h-3 rounded-full border-2 border-black bg-[#F5C300]" />
+                <div className="w-[1px] h-3 bg-black/30" />
               </div>
             </div>
 
             {/* Arrival */}
-            <div className="bg-[#F5C300] border border-[#F5C300]/40 rounded-xl p-4">
+            <div className="bg-black border border-black/40 rounded-xl p-4">
               <PlacesAutocomplete
                 value={form.arrival_point}
                 onChange={(val) => update('arrival_point', val)}
@@ -321,14 +321,14 @@ export default function BookingForm({ bookingRef }) {
 
             {/* Date & Time */}
             <div className="grid grid-cols-2 gap-3">
-              <div className="bg-[#F5C300] border border-[#F5C300]/40 rounded-xl p-4">
+              <div className="bg-black border border-black/40 rounded-xl p-4">
                 <label className={labelClass}>{t.dateLabel}</label>
                 <DatePicker
                   value={form.departure_date}
                   onChange={(date) => update('departure_date', date)}
                 />
               </div>
-              <div className="bg-[#F5C300] border border-[#F5C300]/40 rounded-xl p-4">
+              <div className="bg-black border border-black/40 rounded-xl p-4">
                 <label className={labelClass}>{t.timeLabel}</label>
                 <input
                   type="time"
@@ -336,33 +336,33 @@ export default function BookingForm({ bookingRef }) {
                   onChange={(e) => update('departure_time', e.target.value)}
                   onBlur={(e) => e.target.blur()}
                   onKeyDown={(e) => { if (e.key === 'Enter') e.target.blur(); }}
-                  className="w-full bg-transparent text-black text-sm outline-none border-none [color-scheme:light]"
+                  className="w-full bg-transparent text-white text-sm outline-none border-none [color-scheme:dark]"
                 />
               </div>
             </div>
 
             {/* Short notice warning - below date/time */}
             {isShortNotice && (
-              <div className="bg-[#F5C300] border-2 border-red-500 rounded-xl p-4 flex gap-3 items-start">
-                <span className="text-red-600 text-lg mt-0.5">⚠️</span>
-                <p className="text-black text-sm leading-relaxed font-medium">{t.shortNoticeWarning}</p>
+              <div className="bg-black border-2 border-red-500 rounded-xl p-4 flex gap-3 items-start">
+                <span className="text-red-400 text-lg mt-0.5">⚠️</span>
+                <p className="text-white text-sm leading-relaxed font-medium">{t.shortNoticeWarning}</p>
               </div>
             )}
 
             {/* Flight (optional) */}
-            <div className="bg-[#F5C300] border border-[#F5C300]/40 rounded-xl p-4">
+            <div className="bg-black border border-black/40 rounded-xl p-4">
               <label className={labelClass}><Plane className="inline w-3 h-3 mr-1" />{t.flightLabel}</label>
               <input
                 type="text"
                 placeholder={t.flightPlaceholder}
                 value={form.flight_number}
                 onChange={(e) => update('flight_number', e.target.value)}
-                className="w-full bg-transparent text-black text-sm outline-none border-none placeholder:text-black/40"
+                className="w-full bg-transparent text-white text-sm outline-none border-none placeholder:text-white/40"
               />
             </div>
 
             {/* Passengers */}
-            <div className="bg-[#F5C300] border border-[#F5C300]/40 rounded-xl p-4">
+            <div className="bg-black border border-black/40 rounded-xl p-4">
               <label className={labelClass}>{t.passengersLabel}</label>
               <div className="flex gap-2 mt-2">
                 {[1, 2, 3, 4].map((num) => (
@@ -371,8 +371,8 @@ export default function BookingForm({ bookingRef }) {
                     onClick={() => update('passengers', num)}
                     className={`flex-1 h-10 rounded-lg text-sm font-bold transition-all ${
                       form.passengers === num
-                        ? 'bg-black text-[#F5C300]'
-                        : 'bg-black/10 text-black/70 hover:bg-black/20'
+                        ? 'bg-[#F5C300] text-black'
+                        : 'bg-white/10 text-white/70 hover:bg-white/20'
                     }`}
                   >
                     {num}
@@ -383,16 +383,16 @@ export default function BookingForm({ bookingRef }) {
 
             {/* Price preview */}
             {estimatedDistance > 0 && (
-              <div className="bg-[#F5C300] border border-[#F5C300]/40 rounded-xl p-4 flex items-center justify-between">
+              <div className="bg-black border border-black/40 rounded-xl p-4 flex items-center justify-between">
                 <div>
-                  <p className="text-black/60 text-xs uppercase tracking-wider">{t.estimatedPrice}</p>
-                  <p className="text-black text-sm mt-0.5">{estimatedDistance} km · {Math.floor(estimatedTime / 60)}h{estimatedTime % 60}min</p>
+                  <p className="text-white/60 text-xs uppercase tracking-wider">{t.estimatedPrice}</p>
+                  <p className="text-white text-sm mt-0.5">{estimatedDistance} km · {Math.floor(estimatedTime / 60)}h{estimatedTime % 60}min</p>
                 </div>
                 <div className="text-right">
                   {totalPrice ? (
-                    <p className="text-black text-2xl font-bold">CHF {totalPrice}</p>
+                    <p className="text-[#F5C300] text-2xl font-bold">CHF {totalPrice}</p>
                   ) : (
-                    <p className="text-black/40 text-sm">—</p>
+                    <p className="text-white/40 text-sm">—</p>
                   )}
                 </div>
               </div>
@@ -403,8 +403,8 @@ export default function BookingForm({ bookingRef }) {
               disabled={!canProceedStep1 || isCalculatingRoute}
               className={`w-full h-14 rounded-xl font-bold text-base tracking-wider uppercase transition-all ${
                 canProceedStep1 && !isCalculatingRoute
-                  ? 'bg-black text-[#F5C300] hover:bg-black/80'
-                  : 'bg-black/10 text-black/40 cursor-not-allowed'
+                  ? 'bg-black text-white hover:bg-black/80'
+                  : 'bg-white/10 text-white/40 cursor-not-allowed'
               }`}
             >
               {isCalculatingRoute ? t.calculatingRoute || 'Calcul en cours...' : t.continueBtn}
@@ -418,23 +418,23 @@ export default function BookingForm({ bookingRef }) {
         {/* STEP 2 — Vehicle Selection */}
         {step === 2 && (
           <div className="space-y-3">
-            <h3 className="text-[#F5C300] font-semibold text-sm uppercase tracking-wider mb-2">{t.step2Title}</h3>
+            <h3 className="text-black font-semibold text-sm uppercase tracking-wider mb-2">{t.step2Title}</h3>
 
             {/* Standard */}
             <div
               onClick={() => update('vehicle_type', 'economic')}
               className={`rounded-xl p-4 cursor-pointer transition-all border ${
-                form.vehicle_type === 'economic' ? 'bg-[#F5C300] text-black border-transparent' : 'bg-white/5 border-white/10 hover:bg-white/10'
+                form.vehicle_type === 'economic' ? 'bg-black text-white border-transparent' : 'bg-[#E8B800]/70 border-white/30 hover:bg-[#E8B800]/90'
               }`}
             >
               <div className="flex items-center justify-between mb-2">
                 <div>
-                  <p className={`font-bold text-base ${form.vehicle_type === 'economic' ? 'text-black' : 'text-white'}`}>STANDARD</p>
-                  <p className={`text-xs ${form.vehicle_type === 'economic' ? 'text-black/60' : 'text-white/60'}`}>1–3 {t.persons} · 2 {t.luggageLabel}</p>
+                  <p className={`font-bold text-base ${form.vehicle_type === 'economic' ? 'text-white' : 'text-black'}`}>STANDARD</p>
+                  <p className={`text-xs ${form.vehicle_type === 'economic' ? 'text-white/60' : 'text-black/60'}`}>1–3 {t.persons} · 2 {t.luggageLabel}</p>
                 </div>
                 <div className="text-right">
                   {priceSettings && estimatedDistance > 0 && (
-                    <p className={`font-bold ${form.vehicle_type === 'economic' ? 'text-black' : 'text-[#F5C300]'}`}>
+                    <p className={`font-bold ${form.vehicle_type === 'economic' ? 'text-[#F5C300]' : 'text-black'}`}>
                       CHF {(estimatedDistance * priceSettings.standard_price_per_km + (estimatedDistance <= 30 ? (priceSettings.base_fare || 0) : 0)).toFixed(2)}
                     </p>
                   )}
@@ -442,7 +442,7 @@ export default function BookingForm({ bookingRef }) {
               </div>
               <div className="flex flex-wrap gap-2 mt-2">
                 {t.vehicleFeatures.economic.map((f, i) => (
-                  <span key={i} className={`text-xs px-2 py-0.5 rounded-full ${form.vehicle_type === 'economic' ? 'bg-black/10 text-black/70' : 'bg-white/10 text-white/60'}`}>{f}</span>
+                  <span key={i} className={`text-xs px-2 py-0.5 rounded-full ${form.vehicle_type === 'economic' ? 'bg-white/10 text-white/70' : 'bg-black/20 text-black/60'}`}>{f}</span>
                 ))}
               </div>
             </div>
@@ -451,17 +451,17 @@ export default function BookingForm({ bookingRef }) {
             <div
               onClick={() => update('vehicle_type', 'comfort')}
               className={`rounded-xl p-4 cursor-pointer transition-all border ${
-                form.vehicle_type === 'comfort' ? 'bg-[#F5C300] text-black border-transparent' : 'bg-white/5 border-white/10 hover:bg-white/10'
+                form.vehicle_type === 'comfort' ? 'bg-black text-white border-transparent' : 'bg-[#E8B800]/70 border-white/30 hover:bg-[#E8B800]/90'
               }`}
             >
               <div className="flex items-center justify-between mb-2">
                 <div>
-                  <p className={`font-bold text-base ${form.vehicle_type === 'comfort' ? 'text-black' : 'text-white'}`}>COMFORT</p>
-                  <p className={`text-xs ${form.vehicle_type === 'comfort' ? 'text-black/60' : 'text-white/60'}`}>1–4 {t.persons} · 3 {t.luggageLabel}</p>
+                  <p className={`font-bold text-base ${form.vehicle_type === 'comfort' ? 'text-white' : 'text-black'}`}>COMFORT</p>
+                  <p className={`text-xs ${form.vehicle_type === 'comfort' ? 'text-white/60' : 'text-black/60'}`}>1–4 {t.persons} · 3 {t.luggageLabel}</p>
                 </div>
                 <div className="text-right">
                   {priceSettings && estimatedDistance > 0 && (
-                    <p className={`font-bold ${form.vehicle_type === 'comfort' ? 'text-black' : 'text-[#F5C300]'}`}>
+                    <p className={`font-bold ${form.vehicle_type === 'comfort' ? 'text-[#F5C300]' : 'text-black'}`}>
                       CHF {(estimatedDistance * (priceSettings.comfort_price_per_km || priceSettings.standard_price_per_km * 1.3) + (estimatedDistance <= 30 ? (priceSettings.base_fare || 0) : 0)).toFixed(2)}
                     </p>
                   )}
@@ -469,13 +469,13 @@ export default function BookingForm({ bookingRef }) {
               </div>
               <div className="flex flex-wrap gap-2 mt-2">
                 {t.vehicleFeatures.comfort.map((f, i) => (
-                  <span key={i} className={`text-xs px-2 py-0.5 rounded-full ${form.vehicle_type === 'comfort' ? 'bg-black/10 text-black/70' : 'bg-white/10 text-white/60'}`}>{f}</span>
+                  <span key={i} className={`text-xs px-2 py-0.5 rounded-full ${form.vehicle_type === 'comfort' ? 'bg-white/10 text-white/70' : 'bg-black/20 text-black/60'}`}>{f}</span>
                 ))}
               </div>
             </div>
 
             {/* Preferred driver selection */}
-            <div className="bg-white/5 border border-white/10 rounded-xl p-4">
+            <div className="bg-black border border-black/40 rounded-xl p-4">
               <PreferredDriverSelector
                 lang={lang}
                 selectedDriverId={selectedDriver?.id || null}
@@ -484,11 +484,11 @@ export default function BookingForm({ bookingRef }) {
             </div>
 
             <div className="flex gap-3">
-              <button onClick={() => setStep(1)} className="flex-1 h-12 rounded-xl border border-[#F5C300]/50 bg-white/5 text-[#F5C300] font-bold text-sm uppercase tracking-wider hover:bg-[#F5C300] hover:text-black hover:border-[#F5C300] transition-all">{t.backBtn}</button>
+              <button onClick={() => setStep(1)} className="flex-1 h-12 rounded-xl border border-white/50 bg-[#F5C300]/95 text-black font-bold text-sm uppercase tracking-wider hover:bg-black hover:text-white hover:border-black transition-all">{t.backBtn}</button>
               <button
                 onClick={() => setStep(3)}
                 disabled={!canProceedStep2}
-                className={`flex-[2] h-12 rounded-xl font-bold text-sm uppercase tracking-wider transition-all ${canProceedStep2 ? 'bg-[#F5C300] text-black hover:bg-[#e6b800]' : 'bg-white/10 text-white/40 cursor-not-allowed'}`}
+                className={`flex-[2] h-12 rounded-xl font-bold text-sm uppercase tracking-wider transition-all ${canProceedStep2 ? 'bg-black text-white hover:bg-black/80' : 'bg-white/10 text-white/40 cursor-not-allowed'}`}
               >
                 {t.continueBtn}
               </button>
@@ -499,8 +499,8 @@ export default function BookingForm({ bookingRef }) {
         {/* STEP 3 — Personal Info */}
         {step === 3 && (
           <div className="space-y-3">
-            <div className="bg-white/5 border border-white/10 rounded-xl p-4 space-y-4">
-              <h3 className="text-[#F5C300] font-semibold text-sm uppercase tracking-wider">{t.step3Title}</h3>
+            <div className="bg-black border border-black/40 rounded-xl p-4 space-y-4">
+              <h3 className="text-white font-semibold text-sm uppercase tracking-wider">{t.step3Title}</h3>
 
               <div>
                 <label className={labelClass}><User className="inline w-3 h-3 mr-1" />{t.nameLabel}</label>
@@ -509,54 +509,55 @@ export default function BookingForm({ bookingRef }) {
                   placeholder={t.namePlaceholder}
                   value={form.client_name}
                   onChange={(e) => update('client_name', e.target.value)}
-                  className="w-full bg-white/10 border border-white/20 rounded-lg text-white text-sm p-3 outline-none placeholder:text-white/40 focus:border-[#F5C300]/60"
-                  />
-                  </div>
-                  <div>
-                  <label className={labelClass}><Mail className="inline w-3 h-3 mr-1" />{t.emailLabel}</label>
-                  <input
-                    type="email"
-                    placeholder={t.emailPlaceholder}
-                    value={form.client_email}
-                    onChange={(e) => update('client_email', e.target.value)}
-                    className="w-full bg-white/10 border border-white/20 rounded-lg text-white text-sm p-3 outline-none placeholder:text-white/40 focus:border-[#F5C300]/60"
-                  />
-                  </div>
-                  <div>
-                  <label className={labelClass}><Phone className="inline w-3 h-3 mr-1" />{t.phoneLabel}</label>
-                  <input
-                    type="tel"
-                    placeholder={t.phonePlaceholder}
-                    value={form.client_phone}
-                    onChange={(e) => update('client_phone', e.target.value)}
-                    className="w-full bg-white/10 border border-white/20 rounded-lg text-white text-sm p-3 outline-none placeholder:text-white/40 focus:border-[#F5C300]/60"
-                  />
-                  </div>
-                  <div>
-                  <label className={labelClass}><MessageSquare className="inline w-3 h-3 mr-1" />{t.notesLabel}</label>
-                  <textarea
-                    placeholder={t.notesPlaceholder}
-                    value={form.notes}
-                    onChange={(e) => update('notes', e.target.value)}
-                    rows={3}
-                    className="w-full bg-white/10 border border-white/20 rounded-lg text-white text-sm p-3 outline-none placeholder:text-white/40 focus:border-[#F5C300]/60 resize-none"
-                  />
+                  className="w-full bg-white/10 border border-white/20 rounded-lg text-white text-sm p-3 outline-none placeholder:text-white/40 focus:border-white/60"
+                />
+              </div>
+              <div>
+                <label className={labelClass}><Mail className="inline w-3 h-3 mr-1" />{t.emailLabel}</label>
+                <input
+                  type="email"
+                  placeholder={t.emailPlaceholder}
+                  value={form.client_email}
+                  onChange={(e) => update('client_email', e.target.value)}
+                  className="w-full bg-white/10 border border-white/20 rounded-lg text-white text-sm p-3 outline-none placeholder:text-white/40 focus:border-white/60"
+                />
+              </div>
+              <div>
+                <label className={labelClass}><Phone className="inline w-3 h-3 mr-1" />{t.phoneLabel}</label>
+                <input
+                  type="tel"
+                  placeholder={t.phonePlaceholder}
+                  value={form.client_phone}
+                  onChange={(e) => update('client_phone', e.target.value)}
+                  className="w-full bg-white/10 border border-white/20 rounded-lg text-white text-sm p-3 outline-none placeholder:text-white/40 focus:border-white/60"
+                />
+              </div>
+              <div>
+                <label className={labelClass}><MessageSquare className="inline w-3 h-3 mr-1" />{t.notesLabel}</label>
+                <textarea
+                  placeholder={t.notesPlaceholder}
+                  value={form.notes}
+                  onChange={(e) => update('notes', e.target.value)}
+                  rows={3}
+                  className="w-full bg-white/10 border border-white/20 rounded-lg text-white text-sm p-3 outline-none placeholder:text-white/40 focus:border-white/60 resize-none"
+                />
               </div>
             </div>
 
             <div className="flex gap-3">
               <button
                 onClick={() => setStep(2)}
-                className="flex-1 h-12 rounded-xl border border-[#F5C300]/50 bg-white/5 text-[#F5C300] font-bold text-sm uppercase tracking-wider hover:bg-[#F5C300] hover:text-black hover:border-[#F5C300] transition-all"
+                className="flex-1 h-12 rounded-xl border border-white/50 bg-[#F5C300]/95 text-black font-bold text-sm uppercase tracking-wider hover:bg-black hover:text-white hover:border-black transition-all"
               >
                 {t.backBtn}
               </button>
               <button
                 onClick={() => setStep(4)}
                 disabled={!canProceedStep3}
+                style={canProceedStep3 ? { backgroundColor: '#000000', color: '#ffffff' } : {}}
                 className={`flex-[2] h-12 rounded-xl border font-bold text-sm uppercase tracking-wider transition-all ${
                   canProceedStep3
-                    ? 'bg-[#F5C300] text-black border-[#F5C300] hover:bg-[#e6b800]'
+                    ? 'border-black hover:opacity-80'
                     : 'bg-white/10 text-white/40 border-white/50 cursor-not-allowed'
                 }`}
               >
@@ -570,7 +571,7 @@ export default function BookingForm({ bookingRef }) {
         {step === 4 && (
           <div className="space-y-3">
             {/* Summary */}
-            <div className="bg-white/5 border border-white/10 rounded-xl p-4 space-y-2">
+            <div className="bg-black border border-black/40 rounded-xl p-4 space-y-2">
               <h3 className="text-white/60 text-xs uppercase tracking-wider mb-3">{t.summaryLabel}</h3>
               <div className="space-y-2">
                 <div className="flex justify-between text-sm"><span className="text-white/50">{t.departure}</span><span className="text-white text-right max-w-[60%] truncate">{form.departure_point}</span></div>
@@ -583,13 +584,12 @@ export default function BookingForm({ bookingRef }) {
               <div className="flex justify-between items-center">
                 <span className="text-white font-semibold text-sm">{t.summaryTotal}</span>
                 <span className="text-[#F5C300] text-2xl font-bold">CHF {totalPrice}</span>
-
               </div>
               <p className="text-white/40 text-xs italic">{t.noTollsIncluded}</p>
             </div>
 
             {/* Payment method */}
-            <div className="bg-white/5 border border-white/10 rounded-xl p-4 space-y-2">
+            <div className="bg-black border border-black/40 rounded-xl p-4 space-y-2">
               <h3 className="text-white/60 text-xs uppercase tracking-wider mb-3">{t.paymentMethod}</h3>
               {[
                 { value: 'stripe', label: t.stripeLabel, desc: t.stripeDesc },
@@ -621,14 +621,14 @@ export default function BookingForm({ bookingRef }) {
             <div className="flex gap-3">
               <button
                 onClick={() => setStep(3)}
-                className="flex-1 h-12 rounded-xl border border-[#F5C300]/50 bg-white/5 text-[#F5C300] font-bold text-sm uppercase tracking-wider hover:bg-[#F5C300] hover:text-black hover:border-[#F5C300] transition-all"
+                className="flex-1 h-12 rounded-xl border border-white/50 bg-[#F5C300]/95 text-black font-bold text-sm uppercase tracking-wider hover:bg-black hover:text-white hover:border-black transition-all"
               >
                 {t.backBtn}
               </button>
               <button
                 onClick={handlePayment}
                 disabled={isSubmitting || !totalPrice}
-                className="flex-[2] h-12 rounded-xl border border-[#F5C300] bg-[#F5C300] text-black font-bold text-sm uppercase tracking-wider hover:bg-[#e6b800] transition-all disabled:opacity-60 disabled:cursor-not-allowed flex items-center justify-center gap-2"
+                className="flex-[2] h-12 rounded-xl border border-white/50 bg-[#F5C300]/95 text-black font-bold text-sm uppercase tracking-wider hover:bg-black hover:text-white hover:border-black transition-all disabled:opacity-60 disabled:cursor-not-allowed flex items-center justify-center gap-2"
               >
                 {isSubmitting ? <><Loader2 className="w-4 h-4 animate-spin" />{t.redirecting}</> : (paymentMethod === 'stripe' ? t.payBtn(totalPrice) : t.confirmBooking)}
               </button>
@@ -642,9 +642,9 @@ export default function BookingForm({ bookingRef }) {
             <div className="w-20 h-20 rounded-full bg-transparent border border-transparent flex items-center justify-center mx-auto">
               <CheckCircle className="w-10 h-10 text-[#F5C300]" />
             </div>
-            <h3 className="text-white text-xl font-bold">{isShortNotice ? t.shortNoticeConfirmTitle : t.confirmTitle}</h3>
-            <p className="text-white/60 text-sm max-w-xs mx-auto">{isShortNotice ? t.shortNoticeConfirmMsg(form.client_name) : t.confirmMsg(form.client_name, form.departure_point, form.arrival_point)}</p>
-            {!isShortNotice && <p className="text-white/40 text-xs">{t.confirmEmail(form.client_email)}</p>}
+            <h3 className="text-black text-xl font-bold">{isShortNotice ? t.shortNoticeConfirmTitle : t.confirmTitle}</h3>
+            <p className="text-black/60 text-sm max-w-xs mx-auto">{isShortNotice ? t.shortNoticeConfirmMsg(form.client_name) : t.confirmMsg(form.client_name, form.departure_point, form.arrival_point)}</p>
+            {!isShortNotice && <p className="text-black/40 text-xs">{t.confirmEmail(form.client_email)}</p>}
             <button
               onClick={resetForm}
               className="mt-4 px-8 h-12 rounded-xl bg-[#F5C300] text-black font-bold text-sm uppercase tracking-wider hover:bg-[#e6b800] transition-all"
@@ -655,15 +655,15 @@ export default function BookingForm({ bookingRef }) {
         )}
 
         {/* Footer */}
-        <div className="mt-10 border-t border-white/10 pt-6 text-center space-y-1">
-          <p className="text-white/80 font-semibold text-sm tracking-wide">Rosini Transports et Locations Sàrl</p>
-          <p className="text-white/40 text-xs">La Tour-de-Peilz, Suisse</p>
+        <div className="mt-10 border-t border-black/20 pt-6 text-center space-y-1">
+          <p className="text-black font-semibold text-sm tracking-wide">Rosini Transports et Locations Sàrl</p>
+          <p className="text-black/60 text-xs">La Tour-de-Peilz, Suisse</p>
           <div className="flex justify-center gap-4 mt-2">
-            <a href="tel:+41772492245" className="text-white/50 text-xs hover:text-white transition-colors">
+            <a href="tel:+41772492245" className="text-black/70 text-xs hover:text-black transition-colors">
               +41 77 249 22 45
             </a>
-            <span className="text-white/20">|</span>
-            <a href="mailto:info@rosini.online" className="text-white/50 text-xs hover:text-white transition-colors">
+            <span className="text-black/30">|</span>
+            <a href="mailto:info@rosini.online" className="text-black/70 text-xs hover:text-black transition-colors">
               info@rosini.online
             </a>
           </div>
