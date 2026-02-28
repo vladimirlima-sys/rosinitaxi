@@ -343,7 +343,7 @@ export default function DriverPortal() {
             </button>
             <button
               onClick={handleLogout}
-              className="w-10 h-10 rounded-xl border border-black/30 flex items-center justify-center text-black/40 hover:text-red-600 hover:border-red-400/40 transition-all"
+              className="w-10 h-10 rounded-xl border border-white/10 flex items-center justify-center text-white/40 hover:text-red-400 hover:border-red-400/20 transition-all"
             >
               <LogOut className="w-4 h-4" />
             </button>
