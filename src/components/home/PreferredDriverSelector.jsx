@@ -18,7 +18,9 @@ export default function PreferredDriverSelector({ lang = 'fr', selectedDriverId,
   const l = LABELS[lang] || LABELS.fr;
 
   useEffect(() => {
-    base44.entities.Driver.filter({ status: 'active' }).then(setDrivers).catch(() => {});
+    base44.entities.Driver.filter({ status: 'active' }).then(data => {
+      setDrivers([...data].sort((a, b) => a.name.localeCompare(b.name)));
+    }).catch(() => {});
   }, []);
 
   if (!drivers.length) return null;
