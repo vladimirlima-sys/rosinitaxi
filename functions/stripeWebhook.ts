@@ -112,8 +112,29 @@ Deno.serve(async (req) => {
     try {
       const bookings = await base44.asServiceRole.entities.Booking.filter({ client_email: clientEmail, payment_status: "pending" });
       if (bookings.length > 0) {
-        await base44.asServiceRole.entities.Booking.update(bookings[0].id, { payment_status: "paid", confirmation_sent: true });
-        console.log("Booking marked as paid:", bookings[0].id);
+        const booking = bookings[0];
+        await base44.asServiceRole.entities.Booking.update(booking.id, { payment_status: "paid", confirmation_sent: true });
+        console.log("Booking marked as paid:", booking.id);
+
+        // Send WhatsApp notification for payment confirmed
+        try {
+          await base44.asServiceRole.functions.invoke('sendWhatsApp', {
+            type: 'payment_confirmed',
+            booking: {
+              client_name: clientName,
+              client_phone: booking.client_phone,
+              departure_point: departure,
+              arrival_point: arrival,
+              departure_date: departureDate,
+              departure_time: departureTime,
+              vehicle_type: meta.vehicle_type || 'economic',
+              total_price: amount,
+            }
+          });
+          console.log("WhatsApp payment_confirmed sent");
+        } catch (waErr) {
+          console.error("WhatsApp payment notification failed:", waErr.message);
+        }
       }
     } catch (err) {
       console.error("Failed to update booking status:", err.message);
