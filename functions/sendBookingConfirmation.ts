@@ -517,6 +517,26 @@ Deno.serve(async (req) => {
       return doc.output('arraybuffer');
     };
 
+    // Send WhatsApp notification for new booking
+    try {
+      await base44.asServiceRole.functions.invoke('sendWhatsApp', {
+        type: 'new_booking',
+        booking: {
+          client_name,
+          client_phone,
+          departure_point,
+          arrival_point,
+          departure_date,
+          departure_time,
+          vehicle_type,
+          total_price,
+        }
+      });
+      console.log('WhatsApp new_booking notification sent');
+    } catch (waErr) {
+      console.error('WhatsApp notification failed (non-critical):', waErr.message);
+    }
+
     // Send emails using Gmail connector with PDF attachment
     const sendGmailEmail = async (to, subject, htmlBody, pdfBytes = null) => {
       const accessToken = await base44.asServiceRole.connectors.getAccessToken('gmail');
