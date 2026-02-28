@@ -46,10 +46,33 @@ export default function BookingsTable() {
   const handleStatusChange = async (bookingId, newStatus) => {
     try {
       await base44.entities.Booking.update(bookingId, { payment_status: newStatus });
-      setBookings((prev) =>
-        prev.map((b) => (b.id === bookingId ? { ...b, payment_status: newStatus } : b))
-      );
+      const updatedBookings = bookings.map((b) => (b.id === bookingId ? { ...b, payment_status: newStatus } : b));
+      setBookings(updatedBookings);
       toast.success('Status atualizado com sucesso');
+
+      // Send WhatsApp notification when booking is cancelled
+      if (newStatus === 'cancelled') {
+        const booking = bookings.find(b => b.id === bookingId);
+        if (booking) {
+          try {
+            await base44.functions.invoke('sendWhatsApp', {
+              type: 'cancelled',
+              booking: {
+                client_name: booking.client_name,
+                client_phone: booking.client_phone,
+                departure_point: booking.departure_point,
+                arrival_point: booking.arrival_point,
+                departure_date: booking.departure_date,
+                departure_time: booking.departure_time,
+                vehicle_type: booking.vehicle_type,
+                total_price: booking.total_price,
+              }
+            });
+          } catch (waErr) {
+            console.error('WhatsApp cancellation notification failed:', waErr);
+          }
+        }
+      }
     } catch (error) {
       toast.error('Erro ao atualizar status');
     }
