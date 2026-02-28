@@ -325,7 +325,7 @@ export default function DriverPortal() {
 
   // DRIVER DASHBOARD
   return (
-    <div className="min-h-screen bg-[#F5C300] px-4 py-8">
+    <div className="min-h-screen bg-[#0A0A0A] px-4 py-8">
       <div className="max-w-lg mx-auto">
         {/* Header */}
         <div className="flex items-center justify-between mb-6">
