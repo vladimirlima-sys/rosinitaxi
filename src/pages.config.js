@@ -53,6 +53,7 @@ import Finance from './pages/Finance';
 import Home from './pages/Home';
 import Settings from './pages/Settings';
 import CancelBooking from './pages/CancelBooking';
+import FAQ from './pages/FAQ';
 
 
 export const PAGES = {
@@ -62,6 +63,7 @@ export const PAGES = {
     "Home": Home,
     "Settings": Settings,
     "CancelBooking": CancelBooking,
+    "FAQ": FAQ,
 }
 
 export const pagesConfig = {
