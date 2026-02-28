@@ -328,7 +328,7 @@ export default function BookingForm({ bookingRef }) {
                   onChange={(date) => update('departure_date', date)}
                 />
               </div>
-              <div className="bg-black border border-black/40 rounded-xl p-4">
+              <div className="bg-[#F5C300] border border-[#F5C300]/40 rounded-xl p-4">
                 <label className={labelClass}>{t.timeLabel}</label>
                 <input
                   type="time"
@@ -336,7 +336,7 @@ export default function BookingForm({ bookingRef }) {
                   onChange={(e) => update('departure_time', e.target.value)}
                   onBlur={(e) => e.target.blur()}
                   onKeyDown={(e) => { if (e.key === 'Enter') e.target.blur(); }}
-                  className="w-full bg-transparent text-white text-sm outline-none border-none [color-scheme:dark]"
+                  className="w-full bg-transparent text-black text-sm outline-none border-none [color-scheme:light]"
                 />
               </div>
             </div>
