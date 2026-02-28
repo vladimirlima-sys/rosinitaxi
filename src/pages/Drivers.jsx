@@ -1,7 +1,8 @@
 import React, { useState, useEffect } from 'react';
 import { base44 } from '@/api/base44Client';
-import { Plus, Pencil, Trash2, Phone, Mail, Car, User, CheckCircle, XCircle } from 'lucide-react';
+import { Plus, Pencil, Trash2, Phone, Mail, Car, User, CheckCircle, XCircle, ExternalLink } from 'lucide-react';
 import DriverForm from '@/components/drivers/DriverForm';
+import { createPageUrl } from '@/utils';
 
 export default function Drivers() {
   const [isAdmin, setIsAdmin] = useState(null);
