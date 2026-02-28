@@ -54,6 +54,7 @@ import Home from './pages/Home';
 import Settings from './pages/Settings';
 import CancelBooking from './pages/CancelBooking';
 import FAQ from './pages/FAQ';
+import DriverPortal from './pages/DriverPortal';
 
 
 export const PAGES = {
@@ -64,6 +65,7 @@ export const PAGES = {
     "Settings": Settings,
     "CancelBooking": CancelBooking,
     "FAQ": FAQ,
+    "DriverPortal": DriverPortal,
 }
 
 export const pagesConfig = {
