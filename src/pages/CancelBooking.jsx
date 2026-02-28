@@ -119,6 +119,7 @@ export default function CancelBooking() {
   const [booking, setBooking] = useState(null);
   const [status, setStatus] = useState('loading'); // loading | confirm | cancelling | success | error | not_found | already_cancelled
   const [errorMsg, setErrorMsg] = useState('');
+  const [refundIssued, setRefundIssued] = useState(false);
 
   useEffect(() => {
     if (!bookingId) { setStatus('not_found'); return; }
