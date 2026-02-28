@@ -148,6 +148,15 @@ export default function Drivers() {
 
                 {/* Actions */}
                 <div className="flex gap-2 shrink-0">
+                  <a
+                    href={createPageUrl('DriverPortal')}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    title="Abrir portal do motorista"
+                    className="w-9 h-9 rounded-lg border border-white/10 flex items-center justify-center text-white/40 hover:text-[#F5C300] hover:border-[#F5C300]/30 transition-all"
+                  >
+                    <ExternalLink className="w-4 h-4" />
+                  </a>
                   <button
                     onClick={() => handleEdit(driver)}
                     className="w-9 h-9 rounded-lg border border-white/10 flex items-center justify-center text-white/40 hover:text-white hover:border-white/30 transition-all"
