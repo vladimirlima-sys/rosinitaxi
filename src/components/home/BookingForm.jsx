@@ -583,6 +583,7 @@ export default function BookingForm({ bookingRef }) {
               <div className="flex justify-between items-center">
                 <span className="text-white font-semibold text-sm">{t.summaryTotal}</span>
                 <span className="text-[#F5C300] text-2xl font-bold">CHF {totalPrice}</span>
+
               </div>
               <p className="text-white/40 text-xs italic">{t.noTollsIncluded}</p>
             </div>
