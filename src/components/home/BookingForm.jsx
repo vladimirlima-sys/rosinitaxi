@@ -7,6 +7,7 @@ import PlacesAutocomplete from './PlacesAutocomplete';
 import RouteCalculator from './RouteCalculator';
 import DatePicker from './DatePicker';
 import PriceExamplesCards from './PriceExamplesCards';
+import AddToHomeScreen from './AddToHomeScreen';
 import PreferredDriverSelector from './PreferredDriverSelector';
 import RideCounter from './RideCounter';
 import { base44 } from '@/api/base44Client';
