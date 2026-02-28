@@ -113,7 +113,11 @@ Deno.serve(async (req) => {
       const bookings = await base44.asServiceRole.entities.Booking.filter({ client_email: clientEmail, payment_status: "pending" });
       if (bookings.length > 0) {
         const booking = bookings[0];
-        await base44.asServiceRole.entities.Booking.update(booking.id, { payment_status: "paid", confirmation_sent: true });
+        await base44.asServiceRole.entities.Booking.update(booking.id, {
+          payment_status: "paid",
+          confirmation_sent: true,
+          stripe_payment_intent_id: session.payment_intent || null
+        });
         console.log("Booking marked as paid:", booking.id);
 
         // Send WhatsApp notification for payment confirmed
