@@ -123,7 +123,7 @@ export default function CancelBooking() {
         if (!results || results.length === 0) { setStatus('not_found'); return; }
         const b = results[0];
         setBooking(b);
-        if (b.payment_status === 'cancelled') { setStatus('already_cancelled'); return; }
+        if (b.payment_status === 'cancelled' || b.payment_status === 'refunded') { setStatus('already_cancelled'); return; }
         setStatus('confirm');
       } catch (e) {
         setStatus('error');
