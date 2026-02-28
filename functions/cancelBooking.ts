@@ -1,4 +1,7 @@
 import { createClientFromRequest } from 'npm:@base44/sdk@0.8.6';
+import Stripe from 'npm:stripe@14.21.0';
+
+const stripe = new Stripe(Deno.env.get("STRIPE_SECRET_KEY"));
 
 Deno.serve(async (req) => {
   try {
@@ -17,13 +20,43 @@ Deno.serve(async (req) => {
 
     const booking = bookings[0];
 
-    if (booking.payment_status === 'cancelled') {
+    if (booking.payment_status === 'cancelled' || booking.payment_status === 'refunded') {
       return Response.json({ error: 'Booking is already cancelled' }, { status: 400 });
     }
 
-    // Update booking status to cancelled
+    // Check if eligible for refund: Stripe payment + departure is more than 24h away
+    let refundIssued = false;
+    let refundMessage = '';
+
+    if (booking.payment_method === 'stripe' && booking.stripe_payment_intent_id && booking.departure_date && booking.departure_time) {
+      const departureDateTime = new Date(`${booking.departure_date}T${booking.departure_time}:00`);
+      const now = new Date();
+      const hoursUntilDeparture = (departureDateTime.getTime() - now.getTime()) / (1000 * 60 * 60);
+
+      console.log(`Hours until departure: ${hoursUntilDeparture}`);
+
+      if (hoursUntilDeparture > 24) {
+        // Issue full refund via Stripe
+        try {
+          const refund = await stripe.refunds.create({
+            payment_intent: booking.stripe_payment_intent_id,
+          });
+          console.log('Refund issued:', refund.id, 'Status:', refund.status);
+          refundIssued = true;
+          refundMessage = `Remboursement de CHF ${booking.total_price} effectué (${refund.id})`;
+        } catch (refundErr) {
+          console.error('Stripe refund failed:', refundErr.message);
+          return Response.json({ error: `Refund failed: ${refundErr.message}` }, { status: 500 });
+        }
+      } else {
+        console.log('Less than 24h until departure — no refund issued');
+        refundMessage = 'Moins de 24h avant le départ — aucun remboursement';
+      }
+    }
+
+    // Update booking status
     await base44.asServiceRole.entities.Booking.update(booking_id, {
-      payment_status: 'cancelled'
+      payment_status: refundIssued ? 'refunded' : 'cancelled'
     });
 
     // Send cancellation notification email to company
@@ -40,6 +73,7 @@ Deno.serve(async (req) => {
           <p><strong>Date:</strong> ${booking.departure_date} à ${booking.departure_time}</p>
           <p><strong>Montant:</strong> CHF ${booking.total_price}</p>
           <p><strong>Méthode de paiement:</strong> ${booking.payment_method}</p>
+          <p><strong>Remboursement:</strong> ${refundIssued ? `✅ ${refundMessage}` : `❌ ${refundMessage || 'Aucun remboursement'}`}</p>
         </div>
       `;
 
@@ -69,7 +103,7 @@ Deno.serve(async (req) => {
       console.error('Failed to send cancellation email (non-critical):', emailErr.message);
     }
 
-    return Response.json({ success: true });
+    return Response.json({ success: true, refund_issued: refundIssued });
   } catch (error) {
     console.error('Cancel booking error:', error);
     return Response.json({ error: error.message }, { status: 500 });
