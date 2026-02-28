@@ -245,8 +245,8 @@ export default function BookingForm({ bookingRef }) {
     setEstimatedTime(0);
   };
 
-  const inputClass = "bg-white/10 border border-white/20 text-white placeholder:text-white/40 focus:border-white/60 focus:ring-0 h-12 rounded-lg text-sm";
-  const labelClass = "text-white/70 text-xs uppercase tracking-wider mb-1 block";
+  const inputClass = "bg-[#F5C300]/10 border border-[#F5C300]/20 text-[#F5C300] placeholder:text-[#F5C300]/40 focus:border-[#F5C300]/60 focus:ring-0 h-12 rounded-lg text-sm";
+  const labelClass = "text-[#F5C300]/70 text-xs uppercase tracking-wider mb-1 block";
 
   const cardClass = "bg-black border border-black/40 rounded-xl p-4";
   const darkInputClass = "w-full bg-white/10 border border-white/20 rounded-lg text-white text-sm p-3 outline-none placeholder:text-white/40 focus:border-white/60";
