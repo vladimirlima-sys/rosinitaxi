@@ -642,9 +642,9 @@ export default function BookingForm({ bookingRef }) {
             <div className="w-20 h-20 rounded-full bg-transparent border border-transparent flex items-center justify-center mx-auto">
               <CheckCircle className="w-10 h-10 text-[#F5C300]" />
             </div>
-            <h3 className="text-black text-xl font-bold">{isShortNotice ? t.shortNoticeConfirmTitle : t.confirmTitle}</h3>
-            <p className="text-black/60 text-sm max-w-xs mx-auto">{isShortNotice ? t.shortNoticeConfirmMsg(form.client_name) : t.confirmMsg(form.client_name, form.departure_point, form.arrival_point)}</p>
-            {!isShortNotice && <p className="text-black/40 text-xs">{t.confirmEmail(form.client_email)}</p>}
+            <h3 className="text-white text-xl font-bold">{isShortNotice ? t.shortNoticeConfirmTitle : t.confirmTitle}</h3>
+            <p className="text-white/60 text-sm max-w-xs mx-auto">{isShortNotice ? t.shortNoticeConfirmMsg(form.client_name) : t.confirmMsg(form.client_name, form.departure_point, form.arrival_point)}</p>
+            {!isShortNotice && <p className="text-white/40 text-xs">{t.confirmEmail(form.client_email)}</p>}
             <button
               onClick={resetForm}
               className="mt-4 px-8 h-12 rounded-xl bg-[#F5C300] text-black font-bold text-sm uppercase tracking-wider hover:bg-[#e6b800] transition-all"
