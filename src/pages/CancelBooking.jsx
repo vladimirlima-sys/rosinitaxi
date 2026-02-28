@@ -144,6 +144,7 @@ export default function CancelBooking() {
     try {
       const res = await base44.functions.invoke('cancelBooking', { booking_id: bookingId });
       if (res.data?.success) {
+        setRefundIssued(!!res.data?.refund_issued);
         setStatus('success');
       } else {
         setStatus('error');
