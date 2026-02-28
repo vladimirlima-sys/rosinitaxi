@@ -350,14 +350,14 @@ export default function BookingForm({ bookingRef }) {
             )}
 
             {/* Flight (optional) */}
-            <div className="bg-black border border-black/40 rounded-xl p-4">
+            <div className="bg-[#F5C300] border border-[#F5C300]/40 rounded-xl p-4">
               <label className={labelClass}><Plane className="inline w-3 h-3 mr-1" />{t.flightLabel}</label>
               <input
                 type="text"
                 placeholder={t.flightPlaceholder}
                 value={form.flight_number}
                 onChange={(e) => update('flight_number', e.target.value)}
-                className="w-full bg-transparent text-white text-sm outline-none border-none placeholder:text-white/40"
+                className="w-full bg-transparent text-black text-sm outline-none border-none placeholder:text-black/40"
               />
             </div>
 
