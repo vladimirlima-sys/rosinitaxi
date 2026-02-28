@@ -354,10 +354,10 @@ export default function DriverPortal() {
         {!notificationsEnabled && (
           <button
             onClick={requestNotifications}
-            className="w-full mb-4 bg-black/10 border border-black/20 rounded-xl p-3 flex items-center gap-3 text-left hover:bg-black/20 transition-all"
+            className="w-full mb-4 bg-[#F5C300]/10 border border-[#F5C300]/20 rounded-xl p-3 flex items-center gap-3 text-left hover:bg-[#F5C300]/20 transition-all"
           >
-            <Bell className="w-4 h-4 text-black shrink-0" />
-            <p className="text-black text-sm">Ativar notificações para receber alertas de novas corridas</p>
+            <Bell className="w-4 h-4 text-[#F5C300] shrink-0" />
+            <p className="text-[#F5C300] text-sm">Ativar notificações para receber alertas de novas corridas</p>
           </button>
         )}
 
