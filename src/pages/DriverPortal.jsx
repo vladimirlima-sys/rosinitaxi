@@ -371,9 +371,9 @@ export default function DriverPortal() {
           </div>
         ) : (
           <div className="text-center py-16 mb-8">
-            <Car className="w-10 h-10 text-black/20 mx-auto mb-3" />
-            <p className="text-black/40">Nenhuma corrida agendada</p>
-            <p className="text-black/30 text-sm mt-1">A página atualiza automaticamente a cada 30 segundos</p>
+            <Car className="w-10 h-10 text-white/20 mx-auto mb-3" />
+            <p className="text-white/30">Nenhuma corrida agendada</p>
+            <p className="text-white/20 text-sm mt-1">A página atualiza automaticamente a cada 30 segundos</p>
           </div>
         )}
 
