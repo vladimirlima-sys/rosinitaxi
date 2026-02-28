@@ -403,8 +403,8 @@ export default function BookingForm({ bookingRef }) {
               disabled={!canProceedStep1 || isCalculatingRoute}
               className={`w-full h-14 rounded-xl font-bold text-base tracking-wider uppercase transition-all ${
                 canProceedStep1 && !isCalculatingRoute
-                  ? 'bg-black text-white hover:bg-black/80'
-                  : 'bg-white/10 text-white/40 cursor-not-allowed'
+                  ? 'bg-black text-[#F5C300] hover:bg-black/80'
+                  : 'bg-black/10 text-black/40 cursor-not-allowed'
               }`}
             >
               {isCalculatingRoute ? t.calculatingRoute || 'Calcul en cours...' : t.continueBtn}
