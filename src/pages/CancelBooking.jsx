@@ -204,6 +204,9 @@ export default function CancelBooking() {
                 <div className="flex justify-between"><span className="text-white/50">{t.vehicle}</span><span className="text-white">{vehicleLabel}</span></div>
                 <div className="flex justify-between"><span className="text-white/50">{t.total}</span><span className="text-[#F5C300] font-bold">CHF {booking.total_price}</span></div>
               </div>
+              {t.refundPolicy && (
+                <p className="text-white/40 text-xs text-center">{t.refundPolicy}</p>
+              )}
               <button
                 onClick={handleCancel}
                 disabled={status === 'cancelling'}
