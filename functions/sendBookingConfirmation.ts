@@ -243,6 +243,13 @@ Deno.serve(async (req) => {
       <a href="mailto:info@rosini.online" style="color:#C9A96E;text-decoration:none;">info@rosini.online</a>
     </div>
 
+    ${booking_id ? `
+    <div style="text-align:center;padding:16px;background:#1a0000;border:1px solid #400;border-radius:12px;">
+      <p style="color:#888;margin:0 0 8px;font-size:12px;">Vous souhaitez annuler votre réservation ?</p>
+      <a href="https://app.base44.com/apps/67c1c7f7e4c8b1db88ccee9a/CancelBooking?id=${booking_id}&lang=${language}" style="color:#ff6b6b;font-size:13px;text-decoration:underline;">Annuler ma réservation</a>
+    </div>
+    ` : ''}
+
     <p style="color:#444;text-align:center;font-size:11px;margin-top:24px;">${t.copyright(new Date().getFullYear())}</p>
   </div>
 </body>
