@@ -13,12 +13,11 @@ Deno.serve(async (req) => {
     }
 
     // Fetch the booking
-    const bookings = await base44.asServiceRole.entities.Booking.list();
-    if (!bookings || bookings.length === 0) {
+    const allBookings = await base44.asServiceRole.entities.Booking.list();
+    const booking = allBookings.find(b => b.id === booking_id);
+    if (!booking) {
       return Response.json({ error: 'Booking not found' }, { status: 404 });
     }
-
-    const booking = bookings[0];
 
     if (booking.payment_status === 'cancelled' || booking.payment_status === 'refunded') {
       return Response.json({ error: 'Booking is already cancelled' }, { status: 400 });
