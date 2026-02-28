@@ -52,7 +52,7 @@ Deno.serve(async (req) => {
   </div>
   <div style="text-align:center;padding:24px;background:#111;border:1px solid #222;border-radius:12px;">
     <p style="color:#888;margin:0 0 4px;font-size:13px;">Des questions ? Contactez-nous</p>
-    <a href="mailto:info@taxirosini.com" style="color:#C9A96E;text-decoration:none;">info@taxirosini.com</a>
+    <a href="mailto:info@rosini.online" style="color:#C9A96E;text-decoration:none;">info@rosini.online</a>
   </div>
   <p style="color:#444;text-align:center;font-size:11px;margin-top:24px;">© ${year} Rosini Transfert. Tous droits réservés.</p>
 </div></body></html>`;
@@ -98,7 +98,7 @@ Deno.serve(async (req) => {
       }
 
       await base44.integrations.Core.SendEmail({
-        to: 'info@taxirosini.com',
+        to: 'info@rosini.online',
         subject: `🔔 Nouvelle réservation Stripe — ${clientName} | ${departure} → ${arrival} | CHF ${amount}`,
         body: adminHtml,
         from_name: 'Rosini Transfert'
