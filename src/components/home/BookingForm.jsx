@@ -668,6 +668,9 @@ export default function BookingForm({ bookingRef }) {
             </a>
           </div>
           <div className="flex justify-center mt-3">
+            <AddToHomeScreen />
+          </div>
+          <div className="flex justify-center mt-3">
             <a
               href="https://wa.me/41772492245"
               target="_blank"
