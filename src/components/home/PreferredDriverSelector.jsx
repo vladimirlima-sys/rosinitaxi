@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { base44 } from '@/api/base44Client';
-import { User } from 'lucide-react';
+import { User, ChevronDown } from 'lucide-react';
 
 const LABELS = {
   fr: { title: 'Chauffeur préféré (optionnel)', none: 'Aucune préférence', selected: 'Sélectionné' },
@@ -14,6 +14,7 @@ const LABELS = {
 
 export default function PreferredDriverSelector({ lang = 'fr', selectedDriverId, onSelect }) {
   const [drivers, setDrivers] = useState([]);
+  const [open, setOpen] = useState(false);
   const l = LABELS[lang] || LABELS.fr;
 
   useEffect(() => {
@@ -23,41 +24,58 @@ export default function PreferredDriverSelector({ lang = 'fr', selectedDriverId,
   if (!drivers.length) return null;
 
   const items = [null, ...drivers];
+  const selectedItem = selectedDriverId === null || selectedDriverId === undefined
+    ? null
+    : drivers.find(d => d.id === selectedDriverId) || null;
 
-  const isSelected = (item) =>
-    item === null ? selectedDriverId === null || selectedDriverId === undefined : item.id === selectedDriverId;
+  const selectedLabel = selectedItem ? selectedItem.name : l.none;
 
   return (
     <div>
       <p className="text-white/60 text-xs uppercase tracking-wider mb-3">{l.title}</p>
-      <div className="flex flex-col gap-2">
-        {items.map((item, i) => (
-          <button
-            key={i}
-            onClick={() => onSelect(item)}
-            className={`flex items-center gap-3 p-3 rounded-lg border transition-all w-full text-left ${
-              isSelected(item)
-                ? 'border-[#F5C300] bg-[#F5C300]/10'
-                : 'border-white/20 hover:border-white/40'
-            }`}
-          >
-            <div className="w-9 h-9 rounded-full bg-white/10 flex items-center justify-center flex-shrink-0">
-              <User className="w-4 h-4 text-white/60" />
-            </div>
-            <div className="text-left flex-1 min-w-0">
-              <p className={`text-sm font-medium truncate ${item === null ? 'text-white/50 italic' : 'text-white'}`}>
-                {item === null ? l.none : item.name}
-              </p>
-              {item !== null && item.vehicle && (
-                <p className="text-white/40 text-xs truncate">{item.vehicle}</p>
-              )}
-            </div>
-            {isSelected(item) && (
-              <span className="text-[#F5C300] text-xs flex-shrink-0">{l.selected}</span>
-            )}
-          </button>
-        ))}
-      </div>
+
+      {/* Trigger */}
+      <button
+        onClick={() => setOpen(o => !o)}
+        className="w-full flex items-center gap-3 p-3 rounded-lg border border-white/20 hover:border-white/40 transition-all"
+      >
+        <div className="w-9 h-9 rounded-full bg-white/10 flex items-center justify-center flex-shrink-0">
+          <User className="w-4 h-4 text-white/60" />
+        </div>
+        <span className={`flex-1 text-left text-sm ${selectedItem === null && selectedDriverId === undefined ? 'text-white/50 italic' : 'text-white'}`}>
+          {selectedLabel}
+        </span>
+        <ChevronDown className={`w-4 h-4 text-white/40 transition-transform ${open ? 'rotate-180' : ''}`} />
+      </button>
+
+      {/* Dropdown list */}
+      {open && (
+        <div className="mt-2 flex flex-col gap-1">
+          {items.map((item, i) => (
+            <button
+              key={i}
+              onClick={() => { onSelect(item); setOpen(false); }}
+              className={`flex items-center gap-3 p-3 rounded-lg border transition-all w-full text-left ${
+                (item === null ? (selectedDriverId === null || selectedDriverId === undefined) : item.id === selectedDriverId)
+                  ? 'border-[#F5C300] bg-[#F5C300]/10'
+                  : 'border-white/20 hover:border-white/40'
+              }`}
+            >
+              <div className="w-9 h-9 rounded-full bg-white/10 flex items-center justify-center flex-shrink-0">
+                <User className="w-4 h-4 text-white/60" />
+              </div>
+              <div className="flex-1 min-w-0">
+                <p className={`text-sm font-medium truncate ${item === null ? 'text-white/50 italic' : 'text-white'}`}>
+                  {item === null ? l.none : item.name}
+                </p>
+                {item !== null && item.vehicle && (
+                  <p className="text-white/40 text-xs truncate">{item.vehicle}</p>
+                )}
+              </div>
+            </button>
+          ))}
+        </div>
+      )}
     </div>
   );
 }
