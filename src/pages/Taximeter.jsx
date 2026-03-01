@@ -157,7 +157,7 @@ export default function Taximeter() {
 
           {/* Price */}
           <div>
-            <p className="text-white/30 text-xs uppercase tracking-wider mb-1">Valor Total</p>
+            <p className="text-white/30 text-xs uppercase tracking-wider mb-1">Montant Total</p>
             <p className={`text-5xl font-bold tabular-nums transition-colors ${running ? 'text-[#F5C300]' : 'text-white/60'}`}>
               CHF {totalPrice.toFixed(2)}
             </p>
