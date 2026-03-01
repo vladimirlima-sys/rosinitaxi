@@ -77,6 +77,8 @@ Deno.serve(async (req) => {
     <table style="width:100%;border-collapse:collapse;">
       <tr><td style="padding:6px 0;color:#888;">Client</td><td style="padding:6px 0;color:#fff;">${clientName}</td></tr>
       <tr><td style="padding:6px 0;color:#888;">Email</td><td style="padding:6px 0;color:#fff;">${clientEmail}</td></tr>
+      ${clientPhone ? `<tr><td style="padding:6px 0;color:#888;">Téléphone</td><td style="padding:6px 0;color:#fff;">${clientPhone}</td></tr>` : ''}
+      ${whatsappLink ? `<tr><td style="padding:6px 0;color:#888;">WhatsApp</td><td style="padding:6px 0;"><a href="${whatsappLink}" style="display:inline-block;background:#25D366;color:#fff;font-weight:bold;padding:6px 16px;border-radius:6px;text-decoration:none;font-size:13px;">💬 Contacter sur WhatsApp</a></td></tr>` : ''}
       <tr><td colspan="2" style="padding:12px 0;"><hr style="border:none;border-top:1px solid #333;margin:0;"></td></tr>
       <tr><td style="padding:6px 0;color:#888;">Trajet</td><td style="padding:6px 0;color:#fff;">${departure} → ${arrival}</td></tr>
       <tr><td style="padding:6px 0;color:#888;">Date</td><td style="padding:6px 0;color:#fff;">${departureDate} à ${departureTime}</td></tr>
