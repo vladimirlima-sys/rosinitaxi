@@ -1,12 +1,11 @@
 import React, { useEffect, useState } from 'react';
 import { base44 } from '@/api/base44Client';
 import { Download, Loader2 } from 'lucide-react';
-import FinanceSummary from '@/components/finance/FinanceSummary';
-import AddExpenseCard from '@/components/finance/AddExpenseCard';
-import ExpensesList from '@/components/finance/ExpensesList';
-import RevenueCharts from '@/components/finance/RevenueCharts';
-import BookingsTable from '@/components/finance/BookingsTable';
-import { downloadFinancePDF } from '@/functions/downloadFinancePDF';
+import FinanceSummary from '@/components/finance/FinanceSummary.jsx';
+import AddExpenseCard from '@/components/finance/AddExpenseCard.jsx';
+import ExpensesList from '@/components/finance/ExpensesList.jsx';
+import RevenueCharts from '@/components/finance/RevenueCharts.jsx';
+import BookingsTable from '@/components/finance/BookingsTable.jsx';
 
 export default function Finance() {
   const [isAdmin, setIsAdmin] = useState(null);
