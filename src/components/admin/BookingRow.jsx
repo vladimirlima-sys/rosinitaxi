@@ -12,10 +12,16 @@ export default function BookingRow({ booking, onStatusChange, onDelete, onAssign
 
   return (
     <>
-      <div className="border-b border-white/10 hover:bg-white/[0.02] transition-colors">
+      <div className={`border-b transition-colors ${isNew ? 'border-[#F5C300]/40 bg-[#F5C300]/[0.05]' : 'border-white/10 hover:bg-white/[0.02]'}`}>
+        {isNew && (
+          <div className="px-6 pt-2 flex items-center gap-2">
+            <span className="w-2 h-2 rounded-full bg-[#F5C300] animate-pulse" />
+            <span className="text-[#F5C300] text-xs font-semibold uppercase tracking-wider">Nova reserva</span>
+          </div>
+        )}
         <div
           className="grid grid-cols-5 gap-4 px-6 py-4 cursor-pointer"
-          onClick={() => setExpanded(!expanded)}
+          onClick={() => { setExpanded(!expanded); if (isNew && onSeen) onSeen(booking.id); }}
         >
           <div className="flex items-center gap-3">
             <input
