@@ -18,6 +18,14 @@ export default function PaymentForm({ amount, onPaymentComplete, onCancel }) {
     try {
       setLoading(true);
       setError('');
+      
+      // Register payment
+      await base44.functions.invoke('registerTaximeterPayment', {
+        amount: amount,
+        paymentMethod: 'card'
+      });
+      
+      // Redirect to Stripe
       const response = await base44.functions.invoke('createCheckout', {
         amount: Math.round(amount * 100),
         currency: 'chf',
