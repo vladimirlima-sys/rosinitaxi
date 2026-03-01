@@ -456,9 +456,9 @@ export default function Finance() {
                 <p className="text-white/50 text-center py-8">Aucune course payée sur cette période</p>
               )}
             </div>
-          </>
-        )}
-      </div>
-    </div>
-  );
-}
+            </>
+            )}
+            </div>
+            </div>
+            );
+            }
