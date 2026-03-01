@@ -1,7 +1,7 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { useSearchParams } from 'react-router-dom';
 import { base44 } from '@/api/base44Client';
-import { Play, Square, Navigation, Car, Loader2, LogOut } from 'lucide-react';
+import { Play, Square, Navigation, Car, Loader2, LogOut, LogIn } from 'lucide-react';
 import PaymentForm from '@/components/taximeter/PaymentForm';
 
 export default function TaximeterDriver() {
