@@ -87,7 +87,91 @@ Deno.serve(async (req) => {
 </html>
     `;
 
+    // Generate PDF
+    const doc = new jsPDF();
+    doc.setFont('Arial');
+    
+    // Header
+    doc.setFillColor(245, 195, 0);
+    doc.rect(0, 0, 210, 40, 'F');
+    doc.setTextColor(0, 0, 0);
+    doc.setFontSize(24);
+    doc.text('ROSINI TRANSPORTS DE PERSONNES', 105, 20, { align: 'center' });
+    doc.setFontSize(10);
+    doc.text('Reçu de Course', 105, 30, { align: 'center' });
+    
+    // Content
+    doc.setTextColor(100, 100, 100);
+    doc.setFontSize(11);
+    let yPos = 50;
+    
+    doc.text('DÉTAILS DE LA COURSE', 20, yPos);
+    yPos += 10;
+    
+    doc.setTextColor(51, 51, 51);
+    doc.setFontSize(10);
+    if (distance) {
+      doc.text(`Distance: ${distance.toFixed(2)} km`, 20, yPos);
+      yPos += 8;
+    }
+    doc.text(`Date: ${dateStr}`, 20, yPos);
+    yPos += 8;
+    doc.text(`Heure: ${timeStr}`, 20, yPos);
+    yPos += 15;
+    
+    // Amount
+    doc.setFillColor(245, 245, 245);
+    doc.rect(20, yPos, 170, 20, 'F');
+    doc.setTextColor(245, 195, 0);
+    doc.setFontSize(20);
+    doc.setFont('Arial', 'bold');
+    doc.text(`CHF ${amount.toFixed(2)}`, 105, yPos + 13, { align: 'center' });
+    yPos += 25;
+    
+    // Status
+    doc.setTextColor(51, 51, 51);
+    doc.setFontSize(11);
+    doc.setFont('Arial', 'bold');
+    doc.text('Paiement effectué', 105, yPos, { align: 'center' });
+    yPos += 15;
+    
+    // Footer message
+    doc.setTextColor(150, 150, 150);
+    doc.setFontSize(9);
+    doc.setFont('Arial', 'normal');
+    doc.text('Merci d\'avoir utilisé ROSINI TRANSPORTS DE PERSONNES.', 105, yPos, { align: 'center' });
+    doc.text('Ce reçu constitue la preuve de votre paiement.', 105, yPos + 5, { align: 'center' });
+    
+    // Bottom footer
+    doc.setTextColor(200, 200, 200);
+    doc.setFontSize(8);
+    doc.text('ROSINI TRANSPORTS DE PERSONNES | Reçu Numérique', 105, 280, { align: 'center' });
+    
+    const pdfBytes = doc.output('arraybuffer');
+    const pdfBase64 = btoa(String.fromCharCode(...new Uint8Array(pdfBytes)));
+    
+    // Send email with PDF attachment
     const accessToken = await base44.asServiceRole.connectors.getAccessToken('gmail');
+    
+    const boundary = 'boundary_' + Date.now();
+    const emailRaw = `From: noreply@rosini.transfert\r\n` +
+      `To: ${clientEmail}\r\n` +
+      `Subject: Reçu de Course - ROSINI TRANSPORTS DE PERSONNES\r\n` +
+      `MIME-Version: 1.0\r\n` +
+      `Content-Type: multipart/mixed; boundary="${boundary}"\r\n` +
+      `\r\n` +
+      `--${boundary}\r\n` +
+      `Content-Type: text/html; charset=UTF-8\r\n` +
+      `Content-Transfer-Encoding: 8bit\r\n` +
+      `\r\n` +
+      `${emailBody}\r\n` +
+      `--${boundary}\r\n` +
+      `Content-Type: application/pdf; name="recu.pdf"\r\n` +
+      `Content-Disposition: attachment; filename="recu.pdf"\r\n` +
+      `Content-Transfer-Encoding: base64\r\n` +
+      `\r\n` +
+      `${pdfBase64}\r\n` +
+      `--${boundary}--`;
     
     const response = await fetch('https://www.googleapis.com/gmail/v1/users/me/messages/send', {
       method: 'POST',
@@ -96,14 +180,7 @@ Deno.serve(async (req) => {
         'Content-Type': 'application/json'
       },
       body: JSON.stringify({
-        raw: btoa(
-          `From: noreply@rosini.transfert\r\n` +
-          `To: ${clientEmail}\r\n` +
-          `Subject: Reçu de Course - ROSINI TRANSPORTS DE PERSONNES\r\n` +
-          `Content-Type: text/html; charset=UTF-8\r\n` +
-          `\r\n` +
-          `${emailBody}`
-        )
+        raw: btoa(emailRaw)
       })
     });
 
