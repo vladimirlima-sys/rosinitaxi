@@ -167,33 +167,33 @@ export default function TaximeterDriver() {
         </div>
 
         {/* Taximeter Display */}
-        <div className="bg-gradient-to-br from-slate-800 to-slate-900 border border-yellow-400/20 rounded-2xl p-8 mb-6 space-y-6">
+        <div className="bg-black border border-black/40 rounded-2xl p-8 mb-6 space-y-6">
           {/* Time */}
           <div className="flex items-center gap-3 justify-center">
-            <Clock className="w-5 h-5 text-yellow-400" />
-            <div className="text-5xl font-mono text-yellow-400 font-bold tracking-wider">
+            <Clock className="w-5 h-5 text-[#F5C300]" />
+            <div className="text-5xl font-mono text-[#F5C300] font-bold tracking-wider">
               {String(minutes).padStart(2, '0')}:{String(seconds).padStart(2, '0')}
             </div>
           </div>
 
           {/* Distance */}
           <div className="flex items-center gap-3 justify-center">
-            <MapPin className="w-5 h-5 text-blue-400" />
-            <div className="text-4xl font-mono text-blue-400 font-bold">
+            <MapPin className="w-5 h-5 text-white" />
+            <div className="text-4xl font-mono text-white font-bold">
               {distance.toFixed(2)} km
             </div>
           </div>
 
           {/* Total Price */}
           <div className="flex items-center gap-3 justify-center">
-            <DollarSign className="w-5 h-5 text-green-400" />
-            <div className="text-5xl font-mono text-green-400 font-bold">
+            <DollarSign className="w-5 h-5 text-[#F5C300]" />
+            <div className="text-5xl font-mono text-[#F5C300] font-bold">
               CHF {totalPrice.toFixed(2)}
             </div>
           </div>
 
           {/* Price Breakdown */}
-          <div className="border-t border-slate-700 pt-4 space-y-2 text-sm text-slate-300">
+          <div className="border-t border-white/10 pt-4 space-y-2 text-sm text-white/60">
             <div className="flex justify-between">
               <span>Prise en charge:</span>
               <span>CHF {baseFare.toFixed(2)}</span>
