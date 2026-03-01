@@ -215,8 +215,8 @@ export default function TaximeterDriver() {
             onClick={handleStartStop}
             className={`h-16 rounded-xl font-bold text-sm uppercase tracking-wider flex items-center justify-center gap-2 transition-all ${
               isRunning
-                ? 'bg-red-500/10 border border-red-500/30 text-red-400 hover:bg-red-500/20'
-                : 'bg-green-500/10 border border-green-500/30 text-green-400 hover:bg-green-500/20'
+                ? 'bg-red-500/20 border border-red-500/40 text-red-400 hover:bg-red-500/30'
+                : 'bg-[#F5C300]/20 border border-[#F5C300]/40 text-[#F5C300] hover:bg-[#F5C300]/30'
             }`}
           >
             {isRunning ? (
@@ -234,7 +234,7 @@ export default function TaximeterDriver() {
           <button
             onClick={handleReset}
             disabled={isRunning}
-            className="h-16 rounded-xl bg-slate-700/50 border border-slate-600 text-slate-300 font-bold text-sm uppercase tracking-wider flex items-center justify-center gap-2 hover:bg-slate-700 transition-all disabled:opacity-50"
+            className="h-16 rounded-xl bg-white/10 border border-white/20 text-white font-bold text-sm uppercase tracking-wider flex items-center justify-center gap-2 hover:bg-white/20 transition-all disabled:opacity-50"
           >
             <RotateCcw className="w-5 h-5" />
             Réinitialiser
@@ -242,7 +242,7 @@ export default function TaximeterDriver() {
           <button
             onClick={handlePayment}
             disabled={paying || elapsedSeconds === 0}
-            className="h-16 rounded-xl bg-yellow-400 text-slate-900 font-bold text-sm uppercase tracking-wider flex items-center justify-center gap-2 hover:bg-yellow-300 transition-all disabled:opacity-50"
+            className="h-16 rounded-xl bg-black border border-black/40 text-white font-bold text-sm uppercase tracking-wider flex items-center justify-center gap-2 hover:bg-black/80 transition-all disabled:opacity-50"
           >
             {paying ? (
               <Loader2 className="w-5 h-5 animate-spin" />
@@ -252,7 +252,7 @@ export default function TaximeterDriver() {
           </button>
         </div>
 
-        <p className="text-slate-400 text-xs text-center">
+        <p className="text-black/60 text-xs text-center">
           Le reçu sera envoyé à l'email du client après confirmation du paiement
         </p>
       </div>
