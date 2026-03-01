@@ -3,6 +3,8 @@ import BookingForm from '@/components/home/BookingForm';
 import LanguageSwitcher from '@/components/home/LanguageSwitcher';
 import SeoHead from '@/components/SeoHead';
 import { LanguageProvider, useLang } from '@/components/LanguageContext';
+import { createPageUrl } from '@/utils';
+import { HelpCircle } from 'lucide-react';
 
 function HomeContent({ bookingRef }) {
   const { lang } = useLang();
