@@ -79,8 +79,9 @@ Deno.serve(async (req) => {
     </div>
 
     <div class="footer">
-      <p>ROSINI TRANSPORTS DE PERSONNES | Reçu Numérique</p>
-      <p>Cet email a été généré automatiquement. Merci de ne pas répondre à cet email.</p>
+    <p>ROSINI TRANSPORTS DE PERSONNES | Reçu Numérique</p>
+    <p>CHE-264.039.709 | Chemin des Bulesses 16, 1814 La Tour-de-Peilz</p>
+    <p>Cet email a été généré automatiquement. Merci de ne pas répondre à cet email.</p>
     </div>
   </div>
 </body>
