@@ -201,6 +201,8 @@ export default function BookingsTable() {
             drivers={drivers}
             selected={selectedIds.includes(booking.id)}
             onToggleSelect={toggleSelect}
+            isNew={!seenIds.has(booking.id)}
+            onSeen={markAsSeen}
             />
           ))
         )}
