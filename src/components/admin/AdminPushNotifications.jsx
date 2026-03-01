@@ -22,7 +22,7 @@ function playAlert() {
 function sendBrowserNotif(title, body) {
   if (Notification.permission === 'granted') {
     const n = new Notification(title, { body, icon: '/favicon.ico' });
-    n.onclick = () => { window.focus(); window.location.href = '/reservas'; };
+    n.onclick = () => {window.focus();window.location.href = '/reservas';};
   }
 }
 
@@ -49,14 +49,14 @@ export default function AdminPushNotifications({ isAdmin }) {
           '🚗 Nova reserva!',
           `${d.client_name || 'Cliente'} · ${d.departure_point || ''} → ${d.arrival_point || ''}`
         );
-        toast.custom(() => (
-          <div
-            className="bg-[#F5C300] text-black px-4 py-3 rounded-xl shadow-lg cursor-pointer font-semibold"
-            onClick={() => window.location.href = '/reservas'}
-          >
+        toast.custom(() =>
+        <div
+          className="bg-[#F5C300] text-black px-4 py-3 rounded-xl shadow-lg cursor-pointer font-semibold"
+          onClick={() => window.location.href = '/reservas'}>
+
             🚗 Nova reserva de {d.client_name || 'Cliente'}!
-          </div>
-        ), { duration: 8000 });
+          </div>,
+        { duration: 8000 });
       }
 
       // Cancellation
@@ -90,13 +90,13 @@ export default function AdminPushNotifications({ isAdmin }) {
 
   return (
     <div className="fixed bottom-6 right-6 z-50">
-      <button
-        onClick={requestPermission}
-        className="flex items-center gap-2 bg-[#F5C300] text-black text-sm font-bold px-4 py-3 rounded-xl shadow-lg hover:bg-[#e6b800] transition-all animate-bounce"
-      >
-        <Bell className="w-4 h-4" />
-        Ativar notificações push
-      </button>
-    </div>
-  );
+      
+
+
+
+
+
+
+    </div>);
+
 }
