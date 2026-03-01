@@ -215,8 +215,8 @@ export default function TaximeterDriver() {
             onClick={handleStartStop}
             className={`h-16 rounded-xl font-bold text-sm uppercase tracking-wider flex items-center justify-center gap-2 transition-all ${
               isRunning
-                ? 'bg-red-500/20 border border-red-500/40 text-red-400 hover:bg-red-500/30'
-                : 'bg-[#F5C300]/20 border border-[#F5C300]/40 text-[#F5C300] hover:bg-[#F5C300]/30'
+                ? 'bg-red-600 text-white hover:bg-red-700'
+                : 'bg-green-600 text-white hover:bg-green-700'
             }`}
           >
             {isRunning ? (
@@ -234,7 +234,7 @@ export default function TaximeterDriver() {
           <button
             onClick={handleReset}
             disabled={isRunning}
-            className="h-16 rounded-xl bg-white/10 border border-white/20 text-white font-bold text-sm uppercase tracking-wider flex items-center justify-center gap-2 hover:bg-white/20 transition-all disabled:opacity-50"
+            className="h-16 rounded-xl bg-gray-700 text-white font-bold text-sm uppercase tracking-wider flex items-center justify-center gap-2 hover:bg-gray-800 transition-all disabled:opacity-50"
           >
             <RotateCcw className="w-5 h-5" />
             Réinitialiser
@@ -242,7 +242,7 @@ export default function TaximeterDriver() {
           <button
             onClick={handlePayment}
             disabled={paying || elapsedSeconds === 0}
-            className="h-16 rounded-xl bg-black border border-black/40 text-white font-bold text-sm uppercase tracking-wider flex items-center justify-center gap-2 hover:bg-black/80 transition-all disabled:opacity-50"
+            className="h-16 rounded-xl bg-[#F5C300] text-black font-bold text-sm uppercase tracking-wider flex items-center justify-center gap-2 hover:bg-[#E5B300] transition-all disabled:opacity-50"
           >
             {paying ? (
               <Loader2 className="w-5 h-5 animate-spin" />
