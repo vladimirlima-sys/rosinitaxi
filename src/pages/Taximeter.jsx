@@ -51,9 +51,12 @@ export default function Taximeter() {
   useEffect(() => {
     if (waitingEnabled && running) {
       waitingIntervalRef.current = setInterval(() => {
-        setWaitingSeconds(prev => prev + 1);
-        setWaitingPrice(((waitingSeconds + 1) / 60) * 0.30);
-        setTotalPrice(prev => parseFloat((prev + 0.30 / 60).toFixed(2)));
+        setWaitingSeconds(prev => {
+          const newSeconds = prev + 1;
+          setWaitingPrice((newSeconds / 60) * 0.30);
+          setTotalPrice(curr => parseFloat((curr + 0.30 / 60).toFixed(2)));
+          return newSeconds;
+        });
       }, 1000);
     } else {
       if (waitingIntervalRef.current) clearInterval(waitingIntervalRef.current);
@@ -61,7 +64,7 @@ export default function Taximeter() {
     return () => {
       if (waitingIntervalRef.current) clearInterval(waitingIntervalRef.current);
     };
-  }, [waitingEnabled, running, waitingSeconds]);
+  }, [waitingEnabled, running]);
 
   const startRide = () => {
     if (!navigator.geolocation) {
