@@ -158,11 +158,14 @@ export default function MyBookingCard() {
   const handleCancel = async () => {
     if (!selectedBooking) return;
     setActionLoading(true);
-    await base44.entities.Booking.update(selectedBooking.id, { payment_status: 'cancelled' });
-    setBookings(prev => prev.filter(b => b.id !== selectedBooking.id));
-    setMode(null);
-    setSelectedBooking(null);
-    setSuccessMsg(t.cancelledSuccess);
+    // Use the cancelBooking backend function to handle refund logic properly
+    const res = await base44.functions.invoke('cancelBooking', { booking_id: selectedBooking.id });
+    if (res.data?.success || res.data?.error === 'Booking is already cancelled') {
+      setBookings(prev => prev.filter(b => b.id !== selectedBooking.id));
+      setMode(null);
+      setSelectedBooking(null);
+      setSuccessMsg(t.cancelledSuccess);
+    }
     setActionLoading(false);
   };
 
