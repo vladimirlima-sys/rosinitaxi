@@ -73,7 +73,7 @@ const faqData = {
         title: 'Cancellations',
         items: [
           { q: 'Can I cancel my booking?', a: 'Yes, you can cancel your booking using the cancellation link provided in your confirmation email. Cancellation updates your booking status.' },
-          { q: 'Are there cancellation fees?', a: 'For cancellations made well in advance, no fees apply. For card payments made via Stripe, contact us directly at info@rosini.online for any refund requests.' },
+          { q: 'Are there cancellation fees?', a: 'Cancellations made at least 24 hours before departure are fully refunded (100%). Cancellations made less than 24 hours before departure are not eligible for a refund.' },
           { q: 'How do I cancel my booking?', a: 'The cancellation link is in your confirmation email. Click it, confirm the cancellation on the dedicated page, and we will be notified immediately.' },
         ],
       },
