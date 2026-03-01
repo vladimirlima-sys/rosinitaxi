@@ -124,7 +124,7 @@ export default function Drivers() {
             {drivers.map(driver => (
               <div key={driver.id} className="bg-black border border-black/40 rounded-xl p-4 flex items-center gap-4">
                 {/* Avatar */}
-                <div className="w-12 h-12 rounded-full bg-white/10 flex items-center justify-center shrink-0">
+                <div className="w-12 h-12 rounded-full bg-white/10 border border-white/20 flex items-center justify-center shrink-0">
                   <span className="text-white font-semibold text-lg">{driver.name.charAt(0).toUpperCase()}</span>
                 </div>
 
