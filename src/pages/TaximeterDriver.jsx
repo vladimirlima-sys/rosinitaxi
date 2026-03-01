@@ -69,10 +69,13 @@ export default function TaximeterDriver() {
     };
   }, [isRunning]);
 
-  const pricePerKm = vehicleType === 'comfort' ? PriceSettings.comfort_price_per_km : PriceSettings.standard_price_per_km;
+  const pricePerKm = !priceSettings ? 0 : vehicleType === 'comfort' 
+    ? (priceSettings.comfort_price_per_km || priceSettings.standard_price_per_km * 1.3)
+    : priceSettings.standard_price_per_km;
   const timeCharge = Math.floor(elapsedSeconds / 60) * 0.5; // CHF 0.50 per minute
   const distanceCharge = distance * pricePerKm;
-  const totalPrice = PriceSettings.base_fare + distanceCharge + timeCharge;
+  const baseFare = priceSettings?.base_fare || 0;
+  const totalPrice = baseFare + distanceCharge + timeCharge;
   const minutes = Math.floor(elapsedSeconds / 60);
   const seconds = elapsedSeconds % 60;
 
