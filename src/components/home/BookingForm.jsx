@@ -172,7 +172,6 @@ export default function BookingForm({ bookingRef }) {
     return diffMinutes >= 0 && diffMinutes < 90;
   };
   const isShortNotice = checkShortNotice();
-  console.log('[ShortNotice] isShortNotice:', isShortNotice, 'date:', form.departure_date, 'time:', form.departure_time);
 
   const [isCalculatingRoute, setIsCalculatingRoute] = useState(false);
 
