@@ -255,114 +255,93 @@ Deno.serve(async (req) => {
 </body>
 </html>`;
 
-    // Receipt for company (professional invoice format)
+    // Receipt for company (dark theme, black & yellow)
     const receiptBody = `
 <!DOCTYPE html>
 <html>
 <head><meta charset="UTF-8"></head>
-<body style="margin:0;padding:0;background:#f5f5f5;font-family:'Arial', sans-serif;color:#333;">
-<div style="max-width:800px;margin:0 auto;padding:40px 20px;">
+<body style="margin:0;padding:0;background:#0A0A0A;font-family:'Arial', sans-serif;color:#fff;">
+<div style="max-width:700px;margin:0 auto;padding:40px 20px;">
   <!-- Header -->
-  <div style="background:#fff;padding:40px;border-bottom:3px solid #C9A96E;margin-bottom:30px;">
+  <div style="background:#111;border:1px solid #F5C300;border-radius:12px;padding:32px;margin-bottom:24px;">
     <table style="width:100%;border-collapse:collapse;">
       <tr>
         <td style="vertical-align:top;width:50%;">
-          <h1 style="color:#C9A96E;font-size:32px;font-weight:bold;margin:0;letter-spacing:3px;">ROSINI</h1>
-          <p style="color:#C9A96E;font-size:12px;letter-spacing:2px;margin:4px 0 0;">TRANSPORTS ET LOCATIONS SARL</p>
-          <div style="margin-top:20px;color:#666;font-size:11px;line-height:1.6;">
+          <h1 style="color:#F5C300;font-size:32px;font-weight:bold;margin:0;letter-spacing:3px;">ROSINI</h1>
+          <p style="color:#F5C300;font-size:11px;letter-spacing:2px;margin:4px 0 0;">TRANSPORTS ET LOCATIONS SARL</p>
+          <div style="margin-top:16px;color:#888;font-size:11px;line-height:1.8;">
             <p style="margin:0;">Chemin des Bulesses 16</p>
             <p style="margin:0;">1814 La Tour-de-Peilz</p>
-            <p style="margin:8px 0 0;">IDE: CHE-264.039.709</p>
-            <p style="margin:8px 0 0;"><strong>Téléphone:</strong> +41 77 249 22 45</p>
-            <p style="margin:4px 0 0;"><strong>Email:</strong> info@rosini.online</p>
+            <p style="margin:6px 0 0;">IDE: CHE-264.039.709</p>
+            <p style="margin:6px 0 0;">+41 77 249 22 45 | info@rosini.online</p>
           </div>
         </td>
         <td style="vertical-align:top;text-align:right;">
-          <div style="font-size:36px;color:#C9A96E;font-weight:bold;margin-bottom:20px;">REÇU</div>
-          <table style="border-collapse:collapse;font-size:11px;line-height:1.8;">
-            <tr><td style="padding:4px 0;"><strong>Date:</strong></td><td style="padding:4px 0 4px 20px;">${new Date().toLocaleDateString()}</td></tr>
-            <tr><td style="padding:4px 0;"><strong>Trajet:</strong></td><td style="padding:4px 0 4px 20px;">${departure_date}</td></tr>
-          </table>
+          <div style="font-size:32px;color:#F5C300;font-weight:bold;margin-bottom:16px;">REÇU</div>
+          <div style="font-size:11px;color:#888;line-height:1.8;">
+            <div>Date: ${new Date().toLocaleDateString()}</div>
+            <div>Trajet: ${departure_date}</div>
+          </div>
         </td>
       </tr>
     </table>
   </div>
 
   <!-- Client Info -->
-  <div style="background:#fff;padding:25px;margin-bottom:30px;border-left:4px solid #C9A96E;">
-    <h3 style="color:#333;font-size:13px;font-weight:bold;margin:0 0 12px;text-transform:uppercase;letter-spacing:1px;">Informations du client</h3>
-    <table style="border-collapse:collapse;font-size:12px;line-height:1.8;width:100%;">
-      <tr>
-        <td style="width:30%;padding:4px 0;color:#888;"><strong>Nom:</strong></td>
-        <td style="padding:4px 0;">${client_name}</td>
-      </tr>
-      <tr>
-        <td style="padding:4px 0;color:#888;"><strong>Email:</strong></td>
-        <td style="padding:4px 0;">${client_email}</td>
-      </tr>
-      <tr>
-        <td style="padding:4px 0;color:#888;"><strong>Téléphone:</strong></td>
-        <td style="padding:4px 0;">${client_phone || '—'}</td>
-      </tr>
+  <div style="background:#111;border:1px solid #333;border-left:4px solid #F5C300;border-radius:8px;padding:24px;margin-bottom:16px;">
+    <h3 style="color:#F5C300;font-size:12px;font-weight:bold;margin:0 0 12px;text-transform:uppercase;letter-spacing:1px;">Informations du client</h3>
+    <table style="border-collapse:collapse;font-size:13px;line-height:1.8;width:100%;">
+      <tr><td style="width:30%;color:#888;">Nom:</td><td style="color:#fff;">${client_name}</td></tr>
+      <tr><td style="color:#888;">Email:</td><td style="color:#fff;">${client_email}</td></tr>
+      <tr><td style="color:#888;">Téléphone:</td><td style="color:#fff;">${client_phone || '—'}</td></tr>
     </table>
   </div>
 
   <!-- Journey Details -->
-  <div style="background:#fff;padding:25px;margin-bottom:30px;border-left:4px solid #C9A96E;">
-    <h3 style="color:#333;font-size:13px;font-weight:bold;margin:0 0 16px;text-transform:uppercase;letter-spacing:1px;">Détails du trajet</h3>
-    <table style="border-collapse:collapse;width:100%;">
-      <tr style="border-bottom:1px solid #eee;">
-        <td style="padding:12px 0;font-size:12px;color:#888;width:25%;"><strong>Départ:</strong></td>
-        <td style="padding:12px 0;font-size:12px;">${departure_point}</td>
-        <td style="padding:12px 0 12px 40px;font-size:12px;color:#888;text-align:right;"><strong>Date/Heure:</strong></td>
-        <td style="padding:12px 0 12px 20px;font-size:12px;">${departure_date} à ${departure_time}</td>
+  <div style="background:#111;border:1px solid #333;border-left:4px solid #F5C300;border-radius:8px;padding:24px;margin-bottom:16px;">
+    <h3 style="color:#F5C300;font-size:12px;font-weight:bold;margin:0 0 16px;text-transform:uppercase;letter-spacing:1px;">Détails du trajet</h3>
+    <table style="border-collapse:collapse;width:100%;font-size:13px;">
+      <tr style="border-bottom:1px solid #222;">
+        <td style="padding:8px 0;color:#888;width:25%;">Départ:</td>
+        <td style="padding:8px 0;color:#fff;">${departure_point}</td>
+        <td style="padding:8px 0 8px 20px;color:#888;text-align:right;">Date/Heure:</td>
+        <td style="padding:8px 0 8px 16px;color:#fff;">${departure_date} à ${departure_time}</td>
       </tr>
-      <tr style="border-bottom:1px solid #eee;">
-        <td style="padding:12px 0;font-size:12px;color:#888;"><strong>Arrivée:</strong></td>
-        <td style="padding:12px 0;font-size:12px;">${arrival_point}</td>
-        <td style="padding:12px 0 12px 40px;font-size:12px;color:#888;text-align:right;"><strong>Véhicule:</strong></td>
-        <td style="padding:12px 0 12px 20px;font-size:12px;">${vehicleLabel}</td>
+      <tr style="border-bottom:1px solid #222;">
+        <td style="padding:8px 0;color:#888;">Arrivée:</td>
+        <td style="padding:8px 0;color:#fff;">${arrival_point}</td>
+        <td style="padding:8px 0 8px 20px;color:#888;text-align:right;">Véhicule:</td>
+        <td style="padding:8px 0 8px 16px;color:#fff;">${vehicleLabel}</td>
       </tr>
-      <tr style="border-bottom:1px solid #eee;">
-        <td style="padding:12px 0;font-size:12px;color:#888;"><strong>Distance:</strong></td>
-        <td style="padding:12px 0;font-size:12px;">${distance_km} km</td>
-        <td style="padding:12px 0 12px 40px;font-size:12px;color:#888;text-align:right;"><strong>Passagers:</strong></td>
-        <td style="padding:12px 0 12px 20px;font-size:12px;">${passengers || 1}</td>
+      <tr style="border-bottom:1px solid #222;">
+        <td style="padding:8px 0;color:#888;">Distance:</td>
+        <td style="padding:8px 0;color:#fff;">${distance_km} km</td>
+        <td style="padding:8px 0 8px 20px;color:#888;text-align:right;">Passagers:</td>
+        <td style="padding:8px 0 8px 16px;color:#fff;">${passengers || 1}</td>
       </tr>
-      ${flight_number ? `
-      <tr style="border-bottom:1px solid #eee;">
-        <td style="padding:12px 0;font-size:12px;color:#888;"><strong>Vol:</strong></td>
-        <td colspan="3" style="padding:12px 0;font-size:12px;">${flight_number}</td>
-      </tr>
-      ` : ''}
-      ${notes ? `
-      <tr>
-        <td style="padding:12px 0;font-size:12px;color:#888;"><strong>Notes:</strong></td>
-        <td colspan="3" style="padding:12px 0;font-size:12px;">${notes}</td>
-      </tr>
-      ` : ''}
+      ${flight_number ? `<tr style="border-bottom:1px solid #222;"><td style="padding:8px 0;color:#888;">Vol:</td><td colspan="3" style="padding:8px 0;color:#fff;">${flight_number}</td></tr>` : ''}
+      ${notes ? `<tr><td style="padding:8px 0;color:#888;">Notes:</td><td colspan="3" style="padding:8px 0;color:#fff;">${notes}</td></tr>` : ''}
     </table>
   </div>
 
-  <!-- Amount Table -->
-  <div style="background:#fff;padding:25px;margin-bottom:30px;">
-    <table style="border-collapse:collapse;width:100%;font-size:12px;">
-      <tr style="border-top:2px solid #eee;border-bottom:2px solid #eee;">
-        <td style="padding:12px 0;text-align:right;width:70%;"><strong>Montant total:</strong></td>
-        <td style="padding:12px 0 12px 20px;text-align:right;"><span style="font-size:20px;color:#C9A96E;font-weight:bold;">CHF ${total_price}</span></td>
+  <!-- Amount -->
+  <div style="background:#111;border:1px solid #F5C300;border-radius:8px;padding:24px;margin-bottom:24px;">
+    <table style="border-collapse:collapse;width:100%;font-size:13px;">
+      <tr>
+        <td style="color:#888;">Méthode de paiement:</td>
+        <td style="color:#fff;">${payment_method === 'stripe' ? 'Stripe (en ligne)' : payment_method === 'twint' ? 'TWINT' : 'Espèces'}</td>
+        <td style="text-align:right;"><span style="background:#F5C300;padding:3px 10px;border-radius:4px;font-size:11px;color:#000;font-weight:bold;">${payment_method === 'stripe' ? 'PAYÉ' : 'À ENCAISSER'}</span></td>
       </tr>
       <tr>
-        <td style="padding:12px 0;text-align:right;color:#888;font-size:11px;">Méthode de paiement: ${payment_method === 'stripe' ? 'Stripe (en ligne)' : payment_method === 'twint' ? 'TWINT' : 'Espèces'}</td>
-        <td style="padding:12px 0 12px 20px;"><span style="background:#d4af37;padding:2px 8px;border-radius:3px;font-size:11px;color:#333;font-weight:bold;">${payment_method === 'stripe' ? 'PAYÉ' : 'À ENCAISSER'}</span></td>
+        <td colspan="2" style="padding-top:12px;color:#aaa;font-size:14px;font-weight:bold;">Montant total:</td>
+        <td style="padding-top:12px;text-align:right;"><span style="font-size:24px;color:#F5C300;font-weight:bold;">CHF ${total_price}</span></td>
       </tr>
     </table>
   </div>
 
   <!-- Footer -->
-  <div style="background:#f9f9f9;padding:25px;border-top:1px solid #eee;text-align:center;font-size:11px;color:#999;line-height:1.6;">
-    <p style="margin:0 0 8px;">Rosini Transports et locations Sarl | Chemin des Bulesses 16 | 1814 La Tour-de-Peilz</p>
-    <p style="margin:0;">© ${new Date().getFullYear()} Rosini Transfert. Tous droits réservés.</p>
-  </div>
+  <p style="color:#444;text-align:center;font-size:11px;margin:0;">Rosini Transports et locations Sarl | Chemin des Bulesses 16 | 1814 La Tour-de-Peilz</p>
+  <p style="color:#333;text-align:center;font-size:11px;margin:4px 0 0;">© ${new Date().getFullYear()} Rosini Transfert. Tous droits réservés.</p>
 </div>
 </body>
 </html>`;
