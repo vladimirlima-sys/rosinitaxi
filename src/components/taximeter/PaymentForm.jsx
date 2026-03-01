@@ -72,7 +72,11 @@ export default function PaymentForm({ amount, onPaymentComplete, onCancel, dista
       // Register payment
       await base44.functions.invoke('registerTaximeterPayment', {
         amount: amount,
-        paymentMethod: 'twint'
+        paymentMethod: 'twint',
+        clientEmail,
+        distance,
+        departure,
+        arrival
       });
       
       // Redirect to payment (or just complete if TWINT doesn't need redirect)
@@ -87,7 +91,7 @@ export default function PaymentForm({ amount, onPaymentComplete, onCancel, dista
         onPaymentComplete('twint');
       }
     } catch (err) {
-      setError('Erreur lors du paiement: ' + err.message);
+      setError('Erreur lors do paiement: ' + err.message);
       setLoading(false);
     }
   };
