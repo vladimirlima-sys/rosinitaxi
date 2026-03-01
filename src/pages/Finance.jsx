@@ -373,8 +373,8 @@ export default function Finance() {
             )}
 
             {/* Charts */}
-            <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 mb-8">
-              <div className="bg-white/5 border border-white/10 rounded-lg p-6">
+            <div className="grid grid-cols-1 gap-8 mb-8">
+              <div className="bg-black border border-black/40 rounded-lg p-6">
                 <h3 className="text-white font-semibold mb-4">Revenus par méthode</h3>
                 {chartData.length > 0 ? (
                   <ResponsiveContainer width="100%" height={280}>
