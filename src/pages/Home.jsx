@@ -8,6 +8,29 @@ import { HelpCircle } from 'lucide-react';
 
 function HomeContent({ bookingRef }) {
   const { lang } = useLang();
+  const [error, setError] = React.useState(null);
+
+  React.useEffect(() => {
+    const handleError = (event) => {
+      console.error('App error:', event.error);
+      setError(event.error?.message || 'Erro ao carregar a página');
+    };
+    window.addEventListener('error', handleError);
+    return () => window.removeEventListener('error', handleError);
+  }, []);
+
+  if (error) {
+    return (
+      <div className="min-h-screen bg-[#F5C300] flex items-center justify-center p-4">
+        <div className="text-center">
+          <p className="text-black text-lg font-bold mb-2">Erro ao carregar</p>
+          <p className="text-black/60 text-sm mb-4">{error}</p>
+          <button onClick={() => window.location.reload()} className="bg-black text-white px-4 py-2 rounded-lg">Recarregar</button>
+        </div>
+      </div>
+    );
+  }
+
   return (
     <>
       <SeoHead lang={lang} />
