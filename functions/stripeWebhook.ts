@@ -110,9 +110,23 @@ Deno.serve(async (req) => {
 
     // Update booking payment status
     try {
-      const bookings = await base44.asServiceRole.entities.Booking.filter({ client_email: clientEmail, payment_status: "pending" });
-      if (bookings.length > 0) {
-        const booking = bookings[0];
+      // Use booking_id from metadata if available (most precise), otherwise fallback to email+date match
+      let booking = null;
+      const bookingId = meta.booking_id;
+      if (bookingId) {
+        const found = await base44.asServiceRole.entities.Booking.filter({ id: bookingId });
+        booking = found?.[0] || null;
+      }
+      if (!booking) {
+        // Fallback: match by email + departure_date + departure_time to avoid updating wrong booking
+        const pendingBookings = await base44.asServiceRole.entities.Booking.filter({ client_email: clientEmail, payment_status: "pending" });
+        if (departureDate) {
+          booking = pendingBookings.find(b => b.departure_date === departureDate && b.departure_time === departureTime) || pendingBookings[0] || null;
+        } else {
+          booking = pendingBookings[0] || null;
+        }
+      }
+      if (booking) {
         await base44.asServiceRole.entities.Booking.update(booking.id, {
           payment_status: "paid",
           confirmation_sent: true,
