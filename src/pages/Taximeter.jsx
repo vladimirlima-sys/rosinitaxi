@@ -1,6 +1,6 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { base44 } from '@/api/base44Client';
-import { Play, Square, Navigation, Car, Loader2 } from 'lucide-react';
+import { Play, Square, Navigation, Car, Loader2, Clock, Pause, Play as PlayIcon } from 'lucide-react';
 import PaymentForm from '@/components/taximeter/PaymentForm';
 
 export default function Taximeter() {
