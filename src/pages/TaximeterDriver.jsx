@@ -8,13 +8,22 @@ export default function TaximeterDriver() {
   const [isRunning, setIsRunning] = useState(false);
   const [elapsedSeconds, setElapsedSeconds] = useState(0);
   const [distance, setDistance] = useState(0);
-  const [vehicleType, setVehicleType] = useState('standard');
+  const [vehicleType, setVehicleType] = useState('economic');
   const [clientEmail, setClientEmail] = useState('');
   const [clientName, setClientName] = useState('');
   const [paying, setPaying] = useState(false);
   const timerRef = useRef(null);
   const watchIdRef = useRef(null);
   const lastLocationRef = useRef(null);
+
+  // Load price settings
+  useEffect(() => {
+    const fetchSettings = async () => {
+      const settings = await base44.entities.PriceSettings.list();
+      if (settings?.length > 0) setPriceSettings(settings[0]);
+    };
+    fetchSettings();
+  }, []);
 
   // Timer logic
   useEffect(() => {
