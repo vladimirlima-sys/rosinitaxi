@@ -523,72 +523,14 @@ Deno.serve(async (req) => {
       console.error('WhatsApp notification failed (non-critical):', waErr.message);
     }
 
-    // Send emails using Gmail connector with PDF attachment
-    const sendGmailEmail = async (to, subject, htmlBody, pdfBytes = null) => {
-      const accessToken = await base44.asServiceRole.connectors.getAccessToken('gmail');
-      
-      if (!pdfBytes) {
-        // Send simple HTML email
-        const lines = [
-          `From: no-reply@rosini.online`,
-          `To: ${to}`,
-          `Subject: ${subject}`,
-          `MIME-Version: 1.0`,
-          `Content-Type: text/html; charset="UTF-8"`,
-          ``,
-          htmlBody
-        ];
-        
-        const emailMessage = lines.join('\r\n');
-        const base64Message = btoa(unescape(encodeURIComponent(emailMessage)))
-          .replace(/\+/g, '-')
-          .replace(/\//g, '_')
-          .replace(/=/g, '');
-        
-        const response = await fetch('https://www.googleapis.com/gmail/v1/users/me/messages/send', {
-          method: 'POST',
-          headers: {
-            'Authorization': `Bearer ${accessToken}`,
-            'Content-Type': 'application/json'
-          },
-          body: JSON.stringify({ raw: base64Message })
-        });
-        
-        if (!response.ok) {
-          const error = await response.text();
-          throw new Error(`Gmail API error: ${response.status} - ${error}`);
-        }
-        return response.json();
-      } else {
-        // Send email with PDF attachment
-        const boundary = '==boundary_' + Date.now();
-        const pdfBase64 = Array.from(new Uint8Array(pdfBytes))
-          .map(b => String.fromCharCode(b))
-          .join('');
-        const pdfBase64Encoded = btoa(pdfBase64);
-        
-        const emailContent = `From: no-reply@rosini.online\r\nTo: ${to}\r\nSubject: ${subject}\r\nMIME-Version: 1.0\r\nContent-Type: multipart/mixed; boundary="${boundary}"\r\n\r\n--${boundary}\r\nContent-Type: text/html; charset="UTF-8"\r\nContent-Transfer-Encoding: 7bit\r\n\r\n${htmlBody}\r\n\r\n--${boundary}\r\nContent-Type: application/pdf; name="receipt.pdf"\r\nContent-Disposition: attachment; filename="receipt.pdf"\r\nContent-Transfer-Encoding: base64\r\n\r\n${pdfBase64Encoded}\r\n\r\n--${boundary}--`;
-        
-        const base64Message = btoa(unescape(encodeURIComponent(emailContent)))
-          .replace(/\+/g, '-')
-          .replace(/\//g, '_')
-          .replace(/=/g, '');
-        
-        const response = await fetch('https://www.googleapis.com/gmail/v1/users/me/messages/send', {
-          method: 'POST',
-          headers: {
-            'Authorization': `Bearer ${accessToken}`,
-            'Content-Type': 'application/json'
-          },
-          body: JSON.stringify({ raw: base64Message })
-        });
-        
-        if (!response.ok) {
-          const error = await response.text();
-          throw new Error(`Gmail API error: ${response.status} - ${error}`);
-        }
-        return response.json();
-      }
+    // Send emails using Core integration
+    const sendCoreEmail = async (to, subject, htmlBody) => {
+      await base44.integrations.Core.SendEmail({
+        to: to,
+        subject: subject,
+        body: htmlBody,
+        from_name: 'Rosini Transfert'
+      });
     };
 
     // Subject lines per language
