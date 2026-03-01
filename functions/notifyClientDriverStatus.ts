@@ -101,10 +101,10 @@ const translations = {
   },
 };
 
-function buildEmailBody(t, type, client_name, departure_point, arrival_point) {
+function buildEmailBody(t, type, client_name, departure_point, arrival_point, driver_name) {
   const year = new Date().getFullYear();
   const title = type === 'on_the_way' ? t.on_the_way_title : t.arrived_title;
-  const body = type === 'on_the_way' ? t.on_the_way_body(client_name, departure_point) : t.arrived_body(client_name);
+  const body = type === 'on_the_way' ? t.on_the_way_body(client_name, departure_point, driver_name) : t.arrived_body(client_name, departure_point, driver_name);
   const showDestination = type === 'on_the_way';
 
   return `<!DOCTYPE html>
