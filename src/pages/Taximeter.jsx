@@ -246,7 +246,7 @@ export default function Taximeter() {
         )}
 
         <p className="text-white/15 text-xs text-center">
-          O GPS precisa de permissão de localização para funcionar
+          Le GPS nécessite la permission de localisation pour fonctionner
         </p>
       </div>
     </div>
