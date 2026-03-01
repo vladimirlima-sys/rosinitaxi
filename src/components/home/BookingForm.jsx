@@ -114,7 +114,12 @@ export default function BookingForm({ bookingRef }) {
 
   // Auto-locate on mount
   useEffect(() => {
-    locateUser();
+    try {
+      locateUser();
+    } catch (e) {
+      console.error('Error on mount:', e);
+      // Don't block the app
+    }
   // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
