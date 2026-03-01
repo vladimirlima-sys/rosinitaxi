@@ -38,61 +38,48 @@ Deno.serve(async (req) => {
     .label { font-weight: bold; color: #666; }
     .value { color: #333; }
     .amount { font-size: 28px; font-weight: bold; color: #F5C300; text-align: center; padding: 20px 0; }
+    .status { font-size: 14px; font-weight: bold; color: #333; text-align: center; }
     .footer { background: #f5f5f5; padding: 20px; text-align: center; font-size: 11px; color: #999; border-radius: 0 0 8px 8px; }
   </style>
 </head>
 <body>
   <div class="container">
     <div class="header">
-      <h1>ROSINI TRANSFERT</h1>
-      <p>Comprovativo de Viagem</p>
+      <h1>ROSINI TRANSPORTS DE PERSONNES</h1>
+      <p>Reçu de Course</p>
     </div>
     
     <div class="content">
       <div class="section">
-        <div class="section-title">Detalhes da Viagem</div>
+        <div class="section-title">Détails de la Course</div>
         <div class="detail-row">
-          <span class="label">Origem:</span>
-          <span class="value">${departure || 'N/A'}</span>
-        </div>
-        <div class="detail-row">
-          <span class="label">Destino:</span>
-          <span class="value">${arrival || 'N/A'}</span>
-        </div>
-        <div class="detail-row">
-          <span class="label">Distância:</span>
+          <span class="label">Distance:</span>
           <span class="value">${distance ? distance.toFixed(2) + ' km' : 'N/A'}</span>
         </div>
         <div class="detail-row">
-          <span class="label">Data:</span>
+          <span class="label">Date:</span>
           <span class="value">${dateStr}</span>
         </div>
         <div class="detail-row">
-          <span class="label">Hora:</span>
+          <span class="label">Heure:</span>
           <span class="value">${timeStr}</span>
         </div>
       </div>
 
-      <div class="section">
-        <div class="section-title">Método de Pagamento</div>
-        <div class="detail-row">
-          <span class="label">Método:</span>
-          <span class="value">${methodLabel}</span>
-        </div>
-      </div>
-
       <div class="amount">CHF ${amount.toFixed(2)}</div>
+      
+      <div class="status">Paiement effectué</div>
 
-      <div class="section">
+      <div class="section" style="margin-top: 30px;">
         <p style="font-size: 12px; color: #999; text-align: center; margin: 20px 0;">
-          Obrigado por usar ROSINI TRANSFERT. Este comprovativo constitui prova do pagamento da sua viagem.
+          Merci d'avoir utilisé ROSINI TRANSPORTS DE PERSONNES. Ce reçu constitue la preuve de votre paiement.
         </p>
       </div>
     </div>
 
     <div class="footer">
-      <p>ROSINI TRANSFERT | Comprovativo Digital</p>
-      <p>Este email foi gerado automaticamente. Não responda a este email.</p>
+      <p>ROSINI TRANSPORTS DE PERSONNES | Reçu Numérique</p>
+      <p>Cet email a été généré automatiquement. Merci de ne pas répondre à cet email.</p>
     </div>
   </div>
 </body>
