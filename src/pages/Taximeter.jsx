@@ -225,7 +225,7 @@ export default function Taximeter() {
         {/* Breakdown */}
         {distanceKm > 0 && priceSettings && (
           <div className="bg-[#111] border border-white/10 rounded-2xl p-4 space-y-2">
-            <p className="text-white/30 text-xs uppercase tracking-wider mb-2">Detalhes</p>
+            <p className="text-white/30 text-xs uppercase tracking-wider mb-2">Détails</p>
             <div className="flex justify-between text-sm">
               <span className="text-white/50">{distanceKm.toFixed(3)} km × CHF {pricePerKm.toFixed(2)}</span>
               <span className="text-white">CHF {(distanceKm * pricePerKm).toFixed(2)}</span>
