@@ -2,7 +2,7 @@ import { useEffect, useState } from 'react';
 import { base44 } from '@/api/base44Client';
 import AdminPushNotifications from '@/components/admin/AdminPushNotifications';
 
-export default function Layout({ children }) {
+export default function Layout({ children, currentPageName }) {
   const [isAdmin, setIsAdmin] = useState(false);
 
   useEffect(() => {
@@ -11,10 +11,12 @@ export default function Layout({ children }) {
       .catch(() => setIsAdmin(false));
   }, []);
 
+  const showNotifications = isAdmin && currentPageName !== 'Home';
+
   return (
     <div>
       {children}
-      <AdminPushNotifications isAdmin={isAdmin} />
+      <AdminPushNotifications isAdmin={showNotifications} />
     </div>
   );
 }
