@@ -112,7 +112,7 @@ export default function Taximeter() {
 
         {/* Header */}
         <div className="text-center">
-          <h1 className="text-3xl font-extralight tracking-[0.3em] text-white uppercase">TAXÍMETRO</h1>
+          <h1 className="text-3xl font-extralight tracking-[0.3em] text-white uppercase">TAXIMÈTRE</h1>
           <p className="text-white/30 text-xs tracking-widest uppercase mt-1">Rosini Transfert</p>
         </div>
 
