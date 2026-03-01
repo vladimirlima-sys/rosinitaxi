@@ -233,6 +233,34 @@ export default function Taximeter() {
           )}
         </div>
 
+        {/* Waiting time card */}
+        {running && (
+          <div className="bg-[#111] border border-white/10 rounded-2xl p-4 space-y-3">
+            <div className="flex items-center justify-between">
+              <div className="flex items-center gap-2">
+                <Clock className="w-4 h-4 text-white/50" />
+                <p className="text-white/40 text-xs uppercase tracking-wider">Temps d'attente</p>
+              </div>
+              <button
+                onClick={toggleWaiting}
+                className={`px-3 py-1 rounded-lg text-xs font-semibold uppercase tracking-wider transition-all ${
+                  waitingEnabled
+                    ? 'bg-[#F5C300]/20 border border-[#F5C300]/50 text-[#F5C300]'
+                    : 'bg-white/5 border border-white/10 text-white/50 hover:bg-white/10'
+                }`}
+              >
+                {waitingEnabled ? 'Actif' : 'Inactif'}
+              </button>
+            </div>
+            <div className="flex items-baseline gap-2">
+              <p className="text-white text-3xl font-light tabular-nums">
+                {String(Math.floor(waitingSeconds / 60)).padStart(2, '0')}:{String(waitingSeconds % 60).padStart(2, '0')}
+              </p>
+              <p className="text-white/30 text-sm">CHF {waitingPrice.toFixed(2)}</p>
+            </div>
+          </div>
+        )}
+
         {/* GPS error */}
         {gpsError && (
           <div className="bg-red-500/10 border border-red-500/20 rounded-xl p-3">
