@@ -33,6 +33,24 @@ export default function Drivers() {
     const data = await base44.entities.Driver.list('-created_date');
     setDrivers(data);
     setLoading(false);
+    fetchMonthlyRevenue();
+  };
+
+  const fetchMonthlyRevenue = async () => {
+    const now = new Date();
+    const year = now.getFullYear();
+    const month = String(now.getMonth() + 1).padStart(2, '0');
+    const startDate = `${year}-${month}-01`;
+    const endDate = `${year}-${month}-31`;
+    const bookings = await base44.entities.Booking.list('-departure_date', 500);
+    const revenue = {};
+    bookings.forEach(b => {
+      if (!b.driver_id) return;
+      if (b.payment_status !== 'paid') return;
+      if (!b.departure_date || b.departure_date < startDate || b.departure_date > endDate) return;
+      revenue[b.driver_id] = (revenue[b.driver_id] || 0) + (b.total_price || 0);
+    });
+    setMonthlyRevenue(revenue);
   };
 
   const handleSave = async (form) => {
