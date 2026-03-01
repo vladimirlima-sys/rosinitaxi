@@ -27,7 +27,8 @@ export default function PaymentForm({ amount, onPaymentComplete, onCancel, dista
         clientEmail,
         distance,
         departure,
-        arrival
+        arrival,
+        driverId
       });
       
       // Redirect to Stripe
