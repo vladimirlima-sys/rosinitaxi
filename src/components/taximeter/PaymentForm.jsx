@@ -23,6 +23,7 @@ export default function PaymentForm({ amount, onPaymentComplete, onCancel, dista
         arrival,
         driverId
       });
+      setLoading(false);
       onPaymentComplete('cash');
     } catch (err) {
       setError('Erreur lors de l\'enregistrement: ' + err.message);
