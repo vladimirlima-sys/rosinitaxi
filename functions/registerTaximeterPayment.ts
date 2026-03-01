@@ -40,14 +40,18 @@ Deno.serve(async (req) => {
 
     // Send travel receipt if email is provided
     if (clientEmail) {
-      await base44.functions.invoke('sendTravelReceipt', {
-        clientEmail,
-        amount,
-        paymentMethod,
-        distance,
-        departure,
-        arrival
-      });
+      try {
+        await base44.functions.invoke('sendTravelReceipt', {
+          clientEmail,
+          amount,
+          paymentMethod,
+          distance,
+          departure,
+          arrival
+        });
+      } catch (emailError) {
+        console.log('Email send failed, but payment registered:', emailError.message);
+      }
     }
 
     console.log('Taximeter payment registered:', booking);
