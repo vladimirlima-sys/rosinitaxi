@@ -175,7 +175,7 @@ export default function Taximeter() {
           {status === 'running' && (
             <div className="flex items-center justify-center gap-2">
               <span className="w-2 h-2 rounded-full bg-[#F5C300] animate-pulse" />
-              <p className="text-[#F5C300] text-xs uppercase tracking-wider font-semibold">Em corrida</p>
+              <p className="text-[#F5C300] text-xs uppercase tracking-wider font-semibold">Course en cours</p>
             </div>
           )}
           {status === 'stopped' && (
