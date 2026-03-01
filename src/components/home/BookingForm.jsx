@@ -196,7 +196,7 @@ export default function BookingForm({ bookingRef }) {
         sessionStorage.setItem('pendingBooking', JSON.stringify({ ...form, total_price: parseFloat(totalPrice), distance_km: estimatedDistance, language: lang }));
         const response = await base44.functions.invoke('createCheckout', {
           amount: parseFloat(totalPrice), currency: 'chf',
-          client_name: form.client_name, client_email: form.client_email,
+          client_name: form.client_name, client_email: form.client_email, client_phone: form.client_phone,
           departure: form.departure_point, arrival: form.arrival_point,
           vehicle_type: form.vehicle_type, distance_km: estimatedDistance,
           departure_date: form.departure_date, departure_time: form.departure_time,
