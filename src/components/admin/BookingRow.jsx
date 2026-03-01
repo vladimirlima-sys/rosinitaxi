@@ -5,7 +5,7 @@ import BookingStatusBadge from './BookingStatusBadge';
 import BookingDetailsModal from './BookingDetailsModal';
 import AssignDriverModal from '@/components/drivers/AssignDriverModal';
 
-export default function BookingRow({ booking, onStatusChange, onDelete, onAssignDriver, drivers = [], selected, onToggleSelect }) {
+export default function BookingRow({ booking, onStatusChange, onDelete, onAssignDriver, drivers = [], selected, onToggleSelect, isNew = false, onSeen }) {
   const [expanded, setExpanded] = useState(false);
   const [showModal, setShowModal] = useState(false);
   const [showAssignModal, setShowAssignModal] = useState(false);
