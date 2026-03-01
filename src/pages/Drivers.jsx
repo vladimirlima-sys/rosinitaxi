@@ -76,15 +76,15 @@ export default function Drivers() {
   };
 
   if (isAdmin === null) {
-    return <div className="min-h-screen bg-[#F5C300] flex items-center justify-center text-black">Carregando...</div>;
+    return <div className="min-h-screen bg-[#0A0A0A] flex items-center justify-center text-white">Carregando...</div>;
   }
 
   if (!isAdmin) {
     return (
-      <div className="min-h-screen bg-[#F5C300] flex items-center justify-center">
+      <div className="min-h-screen bg-[#0A0A0A] flex items-center justify-center text-white">
         <div className="text-center">
-          <h1 className="text-2xl font-light mb-2 text-black">Acesso Restrito</h1>
-          <p className="text-black/60">Apenas administradores podem acessar esta página.</p>
+          <h1 className="text-2xl font-light mb-2">Acesso Restrito</h1>
+          <p className="text-white/50">Apenas administradores podem acessar esta página.</p>
         </div>
       </div>
     );
@@ -94,37 +94,37 @@ export default function Drivers() {
   const inactive = drivers.filter(d => d.status === 'inactive').length;
 
   return (
-    <div className="min-h-screen bg-[#F5C300] py-12 px-4">
-      <div className="max-w-2xl mx-auto">
+    <div className="min-h-screen bg-[#0A0A0A] py-12 px-6">
+      <div className="max-w-5xl mx-auto">
         {/* Header */}
-        <div className="text-center mb-12">
-          <h1 className="text-black text-6xl font-extralight tracking-[0.3em] uppercase">ROSINI</h1>
-          <p className="text-black/60 text-sm tracking-[0.2em] uppercase mt-2">MOTORISTAS</p>
-          <div className="w-8 h-[1px] bg-black/40 mx-auto mt-3 mb-8" />
+        <div className="flex items-start justify-between mb-8">
+          <div>
+            <h1 className="text-4xl font-light text-white mb-1">Motoristas</h1>
+            <p className="text-white/40 text-sm">{active} ativos · {inactive} inativos</p>
+          </div>
           <button
             onClick={() => { setEditingDriver(null); setShowForm(true); }}
-            className="flex items-center gap-2 bg-black text-white px-4 py-2.5 rounded-lg font-semibold text-sm hover:bg-black/80 transition-all mx-auto mb-4"
+            className="flex items-center gap-2 bg-[#F5C300] text-black px-4 py-2.5 rounded-xl font-semibold text-sm hover:bg-[#e6b800] transition-all"
           >
             <Plus className="w-4 h-4" />
             Novo Motorista
           </button>
-          <p className="text-black/60 text-sm">{active} ativos · {inactive} inativos</p>
         </div>
 
         {/* List */}
         {loading ? (
-          <div className="text-black/30 text-center py-20">Carregando...</div>
+          <div className="text-white/30 text-center py-20">Carregando...</div>
         ) : drivers.length === 0 ? (
           <div className="text-center py-20">
-            <User className="w-10 h-10 text-black/20 mx-auto mb-3" />
-            <p className="text-black/30">Nenhum motorista cadastrado ainda.</p>
+            <User className="w-10 h-10 text-white/20 mx-auto mb-3" />
+            <p className="text-white/30">Nenhum motorista cadastrado ainda.</p>
           </div>
         ) : (
           <div className="grid gap-3">
             {drivers.map(driver => (
-              <div key={driver.id} className="bg-black border border-black/40 rounded-xl p-4 flex items-center gap-4">
+              <div key={driver.id} className="bg-[#111] border border-white/10 rounded-2xl p-5 flex items-center gap-4">
                 {/* Avatar */}
-                <div className="w-12 h-12 rounded-full bg-white/10 border border-white/20 flex items-center justify-center shrink-0">
+                <div className="w-12 h-12 rounded-full bg-white/10 flex items-center justify-center shrink-0">
                   <span className="text-white font-semibold text-lg">{driver.name.charAt(0).toUpperCase()}</span>
                 </div>
 
@@ -167,8 +167,8 @@ export default function Drivers() {
 
                 {/* Monthly revenue */}
                 <div className="text-right shrink-0 mr-2">
-                  <p className="text-white/60 text-xs uppercase tracking-wider">Este mês</p>
-                  <p className={`text-sm font-bold mt-0.5 ${monthlyRevenue[driver.id] ? 'text-white' : 'text-white/40'}`}>
+                  <p className="text-white/30 text-xs uppercase tracking-wider">Este mês</p>
+                  <p className={`text-sm font-bold mt-0.5 ${monthlyRevenue[driver.id] ? 'text-[#F5C300]' : 'text-white/20'}`}>
                     {monthlyRevenue[driver.id] ? `CHF ${monthlyRevenue[driver.id].toFixed(2)}` : '—'}
                   </p>
                 </div>
@@ -180,19 +180,19 @@ export default function Drivers() {
                     target="_blank"
                     rel="noopener noreferrer"
                     title="Abrir portal do motorista"
-                    className="w-9 h-9 rounded-lg border border-white/20 flex items-center justify-center text-white/40 hover:text-white hover:border-white/40 transition-all"
+                    className="w-9 h-9 rounded-lg border border-white/10 flex items-center justify-center text-white/40 hover:text-[#F5C300] hover:border-[#F5C300]/30 transition-all"
                   >
                     <ExternalLink className="w-4 h-4" />
                   </a>
                   <button
                     onClick={() => handleEdit(driver)}
-                    className="w-9 h-9 rounded-lg border border-white/20 flex items-center justify-center text-white/40 hover:text-white hover:border-white/40 transition-all"
+                    className="w-9 h-9 rounded-lg border border-white/10 flex items-center justify-center text-white/40 hover:text-white hover:border-white/30 transition-all"
                   >
                     <Pencil className="w-4 h-4" />
                   </button>
                   <button
                     onClick={() => handleDelete(driver.id)}
-                    className="w-9 h-9 rounded-lg border border-white/20 flex items-center justify-center text-white/40 hover:text-red-400 hover:border-red-400/40 transition-all"
+                    className="w-9 h-9 rounded-lg border border-white/10 flex items-center justify-center text-white/40 hover:text-red-400 hover:border-red-400/30 transition-all"
                   >
                     <Trash2 className="w-4 h-4" />
                   </button>

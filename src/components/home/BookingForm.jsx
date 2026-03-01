@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useMemo } from 'react';
 import { MapPin, Clock, Plane, User, Mail, Phone, MessageSquare, Loader2, Navigation2, CheckCircle } from 'lucide-react';
 import { Input } from '@/components/ui/input';
 import { Button } from '@/components/ui/button';
@@ -15,19 +15,10 @@ import { base44 } from '@/api/base44Client';
 import { toast } from 'sonner';
 import { useLang } from '@/components/LanguageContext';
 import { translations } from '@/components/translations';
-import { createPageUrl } from '@/utils';
 
 export default function BookingForm({ bookingRef }) {
   const { lang } = useLang();
   const t = translations[lang];
-  
-  React.useEffect(() => {
-    console.log('BookingForm mounted, lang:', lang, 't:', !!t);
-  }, [lang, t]);
-  
-  if (!t) {
-    return <div className="min-h-screen bg-[#F5C300] flex items-center justify-center"><p className="text-black">Carregando traduções...</p></div>;
-  }
 
   const [step, setStep] = useState(1); // 1=booking form, 2=vehicle, 3=personal info, 4=payment, 5=confirm
   const [isSubmitting, setIsSubmitting] = useState(false);
@@ -56,13 +47,8 @@ export default function BookingForm({ bookingRef }) {
 
   useEffect(() => {
     const fetchSettings = async () => {
-      try {
-        const settings = await base44.entities.PriceSettings.list();
-        if (settings?.length > 0) setPriceSettings(settings[0]);
-      } catch (e) {
-        console.error('Error fetching price settings:', e);
-        // Don't block app - use defaults
-      }
+      const settings = await base44.entities.PriceSettings.list();
+      if (settings?.length > 0) setPriceSettings(settings[0]);
     };
     fetchSettings();
   }, []);
@@ -125,9 +111,9 @@ export default function BookingForm({ bookingRef }) {
     );
   };
 
-  // Auto-locate on mount (disabled to prevent blocking on mobile)
+  // Auto-locate on mount
   useEffect(() => {
-    // Locating is now optional - user can click the locate button if needed
+    locateUser();
   // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
@@ -671,7 +657,7 @@ export default function BookingForm({ bookingRef }) {
 
         {/* Footer */}
         <div className="mt-10 border-t border-black/20 pt-6 text-center space-y-1">
-          <a href={createPageUrl('AdminPanel')} className="text-black font-semibold text-sm tracking-wide hover:opacity-70 cursor-pointer">Rosini Transports et Locations Sàrl</a>
+          <p className="text-black font-semibold text-sm tracking-wide">Rosini Transports et Locations Sàrl</p>
           <p className="text-black/60 text-xs">La Tour-de-Peilz, Suisse</p>
           <div className="flex justify-center gap-4 mt-2">
             <a href="tel:+41772492245" className="text-black/70 text-xs hover:text-black transition-colors">

@@ -8,38 +8,6 @@ import { HelpCircle } from 'lucide-react';
 
 function HomeContent({ bookingRef }) {
   const { lang } = useLang();
-  const [error, setError] = React.useState(null);
-
-  React.useEffect(() => {
-    console.log('HomeContent mounted, lang:', lang);
-    const handleError = (event) => {
-      console.error('App error:', event.error);
-      setError(event.error?.message || 'Erro ao carregar a página');
-    };
-    const handleUnhandledRejection = (event) => {
-      console.error('Unhandled promise rejection:', event.reason);
-      setError(event.reason?.message || 'Erro: ' + String(event.reason));
-    };
-    window.addEventListener('error', handleError);
-    window.addEventListener('unhandledrejection', handleUnhandledRejection);
-    return () => {
-      window.removeEventListener('error', handleError);
-      window.removeEventListener('unhandledrejection', handleUnhandledRejection);
-    };
-  }, []);
-
-  if (error) {
-    return (
-      <div className="min-h-screen bg-[#F5C300] flex items-center justify-center p-4">
-        <div className="text-center">
-          <p className="text-black text-lg font-bold mb-2">Erro ao carregar</p>
-          <p className="text-black/60 text-sm mb-4">{error}</p>
-          <button onClick={() => window.location.reload()} className="bg-black text-white px-4 py-2 rounded-lg">Recarregar</button>
-        </div>
-      </div>
-    );
-  }
-
   return (
     <>
       <SeoHead lang={lang} />
