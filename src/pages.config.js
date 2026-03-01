@@ -47,7 +47,6 @@
  *
  * The mainPage value must match a key in the PAGES object exactly.
  */
-import Admin from './pages/Admin';
 import CancelBooking from './pages/CancelBooking';
 import DriverPortal from './pages/DriverPortal';
 import Drivers from './pages/Drivers';
@@ -60,7 +59,6 @@ import Reservas from './pages/Reservas';
 
 
 export const PAGES = {
-    "Admin": Admin,
     "CancelBooking": CancelBooking,
     "DriverPortal": DriverPortal,
     "Drivers": Drivers,
