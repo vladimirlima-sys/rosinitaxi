@@ -45,13 +45,22 @@ export default function HeroSection({ onScrollToBooking }) {
           ))}
         </div>
 
-        <button
-          onClick={onScrollToBooking}
-          className="group inline-flex items-center gap-3 bg-black hover:bg-black/80 text-[#F5C300] font-bold px-8 py-3 rounded-full transition-all duration-300 hover:shadow-lg"
-        >
-          {t.cta}
-          <ChevronDown className="w-4 h-4 group-hover:translate-y-1 transition-transform" />
-        </button>
+        <div className="flex flex-wrap justify-center gap-3">
+          <button
+            onClick={onScrollToBooking}
+            className="group inline-flex items-center gap-3 bg-black hover:bg-black/80 text-[#F5C300] font-bold px-8 py-3 rounded-full transition-all duration-300 hover:shadow-lg"
+          >
+            {t.cta}
+            <ChevronDown className="w-4 h-4 group-hover:translate-y-1 transition-transform" />
+          </button>
+          <a
+            href={createPageUrl('FAQ')}
+            className="inline-flex items-center gap-2 bg-black/10 hover:bg-black/20 text-black font-semibold px-6 py-3 rounded-full border border-black/20 transition-all duration-300"
+          >
+            <HelpCircle className="w-4 h-4" />
+            FAQ
+          </a>
+        </div>
       </div>
 
       <div className="absolute bottom-8 left-1/2 -translate-x-1/2 flex flex-col items-center gap-2 animate-bounce">
