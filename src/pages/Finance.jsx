@@ -133,15 +133,15 @@ export default function Finance() {
   }, [isAdmin]);
 
   if (isAdmin === null) {
-    return <div className="min-h-screen bg-[#0A0A0A] flex items-center justify-center text-white">Chargement...</div>;
+    return <div className="min-h-screen bg-[#F5C300] flex items-center justify-center text-black">Chargement...</div>;
   }
 
   if (!isAdmin) {
     return (
-      <div className="min-h-screen bg-[#0A0A0A] flex items-center justify-center text-white">
+      <div className="min-h-screen bg-[#F5C300] flex items-center justify-center">
         <div className="text-center">
-          <h1 className="text-2xl font-light mb-2">Accès Restreint</h1>
-          <p className="text-white/50">Seuls les administrateurs peuvent accéder à cette page.</p>
+          <h1 className="text-2xl font-light mb-2 text-black">Accès Restreint</h1>
+          <p className="text-black/60">Seuls les administrateurs peuvent accéder à cette page.</p>
         </div>
       </div>
     );
