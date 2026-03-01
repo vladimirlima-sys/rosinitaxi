@@ -171,6 +171,69 @@ export default function TaximeterDriver() {
     );
   }
 
+  if (showLogin) {
+    return (
+      <div className="min-h-screen bg-[#0A0A0A] flex flex-col items-center justify-center px-4 py-10">
+        <div className="w-full max-w-sm space-y-6">
+          <div className="text-center">
+            <h1 className="text-3xl font-extralight tracking-[0.3em] text-white uppercase">TAXIMÈTRE</h1>
+            <p className="text-white/30 text-xs tracking-widest uppercase mt-1">Rosini Transfert</p>
+          </div>
+
+          <div className="bg-[#111] border border-white/10 rounded-2xl p-6 space-y-4">
+            <p className="text-white/60 text-sm mb-2">Identificação do Motorista</p>
+            <input
+              type="text"
+              value={loginInput}
+              onChange={(e) => {
+                setLoginInput(e.target.value);
+                setLoginError('');
+              }}
+              onKeyPress={(e) => e.key === 'Enter' && handleLogin()}
+              placeholder="Nome ou número de identificação"
+              className="w-full px-4 py-3 rounded-xl bg-white/5 border border-white/10 text-white placeholder-white/30 focus:outline-none focus:border-white/30"
+              autoFocus
+            />
+            
+            {loginError && (
+              <div className="bg-red-500/10 border border-red-500/20 rounded-xl p-3">
+                <p className="text-red-400 text-sm">{loginError}</p>
+              </div>
+            )}
+
+            <button
+              onClick={handleLogin}
+              className="w-full h-12 rounded-xl bg-[#F5C300] text-black font-bold text-sm uppercase tracking-wider hover:bg-[#e6b800] transition-all"
+            >
+              Conectar
+            </button>
+          </div>
+
+          {allDrivers.length > 0 && (
+            <div className="bg-[#111] border border-white/10 rounded-2xl p-4">
+              <p className="text-white/40 text-xs uppercase tracking-wider mb-3">Motoristas disponíveis</p>
+              <div className="space-y-2 max-h-60 overflow-y-auto">
+                {allDrivers.filter(d => d.status === 'active').map(d => (
+                  <button
+                    key={d.id}
+                    onClick={() => {
+                      setDriver(d);
+                      setShowLogin(false);
+                    }}
+                    className="w-full text-left px-3 py-2 rounded-lg bg-white/5 hover:bg-white/10 text-white text-sm transition-all"
+                  >
+                    <div className="font-semibold">{d.name}</div>
+                    {d.license_number && <div className="text-white/50 text-xs">{d.license_number}</div>}
+                  </button>
+                ))}
+              </div>
+            </div>
+          )}
+        </div>
+      </div>
+    );
+  }
+
   if (!driver) {
     return (
       <div className="min-h-screen bg-[#0A0A0A] flex items-center justify-center px-4">
