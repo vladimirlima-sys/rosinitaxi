@@ -155,12 +155,13 @@ Deno.serve(async (req) => {
       return Response.json({ error: 'Booking not found' }, { status: 404 });
     }
 
-    const { client_name, client_email, client_phone, departure_point, arrival_point, language } = booking;
+    const { client_name, client_email, client_phone, departure_point, arrival_point, language, driver_name } = booking;
     const lang = language || 'fr';
     const t = translations[lang] || translations.fr;
+    const driverName = driver_name || 'Rosini';
 
     const subject = type === 'on_the_way' ? t.on_the_way_subject : t.arrived_subject;
-    const htmlBody = buildEmailBody(t, type, client_name, departure_point, arrival_point);
+    const htmlBody = buildEmailBody(t, type, client_name, departure_point, arrival_point, driverName);
 
     if (!subject) {
       return Response.json({ error: 'Invalid notification type' }, { status: 400 });
