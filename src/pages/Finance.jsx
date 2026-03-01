@@ -313,15 +313,15 @@ export default function Finance() {
         ) : (
           <>
             {/* Summary Cards */}
-            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-5 gap-4 mb-8">
-              <div className="bg-white/5 border border-white/10 rounded-lg p-5">
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mb-8">
+              <div className="bg-black border border-black/40 rounded-lg p-5">
                 <div className="flex items-center justify-between">
                   <div>
-                    <p className="text-white/50 text-xs mb-1">Total du mois</p>
+                    <p className="text-white/60 text-xs mb-1">Total du mois</p>
                     <p className="text-white text-2xl font-bold">CHF {grandTotal.toFixed(2)}</p>
                     <p className="text-white/40 text-xs mt-1">{monthBookings.length} courses</p>
                   </div>
-                  <TrendingUp className="w-7 h-7 text-[#F5C300]" />
+                  <TrendingUp className="w-7 h-7 text-white" />
                 </div>
               </div>
               <div className="bg-white/5 border border-white/10 rounded-lg p-5">
