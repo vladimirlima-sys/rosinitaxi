@@ -209,7 +209,7 @@ export default function Taximeter() {
                 onClick={resetRide}
                 className="w-full h-11 rounded-xl border border-white/10 text-white/40 text-sm uppercase tracking-wider hover:bg-white/5 transition-all"
               >
-                Resetar
+                Réinitialiser
               </button>
             )}
           </div>
