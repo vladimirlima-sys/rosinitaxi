@@ -51,15 +51,15 @@ export default function PaymentForm({ amount, onPaymentComplete, onCancel, dista
 
       <div className="w-full h-[1px] bg-white/10" />
 
-      {!clientEmail && (
-        <div className="bg-yellow-500/10 border border-yellow-500/20 rounded-xl p-3">
-          <p className="text-yellow-400 text-sm">Veuillez saisir l'email du client</p>
+      {clientEmail && (
+        <div className="bg-green-500/10 border border-green-500/20 rounded-xl p-3">
+          <p className="text-green-400 text-sm">Reçu sera envoyé à {clientEmail}</p>
         </div>
       )}
 
       <button
         onClick={handleCashPayment}
-        disabled={loading || !clientEmail}
+        disabled={loading}
         className="w-full h-14 rounded-xl bg-[#F5C300] text-black font-semibold text-sm uppercase tracking-wider hover:bg-[#e6b800] transition-all flex items-center justify-center gap-3 disabled:opacity-50 disabled:cursor-not-allowed"
       >
         {loading ? (
