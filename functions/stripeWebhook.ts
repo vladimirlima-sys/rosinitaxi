@@ -29,7 +29,14 @@ Deno.serve(async (req) => {
     const distanceKm = meta.distance_km || "";
     const amount = (session.amount_total / 100).toFixed(2);
     const isShortNotice = meta.is_short_notice === 'true';
+    const clientPhone = meta.client_phone || '';
     const year = new Date().getFullYear();
+
+    // Build WhatsApp click-to-chat link if phone number is available
+    const cleanPhone = clientPhone.replace(/\D/g, '');
+    const whatsappLink = cleanPhone
+      ? `https://wa.me/${cleanPhone}`
+      : null;
 
     const clientHtml = `<!DOCTYPE html><html><head><meta charset="UTF-8"></head>
 <body style="margin:0;padding:0;background:#0A0A0A;font-family:Arial,sans-serif;">
