@@ -20,7 +20,7 @@ function playAlert() {
 }
 
 function sendBrowserNotif(title, body) {
-  if (Notification.permission === 'granted') {
+  if (typeof Notification !== 'undefined' && Notification.permission === 'granted') {
     const n = new Notification(title, { body, icon: '/favicon.ico' });
     n.onclick = () => {window.focus();window.location.href = '/reservas';};
   }
