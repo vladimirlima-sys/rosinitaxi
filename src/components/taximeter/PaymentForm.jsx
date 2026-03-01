@@ -40,9 +40,19 @@ export default function PaymentForm({ amount, onPaymentComplete, onCancel }) {
     }
   };
 
-  const handleCashPayment = () => {
-    setPaymentMethod('cash');
-    onPaymentComplete('cash');
+  const handleCashPayment = async () => {
+    try {
+      setLoading(true);
+      setError('');
+      await base44.functions.invoke('registerTaximeterPayment', {
+        amount: amount,
+        paymentMethod: 'cash'
+      });
+      onPaymentComplete('cash');
+    } catch (err) {
+      setError('Erreur lors de l\'enregistrement: ' + err.message);
+      setLoading(false);
+    }
   };
 
   const handleTwintPayment = async () => {
