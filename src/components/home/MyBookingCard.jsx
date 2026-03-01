@@ -143,8 +143,13 @@ export default function MyBookingCard() {
     setSuccessMsg('');
     setMode(null);
     setSelectedBooking(null);
-    const results = await base44.entities.Booking.filter({ client_email: email.trim().toLowerCase() }, '-departure_date', 10);
-    const active = results.filter(b => b.payment_status !== 'cancelled');
+    const results = await base44.entities.Booking.filter({ client_email: email.trim() }, '-departure_date', 10);
+    // Also try lowercase match in case stored differently
+    const lowerResults = email.trim() !== email.trim().toLowerCase()
+      ? await base44.entities.Booking.filter({ client_email: email.trim().toLowerCase() }, '-departure_date', 10)
+      : [];
+    const combined = [...results, ...lowerResults.filter(r => !results.find(x => x.id === r.id))];
+    const active = combined.filter(b => b.payment_status !== 'cancelled' && b.payment_status !== 'refunded');
     setLoading(false);
     if (!active.length) { setNotFound(true); return; }
     setBookings(active);
