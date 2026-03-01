@@ -27,7 +27,9 @@ function sendBrowserNotif(title, body) {
 }
 
 export default function AdminPushNotifications({ isAdmin }) {
-  const [permStatus, setPermStatus] = useState(Notification.permission);
+  const [permStatus, setPermStatus] = useState(
+    typeof Notification !== 'undefined' ? Notification.permission : 'denied'
+  );
   const knownIds = useRef(null);
   const knownStatuses = useRef({});
 
