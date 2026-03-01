@@ -270,13 +270,16 @@ export default function Finance() {
   };
 
   return (
-    <div className="min-h-screen bg-[#0A0A0A] py-12 px-6">
-      <div className="max-w-6xl mx-auto">
-        <div className="flex flex-wrap items-start justify-between gap-4 mb-2">
-          <div>
-            <h1 className="text-4xl font-light text-white">Rapport Financier</h1>
-            <p className="text-white/50 mt-1">Suivez les revenus et dépenses par mois</p>
-          </div>
+    <div className="min-h-screen bg-[#F5C300] py-12 px-4">
+      <div className="max-w-2xl mx-auto">
+        <div className="text-center mb-8">
+          <h1 className="text-black text-6xl font-extralight tracking-[0.3em] uppercase">ROSINI</h1>
+          <p className="text-black/60 text-sm tracking-[0.2em] uppercase mt-2">RAPPORT FINANCIER</p>
+          <div className="w-8 h-[1px] bg-black/40 mx-auto mt-3" />
+        </div>
+
+        <div className="flex flex-wrap items-start justify-between gap-4 mb-8">
+          <div className="w-full">
           <button
             onClick={downloadPDF}
             className="flex items-center gap-2 bg-[#F5C300] text-black font-bold px-5 py-2.5 rounded-lg hover:bg-[#e6b800] transition-all text-sm"
