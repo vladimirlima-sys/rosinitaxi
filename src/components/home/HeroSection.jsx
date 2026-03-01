@@ -1,5 +1,6 @@
 import React from 'react';
-import { ChevronDown, Clock, Shield, MapPin } from 'lucide-react';
+import { ChevronDown, Clock, Shield, MapPin, HelpCircle } from 'lucide-react';
+import { createPageUrl } from '@/utils';
 import { useLang } from '@/components/LanguageContext';
 import { translations } from '@/components/translations';
 
