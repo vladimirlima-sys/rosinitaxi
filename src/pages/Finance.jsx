@@ -253,7 +253,7 @@ export default function Finance() {
     y += 4;
     monthBookings.forEach(b => {
       if (y > 270) { doc.addPage(); y = 20; }
-      doc.text(new Date(b.created_date).toLocaleDateString('fr-FR'), 20, y);
+      doc.text(new Date(b.departure_date || b.created_date).toLocaleDateString('fr-FR'), 20, y);
       doc.text((b.client_name || '').substring(0, 20), 45, y);
       doc.text(((b.departure_point || '').split(',')[0] + ' → ' + (b.arrival_point || '').split(',')[0]).substring(0, 40), 90, y);
       doc.text(b.payment_method === 'stripe' ? 'Stripe' : b.payment_method === 'twint' ? 'TWINT' : 'Espèces', 155, y);
