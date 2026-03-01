@@ -124,23 +124,50 @@ export default function Finance() {
           </button>
         </div>
 
-        {/* Month Selector */}
-        <div className="mb-8">
-          <label className="text-black/60 text-sm mb-2 block">Sélectionner le mois</label>
-          <select
-            value={selectedMonth}
-            onChange={(e) => setSelectedMonth(e.target.value)}
-            className="bg-black border border-black/40 text-white px-4 py-2 rounded-lg outline-none w-full"
-          >
-            {availableMonths.map(month => (
-              <option key={month} value={month} className="bg-black text-white">
-                {new Date(`${month}-01`).toLocaleDateString('fr-FR', { month: 'long', year: 'numeric' })}
-              </option>
-            ))}
-            {!availableMonths.includes(selectedMonth) && (
-              <option value={selectedMonth} className="bg-[#222] text-white">{monthLabel}</option>
-            )}
-          </select>
+        {/* Filters */}
+        <div className="space-y-3 mb-8">
+          <div>
+            <label className="text-black/60 text-sm mb-2 block">Sélectionner le mois</label>
+            <select
+              value={selectedMonth}
+              onChange={(e) => setSelectedMonth(e.target.value)}
+              className="bg-black border border-black/40 text-white px-4 py-2 rounded-lg outline-none w-full"
+            >
+              {availableMonths.map(month => (
+                <option key={month} value={month} className="bg-black text-white">
+                  {new Date(`${month}-01`).toLocaleDateString('fr-FR', { month: 'long', year: 'numeric' })}
+                </option>
+              ))}
+              {!availableMonths.includes(selectedMonth) && (
+                <option value={selectedMonth} className="bg-[#222] text-white">{monthLabel}</option>
+              )}
+            </select>
+          </div>
+
+          <div>
+            <label className="text-black/60 text-sm mb-2 block">Filtrer par motorista</label>
+            <select
+              value={filterDriver}
+              onChange={(e) => setFilterDriver(e.target.value)}
+              className="bg-black border border-black/40 text-white px-4 py-2 rounded-lg outline-none w-full"
+            >
+              <option value="all" className="bg-black text-white">Todos os motoristas</option>
+              {bookings
+                .filter(b => b.driver_id && b.driver_id !== 'null')
+                .reduce((acc, b) => {
+                  if (!acc.find(d => d.id === b.driver_id)) {
+                    acc.push({ id: b.driver_id, name: b.driver_name });
+                  }
+                  return acc;
+                }, [])
+                .sort((a, b) => a.name.localeCompare(b.name))
+                .map(driver => (
+                  <option key={driver.id} value={driver.id} className="bg-black text-white">
+                    {driver.name}
+                  </option>
+                ))}
+            </select>
+          </div>
         </div>
 
         {loading ? (
