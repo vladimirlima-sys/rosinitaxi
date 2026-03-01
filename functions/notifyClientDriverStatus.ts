@@ -172,13 +172,28 @@ Deno.serve(async (req) => {
       return Response.json({ error: 'Booking not found' }, { status: 404 });
     }
 
-    const { client_name, client_email, client_phone, departure_point, arrival_point, language, driver_name } = booking;
+    const { client_name, client_email, client_phone, departure_point, arrival_point, language, driver_name, driver_id } = booking;
     const lang = language || 'fr';
     const t = translations[lang] || translations.fr;
     const driverName = driver_name || 'Rosini';
 
+    // Fetch driver phone for WhatsApp contact link
+    let driverPhone = null;
+    if (driver_id) {
+      try {
+        const drivers = await base44.asServiceRole.entities.Driver.list();
+        const driver = drivers.find(d => d.id === driver_id);
+        if (driver) driverPhone = driver.phone;
+      } catch (e) {
+        console.warn('Could not fetch driver phone:', e.message);
+      }
+    }
+
+    const driverWaNumber = driverPhone ? driverPhone.replace(/\s/g, '').replace(/^00/, '+').replace(/^\+/, '') : null;
+    const driverWaLink = driverWaNumber ? `https://wa.me/${driverWaNumber}` : null;
+
     const subject = type === 'on_the_way' ? t.on_the_way_subject : t.arrived_subject;
-    const htmlBody = buildEmailBody(t, type, client_name, departure_point, arrival_point, driverName);
+    const htmlBody = buildEmailBody(t, type, client_name, departure_point, arrival_point, driverName, driverPhone);
 
     if (!subject) {
       return Response.json({ error: 'Invalid notification type' }, { status: 400 });
