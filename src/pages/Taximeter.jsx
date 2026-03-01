@@ -44,6 +44,25 @@ export default function Taximeter() {
     return R * 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
   };
 
+  const toggleWaiting = () => {
+    setWaitingEnabled(!waitingEnabled);
+  };
+
+  useEffect(() => {
+    if (waitingEnabled && running) {
+      waitingIntervalRef.current = setInterval(() => {
+        setWaitingSeconds(prev => prev + 1);
+        setWaitingPrice(((waitingSeconds + 1) / 60) * 0.30);
+        setTotalPrice(prev => parseFloat((prev + 0.30 / 60).toFixed(2)));
+      }, 1000);
+    } else {
+      if (waitingIntervalRef.current) clearInterval(waitingIntervalRef.current);
+    }
+    return () => {
+      if (waitingIntervalRef.current) clearInterval(waitingIntervalRef.current);
+    };
+  }, [waitingEnabled, running, waitingSeconds]);
+
   const startRide = () => {
     if (!navigator.geolocation) {
       setGpsError('GPS non disponible sur cet appareil.');
