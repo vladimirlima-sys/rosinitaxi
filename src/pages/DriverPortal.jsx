@@ -352,6 +352,7 @@ export default function DriverPortal() {
           <div>
             <h1 className="text-2xl font-light text-white">Olá, {driver.name.split(' ')[0]} 👋</h1>
             <p className="text-white/40 text-sm mt-0.5">{upcoming.length} corrida{upcoming.length !== 1 ? 's' : ''} a vir</p>
+            <p className="text-[#F5C300] text-sm font-semibold mt-2">CHF {monthlyEarnings.toFixed(2)} este mês</p>
           </div>
           <div className="flex gap-2">
             <button
