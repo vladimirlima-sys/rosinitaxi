@@ -10,42 +10,6 @@ export default function PaymentForm({ amount, onPaymentComplete, onCancel, dista
   const [error, setError] = useState('');
   const [clientEmail, setClientEmail] = useState('');
 
-  const handleCardPayment = async () => {
-    if (window.self !== window.top) {
-      setError('Le paiement par carte fonctionne uniquement depuis l\'app publiée');
-      return;
-    }
-    
-    try {
-      setLoading(true);
-      setError('');
-      
-      // Register payment
-      await base44.functions.invoke('registerTaximeterPayment', {
-        amount: amount,
-        paymentMethod: 'card',
-        clientEmail,
-        distance,
-        departure,
-        arrival,
-        driverId
-      });
-      
-      // Redirect to Stripe
-      const response = await base44.functions.invoke('createCheckout', {
-        amount: Math.round(amount * 100),
-        currency: 'chf',
-        paymentMethod: 'card'
-      });
-      if (response.data?.url) {
-        window.location.href = response.data.url;
-      }
-    } catch (err) {
-      setError('Erreur lors du paiement: ' + err.message);
-      setLoading(false);
-    }
-  };
-
   const handleCashPayment = async () => {
     try {
       setLoading(true);
@@ -62,39 +26,6 @@ export default function PaymentForm({ amount, onPaymentComplete, onCancel, dista
       onPaymentComplete('cash');
     } catch (err) {
       setError('Erreur lors de l\'enregistrement: ' + err.message);
-      setLoading(false);
-    }
-  };
-
-  const handleTwintPayment = async () => {
-    try {
-      setLoading(true);
-      setError('');
-      
-      // Register payment
-      await base44.functions.invoke('registerTaximeterPayment', {
-        amount: amount,
-        paymentMethod: 'twint',
-        clientEmail,
-        distance,
-        departure,
-        arrival,
-        driverId
-      });
-      
-      // Redirect to payment (or just complete if TWINT doesn't need redirect)
-      const response = await base44.functions.invoke('createCheckout', {
-        amount: Math.round(amount * 100),
-        currency: 'chf',
-        paymentMethod: 'twint'
-      });
-      if (response.data?.url) {
-        window.location.href = response.data.url;
-      } else {
-        onPaymentComplete('twint');
-      }
-    } catch (err) {
-      setError('Erreur lors do paiement: ' + err.message);
       setLoading(false);
     }
   };
