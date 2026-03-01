@@ -189,7 +189,9 @@ export default function Finance() {
   })).filter(d => d.value > 0);
 
   const availableMonths = Array.from(new Set(
-    bookings.filter(b => b.created_date).map(b => b.created_date.substring(0, 7))
+    bookings
+      .filter(b => b.departure_date || b.created_date)
+      .map(b => (b.departure_date || b.created_date).substring(0, 7))
   )).sort().reverse();
 
   const monthLabel = new Date(`${selectedMonth}-01`).toLocaleDateString('fr-FR', { month: 'long', year: 'numeric' });
