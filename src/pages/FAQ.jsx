@@ -265,7 +265,7 @@ function FAQContent() {
       </div>
 
       {/* Sections */}
-      <div className="w-full max-w-md mx-auto px-4 pb-12 space-y-6">
+      <div className="w-full max-w-2xl mx-auto px-4 pb-12 space-y-6">
         {data.sections.map((section, si) => (
           <div key={si}>
             <h3 className="text-black font-semibold text-xs uppercase tracking-widest mb-3 pl-1">{section.title}</h3>
