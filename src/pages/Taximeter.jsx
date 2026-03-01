@@ -118,7 +118,7 @@ export default function Taximeter() {
 
         {/* Vehicle selector */}
         <div className="bg-[#111] border border-white/10 rounded-2xl p-4">
-          <p className="text-white/40 text-xs uppercase tracking-wider mb-3">Tipo de Veículo</p>
+          <p className="text-white/40 text-xs uppercase tracking-wider mb-3">Type de véhicule</p>
           <div className="grid grid-cols-2 gap-2">
             {['economic', 'comfort'].map(type => (
               <button
