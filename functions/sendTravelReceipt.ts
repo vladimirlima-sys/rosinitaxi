@@ -46,7 +46,7 @@ Deno.serve(async (req) => {
 <body>
   <div class="container">
     <div class="header">
-      <h1>ROSINI TRANSPORTS DE PERSONNES</h1>
+      <h1 style="color: #000;">ROSINI TRANSPORTS</h1>
       <p>Reçu de Course</p>
     </div>
     
