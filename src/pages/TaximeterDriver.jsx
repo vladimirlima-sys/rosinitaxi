@@ -82,8 +82,8 @@ export default function TaximeterDriver() {
     if (isRunning) {
       setIsRunning(false);
     } else {
-      if (!clientEmail || !clientName) {
-        toast.error('Adicione email e nome do cliente');
+      if (!clientEmail) {
+        toast.error('Adicione email do cliente');
         return;
       }
       setIsRunning(true);
