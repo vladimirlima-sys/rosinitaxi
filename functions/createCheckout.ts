@@ -44,6 +44,7 @@ Deno.serve(async (req) => {
         departure_time,
         is_short_notice: is_short_notice ? 'true' : 'false',
         booking_id: booking_id || '',
+        client_phone: client_phone || '',
       },
     });
 
