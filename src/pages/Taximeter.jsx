@@ -212,6 +212,7 @@ export default function Taximeter() {
         {showPayment && status === 'completed' && (
           <PaymentForm 
             amount={totalPrice}
+            distance={distanceKm}
             onPaymentComplete={handlePaymentComplete}
             onCancel={handlePaymentCancel}
           />
