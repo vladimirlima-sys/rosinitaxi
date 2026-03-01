@@ -4,7 +4,7 @@ import { CreditCard, Banknote, Smartphone, Loader2, ArrowLeft } from 'lucide-rea
 
 const STRIPE_PUBLISHABLE_KEY = import.meta.env.VITE_STRIPE_PUBLISHABLE_KEY;
 
-export default function PaymentForm({ amount, onPaymentComplete, onCancel, distance, departure, arrival }) {
+export default function PaymentForm({ amount, onPaymentComplete, onCancel, distance, departure, arrival, driverId }) {
   const [paymentMethod, setPaymentMethod] = useState(null);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState('');
