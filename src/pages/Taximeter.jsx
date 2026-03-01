@@ -179,7 +179,7 @@ export default function Taximeter() {
             </div>
           )}
           {status === 'stopped' && (
-            <p className="text-white/40 text-xs uppercase tracking-wider">Corrida finalizada</p>
+            <p className="text-white/40 text-xs uppercase tracking-wider">Course terminée</p>
           )}
         </div>
 
