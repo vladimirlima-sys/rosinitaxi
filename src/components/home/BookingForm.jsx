@@ -48,8 +48,13 @@ export default function BookingForm({ bookingRef }) {
 
   useEffect(() => {
     const fetchSettings = async () => {
-      const settings = await base44.entities.PriceSettings.list();
-      if (settings?.length > 0) setPriceSettings(settings[0]);
+      try {
+        const settings = await base44.entities.PriceSettings.list();
+        if (settings?.length > 0) setPriceSettings(settings[0]);
+      } catch (e) {
+        console.error('Error fetching price settings:', e);
+        // Don't block app - use defaults
+      }
     };
     fetchSettings();
   }, []);
