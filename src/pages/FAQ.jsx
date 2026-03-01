@@ -159,7 +159,7 @@ const faqData = {
         title: 'Stornierungen',
         items: [
           { q: 'Kann ich meine Buchung stornieren?', a: 'Ja, Sie können Ihre Buchung über den Stornierungslink in Ihrer Bestätigungs-E-Mail stornieren. Die Stornierung aktualisiert den Status Ihrer Buchung.' },
-          { q: 'Gibt es Stornogebühren?', a: 'Bei rechtzeitigen Stornierungen werden keine Gebühren erhoben. Für Kartenzahlungen über Stripe wenden Sie sich direkt an info@rosini.online für Erstattungsanfragen.' },
+          { q: 'Gibt es Stornogebühren?', a: 'Stornierungen, die mindestens 24 Stunden vor Abfahrt vorgenommen werden, werden zu 100 % erstattet. Stornierungen weniger als 24 Stunden vor Abfahrt werden nicht erstattet.' },
           { q: 'Wie storniere ich meine Buchung?', a: 'Der Stornierungslink befindet sich in Ihrer Bestätigungs-E-Mail. Klicken Sie darauf, bestätigen Sie die Stornierung auf der dedizierten Seite, und wir werden sofort benachrichtigt.' },
         ],
       },
