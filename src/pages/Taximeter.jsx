@@ -41,7 +41,41 @@ export default function Taximeter() {
   const startRide = () => {
     if (!navigator.geolocation) {
       setGpsError('GPS non disponible sur cet appareil.');
-...
+      return;
+    }
+    setGpsError('');
+    distanceRef.current = 0;
+    setDistanceKm(0);
+    lastPositionRef.current = null;
+    setRunning(true);
+    setStatus('running');
+
+    // Start with base fare immediately
+    const baseFare = priceSettings?.base_fare ?? 10;
+    setTotalPrice(parseFloat(baseFare.toFixed(2)));
+
+    watchIdRef.current = navigator.geolocation.watchPosition(
+      (pos) => {
+        const { latitude, longitude, accuracy: acc } = pos.coords;
+        setAccuracy(Math.round(acc));
+
+        if (lastPositionRef.current) {
+          const delta = haversineKm(
+            lastPositionRef.current.lat,
+            lastPositionRef.current.lon,
+            latitude,
+            longitude
+          );
+          if (delta > 0 && delta < 0.5 && acc < 50) {
+            distanceRef.current += delta;
+            const km = distanceRef.current;
+            const price = baseFare + km * getPricePerKm(priceSettings, vehicleType);
+            setDistanceKm(parseFloat(km.toFixed(3)));
+            setTotalPrice(parseFloat(price.toFixed(2)));
+          }
+        }
+        lastPositionRef.current = { lat: latitude, lon: longitude };
+      },
       (err) => {
         setGpsError('Erreur GPS : ' + err.message);
       },
