@@ -294,6 +294,13 @@ export default function DriverPortal() {
     return dep < new Date();
   });
 
+  // Calculate current month earnings
+  const now = new Date();
+  const currentMonth = `${now.getFullYear()}-${String(now.getMonth() + 1).padStart(2, '0')}`;
+  const monthlyEarnings = bookings
+    .filter(b => b.payment_status === 'paid' && b.departure_date?.startsWith(currentMonth))
+    .reduce((sum, b) => sum + (b.total_price || 0), 0);
+
   // LOGIN SCREEN
   if (!driver) {
     return (
