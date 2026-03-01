@@ -40,46 +40,10 @@ export default function Taximeter() {
 
   const startRide = () => {
     if (!navigator.geolocation) {
-      setGpsError('GPS não disponível neste dispositivo.');
-      return;
-    }
-    setGpsError('');
-    distanceRef.current = 0;
-    setDistanceKm(0);
-    setTotalPrice(0);
-    lastPositionRef.current = null;
-    setRunning(true);
-    setStatus('running');
-
-    // Start with base fare of 10 CHF immediately
-    const baseFare = priceSettings?.base_fare ?? 10;
-    setTotalPrice(parseFloat(baseFare.toFixed(2)));
-
-    watchIdRef.current = navigator.geolocation.watchPosition(
-      (pos) => {
-        const { latitude, longitude, accuracy: acc } = pos.coords;
-        setAccuracy(Math.round(acc));
-
-        if (lastPositionRef.current) {
-          const delta = haversineKm(
-            lastPositionRef.current.lat,
-            lastPositionRef.current.lon,
-            latitude,
-            longitude
-          );
-          // Filter noise: ignore jumps > 0.5 km in one update or < 2m accuracy threshold
-          if (delta > 0 && delta < 0.5 && acc < 50) {
-            distanceRef.current += delta;
-            const km = distanceRef.current;
-            const price = baseFare + km * getPricePerKm(priceSettings, vehicleType);
-            setDistanceKm(parseFloat(km.toFixed(3)));
-            setTotalPrice(parseFloat(price.toFixed(2)));
-          }
-        }
-        lastPositionRef.current = { lat: latitude, lon: longitude };
-      },
+      setGpsError('GPS non disponible sur cet appareil.');
+...
       (err) => {
-        setGpsError('Erro de GPS: ' + err.message);
+        setGpsError('Erreur GPS : ' + err.message);
       },
       { enableHighAccuracy: true, maximumAge: 1000, timeout: 10000 }
     );
