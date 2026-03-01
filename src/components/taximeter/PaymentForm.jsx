@@ -64,7 +64,7 @@ export default function PaymentForm({ amount, onPaymentComplete, onCancel, dista
         {loading ? (
           <><Loader2 className="w-5 h-5 animate-spin" /> Traitement...</>
         ) : (
-          <><Banknote className="w-5 h-5" /> Confirmer le paiement en espèces</>
+          <>Confirmer le paiement</>
         )}
       </button>
 
