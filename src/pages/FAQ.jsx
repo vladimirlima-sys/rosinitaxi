@@ -116,7 +116,7 @@ const faqData = {
         title: 'Cancelamentos',
         items: [
           { q: 'Posso cancelar a minha reserva?', a: 'Sim, pode cancelar a sua reserva utilizando o link de cancelamento fornecido no e-mail de confirmação. O cancelamento atualiza o estado da sua reserva.' },
-          { q: 'Existem taxas de cancelamento?', a: 'Para cancelamentos feitos com antecedência suficiente, não são aplicadas taxas. Para pagamentos por cartão via Stripe, contacte-nos diretamente em info@rosini.online para qualquer pedido de reembolso.' },
+          { q: 'Existem taxas de cancelamento?', a: 'Cancelamentos feitos com pelo menos 24 horas de antecedência são reembolsados a 100%. Cancelamentos feitos com menos de 24 horas de antecedência não têm direito a reembolso.' },
           { q: 'Como cancelar a minha reserva?', a: 'O link de cancelamento está no seu e-mail de confirmação. Clique nele, confirme o cancelamento na página dedicada e seremos notificados imediatamente.' },
         ],
       },
