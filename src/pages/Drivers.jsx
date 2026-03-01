@@ -113,16 +113,16 @@ export default function Drivers() {
 
         {/* List */}
         {loading ? (
-          <div className="text-white/30 text-center py-20">Carregando...</div>
+          <div className="text-black/30 text-center py-20">Carregando...</div>
         ) : drivers.length === 0 ? (
           <div className="text-center py-20">
-            <User className="w-10 h-10 text-white/20 mx-auto mb-3" />
-            <p className="text-white/30">Nenhum motorista cadastrado ainda.</p>
+            <User className="w-10 h-10 text-black/20 mx-auto mb-3" />
+            <p className="text-black/30">Nenhum motorista cadastrado ainda.</p>
           </div>
         ) : (
           <div className="grid gap-3">
             {drivers.map(driver => (
-              <div key={driver.id} className="bg-[#111] border border-white/10 rounded-2xl p-5 flex items-center gap-4">
+              <div key={driver.id} className="bg-black border border-black/40 rounded-xl p-4 flex items-center gap-4">
                 {/* Avatar */}
                 <div className="w-12 h-12 rounded-full bg-white/10 flex items-center justify-center shrink-0">
                   <span className="text-white font-semibold text-lg">{driver.name.charAt(0).toUpperCase()}</span>
