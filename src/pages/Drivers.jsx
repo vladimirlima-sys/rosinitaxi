@@ -94,21 +94,21 @@ export default function Drivers() {
   const inactive = drivers.filter(d => d.status === 'inactive').length;
 
   return (
-    <div className="min-h-screen bg-[#0A0A0A] py-12 px-6">
-      <div className="max-w-5xl mx-auto">
+    <div className="min-h-screen bg-[#F5C300] py-12 px-4">
+      <div className="max-w-2xl mx-auto">
         {/* Header */}
-        <div className="flex items-start justify-between mb-8">
-          <div>
-            <h1 className="text-4xl font-light text-white mb-1">Motoristas</h1>
-            <p className="text-white/40 text-sm">{active} ativos · {inactive} inativos</p>
-          </div>
+        <div className="text-center mb-12">
+          <h1 className="text-black text-6xl font-extralight tracking-[0.3em] uppercase">ROSINI</h1>
+          <p className="text-black/60 text-sm tracking-[0.2em] uppercase mt-2">MOTORISTAS</p>
+          <div className="w-8 h-[1px] bg-black/40 mx-auto mt-3 mb-8" />
           <button
             onClick={() => { setEditingDriver(null); setShowForm(true); }}
-            className="flex items-center gap-2 bg-[#F5C300] text-black px-4 py-2.5 rounded-xl font-semibold text-sm hover:bg-[#e6b800] transition-all"
+            className="flex items-center gap-2 bg-black text-white px-4 py-2.5 rounded-lg font-semibold text-sm hover:bg-black/80 transition-all mx-auto mb-4"
           >
             <Plus className="w-4 h-4" />
             Novo Motorista
           </button>
+          <p className="text-black/60 text-sm">{active} ativos · {inactive} inativos</p>
         </div>
 
         {/* List */}
