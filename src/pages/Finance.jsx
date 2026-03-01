@@ -324,37 +324,7 @@ export default function Finance() {
                   <TrendingUp className="w-7 h-7 text-white" />
                 </div>
               </div>
-              <div className="bg-white/5 border border-white/10 rounded-lg p-5">
-                <div className="flex items-center justify-between">
-                  <div>
-                    <p className="text-white/50 text-xs mb-1">Stripe</p>
-                    <p className="text-white text-2xl font-bold">CHF {paymentMethods.stripe.total.toFixed(2)}</p>
-                    <p className="text-white/40 text-xs mt-1">{paymentMethods.stripe.count} transactions</p>
-                  </div>
-                  <CreditCard className="w-7 h-7 text-blue-400" />
-                </div>
-              </div>
-              <div className="bg-white/5 border border-white/10 rounded-lg p-5">
-                <div className="flex items-center justify-between">
-                  <div>
-                    <p className="text-white/50 text-xs mb-1">TWINT</p>
-                    <p className="text-white text-2xl font-bold">CHF {paymentMethods.twint.total.toFixed(2)}</p>
-                    <p className="text-white/40 text-xs mt-1">{paymentMethods.twint.count} transactions</p>
-                  </div>
-                  <DollarSign className="w-7 h-7 text-red-400" />
-                </div>
-              </div>
-              <div className="bg-white/5 border border-white/10 rounded-lg p-5">
-                <div className="flex items-center justify-between">
-                  <div>
-                    <p className="text-white/50 text-xs mb-1">Espèces</p>
-                    <p className="text-white text-2xl font-bold">CHF {paymentMethods.cash.total.toFixed(2)}</p>
-                    <p className="text-white/40 text-xs mt-1">{paymentMethods.cash.count} transactions</p>
-                  </div>
-                  <Banknote className="w-7 h-7 text-green-400" />
-                </div>
-              </div>
-              <div className={`border rounded-lg p-5 ${netResult >= 0 ? 'bg-green-500/10 border-green-500/30' : 'bg-red-500/10 border-red-500/30'}`}>
+
                 <div className="flex items-center justify-between">
                   <div>
                     <p className="text-white/50 text-xs mb-1">Résultat net</p>
