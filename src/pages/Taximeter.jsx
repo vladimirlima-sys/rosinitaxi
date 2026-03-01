@@ -239,6 +239,7 @@ export default function Taximeter() {
             <div className="w-full h-[1px] bg-white/10 my-1" />
             <div className="flex justify-between text-sm font-bold">
               <span className="text-white">Total</span>
+
               <span className="text-[#F5C300]">CHF {totalPrice.toFixed(2)}</span>
             </div>
           </div>
