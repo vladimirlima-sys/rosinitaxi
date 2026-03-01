@@ -195,7 +195,7 @@ export default function TaximeterDriver() {
           <div className="border-t border-slate-700 pt-4 space-y-2 text-sm text-slate-300">
             <div className="flex justify-between">
               <span>Prise en charge:</span>
-              <span>CHF {PriceSettings.base_fare.toFixed(2)}</span>
+              <span>CHF {baseFare.toFixed(2)}</span>
             </div>
             <div className="flex justify-between">
               <span>Distance ({distance.toFixed(2)} km × CHF {pricePerKm}):</span>
