@@ -113,6 +113,15 @@ export default function BookingsTable() {
     setSelectedIds((prev) => prev.includes(id) ? prev.filter((x) => x !== id) : [...prev, id]);
   };
 
+  const markAsSeen = (id) => {
+    setSeenIds(prev => {
+      const next = new Set(prev);
+      next.add(id);
+      localStorage.setItem('seen_booking_ids', JSON.stringify([...next]));
+      return next;
+    });
+  };
+
   const handleAssignDriver = async (bookingId, driver) => {
     const update = driver
       ? { driver_id: driver.id, driver_name: driver.name }
