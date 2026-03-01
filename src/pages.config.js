@@ -56,6 +56,7 @@ import Finance from './pages/Finance';
 import Home from './pages/Home';
 import Settings from './pages/Settings';
 import Taximeter from './pages/Taximeter';
+import Reservas from './pages/Reservas';
 
 
 export const PAGES = {
@@ -68,6 +69,7 @@ export const PAGES = {
     "Home": Home,
     "Settings": Settings,
     "Taximeter": Taximeter,
+    "Reservas": Reservas,
 }
 
 export const pagesConfig = {
