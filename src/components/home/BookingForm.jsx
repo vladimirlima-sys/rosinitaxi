@@ -15,6 +15,7 @@ import { base44 } from '@/api/base44Client';
 import { toast } from 'sonner';
 import { useLang } from '@/components/LanguageContext';
 import { translations } from '@/components/translations';
+import { createPageUrl } from '@/utils';
 
 export default function BookingForm({ bookingRef }) {
   const { lang } = useLang();
