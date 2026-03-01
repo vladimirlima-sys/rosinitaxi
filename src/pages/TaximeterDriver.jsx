@@ -10,7 +10,6 @@ export default function TaximeterDriver() {
   const [distance, setDistance] = useState(0);
   const [vehicleType, setVehicleType] = useState('economic');
   const [clientEmail, setClientEmail] = useState('');
-  const [clientName, setClientName] = useState('');
   const [paying, setPaying] = useState(false);
   const timerRef = useRef(null);
   const watchIdRef = useRef(null);
