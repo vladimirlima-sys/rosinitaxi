@@ -208,8 +208,17 @@ export default function Taximeter() {
           </div>
         )}
 
+        {/* Payment Form */}
+        {showPayment && status === 'completed' && (
+          <PaymentForm 
+            amount={totalPrice}
+            onPaymentComplete={handlePaymentComplete}
+            onCancel={handlePaymentCancel}
+          />
+        )}
+
         {/* Controls */}
-        {!running ? (
+        {!running && !showPayment ? (
           <div className="space-y-2">
             <button
               onClick={startRide}
@@ -231,14 +240,14 @@ export default function Taximeter() {
               </button>
             )}
           </div>
-        ) : (
+        ) : running && !showPayment ? (
           <button
             onClick={stopRide}
             className="w-full h-14 rounded-2xl bg-red-500/10 border border-red-500/30 text-red-400 font-bold text-base uppercase tracking-wider hover:bg-red-500/20 transition-all flex items-center justify-center gap-2"
           >
             <Square className="w-5 h-5" /> Arrêter la course
           </button>
-        )}
+        ) : null}
 
         {/* Breakdown */}
         {distanceKm > 0 && priceSettings && (
