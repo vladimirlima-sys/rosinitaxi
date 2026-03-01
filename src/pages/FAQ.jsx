@@ -202,7 +202,7 @@ const faqData = {
         title: 'Cancellazioni',
         items: [
           { q: 'Posso cancellare la mia prenotazione?', a: 'Sì, potete cancellare la vostra prenotazione utilizzando il link di cancellazione fornito nell\'email di conferma. La cancellazione aggiorna lo stato della vostra prenotazione.' },
-          { q: 'Ci sono commissioni di cancellazione?', a: 'Per le cancellazioni effettuate con sufficiente anticipo, non vengono applicate commissioni. Per i pagamenti con carta tramite Stripe, contattateci direttamente a info@rosini.online per qualsiasi richiesta di rimborso.' },
+          { q: 'Ci sono commissioni di cancellazione?', a: 'Le cancellazioni effettuate almeno 24 ore prima della partenza sono rimborsate al 100%. Le cancellazioni effettuate meno di 24 ore prima della partenza non danno diritto a rimborso.' },
           { q: 'Come cancello la mia prenotazione?', a: 'Il link di cancellazione si trova nell\'email di conferma. Cliccateci sopra, confermate la cancellazione sulla pagina dedicata e saremo notificati immediatamente.' },
         ],
       },
