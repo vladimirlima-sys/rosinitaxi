@@ -11,17 +11,13 @@ export default function PaymentForm({ amount, onPaymentComplete, onCancel, dista
   const [clientEmail, setClientEmail] = useState('');
 
   const handleCashPayment = async () => {
-    if (!clientEmail) {
-      setError('Veuillez entrer l\'email du client');
-      return;
-    }
     try {
       setLoading(true);
       setError('');
       await base44.functions.invoke('registerTaximeterPayment', {
         amount: amount,
         paymentMethod: 'cash',
-        clientEmail,
+        clientEmail: clientEmail || undefined,
         distance,
         departure,
         arrival,
