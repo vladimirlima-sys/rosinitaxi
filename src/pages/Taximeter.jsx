@@ -51,12 +51,7 @@ export default function Taximeter() {
   useEffect(() => {
     if (waitingEnabled && running) {
       waitingIntervalRef.current = setInterval(() => {
-        setWaitingSeconds(prev => {
-          const newSeconds = prev + 1;
-          setWaitingPrice((newSeconds / 60) * 0.30);
-          setTotalPrice(curr => parseFloat((curr + 0.30 / 60).toFixed(2)));
-          return newSeconds;
-        });
+        setWaitingSeconds(prev => prev + 1);
       }, 1000);
     } else {
       if (waitingIntervalRef.current) clearInterval(waitingIntervalRef.current);
@@ -65,6 +60,18 @@ export default function Taximeter() {
       if (waitingIntervalRef.current) clearInterval(waitingIntervalRef.current);
     };
   }, [waitingEnabled, running]);
+
+  useEffect(() => {
+    const newWaitingPrice = (waitingSeconds / 60) * 0.30;
+    setWaitingPrice(newWaitingPrice);
+    
+    if (priceSettings && running) {
+      const baseFare = priceSettings.base_fare ?? 10;
+      const km = distanceRef.current;
+      const price = baseFare + km * getPricePerKm(priceSettings, vehicleType) + newWaitingPrice;
+      setTotalPrice(parseFloat(price.toFixed(2)));
+    }
+  }, [waitingSeconds]);
 
   const startRide = () => {
     if (!navigator.geolocation) {
