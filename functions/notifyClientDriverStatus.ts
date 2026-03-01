@@ -26,8 +26,8 @@ const translations = {
     destination_label: `DESTINO`,
     contact: `Dúvidas? Entre em contato`,
     copyright: (y) => `© ${y} Rosini Transfert. Todos os direitos reservados.`,
-    on_the_way_whatsapp: (name, dep) => `🚗 *Rosini Transfert* — Olá ${name}, o seu motorista está a caminho de ${dep}. Até já!`,
-    arrived_whatsapp: (name, dep) => `✅ *Rosini Transfert* — O seu motorista chegou a ${dep} e está à sua espera. Boa viagem!`,
+    on_the_way_whatsapp: (name, dep, driverName) => `🚗 *Rosini Transfert* — Olá ${name}, o seu motorista *${driverName}* está a caminho de ${dep}. Até já!`,
+    arrived_whatsapp: (name, dep, driverName) => `✅ *Rosini Transfert* — O seu motorista *${driverName}* chegou a ${dep} e está à sua espera. Boa viagem!`,
   },
   en: {
     on_the_way_subject: `🚗 Your driver is on the way — Rosini Transfert`,
