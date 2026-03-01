@@ -160,8 +160,8 @@ export default function TaximeterDriver() {
             disabled={isRunning}
             className="w-full bg-slate-700/50 border border-slate-600 rounded-lg px-3 py-2 text-white outline-none focus:border-yellow-400/50 disabled:opacity-50"
           >
-            <option value="standard">Standard - CHF {PriceSettings.standard_price_per_km}/km</option>
-            <option value="comfort">Comfort - CHF {PriceSettings.comfort_price_per_km}/km</option>
+            <option value="economic">Standard - CHF {priceSettings?.standard_price_per_km || '?'}/km</option>
+            <option value="comfort">Comfort - CHF {priceSettings?.comfort_price_per_km || '?'}/km</option>
           </select>
         </div>
 
