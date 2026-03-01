@@ -146,7 +146,7 @@ export default function Taximeter() {
         <div className="bg-[#111] border border-white/10 rounded-2xl p-6 text-center space-y-4">
           {/* Distance */}
           <div>
-            <p className="text-white/30 text-xs uppercase tracking-wider mb-1">Distância</p>
+            <p className="text-white/30 text-xs uppercase tracking-wider mb-1">Distance</p>
             <p className="text-white text-5xl font-light tabular-nums">
               {distanceKm.toFixed(3)}
               <span className="text-white/30 text-lg ml-1">km</span>
