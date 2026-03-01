@@ -97,7 +97,7 @@ export default function Taximeter() {
           if (delta > 0 && delta < 0.5 && acc < 50) {
             distanceRef.current += delta;
             const km = distanceRef.current;
-            const price = baseFare + km * getPricePerKm(priceSettings, vehicleType);
+            const price = baseFare + km * getPricePerKm(priceSettings, vehicleType) + waitingPrice;
             setDistanceKm(parseFloat(km.toFixed(3)));
             setTotalPrice(parseFloat(price.toFixed(2)));
           }
