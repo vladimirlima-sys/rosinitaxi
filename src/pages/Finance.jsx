@@ -390,9 +390,6 @@ export default function Finance() {
                   <p className="text-white/50 text-center py-12">Aucune donnée pour cette période</p>
                 )}
               </div>
-
-              <div className="bg-white/5 border border-white/10 rounded-lg p-6">
-                <h3 className="text-white font-semibold mb-4">Dépenses par catégorie</h3>
                 {expenseChartData.length > 0 ? (
                   <ResponsiveContainer width="100%" height={280}>
                     <PieChart>
