@@ -24,7 +24,7 @@ export default function LanguageSwitcher() {
   const others = languages.filter(l => l.code !== lang);
 
   return (
-    <div ref={ref} className="fixed top-5 right-5 z-50 flex flex-col items-center gap-1">
+    <div ref={ref} className="flex flex-col items-center gap-1">
       {/* Dropdown options */}
       {open && (
         <div className="flex flex-col items-center gap-1 mb-1">
