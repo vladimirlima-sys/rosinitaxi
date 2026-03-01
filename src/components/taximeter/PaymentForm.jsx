@@ -58,7 +58,7 @@ export default function PaymentForm({ amount, onPaymentComplete, onCancel, dista
 
       <button
         onClick={handleCashPayment}
-        disabled={loading}
+        disabled={loading || !clientEmail}
         className="w-full h-14 rounded-xl bg-[#F5C300] text-black font-semibold text-sm uppercase tracking-wider hover:bg-[#e6b800] transition-all flex items-center justify-center gap-3 disabled:opacity-50 disabled:cursor-not-allowed"
       >
         {loading ? (
