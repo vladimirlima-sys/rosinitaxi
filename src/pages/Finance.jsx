@@ -115,92 +115,31 @@ export default function Finance() {
   return (
     <div className="min-h-screen bg-[#F5C300] py-12 px-4">
       <div className="max-w-2xl mx-auto">
-        {/* Header */}
-        <div className="text-center mb-8">
-          <h1 className="text-black text-6xl font-extralight tracking-[0.3em] uppercase">ROSINI</h1>
-          <p className="text-black/60 text-sm tracking-[0.2em] uppercase mt-2">RAPPORT FINANCIER</p>
-          <div className="w-8 h-[1px] bg-black/40 mx-auto mt-3" />
-        </div>
+        <FinanceHeader onDownloadPDF={handleDownloadPDF} />
 
-        {/* Download Button */}
         <div className="mb-8">
-          <button
-            onClick={handleDownloadPDF}
-            className="flex items-center gap-2 bg-black text-white font-bold px-5 py-2.5 rounded-lg hover:bg-black/80 transition-all text-sm"
-          >
-            <Download className="w-4 h-4" />
-            Télécharger PDF
-          </button>
+          <FinanceFilters
+            selectedMonth={selectedMonth}
+            setSelectedMonth={setSelectedMonth}
+            filterDriver={filterDriver}
+            setFilterDriver={setFilterDriver}
+            availableMonths={availableMonths}
+            monthLabel={monthLabel}
+            availableDrivers={availableDrivers}
+          />
         </div>
 
-        {/* Filters */}
-        <div className="space-y-3 mb-8">
-          <div>
-            <label className="text-black/60 text-sm mb-2 block">Sélectionner le mois</label>
-            <select
-              value={selectedMonth}
-              onChange={(e) => setSelectedMonth(e.target.value)}
-              className="bg-black border border-black/40 text-white px-4 py-2 rounded-lg outline-none w-full"
-            >
-              {availableMonths.map(month => (
-                <option key={month} value={month} className="bg-black text-white">
-                  {new Date(`${month}-01`).toLocaleDateString('fr-FR', { month: 'long', year: 'numeric' })}
-                </option>
-              ))}
-              {!availableMonths.includes(selectedMonth) && (
-                <option value={selectedMonth} className="bg-[#222] text-white">{monthLabel}</option>
-              )}
-            </select>
-          </div>
-
-          <div>
-            <label className="text-black/60 text-sm mb-2 block">Filtrer par motorista</label>
-            <select
-              value={filterDriver}
-              onChange={(e) => setFilterDriver(e.target.value)}
-              className="bg-black border border-black/40 text-white px-4 py-2 rounded-lg outline-none w-full"
-            >
-              <option value="all" className="bg-black text-white">Todos os motoristas</option>
-              {bookings
-                .filter(b => b.driver_id && b.driver_id !== 'null')
-                .reduce((acc, b) => {
-                  if (!acc.find(d => d.id === b.driver_id)) {
-                    acc.push({ id: b.driver_id, name: b.driver_name });
-                  }
-                  return acc;
-                }, [])
-                .sort((a, b) => a.name.localeCompare(b.name))
-                .map(driver => (
-                  <option key={driver.id} value={driver.id} className="bg-black text-white">
-                    {driver.name}
-                  </option>
-                ))}
-            </select>
-          </div>
-        </div>
-
-        {loading ? (
-          <div className="text-black/50 text-center py-12">Chargement des données...</div>
-        ) : (
-          <div className="space-y-8">
-            {/* Summary */}
-            <FinanceSummary grandTotal={grandTotal} netResult={netResult} monthBookings={monthBookings} />
-
-            {/* Add Expense */}
-            <AddExpenseCard selectedMonth={selectedMonth} onAdded={fetchData} />
-
-            {/* Expenses List */}
-            {monthExpenses.length > 0 && (
-              <ExpensesList monthExpenses={monthExpenses} totalExpenses={totalExpenses} />
-            )}
-
-            {/* Charts */}
-            <RevenueCharts monthBookings={monthBookings} paymentMethods={paymentMethods} monthExpenses={monthExpenses} />
-
-            {/* Bookings Table */}
-            <BookingsTable monthBookings={monthBookings} />
-          </div>
-        )}
+        <FinanceContent
+          loading={loading}
+          monthBookings={monthBookings}
+          monthExpenses={monthExpenses}
+          totalExpenses={totalExpenses}
+          grandTotal={grandTotal}
+          netResult={netResult}
+          paymentMethods={paymentMethods}
+          selectedMonth={selectedMonth}
+          onExpenseAdded={fetchData}
+        />
       </div>
     </div>
   );
