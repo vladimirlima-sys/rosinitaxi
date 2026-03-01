@@ -165,6 +165,14 @@ export default function Drivers() {
                   {driver.notes && <p className="text-white/30 text-xs mt-1 truncate">{driver.notes}</p>}
                 </div>
 
+                {/* Monthly revenue */}
+                <div className="text-right shrink-0 mr-2">
+                  <p className="text-white/30 text-xs uppercase tracking-wider">Este mês</p>
+                  <p className={`text-sm font-bold mt-0.5 ${monthlyRevenue[driver.id] ? 'text-[#F5C300]' : 'text-white/20'}`}>
+                    {monthlyRevenue[driver.id] ? `CHF ${monthlyRevenue[driver.id].toFixed(2)}` : '—'}
+                  </p>
+                </div>
+
                 {/* Actions */}
                 <div className="flex gap-2 shrink-0">
                   <a
