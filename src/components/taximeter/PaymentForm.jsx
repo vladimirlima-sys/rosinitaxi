@@ -56,7 +56,8 @@ export default function PaymentForm({ amount, onPaymentComplete, onCancel, dista
         clientEmail,
         distance,
         departure,
-        arrival
+        arrival,
+        driverId
       });
       onPaymentComplete('cash');
     } catch (err) {
