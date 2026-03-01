@@ -36,26 +36,26 @@ function AddExpenseCard({ selectedMonth, onAdded }) {
   };
 
   return (
-    <div className="bg-white/5 border border-white/10 rounded-lg p-6 mb-8">
+    <div className="bg-black border border-black/40 rounded-lg p-6 mb-8">
       <h3 className="text-white font-semibold mb-4 flex items-center gap-2">
-        <Plus className="w-4 h-4 text-[#F5C300]" />
+        <Plus className="w-4 h-4 text-white" />
         Ajouter une dépense
       </h3>
-      <form onSubmit={handleSubmit} className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
+      <form onSubmit={handleSubmit} className="grid grid-cols-1 md:grid-cols-2 gap-4">
         <div>
-          <label className="text-white/50 text-xs mb-1 block">Catégorie</label>
+          <label className="text-white/60 text-xs mb-1 block">Catégorie</label>
           <select
             value={form.category}
             onChange={e => setForm(f => ({ ...f, category: e.target.value }))}
             className="w-full bg-white/10 border border-white/20 text-white px-3 py-2 rounded-lg outline-none text-sm"
           >
             {EXPENSE_CATEGORIES.map(c => (
-              <option key={c.value} value={c.value} className="bg-black">{c.label}</option>
+              <option key={c.value} value={c.value} className="bg-[#222]">{c.label}</option>
             ))}
           </select>
         </div>
         <div>
-          <label className="text-white/50 text-xs mb-1 block">Montant (CHF)</label>
+          <label className="text-white/60 text-xs mb-1 block">Montant (CHF)</label>
           <input
             type="number"
             step="0.01"
@@ -68,7 +68,7 @@ function AddExpenseCard({ selectedMonth, onAdded }) {
           />
         </div>
         <div>
-          <label className="text-white/50 text-xs mb-1 block">Date</label>
+          <label className="text-white/60 text-xs mb-1 block">Data</label>
           <input
             type="date"
             required
@@ -78,7 +78,7 @@ function AddExpenseCard({ selectedMonth, onAdded }) {
           />
         </div>
         <div>
-          <label className="text-white/50 text-xs mb-1 block">Description (optionnel)</label>
+          <label className="text-white/60 text-xs mb-1 block">Descrição (optionnel)</label>
           <input
             type="text"
             value={form.description}
@@ -87,11 +87,11 @@ function AddExpenseCard({ selectedMonth, onAdded }) {
             className="w-full bg-white/10 border border-white/20 text-white px-3 py-2 rounded-lg outline-none text-sm"
           />
         </div>
-        <div className="md:col-span-2 lg:col-span-4 flex justify-end">
+        <div className="md:col-span-2 flex justify-end">
           <button
             type="submit"
             disabled={saving}
-            className="bg-[#F5C300] text-black font-bold px-6 py-2 rounded-lg hover:bg-[#e6b800] transition-all disabled:opacity-50 text-sm"
+            className="bg-white text-black font-bold px-6 py-2 rounded-lg hover:bg-white/90 transition-all disabled:opacity-50 text-sm"
           >
             {saving ? 'Enregistrement...' : 'Ajouter la dépense'}
           </button>
