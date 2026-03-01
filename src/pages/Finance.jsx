@@ -403,11 +403,10 @@ export default function Finance() {
                 ) : (
                   <p className="text-white/50 text-center py-12">Aucune dépense ce mois</p>
                 )}
-              </div>
             </div>
 
             {/* Detailed Table */}
-            <div className="bg-white/5 border border-white/10 rounded-lg p-6">
+            <div className="bg-black border border-black/40 rounded-lg p-6">
               <h3 className="text-white font-semibold mb-4">Détail des courses</h3>
               {monthBookings.length > 0 ? (
                 <div className="overflow-x-auto">
