@@ -107,6 +107,22 @@ Deno.serve(async (req) => {
       from_name: 'Rosini Transfert',
     });
 
+    // Create booking record for Finance tracking
+    await base44.asServiceRole.entities.Booking.create({
+      client_name: clientName,
+      client_email: session.customer_email,
+      departure_point: 'Taxímetro',
+      arrival_point: 'Taxímetro',
+      departure_date: new Date().toISOString().split('T')[0],
+      departure_time: new Date().toISOString().split('T')[1].substring(0, 5),
+      vehicle_type: vehicleType === 'comfort' ? 'comfort' : 'economic',
+      distance_km: parseFloat(distance),
+      total_price: parseFloat(totalPrice),
+      payment_status: 'paid',
+      payment_method: 'cash',
+      notes: `Trajet au taximètre | Durée: ${duration} | Session: ${sessionId.substring(0, 8)}`,
+    });
+
     return Response.json({ success: true, message: 'Receipt sent successfully' });
   } catch (error) {
     console.error('Send receipt error:', error);
