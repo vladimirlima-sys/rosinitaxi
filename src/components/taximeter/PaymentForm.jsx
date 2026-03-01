@@ -105,6 +105,17 @@ export default function PaymentForm({ amount, onPaymentComplete, onCancel, dista
 
       <div className="w-full h-[1px] bg-white/10" />
 
+      <p className="text-white/40 text-sm uppercase tracking-wider">Email do cliente</p>
+      <input
+        type="email"
+        value={clientEmail}
+        onChange={(e) => setClientEmail(e.target.value)}
+        placeholder="exemple@email.com"
+        className="w-full px-4 py-3 rounded-xl bg-white/5 border border-white/10 text-white placeholder-white/30 text-sm focus:outline-none focus:border-white/30"
+      />
+
+      <div className="w-full h-[1px] bg-white/10" />
+
       <p className="text-white/40 text-sm uppercase tracking-wider">Mode de paiement</p>
 
       <div className="space-y-3">
