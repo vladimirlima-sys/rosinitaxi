@@ -138,14 +138,14 @@ export default function TaximeterDriver() {
         </div>
 
         {/* Client Info */}
-        <div className="bg-slate-800/50 border border-slate-700 rounded-2xl p-4 space-y-3 mb-6">
+        <div className="bg-black border border-black/40 rounded-2xl p-4 space-y-3 mb-6">
           <input
             type="text"
             placeholder="Nom du client"
             value={clientName}
             onChange={(e) => setClientName(e.target.value)}
             disabled={isRunning}
-            className="w-full bg-slate-700/50 border border-slate-600 rounded-lg px-3 py-2 text-white placeholder:text-slate-500 outline-none focus:border-yellow-400/50 disabled:opacity-50"
+            className="w-full bg-white/10 border border-white/20 rounded-lg px-3 py-2 text-white placeholder:text-white/40 outline-none focus:border-white/60 disabled:opacity-50"
           />
           <input
             type="email"
@@ -153,13 +153,13 @@ export default function TaximeterDriver() {
             value={clientEmail}
             onChange={(e) => setClientEmail(e.target.value)}
             disabled={isRunning}
-            className="w-full bg-slate-700/50 border border-slate-600 rounded-lg px-3 py-2 text-white placeholder:text-slate-500 outline-none focus:border-yellow-400/50 disabled:opacity-50"
+            className="w-full bg-white/10 border border-white/20 rounded-lg px-3 py-2 text-white placeholder:text-white/40 outline-none focus:border-white/60 disabled:opacity-50"
           />
           <select
             value={vehicleType}
             onChange={(e) => setVehicleType(e.target.value)}
             disabled={isRunning}
-            className="w-full bg-slate-700/50 border border-slate-600 rounded-lg px-3 py-2 text-white outline-none focus:border-yellow-400/50 disabled:opacity-50"
+            className="w-full bg-white/10 border border-white/20 rounded-lg px-3 py-2 text-white outline-none focus:border-white/60 disabled:opacity-50"
           >
             <option value="economic">Standard - CHF {priceSettings?.standard_price_per_km || '?'}/km</option>
             <option value="comfort">Comfort - CHF {priceSettings?.comfort_price_per_km || '?'}/km</option>
