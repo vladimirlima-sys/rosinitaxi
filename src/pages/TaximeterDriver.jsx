@@ -128,12 +128,13 @@ export default function TaximeterDriver() {
   };
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-slate-900 to-slate-800 px-4 py-8">
+    <div className="min-h-screen bg-[#F5C300] px-4 py-8">
       <div className="max-w-lg mx-auto">
         {/* Header */}
         <div className="text-center mb-8">
-          <h1 className="text-4xl font-extralight tracking-[0.3em] text-white uppercase">ROSINI</h1>
-          <p className="text-slate-400 text-sm tracking-[0.2em] uppercase mt-1">Taximètre Chauffeur</p>
+          <h1 className="text-4xl font-extralight tracking-[0.3em] text-black uppercase">ROSINI</h1>
+          <p className="text-black/60 text-sm tracking-[0.2em] uppercase mt-1">Taximètre Chauffeur</p>
+          <div className="w-8 h-[1px] bg-black/40 mx-auto mt-3" />
         </div>
 
         {/* Client Info */}
