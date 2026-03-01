@@ -132,7 +132,7 @@ Deno.serve(async (req) => {
           confirmation_sent: true,
           stripe_payment_intent_id: session.payment_intent || null
         });
-        console.log("Booking marked as paid:", booking.id);
+        console.log("Booking marked as paid:", booking.id, "| email:", clientEmail);
 
         // Send WhatsApp notification for payment confirmed
         try {
