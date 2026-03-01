@@ -530,7 +530,7 @@ Deno.serve(async (req) => {
       if (!pdfBytes) {
         // Send simple HTML email
         const lines = [
-          `From: taxirosini@gmail.com`,
+          `From: no-reply@rosini.online`,
           `To: ${to}`,
           `Subject: ${subject}`,
           `MIME-Version: 1.0`,
@@ -567,7 +567,7 @@ Deno.serve(async (req) => {
           .join('');
         const pdfBase64Encoded = btoa(pdfBase64);
         
-        const emailContent = `From: taxirosini@gmail.com\r\nTo: ${to}\r\nSubject: ${subject}\r\nMIME-Version: 1.0\r\nContent-Type: multipart/mixed; boundary="${boundary}"\r\n\r\n--${boundary}\r\nContent-Type: text/html; charset="UTF-8"\r\nContent-Transfer-Encoding: 7bit\r\n\r\n${htmlBody}\r\n\r\n--${boundary}\r\nContent-Type: application/pdf; name="receipt.pdf"\r\nContent-Disposition: attachment; filename="receipt.pdf"\r\nContent-Transfer-Encoding: base64\r\n\r\n${pdfBase64Encoded}\r\n\r\n--${boundary}--`;
+        const emailContent = `From: no-reply@rosini.online\r\nTo: ${to}\r\nSubject: ${subject}\r\nMIME-Version: 1.0\r\nContent-Type: multipart/mixed; boundary="${boundary}"\r\n\r\n--${boundary}\r\nContent-Type: text/html; charset="UTF-8"\r\nContent-Transfer-Encoding: 7bit\r\n\r\n${htmlBody}\r\n\r\n--${boundary}\r\nContent-Type: application/pdf; name="receipt.pdf"\r\nContent-Disposition: attachment; filename="receipt.pdf"\r\nContent-Transfer-Encoding: base64\r\n\r\n${pdfBase64Encoded}\r\n\r\n--${boundary}--`;
         
         const base64Message = btoa(unescape(encodeURIComponent(emailContent)))
           .replace(/\+/g, '-')

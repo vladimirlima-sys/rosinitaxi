@@ -195,7 +195,7 @@ Deno.serve(async (req) => {
       },
       body: JSON.stringify({
         raw: btoa(
-          `From: noreply@rosini-transfert.ch\r\n` +
+          `From: no-reply@rosini.online\r\n` +
           `To: ${booking.client_email}\r\n` +
           `Subject: ${statusInfo.subject}\r\n` +
           `MIME-Version: 1.0\r\n` +

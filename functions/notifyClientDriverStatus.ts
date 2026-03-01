@@ -226,7 +226,7 @@ Deno.serve(async (req) => {
     if (client_email) {
       try {
         const accessToken = await base44.asServiceRole.connectors.getAccessToken('gmail');
-        const lines = [`From: taxirosini@gmail.com`, `To: ${client_email}`, `Subject: ${subject}`, `MIME-Version: 1.0`, `Content-Type: text/html; charset="UTF-8"`, ``, htmlBody];
+        const lines = [`From: no-reply@rosini.online`, `To: ${client_email}`, `Subject: ${subject}`, `MIME-Version: 1.0`, `Content-Type: text/html; charset="UTF-8"`, ``, htmlBody];
         const emailMessage = lines.join('\r\n');
         const base64Message = btoa(unescape(encodeURIComponent(emailMessage))).replace(/\+/g, '-').replace(/\//g, '_').replace(/=/g, '');
         const resp = await fetch('https://www.googleapis.com/gmail/v1/users/me/messages/send', {

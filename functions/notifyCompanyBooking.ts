@@ -40,7 +40,7 @@ Data da Reserva: ${data.created_date}
     `.trim();
 
     await base44.integrations.Core.SendEmail({
-      to: 'info@taxirosini.com',
+      to: 'info@rosini.online',
       subject: `Nova Reserva - ${data.client_name}`,
       body: emailBody,
       from_name: 'Rosini Táxi'
