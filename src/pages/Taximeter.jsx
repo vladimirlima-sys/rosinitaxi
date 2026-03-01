@@ -9,9 +9,10 @@ export default function Taximeter() {
   const [running, setRunning] = useState(false);
   const [distanceKm, setDistanceKm] = useState(0);
   const [totalPrice, setTotalPrice] = useState(0);
-  const [status, setStatus] = useState('idle'); // idle | running | stopped
+  const [status, setStatus] = useState('idle'); // idle | running | stopped | completed
   const [gpsError, setGpsError] = useState('');
   const [accuracy, setAccuracy] = useState(null);
+  const [showPayment, setShowPayment] = useState(false);
 
   const lastPositionRef = useRef(null);
   const watchIdRef = useRef(null);
