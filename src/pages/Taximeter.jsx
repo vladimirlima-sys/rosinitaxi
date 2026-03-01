@@ -232,7 +232,7 @@ export default function Taximeter() {
             </div>
             {priceSettings.base_fare > 0 && (
               <div className="flex justify-between text-sm">
-                <span className="text-white/50">Taxa base</span>
+                <span className="text-white/50">Prise en charge</span>
                 <span className="text-white">CHF {priceSettings.base_fare.toFixed(2)}</span>
               </div>
             )}
