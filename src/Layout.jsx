@@ -11,7 +11,7 @@ export default function Layout({ children, currentPageName }) {
       .catch(() => setIsAdmin(false));
   }, []);
 
-  const showNotifications = isAdmin && currentPageName !== 'Home';
+  const showNotifications = isAdmin && currentPageName !== 'Home' && currentPageName !== 'FAQ';
 
   return (
     <div>
