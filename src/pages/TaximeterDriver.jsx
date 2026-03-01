@@ -29,14 +29,17 @@ export default function TaximeterDriver() {
 
   useEffect(() => {
     const loadDriver = async () => {
-      if (!driverId) {
-        setLoading(false);
-        return;
-      }
       const drivers = await base44.entities.Driver.list();
-      const found = drivers.find(d => d.id === driverId);
-      if (found) setDriver(found);
-      setLoading(false);
+      setAllDrivers(drivers);
+      
+      if (driverId) {
+        const found = drivers.find(d => d.id === driverId);
+        if (found) setDriver(found);
+        setLoading(false);
+      } else {
+        setShowLogin(true);
+        setLoading(false);
+      }
     };
     loadDriver();
   }, [driverId]);
@@ -46,6 +49,23 @@ export default function TaximeterDriver() {
       if (data?.length > 0) setPriceSettings(data[0]);
     });
   }, []);
+
+  const handleLogin = () => {
+    setLoginError('');
+    const found = allDrivers.find(d => 
+      d.name.toLowerCase().includes(loginInput.toLowerCase()) ||
+      d.license_number === loginInput ||
+      d.id === loginInput
+    );
+    
+    if (found) {
+      setDriver(found);
+      setShowLogin(false);
+      setLoginInput('');
+    } else {
+      setLoginError('Motorista não encontrado');
+    }
+  };
 
   const getPricePerKm = (settings, type) => {
     if (!settings) return 0;
