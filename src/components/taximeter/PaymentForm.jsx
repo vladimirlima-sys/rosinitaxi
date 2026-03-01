@@ -59,6 +59,14 @@ export default function PaymentForm({ amount, onPaymentComplete, onCancel }) {
     try {
       setLoading(true);
       setError('');
+      
+      // Register payment
+      await base44.functions.invoke('registerTaximeterPayment', {
+        amount: amount,
+        paymentMethod: 'twint'
+      });
+      
+      // Redirect to payment (or just complete if TWINT doesn't need redirect)
       const response = await base44.functions.invoke('createCheckout', {
         amount: Math.round(amount * 100),
         currency: 'chf',
@@ -66,6 +74,8 @@ export default function PaymentForm({ amount, onPaymentComplete, onCancel }) {
       });
       if (response.data?.url) {
         window.location.href = response.data.url;
+      } else {
+        onPaymentComplete('twint');
       }
     } catch (err) {
       setError('Erreur lors du paiement: ' + err.message);
