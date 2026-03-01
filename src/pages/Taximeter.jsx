@@ -324,6 +324,12 @@ export default function Taximeter() {
                 <span className="text-white">CHF {priceSettings.base_fare.toFixed(2)}</span>
               </div>
             )}
+            {waitingPrice > 0 && (
+              <div className="flex justify-between text-sm">
+                <span className="text-white/50">Temps d'attente</span>
+                <span className="text-white">CHF {waitingPrice.toFixed(2)}</span>
+              </div>
+            )}
             <div className="w-full h-[1px] bg-white/10 my-1" />
             <div className="flex justify-between text-sm font-bold">
               <span className="text-white">Total</span>
