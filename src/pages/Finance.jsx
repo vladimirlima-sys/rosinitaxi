@@ -147,11 +147,12 @@ export default function Finance() {
     );
   }
 
-  // Filter bookings for selected month and paid status
+  // Filter bookings for selected month and paid status (by departure_date)
   const monthBookings = bookings.filter(b => {
     if (b.payment_status !== 'paid') return false;
-    if (!b.created_date) return false;
-    return b.created_date.substring(0, 7) === selectedMonth;
+    const dateStr = b.departure_date || b.created_date;
+    if (!dateStr) return false;
+    return dateStr.substring(0, 7) === selectedMonth;
   });
 
   // Filter expenses for selected month
