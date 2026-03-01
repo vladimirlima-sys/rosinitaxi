@@ -156,7 +156,7 @@ Deno.serve(async (req) => {
     const boundary = 'boundary_' + Date.now();
     const emailRaw = `From: noreply@rosini.transfert\r\n` +
       `To: ${clientEmail}\r\n` +
-      `Subject: Reçu de Course - ROSINI TRANSPORTS DE PERSONNES\r\n` +
+      `Subject: ROSINI TRANSPORTS\r\n` +
       `MIME-Version: 1.0\r\n` +
       `Content-Type: multipart/mixed; boundary="${boundary}"\r\n` +
       `\r\n` +
