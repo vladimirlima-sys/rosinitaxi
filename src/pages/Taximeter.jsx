@@ -91,7 +91,8 @@ export default function Taximeter() {
       watchIdRef.current = null;
     }
     setRunning(false);
-    setStatus('stopped');
+    setStatus('completed');
+    setShowPayment(true);
     lastPositionRef.current = null;
   };
 
