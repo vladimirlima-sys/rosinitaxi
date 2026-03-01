@@ -16,6 +16,9 @@ export default function BookingsTable() {
   });
   const [selectedIds, setSelectedIds] = useState([]);
   const [deletingMultiple, setDeletingMultiple] = useState(false);
+  const [seenIds, setSeenIds] = useState(() => {
+    try { return new Set(JSON.parse(localStorage.getItem('seen_booking_ids') || '[]')); } catch { return new Set(); }
+  });
 
   useEffect(() => {
     const fetchBookings = async () => {
