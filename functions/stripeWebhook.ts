@@ -68,24 +68,24 @@ Deno.serve(async (req) => {
 <body style="margin:0;padding:0;background:#0A0A0A;font-family:Arial,sans-serif;">
 <div style="max-width:600px;margin:0 auto;padding:40px 20px;">
   <div style="text-align:center;margin-bottom:32px;">
-    <h1 style="color:#C9A96E;font-size:28px;font-weight:300;letter-spacing:4px;margin:0;">ROSINI</h1>
-    <p style="color:#C9A96E;font-size:11px;letter-spacing:3px;margin:4px 0 0;">TRANSFERT</p>
+    <h1 style="color:#F5C300;font-size:28px;font-weight:700;letter-spacing:4px;margin:0;">ROSINI</h1>
+    <p style="color:#F5C300;font-size:11px;letter-spacing:3px;margin:4px 0 0;">TRANSFERT</p>
   </div>
-  <div style="background:#111;border:1px solid #C9A96E33;border-radius:12px;padding:32px;">
-    <h2 style="color:#C9A96E;font-size:20px;font-weight:300;margin:0 0 8px;">🔔 Nouvelle réservation (Stripe)</h2>
-    <p style="color:#888;margin:0 0 24px;">Paiement confirmé via Stripe.</p>
-    <table style="width:100%;border-collapse:collapse;">
-      <tr><td style="padding:6px 0;color:#888;">Client</td><td style="padding:6px 0;color:#fff;">${clientName}</td></tr>
-      <tr><td style="padding:6px 0;color:#888;">Email</td><td style="padding:6px 0;color:#fff;">${clientEmail}</td></tr>
-      ${clientPhone ? `<tr><td style="padding:6px 0;color:#888;">Téléphone</td><td style="padding:6px 0;color:#fff;">${clientPhone}</td></tr>` : ''}
-      ${whatsappLink ? `<tr><td style="padding:6px 0;color:#888;">WhatsApp</td><td style="padding:6px 0;"><a href="${whatsappLink}" style="display:inline-block;background:#25D366;color:#fff;font-weight:bold;padding:6px 16px;border-radius:6px;text-decoration:none;font-size:13px;">💬 Contacter sur WhatsApp</a></td></tr>` : ''}
-      <tr><td colspan="2" style="padding:12px 0;"><hr style="border:none;border-top:1px solid #333;margin:0;"></td></tr>
-      <tr><td style="padding:6px 0;color:#888;">Trajet</td><td style="padding:6px 0;color:#fff;">${departure} → ${arrival}</td></tr>
-      <tr><td style="padding:6px 0;color:#888;">Date</td><td style="padding:6px 0;color:#fff;">${departureDate} à ${departureTime}</td></tr>
-      <tr><td style="padding:6px 0;color:#888;">Véhicule</td><td style="padding:6px 0;color:#fff;">${vehicleType}</td></tr>
-      <tr><td style="padding:6px 0;color:#888;">Distance</td><td style="padding:6px 0;color:#fff;">${distanceKm} km</td></tr>
-      <tr><td colspan="2" style="padding:12px 0;"><hr style="border:none;border-top:1px solid #333;margin:0;"></td></tr>
-      <tr><td style="padding:6px 0;color:#888;font-weight:bold;">Montant encaissé</td><td style="padding:6px 0;color:#C9A96E;font-size:18px;font-weight:bold;">CHF ${amount}</td></tr>
+  <div style="background:#111;border:1px solid #F5C300;border-radius:12px;padding:32px;">
+    <h2 style="color:#F5C300;font-size:20px;font-weight:600;margin:0 0 8px;">🔔 Nouvelle réservation (Stripe)</h2>
+    <p style="color:#aaa;margin:0 0 24px;">Paiement confirmé via Stripe.</p>
+    <table style="width:100%;border-collapse:collapse;font-size:13px;">
+      <tr><td style="padding:7px 0;color:#888;width:40%;">Client</td><td style="padding:7px 0;color:#fff;">${clientName}</td></tr>
+      <tr><td style="padding:7px 0;color:#888;">Email</td><td style="padding:7px 0;color:#fff;">${clientEmail}</td></tr>
+      ${clientPhone ? `<tr><td style="padding:7px 0;color:#888;">Téléphone</td><td style="padding:7px 0;color:#fff;">${clientPhone}</td></tr>` : ''}
+      ${whatsappLink ? `<tr><td style="padding:7px 0;color:#888;">WhatsApp</td><td style="padding:7px 0;"><a href="${whatsappLink}" style="display:inline-block;background:#25D366;color:#fff;font-weight:bold;padding:5px 14px;border-radius:6px;text-decoration:none;font-size:12px;">💬 Contacter</a></td></tr>` : ''}
+      <tr><td colspan="2" style="padding:10px 0;"><hr style="border:none;border-top:1px solid #333;margin:0;"></td></tr>
+      <tr><td style="padding:7px 0;color:#888;">Trajet</td><td style="padding:7px 0;color:#fff;">${departure} → ${arrival}</td></tr>
+      <tr><td style="padding:7px 0;color:#888;">Date</td><td style="padding:7px 0;color:#fff;">${departureDate} à ${departureTime}</td></tr>
+      <tr><td style="padding:7px 0;color:#888;">Véhicule</td><td style="padding:7px 0;color:#fff;">${vehicleType}</td></tr>
+      <tr><td style="padding:7px 0;color:#888;">Distance</td><td style="padding:7px 0;color:#fff;">${distanceKm} km</td></tr>
+      <tr><td colspan="2" style="padding:10px 0;"><hr style="border:none;border-top:1px solid #333;margin:0;"></td></tr>
+      <tr><td style="padding:7px 0;color:#aaa;font-weight:bold;">Montant encaissé</td><td style="padding:7px 0;color:#F5C300;font-size:20px;font-weight:bold;">CHF ${amount}</td></tr>
     </table>
   </div>
   <p style="color:#444;text-align:center;font-size:11px;margin-top:24px;">© ${year} Rosini Transfert — Notification automatique</p>
