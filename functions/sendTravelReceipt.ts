@@ -98,7 +98,7 @@ Deno.serve(async (req) => {
         raw: btoa(
           `From: noreply@rosini.transfert\r\n` +
           `To: ${clientEmail}\r\n` +
-          `Subject: Comprovativo de Viagem - ROSINI TRANSFERT\r\n` +
+          `Subject: Reçu de Course - ROSINI TRANSPORTS DE PERSONNES\r\n` +
           `Content-Type: text/html; charset=UTF-8\r\n` +
           `\r\n` +
           `${emailBody}`
