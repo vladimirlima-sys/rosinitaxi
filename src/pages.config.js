@@ -56,6 +56,7 @@ import Home from './pages/Home';
 import Settings from './pages/Settings';
 import Taximeter from './pages/Taximeter';
 import Reservas from './pages/Reservas';
+import AdminPanel from './pages/AdminPanel';
 import __Layout from './Layout.jsx';
 
 
@@ -69,6 +70,7 @@ export const PAGES = {
     "Settings": Settings,
     "Taximeter": Taximeter,
     "Reservas": Reservas,
+    "AdminPanel": AdminPanel,
 }
 
 export const pagesConfig = {
