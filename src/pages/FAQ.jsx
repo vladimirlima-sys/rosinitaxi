@@ -30,7 +30,7 @@ const faqData = {
         title: 'Annulations',
         items: [
           { q: 'Puis-je annuler ma réservation ?', a: 'Oui, vous pouvez annuler votre réservation en utilisant le lien d\'annulation fourni dans votre e-mail de confirmation. L\'annulation met à jour le statut de votre réservation.' },
-          { q: 'Y a-t-il des frais d\'annulation ?', a: 'Pour les annulations effectuées suffisamment à l\'avance, aucun frais n\'est appliqué. Pour les paiements par carte effectués via Stripe, contactez-nous directement à info@rosini.online pour toute demande de remboursement.' },
+          { q: 'Y a-t-il des frais d\'annulation ?', a: 'Les annulations effectuées au moins 24 heures avant le départ sont remboursées à 100 %. Les annulations effectuées moins de 24 heures avant le départ ne donnent droit à aucun remboursement.' },
           { q: 'Comment annuler ma réservation ?', a: 'Le lien d\'annulation se trouve dans votre e-mail de confirmation. Cliquez dessus, confirmez l\'annulation sur la page dédiée, et nous serons notifiés immédiatement.' },
         ],
       },
