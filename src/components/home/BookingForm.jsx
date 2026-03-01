@@ -413,6 +413,7 @@ export default function BookingForm({ bookingRef }) {
 
             <PriceExamplesCards priceSettings={priceSettings} />
             <RideCounter />
+            <MyBookingCard />
           </div>
         )}
 
