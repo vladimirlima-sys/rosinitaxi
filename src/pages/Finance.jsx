@@ -291,11 +291,11 @@ export default function Finance() {
 
         {/* Month Selector */}
         <div className="mt-6 mb-8">
-          <label className="text-white/60 text-sm mb-2 block">Sélectionner le mois</label>
+          <label className="text-black/60 text-sm mb-2 block">Sélectionner le mois</label>
           <select
             value={selectedMonth}
             onChange={(e) => setSelectedMonth(e.target.value)}
-            className="bg-white/10 border border-white/20 text-white px-4 py-2 rounded-lg outline-none"
+            className="bg-black border border-black/40 text-white px-4 py-2 rounded-lg outline-none w-full"
           >
             {availableMonths.map(month => (
               <option key={month} value={month} className="bg-black text-white">
