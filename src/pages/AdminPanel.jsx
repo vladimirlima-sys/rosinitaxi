@@ -1,6 +1,6 @@
 import { useState } from 'react';
 import { createPageUrl } from '@/utils';
-import { Lock, LayoutDashboard, Users, CreditCard, Calendar, Settings, Car, Star, FileText, LogOut } from 'lucide-react';
+import { Lock, LayoutDashboard, Users, CreditCard, Calendar, Settings, Car, Star, FileText, LogOut, BarChart3, MessageCircle } from 'lucide-react';
 
 const PASSWORD = 'Sophia051009@';
 
