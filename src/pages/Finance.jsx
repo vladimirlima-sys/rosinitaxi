@@ -280,14 +280,14 @@ export default function Finance() {
 
         <div className="flex flex-wrap items-start justify-between gap-4 mb-8">
           <div className="w-full">
-          <button
-            onClick={downloadPDF}
-            className="flex items-center gap-2 bg-[#F5C300] text-black font-bold px-5 py-2.5 rounded-lg hover:bg-[#e6b800] transition-all text-sm"
-          >
-            <Download className="w-4 h-4" />
-            Télécharger PDF
-          </button>
-        </div>
+            <button
+              onClick={downloadPDF}
+              className="flex items-center gap-2 bg-black text-white font-bold px-5 py-2.5 rounded-lg hover:bg-black/80 transition-all text-sm"
+            >
+              <Download className="w-4 h-4" />
+              Télécharger PDF
+            </button>
+          </div>
 
         {/* Month Selector */}
         <div className="mt-6 mb-8">
