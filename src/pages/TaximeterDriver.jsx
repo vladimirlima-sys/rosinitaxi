@@ -3,14 +3,8 @@ import { base44 } from '@/api/base44Client';
 import { Play, Pause, RotateCcw, MapPin, Clock, DollarSign, Loader2 } from 'lucide-react';
 import { toast } from 'sonner';
 
-const PriceSettings = {
-  standard_price_per_km: 3.5,
-  comfort_price_per_km: 4.5,
-  base_fare: 10,
-  airport_fee: 0,
-};
-
 export default function TaximeterDriver() {
+  const [priceSettings, setPriceSettings] = useState(null);
   const [isRunning, setIsRunning] = useState(false);
   const [elapsedSeconds, setElapsedSeconds] = useState(0);
   const [distance, setDistance] = useState(0);
