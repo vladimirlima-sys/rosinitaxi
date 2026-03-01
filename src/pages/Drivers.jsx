@@ -25,7 +25,14 @@ export default function Drivers() {
   }, []);
 
   useEffect(() => {
-    if (isAdmin) fetchDrivers();
+    if (isAdmin) {
+      fetchDrivers();
+      // Subscribe to booking changes to update revenue in real-time
+      const unsubscribe = base44.entities.Booking.subscribe((event) => {
+        fetchMonthlyRevenue();
+      });
+      return unsubscribe;
+    }
   }, [isAdmin]);
 
   const fetchDrivers = async () => {
