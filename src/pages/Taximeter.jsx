@@ -97,12 +97,26 @@ export default function Taximeter() {
   };
 
   const resetRide = () => {
-    stopRide();
+    if (watchIdRef.current !== null) {
+      navigator.geolocation.clearWatch(watchIdRef.current);
+      watchIdRef.current = null;
+    }
+    setRunning(false);
     setDistanceKm(0);
     setTotalPrice(0);
     setAccuracy(null);
     setStatus('idle');
+    setShowPayment(false);
     distanceRef.current = 0;
+  };
+
+  const handlePaymentComplete = (method) => {
+    resetRide();
+  };
+
+  const handlePaymentCancel = () => {
+    setShowPayment(false);
+    setStatus('stopped');
   };
 
   const pricePerKm = getPricePerKm(priceSettings, vehicleType);
