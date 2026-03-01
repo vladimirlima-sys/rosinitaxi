@@ -53,10 +53,13 @@ export default function Finance() {
     );
   }
 
+  const [filterDriver, setFilterDriver] = useState('all');
+
   const monthBookings = bookings.filter(b => {
     if (b.payment_status !== 'paid') return false;
     const dateStr = b.departure_date || b.created_date;
     if (!dateStr) return false;
+    if (filterDriver !== 'all' && b.driver_id !== filterDriver) return false;
     return dateStr.substring(0, 7) === selectedMonth;
   });
 
