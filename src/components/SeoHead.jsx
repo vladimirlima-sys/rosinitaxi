@@ -81,7 +81,7 @@ export default function SeoHead({ lang = 'fr' }) {
       "@type": "LocalBusiness",
       "name": "Rosini Transports et locations Sarl",
       "description": config.description,
-      "url": window.location.origin,
+      "url": "https://rosini.online",
       "telephone": "+41796505347",
       "email": "taxirosini@gmail.com",
       "address": {

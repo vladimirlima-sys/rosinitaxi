@@ -253,7 +253,7 @@ function FAQContent() {
   return (
     <div className="min-h-screen bg-[#F5C300]">
       {/* Header */}
-      <div className="w-full max-w-md mx-auto pt-8 pb-4 px-4 text-center">
+      <div className="w-full max-w-2xl mx-auto pt-12 pb-8 px-4 text-center">
         <h1 className="text-black text-6xl font-extralight tracking-[0.3em] uppercase">ROSINI</h1>
         <p className="text-black/60 text-sm tracking-[0.2em] uppercase mt-2">TRANSPORTS DE PERSONNES</p>
         <div className="w-8 h-[1px] bg-black/40 mx-auto mt-3 mb-6" />
@@ -265,7 +265,7 @@ function FAQContent() {
       </div>
 
       {/* Sections */}
-      <div className="w-full max-w-md mx-auto px-4 pb-12 space-y-6">
+      <div className="w-full max-w-2xl mx-auto px-4 pb-12 space-y-6">
         {data.sections.map((section, si) => (
           <div key={si}>
             <h3 className="text-black font-semibold text-xs uppercase tracking-widest mb-3 pl-1">{section.title}</h3>

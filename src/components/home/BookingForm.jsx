@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useMemo } from 'react';
+import React, { useState, useEffect } from 'react';
 import { MapPin, Clock, Plane, User, Mail, Phone, MessageSquare, Loader2, Navigation2, CheckCircle } from 'lucide-react';
 import { Input } from '@/components/ui/input';
 import { Button } from '@/components/ui/button';
@@ -10,10 +10,12 @@ import PriceExamplesCards from './PriceExamplesCards';
 import AddToHomeScreen from './AddToHomeScreen';
 import PreferredDriverSelector from './PreferredDriverSelector';
 import RideCounter from './RideCounter';
+import MyBookingCard from './MyBookingCard';
 import { base44 } from '@/api/base44Client';
 import { toast } from 'sonner';
 import { useLang } from '@/components/LanguageContext';
 import { translations } from '@/components/translations';
+import { createPageUrl } from '@/utils';
 
 export default function BookingForm({ bookingRef }) {
   const { lang } = useLang();
@@ -110,9 +112,9 @@ export default function BookingForm({ bookingRef }) {
     );
   };
 
-  // Auto-locate on mount
+  // Auto-locate on mount (disabled to prevent blocking on mobile)
   useEffect(() => {
-    locateUser();
+    // Locating is now optional - user can click the locate button if needed
   // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
@@ -167,11 +169,9 @@ export default function BookingForm({ bookingRef }) {
     const [h, min] = form.departure_time.split(':').map(Number);
     const departure = new Date(y, m - 1, d, h, min, 0);
     const diffMinutes = (departure.getTime() - Date.now()) / 60000;
-    console.log('[ShortNotice] date:', form.departure_date, 'time:', form.departure_time, 'departure:', departure, 'diffMin:', diffMinutes);
     return diffMinutes >= 0 && diffMinutes < 90;
   };
   const isShortNotice = checkShortNotice();
-  console.log('[ShortNotice] isShortNotice:', isShortNotice, 'date:', form.departure_date, 'time:', form.departure_time);
 
   const [isCalculatingRoute, setIsCalculatingRoute] = useState(false);
 
@@ -193,16 +193,17 @@ export default function BookingForm({ bookingRef }) {
           setIsSubmitting(false);
           return;
         }
-        await base44.entities.Booking.create({ ...form, ...driverFields, total_price: parseFloat(totalPrice), payment_status: 'pending', payment_method: 'stripe', language: lang });
+        const createdBookingForStripe = await base44.entities.Booking.create({ ...form, ...driverFields, total_price: parseFloat(totalPrice), payment_status: 'pending', payment_method: 'stripe', language: lang });
         sessionStorage.setItem('pendingBooking', JSON.stringify({ ...form, total_price: parseFloat(totalPrice), distance_km: estimatedDistance, language: lang }));
         const response = await base44.functions.invoke('createCheckout', {
           amount: parseFloat(totalPrice), currency: 'chf',
-          client_name: form.client_name, client_email: form.client_email,
+          client_name: form.client_name, client_email: form.client_email, client_phone: form.client_phone,
           departure: form.departure_point, arrival: form.arrival_point,
           vehicle_type: form.vehicle_type, distance_km: estimatedDistance,
           departure_date: form.departure_date, departure_time: form.departure_time,
           origin: window.location.origin,
-          is_short_notice: isShortNotice
+          is_short_notice: isShortNotice,
+          booking_id: createdBookingForStripe.id
         });
         if (response.data?.url) window.location.href = response.data.url;
         else throw new Error(response.data?.error || 'Erreur de paiement');
@@ -412,6 +413,7 @@ export default function BookingForm({ bookingRef }) {
 
             <PriceExamplesCards priceSettings={priceSettings} />
             <RideCounter />
+            <MyBookingCard />
           </div>
         )}
 
@@ -656,7 +658,7 @@ export default function BookingForm({ bookingRef }) {
 
         {/* Footer */}
         <div className="mt-10 border-t border-black/20 pt-6 text-center space-y-1">
-          <p className="text-black font-semibold text-sm tracking-wide">Rosini Transports et Locations Sàrl</p>
+          <a href={createPageUrl('AdminPanel')} className="text-black font-semibold text-sm tracking-wide hover:opacity-70 cursor-pointer">Rosini Transports et Locations Sàrl</a>
           <p className="text-black/60 text-xs">La Tour-de-Peilz, Suisse</p>
           <div className="flex justify-center gap-4 mt-2">
             <a href="tel:+41772492245" className="text-black/70 text-xs hover:text-black transition-colors">
