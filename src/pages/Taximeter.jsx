@@ -13,10 +13,14 @@ export default function Taximeter() {
   const [gpsError, setGpsError] = useState('');
   const [accuracy, setAccuracy] = useState(null);
   const [showPayment, setShowPayment] = useState(false);
+  const [waitingEnabled, setWaitingEnabled] = useState(false);
+  const [waitingSeconds, setWaitingSeconds] = useState(0);
+  const [waitingPrice, setWaitingPrice] = useState(0);
 
   const lastPositionRef = useRef(null);
   const watchIdRef = useRef(null);
   const distanceRef = useRef(0);
+  const waitingIntervalRef = useRef(null);
 
   useEffect(() => {
     base44.entities.PriceSettings.list().then(data => {
