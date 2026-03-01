@@ -51,7 +51,11 @@ export default function PaymentForm({ amount, onPaymentComplete, onCancel, dista
       setError('');
       await base44.functions.invoke('registerTaximeterPayment', {
         amount: amount,
-        paymentMethod: 'cash'
+        paymentMethod: 'cash',
+        clientEmail,
+        distance,
+        departure,
+        arrival
       });
       onPaymentComplete('cash');
     } catch (err) {
