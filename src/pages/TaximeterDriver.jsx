@@ -128,7 +128,7 @@ export default function TaximeterDriver() {
   };
 
   return (
-    <div className="min-h-screen bg-[#F5C300] px-4 py-8">
+    <div className="h-screen bg-[#F5C300] px-4 py-6 overflow-y-auto">
       <div className="max-w-lg mx-auto">
         {/* Header */}
         <div className="text-center mb-8">
