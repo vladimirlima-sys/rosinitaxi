@@ -1,11 +1,9 @@
 import React, { useEffect, useState } from 'react';
 import { base44 } from '@/api/base44Client';
-import { Download, Loader2 } from 'lucide-react';
-import FinanceSummary from '@/components/finance/FinanceSummary.jsx';
-import AddExpenseCard from '@/components/finance/AddExpenseCard.jsx';
-import ExpensesList from '@/components/finance/ExpensesList.jsx';
-import RevenueCharts from '@/components/finance/RevenueCharts.jsx';
-import BookingsTable from '@/components/finance/BookingsTable.jsx';
+import { Loader2 } from 'lucide-react';
+import FinanceHeader from '@/components/finance/FinanceHeader';
+import FinanceFilters from '@/components/finance/FinanceFilters';
+import FinanceContent from '@/components/finance/FinanceContent';
 
 export default function Finance() {
   const [isAdmin, setIsAdmin] = useState(null);
@@ -16,6 +14,7 @@ export default function Finance() {
     const now = new Date();
     return `${now.getFullYear()}-${String(now.getMonth() + 1).padStart(2, '0')}`;
   });
+  const [filterDriver, setFilterDriver] = useState('all');
 
   useEffect(() => {
     base44.auth.me()
@@ -53,8 +52,7 @@ export default function Finance() {
     );
   }
 
-  const [filterDriver, setFilterDriver] = useState('all');
-
+  // Compute finance data
   const monthBookings = bookings.filter(b => {
     if (b.payment_status !== 'paid') return false;
     const dateStr = b.departure_date || b.created_date;
@@ -90,7 +88,18 @@ export default function Finance() {
 
   const monthLabel = new Date(`${selectedMonth}-01`).toLocaleDateString('fr-FR', { month: 'long', year: 'numeric' });
 
+  const availableDrivers = bookings
+    .filter(b => b.driver_id && b.driver_id !== 'null')
+    .reduce((acc, b) => {
+      if (!acc.find(d => d.id === b.driver_id)) {
+        acc.push({ id: b.driver_id, name: b.driver_name });
+      }
+      return acc;
+    }, [])
+    .sort((a, b) => a.name.localeCompare(b.name));
+
   const handleDownloadPDF = async () => {
+    const { downloadFinancePDF } = await import('@/functions/downloadFinancePDF');
     await downloadFinancePDF({
       selectedMonth,
       monthLabel,
