@@ -127,6 +127,9 @@ export default function Taximeter() {
       navigator.geolocation.clearWatch(watchIdRef.current);
       watchIdRef.current = null;
     }
+    if (waitingIntervalRef.current) {
+      clearInterval(waitingIntervalRef.current);
+    }
     setRunning(false);
     setDistanceKm(0);
     setTotalPrice(0);
@@ -134,6 +137,9 @@ export default function Taximeter() {
     setStatus('idle');
     setShowPayment(false);
     distanceRef.current = 0;
+    setWaitingEnabled(false);
+    setWaitingSeconds(0);
+    setWaitingPrice(0);
   };
 
   const handlePaymentComplete = (method) => {
