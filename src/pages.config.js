@@ -57,8 +57,6 @@ import Home from './pages/Home';
 import Reservas from './pages/Reservas';
 import Settings from './pages/Settings';
 import Taximeter from './pages/Taximeter';
-import TaximeterDriver from './pages/TaximeterDriver';
-import TaximeterSuccess from './pages/TaximeterSuccess';
 import __Layout from './Layout.jsx';
 
 
@@ -73,8 +71,6 @@ export const PAGES = {
     "Reservas": Reservas,
     "Settings": Settings,
     "Taximeter": Taximeter,
-    "TaximeterDriver": TaximeterDriver,
-    "TaximeterSuccess": TaximeterSuccess,
 }
 
 export const pagesConfig = {

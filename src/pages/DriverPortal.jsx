@@ -357,7 +357,7 @@ export default function DriverPortal() {
           </div>
           <div className="flex gap-2">
             <a
-              href={createPageUrl('TaximeterDriver')}
+              href={createPageUrl('Taximeter')}
               title="Abrir taximétro do motorista"
               className="w-10 h-10 rounded-xl border border-[#F5C300]/30 bg-[#F5C300]/10 text-[#F5C300] flex items-center justify-center hover:border-[#F5C300]/60 hover:bg-[#F5C300]/20 transition-all"
             >
