@@ -32,11 +32,11 @@ export default function AdminPanel() {
 
   if (!unlocked) {
     return (
-      <div className="min-h-screen bg-[#0A0A0A] flex items-center justify-center px-4">
+      <div className="min-h-screen bg-[#F5C300] flex items-center justify-center px-4">
         <div className="w-full max-w-sm">
           <div className="text-center mb-8">
-            <h1 className="text-[#F5C300] text-2xl font-light tracking-widest uppercase">Rosini</h1>
-            <p className="text-white/40 text-xs tracking-widest mt-1">PAINEL ADMINISTRATIVO</p>
+            <h1 className="text-black text-6xl font-extralight tracking-[0.3em] uppercase">ROSINI</h1>
+            <p className="text-black/60 text-sm tracking-[0.2em] uppercase mt-2">PAINEL ADMINISTRATIVO</p>
           </div>
           <form onSubmit={handleSubmit} className="bg-white/[0.04] border border-white/10 rounded-2xl p-8 space-y-4">
             <div className="flex justify-center mb-4">
