@@ -38,10 +38,10 @@ export default function AdminPanel() {
             <h1 className="text-black text-6xl font-extralight tracking-[0.3em] uppercase">ROSINI</h1>
             <p className="text-black/60 text-sm tracking-[0.2em] uppercase mt-2">PAINEL ADMINISTRATIVO</p>
           </div>
-          <form onSubmit={handleSubmit} className="bg-white/[0.04] border border-white/10 rounded-2xl p-8 space-y-4">
+          <form onSubmit={handleSubmit} className="bg-black border border-black/40 rounded-xl p-6 space-y-4">
             <div className="flex justify-center mb-4">
-              <div className="w-12 h-12 rounded-full bg-[#F5C300]/10 border border-[#F5C300]/20 flex items-center justify-center">
-                <Lock className="w-5 h-5 text-[#F5C300]" />
+              <div className="w-12 h-12 rounded-full bg-white/10 border border-white/20 flex items-center justify-center">
+                <Lock className="w-5 h-5 text-white" />
               </div>
             </div>
             <p className="text-white/60 text-sm text-center">Introduza a senha para aceder</p>
@@ -50,13 +50,13 @@ export default function AdminPanel() {
               value={input}
               onChange={(e) => { setInput(e.target.value); setError(false); }}
               placeholder="Senha"
-              className="w-full bg-white/[0.06] border border-white/10 rounded-xl px-4 py-3 text-white text-sm placeholder-white/30 focus:outline-none focus:border-[#F5C300]/50"
+              className="w-full bg-white/10 border border-white/20 rounded-lg px-4 py-3 text-white text-sm placeholder-white/40 focus:outline-none focus:border-white/60"
               autoFocus
             />
             {error && <p className="text-red-400 text-xs text-center">Senha incorreta</p>}
             <button
               type="submit"
-              className="w-full bg-[#F5C300] hover:bg-[#e6b800] text-black font-bold py-3 rounded-xl transition-colors"
+              className="w-full bg-white text-black font-bold py-3 rounded-lg hover:bg-white/90 transition-colors"
             >
               Entrar
             </button>
