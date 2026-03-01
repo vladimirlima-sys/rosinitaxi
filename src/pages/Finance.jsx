@@ -325,16 +325,17 @@ export default function Finance() {
                 </div>
               </div>
 
-                <div className="flex items-center justify-between">
-                  <div>
-                    <p className="text-white/50 text-xs mb-1">Résultat net</p>
-                    <p className={`text-2xl font-bold ${netResult >= 0 ? 'text-green-400' : 'text-red-400'}`}>CHF {netResult.toFixed(2)}</p>
-                    <p className="text-white/40 text-xs mt-1">Revenus - Dépenses</p>
-                  </div>
-                  <TrendingDown className={`w-7 h-7 ${netResult >= 0 ? 'text-green-400' : 'text-red-400'}`} />
-                </div>
+              <div className="bg-black border border-black/40 rounded-lg p-5">
+               <div className="flex items-center justify-between">
+                 <div>
+                   <p className="text-white/60 text-xs mb-1">Résultat net</p>
+                   <p className="text-white text-2xl font-bold">CHF {netResult.toFixed(2)}</p>
+                   <p className="text-white/40 text-xs mt-1">Revenus - Dépenses</p>
+                 </div>
+                 <TrendingDown className="w-7 h-7 text-white" />
+               </div>
               </div>
-            </div>
+              </div>
 
             {/* Add Expense */}
             <AddExpenseCard selectedMonth={selectedMonth} onAdded={fetchData} />
