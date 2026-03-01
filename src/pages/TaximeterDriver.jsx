@@ -18,6 +18,10 @@ export default function TaximeterDriver() {
   const [accuracy, setAccuracy] = useState(null);
   const [showPayment, setShowPayment] = useState(false);
   const [loading, setLoading] = useState(true);
+  const [allDrivers, setAllDrivers] = useState([]);
+  const [showLogin, setShowLogin] = useState(false);
+  const [loginInput, setLoginInput] = useState('');
+  const [loginError, setLoginError] = useState('');
 
   const lastPositionRef = useRef(null);
   const watchIdRef = useRef(null);
