@@ -47,30 +47,30 @@
  *
  * The mainPage value must match a key in the PAGES object exactly.
  */
+import AdminPanel from './pages/AdminPanel';
 import CancelBooking from './pages/CancelBooking';
 import DriverPortal from './pages/DriverPortal';
 import Drivers from './pages/Drivers';
 import FAQ from './pages/FAQ';
 import Finance from './pages/Finance';
 import Home from './pages/Home';
+import Reservas from './pages/Reservas';
 import Settings from './pages/Settings';
 import Taximeter from './pages/Taximeter';
-import Reservas from './pages/Reservas';
-import AdminPanel from './pages/AdminPanel';
 import __Layout from './Layout.jsx';
 
 
 export const PAGES = {
+    "AdminPanel": AdminPanel,
     "CancelBooking": CancelBooking,
     "DriverPortal": DriverPortal,
     "Drivers": Drivers,
     "FAQ": FAQ,
     "Finance": Finance,
     "Home": Home,
+    "Reservas": Reservas,
     "Settings": Settings,
     "Taximeter": Taximeter,
-    "Reservas": Reservas,
-    "AdminPanel": AdminPanel,
 }
 
 export const pagesConfig = {
