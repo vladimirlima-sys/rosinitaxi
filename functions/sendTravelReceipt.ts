@@ -146,8 +146,9 @@ Deno.serve(async (req) => {
     // Bottom footer
     doc.setTextColor(200, 200, 200);
     doc.setFontSize(8);
-    doc.text('ROSINI TRANSPORTS DE PERSONNES | Reçu Numérique', 105, 278, { align: 'center' });
-    doc.text('CHE-264.039.709 | Chemin des Bulesses 16, 1814 La Tour-de-Peilz', 105, 283, { align: 'center' });
+    doc.text('ROSINI TRANSPORTS DE PERSONNES | Reçu Numérique', 105, 275, { align: 'center' });
+    doc.text('Numéro d\'enregistrement: CHE-264.039.709', 105, 280, { align: 'center' });
+    doc.text('Chemin des Bulesses 16, 1814 La Tour-de-Peilz, Suisse', 105, 285, { align: 'center' });
     
     const pdfBytes = doc.output('arraybuffer');
     const pdfBase64 = btoa(String.fromCharCode(...new Uint8Array(pdfBytes)));
