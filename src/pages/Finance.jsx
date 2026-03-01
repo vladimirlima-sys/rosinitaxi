@@ -147,12 +147,11 @@ export default function Finance() {
     );
   }
 
-  // Filter bookings for selected month and paid status (by departure_date)
+  // Filter bookings for selected month and paid status
   const monthBookings = bookings.filter(b => {
     if (b.payment_status !== 'paid') return false;
-    const dateStr = b.departure_date || b.created_date;
-    if (!dateStr) return false;
-    return dateStr.substring(0, 7) === selectedMonth;
+    if (!b.created_date) return false;
+    return b.created_date.substring(0, 7) === selectedMonth;
   });
 
   // Filter expenses for selected month
@@ -189,9 +188,7 @@ export default function Finance() {
   })).filter(d => d.value > 0);
 
   const availableMonths = Array.from(new Set(
-    bookings
-      .filter(b => b.departure_date || b.created_date)
-      .map(b => (b.departure_date || b.created_date).substring(0, 7))
+    bookings.filter(b => b.created_date).map(b => b.created_date.substring(0, 7))
   )).sort().reverse();
 
   const monthLabel = new Date(`${selectedMonth}-01`).toLocaleDateString('fr-FR', { month: 'long', year: 'numeric' });
@@ -253,7 +250,7 @@ export default function Finance() {
     y += 4;
     monthBookings.forEach(b => {
       if (y > 270) { doc.addPage(); y = 20; }
-      doc.text(new Date(b.departure_date || b.created_date).toLocaleDateString('fr-FR'), 20, y);
+      doc.text(new Date(b.created_date).toLocaleDateString('fr-FR'), 20, y);
       doc.text((b.client_name || '').substring(0, 20), 45, y);
       doc.text(((b.departure_point || '').split(',')[0] + ' → ' + (b.arrival_point || '').split(',')[0]).substring(0, 40), 90, y);
       doc.text(b.payment_method === 'stripe' ? 'Stripe' : b.payment_method === 'twint' ? 'TWINT' : 'Espèces', 155, y);
@@ -455,7 +452,7 @@ export default function Finance() {
                       {monthBookings.map(booking => (
                         <tr key={booking.id} className="border-b border-white/5 hover:bg-white/5 transition">
                           <td className="text-white py-3 px-3">
-                            {new Date(booking.departure_date || booking.created_date).toLocaleDateString('fr-FR')}
+                            {new Date(booking.created_date).toLocaleDateString('fr-FR')}
                           </td>
                           <td className="text-white py-3 px-3">{booking.client_name}</td>
                           <td className="text-white/70 py-3 px-3 text-xs">

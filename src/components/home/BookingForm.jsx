@@ -10,7 +10,6 @@ import PriceExamplesCards from './PriceExamplesCards';
 import AddToHomeScreen from './AddToHomeScreen';
 import PreferredDriverSelector from './PreferredDriverSelector';
 import RideCounter from './RideCounter';
-import MyBookingCard from './MyBookingCard';
 import { base44 } from '@/api/base44Client';
 import { toast } from 'sonner';
 import { useLang } from '@/components/LanguageContext';
@@ -168,9 +167,11 @@ export default function BookingForm({ bookingRef }) {
     const [h, min] = form.departure_time.split(':').map(Number);
     const departure = new Date(y, m - 1, d, h, min, 0);
     const diffMinutes = (departure.getTime() - Date.now()) / 60000;
+    console.log('[ShortNotice] date:', form.departure_date, 'time:', form.departure_time, 'departure:', departure, 'diffMin:', diffMinutes);
     return diffMinutes >= 0 && diffMinutes < 90;
   };
   const isShortNotice = checkShortNotice();
+  console.log('[ShortNotice] isShortNotice:', isShortNotice, 'date:', form.departure_date, 'time:', form.departure_time);
 
   const [isCalculatingRoute, setIsCalculatingRoute] = useState(false);
 
@@ -192,17 +193,16 @@ export default function BookingForm({ bookingRef }) {
           setIsSubmitting(false);
           return;
         }
-        const createdBookingForStripe = await base44.entities.Booking.create({ ...form, ...driverFields, total_price: parseFloat(totalPrice), payment_status: 'pending', payment_method: 'stripe', language: lang });
+        await base44.entities.Booking.create({ ...form, ...driverFields, total_price: parseFloat(totalPrice), payment_status: 'pending', payment_method: 'stripe', language: lang });
         sessionStorage.setItem('pendingBooking', JSON.stringify({ ...form, total_price: parseFloat(totalPrice), distance_km: estimatedDistance, language: lang }));
         const response = await base44.functions.invoke('createCheckout', {
           amount: parseFloat(totalPrice), currency: 'chf',
-          client_name: form.client_name, client_email: form.client_email, client_phone: form.client_phone,
+          client_name: form.client_name, client_email: form.client_email,
           departure: form.departure_point, arrival: form.arrival_point,
           vehicle_type: form.vehicle_type, distance_km: estimatedDistance,
           departure_date: form.departure_date, departure_time: form.departure_time,
           origin: window.location.origin,
-          is_short_notice: isShortNotice,
-          booking_id: createdBookingForStripe.id
+          is_short_notice: isShortNotice
         });
         if (response.data?.url) window.location.href = response.data.url;
         else throw new Error(response.data?.error || 'Erreur de paiement');
@@ -412,7 +412,6 @@ export default function BookingForm({ bookingRef }) {
 
             <PriceExamplesCards priceSettings={priceSettings} />
             <RideCounter />
-            <MyBookingCard />
           </div>
         )}
 

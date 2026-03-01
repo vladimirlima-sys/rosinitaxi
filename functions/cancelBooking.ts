@@ -13,8 +13,8 @@ Deno.serve(async (req) => {
     }
 
     // Fetch the booking
-    const bookings = await base44.asServiceRole.entities.Booking.filter({ id: booking_id });
-    const booking = bookings?.[0];
+    const allBookings = await base44.asServiceRole.entities.Booking.list();
+    const booking = allBookings.find(b => b.id === booking_id);
     if (!booking) {
       return Response.json({ error: 'Booking not found' }, { status: 404 });
     }
@@ -62,33 +62,19 @@ Deno.serve(async (req) => {
     try {
       const accessToken = await base44.asServiceRole.connectors.getAccessToken('gmail');
       const subject = `❌ Annulation — ${booking.client_name} | ${booking.departure_point} → ${booking.arrival_point} | ${booking.departure_date}`;
-      const cleanPhone = (booking.client_phone || '').replace(/\D/g, '');
-      const waLink = cleanPhone ? `https://wa.me/${cleanPhone}` : null;
-      const htmlBody = `<!DOCTYPE html><html><head><meta charset="UTF-8"></head>
-<body style="margin:0;padding:0;background:#0A0A0A;font-family:Arial,sans-serif;">
-<div style="max-width:600px;margin:0 auto;padding:40px 20px;">
-  <div style="text-align:center;margin-bottom:32px;">
-    <h1 style="color:#F5C300;font-size:28px;font-weight:700;letter-spacing:4px;margin:0;">ROSINI</h1>
-    <p style="color:#F5C300;font-size:11px;letter-spacing:3px;margin:4px 0 0;">TRANSFERT</p>
-  </div>
-  <div style="background:#111;border:1px solid #F5C300;border-radius:12px;padding:32px;">
-    <h2 style="color:#F5C300;font-size:20px;font-weight:600;margin:0 0 24px;">❌ Réservation annulée</h2>
-    <table style="width:100%;border-collapse:collapse;font-size:13px;">
-      <tr><td style="padding:7px 0;color:#888;width:40%;">Client</td><td style="padding:7px 0;color:#fff;">${booking.client_name}</td></tr>
-      <tr><td style="padding:7px 0;color:#888;">Email</td><td style="padding:7px 0;color:#fff;">${booking.client_email}</td></tr>
-      <tr><td style="padding:7px 0;color:#888;">Téléphone</td><td style="padding:7px 0;color:#fff;">${booking.client_phone || '—'}</td></tr>
-      ${waLink ? `<tr><td style="padding:7px 0;color:#888;">WhatsApp</td><td style="padding:7px 0;"><a href="${waLink}" style="display:inline-block;background:#25D366;color:#fff;font-weight:bold;padding:5px 14px;border-radius:6px;text-decoration:none;font-size:12px;">💬 Contacter</a></td></tr>` : ''}
-      <tr><td colspan="2" style="padding:10px 0;"><hr style="border:none;border-top:1px solid #333;margin:0;"></td></tr>
-      <tr><td style="padding:7px 0;color:#888;">Trajet</td><td style="padding:7px 0;color:#fff;">${booking.departure_point} → ${booking.arrival_point}</td></tr>
-      <tr><td style="padding:7px 0;color:#888;">Date</td><td style="padding:7px 0;color:#fff;">${booking.departure_date} à ${booking.departure_time}</td></tr>
-      <tr><td style="padding:7px 0;color:#888;">Montant</td><td style="padding:7px 0;color:#F5C300;font-weight:bold;">CHF ${booking.total_price}</td></tr>
-      <tr><td style="padding:7px 0;color:#888;">Paiement</td><td style="padding:7px 0;color:#fff;">${booking.payment_method}</td></tr>
-      <tr><td colspan="2" style="padding:10px 0;"><hr style="border:none;border-top:1px solid #333;margin:0;"></td></tr>
-      <tr><td style="padding:7px 0;color:#888;">Remboursement</td><td style="padding:7px 0;color:${refundIssued ? '#4ade80' : '#f87171'};font-weight:bold;">${refundIssued ? `✅ ${refundMessage}` : `❌ ${refundMessage || 'Aucun remboursement'}`}</td></tr>
-    </table>
-  </div>
-  <p style="color:#444;text-align:center;font-size:11px;margin-top:24px;">© ${new Date().getFullYear()} Rosini Transfert — Notification automatique</p>
-</div></body></html>`;
+      const htmlBody = `
+        <div style="font-family:Arial,sans-serif;max-width:600px;margin:0 auto;padding:20px;">
+          <h2 style="color:#c0392b;">❌ Réservation annulée</h2>
+          <p><strong>Client:</strong> ${booking.client_name}</p>
+          <p><strong>Email:</strong> ${booking.client_email}</p>
+          <p><strong>Téléphone:</strong> ${booking.client_phone || '—'}</p>
+          <p><strong>Trajet:</strong> ${booking.departure_point} → ${booking.arrival_point}</p>
+          <p><strong>Date:</strong> ${booking.departure_date} à ${booking.departure_time}</p>
+          <p><strong>Montant:</strong> CHF ${booking.total_price}</p>
+          <p><strong>Méthode de paiement:</strong> ${booking.payment_method}</p>
+          <p><strong>Remboursement:</strong> ${refundIssued ? `✅ ${refundMessage}` : `❌ ${refundMessage || 'Aucun remboursement'}`}</p>
+        </div>
+      `;
 
       const lines = [
         `From: taxirosini@gmail.com`,
