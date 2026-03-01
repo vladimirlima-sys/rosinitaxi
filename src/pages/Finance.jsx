@@ -341,7 +341,7 @@ export default function Finance() {
 
             {/* Expenses List */}
             {monthExpenses.length > 0 && (
-              <div className="bg-white/5 border border-white/10 rounded-lg p-6 mb-8">
+              <div className="bg-black border border-black/40 rounded-lg p-6 mb-8">
                 <div className="flex items-center justify-between mb-4">
                   <h3 className="text-white font-semibold">Dépenses du mois</h3>
                   <span className="text-[#F5C300] font-bold">Total : CHF {totalExpenses.toFixed(2)}</span>
