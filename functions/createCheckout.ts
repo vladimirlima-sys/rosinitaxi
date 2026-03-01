@@ -4,7 +4,7 @@ const stripe = new Stripe(Deno.env.get("STRIPE_SECRET_KEY"));
 
 Deno.serve(async (req) => {
   try {
-    const { amount, currency, client_name, client_email, departure, arrival, vehicle_type, distance_km, departure_date, departure_time, origin, is_short_notice, booking_id } = await req.json();
+    const { amount, currency, client_name, client_email, client_phone, departure, arrival, vehicle_type, distance_km, departure_date, departure_time, origin, is_short_notice, booking_id } = await req.json();
 
     // Validate currency
     const validCurrencies = ['usd', 'eur', 'chf', 'gbp'];
