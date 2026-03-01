@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { base44 } from '@/api/base44Client';
-import { CreditCard, Banknote, Smartphone, Loader2, ArrowLeft } from 'lucide-react';
+import { Banknote, Loader2, ArrowLeft } from 'lucide-react';
 
 const STRIPE_PUBLISHABLE_KEY = import.meta.env.VITE_STRIPE_PUBLISHABLE_KEY;
 
