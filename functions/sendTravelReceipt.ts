@@ -99,11 +99,29 @@ Deno.serve(async (req) => {
 </html>
     `;
 
-    await base44.integrations.Core.SendEmail({
-      to: clientEmail,
-      subject: 'Comprovativo de Viagem - ROSINI TRANSFERT',
-      body: emailBody
+    const accessToken = await base44.asServiceRole.connectors.getAccessToken('gmail');
+    
+    const response = await fetch('https://www.googleapis.com/gmail/v1/users/me/messages/send', {
+      method: 'POST',
+      headers: {
+        'Authorization': `Bearer ${accessToken}`,
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify({
+        raw: btoa(
+          `From: noreply@rosini.transfert\r\n` +
+          `To: ${clientEmail}\r\n` +
+          `Subject: Comprovativo de Viagem - ROSINI TRANSFERT\r\n` +
+          `Content-Type: text/html; charset=UTF-8\r\n` +
+          `\r\n` +
+          `${emailBody}`
+        )
+      })
     });
+
+    if (!response.ok) {
+      throw new Error(`Gmail API error: ${response.statusText}`);
+    }
 
     console.log('Travel receipt sent to:', clientEmail);
     return Response.json({ success: true });
