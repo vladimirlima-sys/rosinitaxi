@@ -108,11 +108,14 @@ const translations = {
   },
 };
 
-function buildEmailBody(t, type, client_name, departure_point, arrival_point, driver_name) {
+function buildEmailBody(t, type, client_name, departure_point, arrival_point, driver_name, driver_phone) {
   const year = new Date().getFullYear();
   const title = type === 'on_the_way' ? t.on_the_way_title : t.arrived_title;
   const body = type === 'on_the_way' ? t.on_the_way_body(client_name, departure_point, driver_name) : t.arrived_body(client_name, departure_point, driver_name);
   const showDestination = type === 'on_the_way';
+
+  const driverWaNumber = driver_phone ? driver_phone.replace(/\s/g, '').replace(/^00/, '+').replace(/^\+/, '') : null;
+  const driverWaUrl = driverWaNumber ? `https://wa.me/${driverWaNumber}` : null;
 
   return `<!DOCTYPE html>
 <html>
@@ -136,6 +139,13 @@ function buildEmailBody(t, type, client_name, departure_point, arrival_point, dr
         <p style="color:#fff;font-size:14px;margin:0;">${arrival_point}</p>
       </div>` : ''}
     </div>
+    ${driverWaUrl ? `
+    <div style="text-align:center;padding:20px;background:#111;border:1px solid #25D366/30;border-radius:12px;margin-bottom:16px;">
+      <p style="color:#888;font-size:13px;margin:0 0 12px;">${t.contact_driver}</p>
+      <a href="${driverWaUrl}" style="display:inline-flex;align-items:center;gap:8px;background:#25D366;color:#fff;text-decoration:none;font-size:14px;font-weight:bold;padding:12px 24px;border-radius:8px;">
+        <span style="font-size:18px;">💬</span> WhatsApp — ${driver_name}
+      </a>
+    </div>` : ''}
     <div style="text-align:center;padding:20px;background:#111;border:1px solid #222;border-radius:12px;">
       <p style="color:#888;font-size:13px;margin:0 0 8px;">${t.contact}</p>
       <a href="tel:+41772492245" style="color:#F5C300;text-decoration:none;font-size:14px;">+41 77 249 22 45</a>
