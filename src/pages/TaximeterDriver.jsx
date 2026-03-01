@@ -98,8 +98,8 @@ export default function TaximeterDriver() {
   };
 
   const handlePayment = async () => {
-    if (!clientEmail || !clientName) {
-      toast.error('Dados do cliente são obrigatórios');
+    if (!clientEmail) {
+      toast.error('Email do cliente é obrigatório');
       return;
     }
 
@@ -109,7 +109,6 @@ export default function TaximeterDriver() {
       const response = await base44.functions.invoke('createTaxiCheckout', {
         amount: Math.round(totalPrice * 100),
         clientEmail,
-        clientName,
         distance: distance.toFixed(2),
         duration: `${minutes}m ${seconds}s`,
         vehicleType,
