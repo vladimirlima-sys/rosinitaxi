@@ -10,6 +10,7 @@ export default function Drivers() {
   const [loading, setLoading] = useState(true);
   const [showForm, setShowForm] = useState(false);
   const [editingDriver, setEditingDriver] = useState(null);
+  const [monthlyRevenue, setMonthlyRevenue] = useState({}); // { driverId: totalCHF }
 
   useEffect(() => {
     const checkAuth = async () => {
