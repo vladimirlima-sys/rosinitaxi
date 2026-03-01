@@ -25,7 +25,10 @@ export default function TaximeterDriver() {
 
   useEffect(() => {
     const loadDriver = async () => {
-      if (!driverId) return;
+      if (!driverId) {
+        setLoading(false);
+        return;
+      }
       const drivers = await base44.entities.Driver.list();
       const found = drivers.find(d => d.id === driverId);
       if (found) setDriver(found);
