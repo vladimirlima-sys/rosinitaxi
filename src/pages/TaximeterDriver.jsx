@@ -1,412 +1,252 @@
 import React, { useState, useEffect, useRef } from 'react';
-import { useSearchParams } from 'react-router-dom';
 import { base44 } from '@/api/base44Client';
-import { Play, Square, Navigation, Car, Loader2, LogOut, LogIn } from 'lucide-react';
-import PaymentForm from '@/components/taximeter/PaymentForm';
+import { Play, Pause, RotateCcw, MapPin, Clock, DollarSign, Loader2 } from 'lucide-react';
+import { toast } from 'sonner';
+
+const PriceSettings = {
+  standard_price_per_km: 3.5,
+  comfort_price_per_km: 4.5,
+  base_fare: 10,
+  airport_fee: 0,
+};
 
 export default function TaximeterDriver() {
-  const [searchParams] = useSearchParams();
-  const driverId = searchParams.get('driver_id');
-  const [driver, setDriver] = useState(null);
-  const [priceSettings, setPriceSettings] = useState(null);
-  const [vehicleType, setVehicleType] = useState('economic');
-  const [running, setRunning] = useState(false);
-  const [distanceKm, setDistanceKm] = useState(0);
-  const [totalPrice, setTotalPrice] = useState(0);
-  const [status, setStatus] = useState('idle');
-  const [gpsError, setGpsError] = useState('');
-  const [accuracy, setAccuracy] = useState(null);
-  const [showPayment, setShowPayment] = useState(false);
-  const [loading, setLoading] = useState(true);
-  const [allDrivers, setAllDrivers] = useState([]);
-  const [showLogin, setShowLogin] = useState(false);
-  const [loginInput, setLoginInput] = useState('');
-  const [loginError, setLoginError] = useState('');
-
-  const lastPositionRef = useRef(null);
+  const [isRunning, setIsRunning] = useState(false);
+  const [elapsedSeconds, setElapsedSeconds] = useState(0);
+  const [distance, setDistance] = useState(0);
+  const [vehicleType, setVehicleType] = useState('standard');
+  const [clientEmail, setClientEmail] = useState('');
+  const [clientName, setClientName] = useState('');
+  const [paying, setPaying] = useState(false);
+  const timerRef = useRef(null);
   const watchIdRef = useRef(null);
-  const distanceRef = useRef(0);
+  const lastLocationRef = useRef(null);
 
+  // Timer logic
   useEffect(() => {
-    const loadDriver = async () => {
-      const drivers = await base44.entities.Driver.list();
-      setAllDrivers(drivers);
-      
-      if (driverId) {
-        const found = drivers.find(d => d.id === driverId);
-        if (found) setDriver(found);
-        setLoading(false);
-      } else {
-        setShowLogin(true);
-        setLoading(false);
-      }
-    };
-    loadDriver();
-  }, [driverId]);
+    if (!isRunning) return;
+    timerRef.current = setInterval(() => {
+      setElapsedSeconds(prev => prev + 1);
+    }, 1000);
+    return () => clearInterval(timerRef.current);
+  }, [isRunning]);
 
+  // GPS tracking
   useEffect(() => {
-    base44.entities.PriceSettings.list().then(data => {
-      if (data?.length > 0) setPriceSettings(data[0]);
-    });
-  }, []);
-
-  const handleLogin = () => {
-    setLoginError('');
-    const found = allDrivers.find(d => 
-      d.name.toLowerCase().includes(loginInput.toLowerCase()) ||
-      d.license_number === loginInput ||
-      d.id === loginInput
-    );
-    
-    if (found) {
-      setDriver(found);
-      setShowLogin(false);
-      setLoginInput('');
-    } else {
-      setLoginError('Motorista não encontrado');
-    }
-  };
-
-  const getPricePerKm = (settings, type) => {
-    if (!settings) return 0;
-    if (type === 'comfort') return settings.comfort_price_per_km || settings.standard_price_per_km * 1.3;
-    return settings.standard_price_per_km || 0;
-  };
-
-  const haversineKm = (lat1, lon1, lat2, lon2) => {
-    const R = 6371;
-    const dLat = (lat2 - lat1) * Math.PI / 180;
-    const dLon = (lon2 - lon1) * Math.PI / 180;
-    const a = Math.sin(dLat / 2) ** 2 +
-      Math.cos(lat1 * Math.PI / 180) * Math.cos(lat2 * Math.PI / 180) *
-      Math.sin(dLon / 2) ** 2;
-    return R * 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
-  };
-
-  const startRide = () => {
-    if (!navigator.geolocation) {
-      setGpsError('GPS non disponible sur cet appareil.');
-      return;
-    }
-    setGpsError('');
-    distanceRef.current = 0;
-    setDistanceKm(0);
-    lastPositionRef.current = null;
-    setRunning(true);
-    setStatus('running');
-
-    const baseFare = priceSettings?.base_fare ?? 10;
-    setTotalPrice(parseFloat(baseFare.toFixed(2)));
+    if (!isRunning || !navigator.geolocation) return;
 
     watchIdRef.current = navigator.geolocation.watchPosition(
-      (pos) => {
-        const { latitude, longitude, accuracy: acc } = pos.coords;
-        setAccuracy(Math.round(acc));
-
-        if (lastPositionRef.current) {
-          const delta = haversineKm(
-            lastPositionRef.current.lat,
-            lastPositionRef.current.lon,
-            latitude,
-            longitude
-          );
-          if (delta > 0 && delta < 0.5 && acc < 50) {
-            distanceRef.current += delta;
-            const km = distanceRef.current;
-            const price = baseFare + km * getPricePerKm(priceSettings, vehicleType);
-            setDistanceKm(parseFloat(km.toFixed(3)));
-            setTotalPrice(parseFloat(price.toFixed(2)));
+      (position) => {
+        const { latitude, longitude } = position.coords;
+        if (lastLocationRef.current) {
+          const R = 6371; // Earth's radius in km
+          const dLat = (latitude - lastLocationRef.current.lat) * Math.PI / 180;
+          const dLon = (longitude - lastLocationRef.current.lon) * Math.PI / 180;
+          const a =
+            Math.sin(dLat / 2) * Math.sin(dLat / 2) +
+            Math.cos(lastLocationRef.current.lat * Math.PI / 180) * Math.cos(latitude * Math.PI / 180) *
+            Math.sin(dLon / 2) * Math.sin(dLon / 2);
+          const c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
+          const dist = R * c;
+          if (dist > 0.01) { // Only update if movement > 10m
+            setDistance(prev => prev + dist);
           }
         }
-        lastPositionRef.current = { lat: latitude, lon: longitude };
+        lastLocationRef.current = { lat: latitude, lon: longitude };
       },
-      (err) => {
-        setGpsError('Erreur GPS : ' + err.message);
+      (error) => {
+        toast.error('GPS não disponível');
+        setIsRunning(false);
       },
-      { enableHighAccuracy: true, maximumAge: 1000, timeout: 10000 }
+      { enableHighAccuracy: true, maximumAge: 0, timeout: 10000 }
     );
-  };
 
-  const stopRide = () => {
-    if (watchIdRef.current !== null) {
-      navigator.geolocation.clearWatch(watchIdRef.current);
-      watchIdRef.current = null;
+    return () => {
+      if (watchIdRef.current) navigator.geolocation.clearWatch(watchIdRef.current);
+    };
+  }, [isRunning]);
+
+  const pricePerKm = vehicleType === 'comfort' ? PriceSettings.comfort_price_per_km : PriceSettings.standard_price_per_km;
+  const timeCharge = Math.floor(elapsedSeconds / 60) * 0.5; // CHF 0.50 per minute
+  const distanceCharge = distance * pricePerKm;
+  const totalPrice = PriceSettings.base_fare + distanceCharge + timeCharge;
+  const minutes = Math.floor(elapsedSeconds / 60);
+  const seconds = elapsedSeconds % 60;
+
+  const handleStartStop = () => {
+    if (isRunning) {
+      setIsRunning(false);
+    } else {
+      if (!clientEmail || !clientName) {
+        toast.error('Adicione email e nome do cliente');
+        return;
+      }
+      setIsRunning(true);
     }
-    setRunning(false);
-    setStatus('completed');
-    setShowPayment(true);
-    lastPositionRef.current = null;
   };
 
-  const resetRide = () => {
-    if (watchIdRef.current !== null) {
-      navigator.geolocation.clearWatch(watchIdRef.current);
-      watchIdRef.current = null;
+  const handleReset = () => {
+    setIsRunning(false);
+    setElapsedSeconds(0);
+    setDistance(0);
+    lastLocationRef.current = null;
+  };
+
+  const handlePayment = async () => {
+    if (!clientEmail || !clientName) {
+      toast.error('Dados do cliente são obrigatórios');
+      return;
     }
-    setRunning(false);
-    setDistanceKm(0);
-    setTotalPrice(0);
-    setAccuracy(null);
-    setStatus('idle');
-    setShowPayment(false);
-    distanceRef.current = 0;
+
+    setPaying(true);
+    try {
+      // Create Stripe checkout session
+      const response = await base44.functions.invoke('createTaxiCheckout', {
+        amount: Math.round(totalPrice * 100),
+        clientEmail,
+        clientName,
+        distance: distance.toFixed(2),
+        duration: `${minutes}m ${seconds}s`,
+        vehicleType,
+        totalPrice: totalPrice.toFixed(2),
+      });
+
+      if (response.data?.url) {
+        window.location.href = response.data.url;
+      }
+    } catch (error) {
+      toast.error('Erro ao processar pagamento');
+    } finally {
+      setPaying(false);
+    }
   };
-
-  const handlePaymentComplete = (method) => {
-    resetRide();
-  };
-
-  const handlePaymentCancel = () => {
-    setShowPayment(false);
-    setStatus('stopped');
-  };
-
-  const pricePerKm = getPricePerKm(priceSettings, vehicleType);
-
-  if (loading) {
-    return (
-      <div className="min-h-screen bg-[#0A0A0A] flex items-center justify-center">
-        <Loader2 className="w-8 h-8 text-[#F5C300] animate-spin" />
-      </div>
-    );
-  }
-
-  if (showLogin) {
-    return (
-      <div className="min-h-screen bg-[#0A0A0A] flex flex-col items-center justify-center px-4 py-10">
-        <div className="w-full max-w-sm space-y-6">
-          <div className="text-center">
-            <h1 className="text-3xl font-extralight tracking-[0.3em] text-white uppercase">TAXIMÈTRE</h1>
-            <p className="text-white/30 text-xs tracking-widest uppercase mt-1">Rosini Transfert</p>
-          </div>
-
-          <div className="bg-[#111] border border-white/10 rounded-2xl p-6 space-y-4">
-            <p className="text-white/60 text-sm mb-2">Identificação do Motorista</p>
-            <input
-              type="text"
-              value={loginInput}
-              onChange={(e) => {
-                setLoginInput(e.target.value);
-                setLoginError('');
-              }}
-              onKeyPress={(e) => e.key === 'Enter' && handleLogin()}
-              placeholder="Nome ou número de identificação"
-              className="w-full px-4 py-3 rounded-xl bg-white/5 border border-white/10 text-white placeholder-white/30 focus:outline-none focus:border-white/30"
-              autoFocus
-            />
-            
-            {loginError && (
-              <div className="bg-red-500/10 border border-red-500/20 rounded-xl p-3">
-                <p className="text-red-400 text-sm">{loginError}</p>
-              </div>
-            )}
-
-            <button
-              onClick={handleLogin}
-              className="w-full h-12 rounded-xl bg-[#F5C300] text-black font-bold text-sm uppercase tracking-wider hover:bg-[#e6b800] transition-all"
-            >
-              Conectar
-            </button>
-          </div>
-
-          {allDrivers.length > 0 && (
-            <div className="bg-[#111] border border-white/10 rounded-2xl p-4">
-              <p className="text-white/40 text-xs uppercase tracking-wider mb-3">Motoristas disponíveis</p>
-              <div className="space-y-2 max-h-60 overflow-y-auto">
-                {allDrivers.filter(d => d.status === 'active').map(d => (
-                  <button
-                    key={d.id}
-                    onClick={() => {
-                      setDriver(d);
-                      setShowLogin(false);
-                    }}
-                    className="w-full text-left px-3 py-2 rounded-lg bg-white/5 hover:bg-white/10 text-white text-sm transition-all"
-                  >
-                    <div className="font-semibold">{d.name}</div>
-                    {d.license_number && <div className="text-white/50 text-xs">{d.license_number}</div>}
-                  </button>
-                ))}
-              </div>
-            </div>
-          )}
-        </div>
-      </div>
-    );
-  }
-
-  if (!driver) {
-    return (
-      <div className="min-h-screen bg-[#0A0A0A] flex items-center justify-center px-4">
-        <div className="text-center">
-          <h1 className="text-white text-2xl mb-2">Motorista não encontrado</h1>
-          <p className="text-white/60">Verifique o link de acesso</p>
-        </div>
-      </div>
-    );
-  }
 
   return (
-    <div className="min-h-screen bg-[#0A0A0A] flex flex-col items-center justify-start px-4 py-10">
-      <div className="w-full max-w-sm space-y-5">
-        {/* Header with Driver Info */}
-        <div className="text-center">
-          <h1 className="text-3xl font-extralight tracking-[0.3em] text-white uppercase">TAXIMÈTRE</h1>
-          <p className="text-white/30 text-xs tracking-widest uppercase mt-1">Rosini Transfert</p>
-          <div className="mt-3 bg-[#111] border border-white/10 rounded-xl p-3">
-            <p className="text-white/60 text-xs uppercase tracking-wider mb-1">Motorista</p>
-            <p className="text-white text-lg font-semibold">{driver.name}</p>
-          </div>
+    <div className="min-h-screen bg-gradient-to-br from-slate-900 to-slate-800 px-4 py-8">
+      <div className="max-w-lg mx-auto">
+        {/* Header */}
+        <div className="text-center mb-8">
+          <h1 className="text-4xl font-extralight tracking-[0.3em] text-white uppercase">ROSINI</h1>
+          <p className="text-slate-400 text-sm tracking-[0.2em] uppercase mt-1">Taximètre Chauffeur</p>
         </div>
 
-        {/* Vehicle selector */}
-        <div className="bg-[#111] border border-white/10 rounded-2xl p-4">
-          <p className="text-white/40 text-xs uppercase tracking-wider mb-3">Type de véhicule</p>
-          <div className="grid grid-cols-2 gap-2">
-            {['economic', 'comfort'].map(type => (
-              <button
-                key={type}
-                onClick={() => { if (!running) setVehicleType(type); }}
-                disabled={running}
-                className={`h-12 rounded-xl font-semibold text-sm uppercase tracking-wider transition-all ${
-                  vehicleType === type
-                    ? 'bg-[#F5C300] text-black'
-                    : 'bg-white/5 text-white/50 hover:bg-white/10'
-                } disabled:cursor-not-allowed`}
-              >
-                {type === 'economic' ? 'Standard' : 'Comfort'}
-              </button>
-            ))}
-          </div>
-          {priceSettings && (
-            <p className="text-white/30 text-xs text-center mt-2">
-              CHF {pricePerKm.toFixed(2)}/km
-            </p>
-          )}
-        </div>
-
-        {/* Main display */}
-        <div className="bg-[#111] border border-white/10 rounded-2xl p-6 text-center space-y-4">
-          <div>
-            <p className="text-white/30 text-xs uppercase tracking-wider mb-1">Distance</p>
-            <p className="text-white text-5xl font-light tabular-nums">
-              {distanceKm.toFixed(3)}
-              <span className="text-white/30 text-lg ml-1">km</span>
-            </p>
-          </div>
-
-          <div className="w-full h-[1px] bg-white/10" />
-
-          <div>
-            <p className="text-white/30 text-xs uppercase tracking-wider mb-1">Montant Total</p>
-            <p className={`text-5xl font-bold tabular-nums transition-colors ${running ? 'text-[#F5C300]' : 'text-white/60'}`}>
-              CHF {totalPrice.toFixed(2)}
-            </p>
-          </div>
-
-          {running && accuracy !== null && (
-            <div className="flex items-center justify-center gap-1">
-              <Navigation className="w-3 h-3 text-green-400" />
-              <p className="text-green-400 text-xs">GPS ±{accuracy}m</p>
-            </div>
-          )}
-
-          {status === 'running' && (
-            <div className="flex items-center justify-center gap-2">
-              <span className="w-2 h-2 rounded-full bg-[#F5C300] animate-pulse" />
-              <p className="text-[#F5C300] text-xs uppercase tracking-wider font-semibold">Course en cours</p>
-            </div>
-          )}
-          {status === 'completed' && (
-            <p className="text-green-400 text-xs uppercase tracking-wider">Course terminée</p>
-          )}
-          {status === 'stopped' && (
-            <p className="text-white/40 text-xs uppercase tracking-wider">Course arrêtée</p>
-          )}
-        </div>
-
-        {gpsError && (
-          <div className="bg-red-500/10 border border-red-500/20 rounded-xl p-3">
-            <p className="text-red-400 text-sm text-center">{gpsError}</p>
-          </div>
-        )}
-
-        {showPayment && status === 'completed' && (
-          <PaymentForm 
-            amount={totalPrice}
-            onPaymentComplete={handlePaymentComplete}
-            onCancel={handlePaymentCancel}
-            distance={distanceKm}
-            departure={`Taximètre ${driver.name}`}
-            arrival={`Taximètre ${driver.name}`}
-            driverId={driverId}
+        {/* Client Info */}
+        <div className="bg-slate-800/50 border border-slate-700 rounded-2xl p-4 space-y-3 mb-6">
+          <input
+            type="text"
+            placeholder="Nom du client"
+            value={clientName}
+            onChange={(e) => setClientName(e.target.value)}
+            disabled={isRunning}
+            className="w-full bg-slate-700/50 border border-slate-600 rounded-lg px-3 py-2 text-white placeholder:text-slate-500 outline-none focus:border-yellow-400/50 disabled:opacity-50"
           />
-        )}
-
-        {!running && !showPayment ? (
-          <div className="space-y-2">
-            <button
-              onClick={startRide}
-              disabled={!priceSettings}
-              className="w-full h-14 rounded-2xl bg-[#F5C300] text-black font-bold text-base uppercase tracking-wider hover:bg-[#e6b800] transition-all disabled:opacity-40 disabled:cursor-not-allowed flex items-center justify-center gap-2"
-            >
-              {!priceSettings ? (
-                <><Loader2 className="w-5 h-5 animate-spin" /> Chargement...</>
-              ) : (
-                <><Play className="w-5 h-5" /> Démarrer la course</>
-              )}
-            </button>
-            {status !== 'idle' && (
-              <button
-                onClick={resetRide}
-                className="w-full h-11 rounded-xl border border-white/10 text-white/40 text-sm uppercase tracking-wider hover:bg-white/5 transition-all"
-              >
-                Réinitialiser
-              </button>
-            )}
-          </div>
-        ) : running && !showPayment ? (
-          <button
-            onClick={stopRide}
-            className="w-full h-14 rounded-2xl bg-red-500/10 border border-red-500/30 text-red-400 font-bold text-base uppercase tracking-wider hover:bg-red-500/20 transition-all flex items-center justify-center gap-2"
+          <input
+            type="email"
+            placeholder="Email du client"
+            value={clientEmail}
+            onChange={(e) => setClientEmail(e.target.value)}
+            disabled={isRunning}
+            className="w-full bg-slate-700/50 border border-slate-600 rounded-lg px-3 py-2 text-white placeholder:text-slate-500 outline-none focus:border-yellow-400/50 disabled:opacity-50"
+          />
+          <select
+            value={vehicleType}
+            onChange={(e) => setVehicleType(e.target.value)}
+            disabled={isRunning}
+            className="w-full bg-slate-700/50 border border-slate-600 rounded-lg px-3 py-2 text-white outline-none focus:border-yellow-400/50 disabled:opacity-50"
           >
-            <Square className="w-5 h-5" /> Arrêter la course
-          </button>
-        ) : null}
+            <option value="standard">Standard - CHF {PriceSettings.standard_price_per_km}/km</option>
+            <option value="comfort">Comfort - CHF {PriceSettings.comfort_price_per_km}/km</option>
+          </select>
+        </div>
 
-        {distanceKm > 0 && priceSettings && (
-          <div className="bg-[#111] border border-white/10 rounded-2xl p-4 space-y-2">
-            <p className="text-white/30 text-xs uppercase tracking-wider mb-2">Détails</p>
-            <div className="flex justify-between text-sm">
-              <span className="text-white/50">{distanceKm.toFixed(3)} km × CHF {pricePerKm.toFixed(2)}</span>
-              <span className="text-white">CHF {(distanceKm * pricePerKm).toFixed(2)}</span>
-            </div>
-            {priceSettings.base_fare > 0 && (
-              <div className="flex justify-between text-sm">
-                <span className="text-white/50">Prise en charge</span>
-                <span className="text-white">CHF {priceSettings.base_fare.toFixed(2)}</span>
-              </div>
-            )}
-            <div className="w-full h-[1px] bg-white/10 my-1" />
-            <div className="flex justify-between text-sm font-bold">
-              <span className="text-white">Total</span>
-              <span className="text-[#F5C300]">CHF {totalPrice.toFixed(2)}</span>
+        {/* Taximeter Display */}
+        <div className="bg-gradient-to-br from-slate-800 to-slate-900 border border-yellow-400/20 rounded-2xl p-8 mb-6 space-y-6">
+          {/* Time */}
+          <div className="flex items-center gap-3 justify-center">
+            <Clock className="w-5 h-5 text-yellow-400" />
+            <div className="text-5xl font-mono text-yellow-400 font-bold tracking-wider">
+              {String(minutes).padStart(2, '0')}:{String(seconds).padStart(2, '0')}
             </div>
           </div>
-        )}
 
-        <button
-          onClick={() => {
-            setDriver(null);
-            setShowLogin(true);
-            resetRide();
-          }}
-          className="w-full h-11 rounded-xl border border-white/10 text-white/40 text-sm uppercase tracking-wider hover:text-white/60 hover:bg-white/5 transition-all flex items-center justify-center gap-2"
-        >
-          <LogIn className="w-4 h-4" /> Mudar motorista
-        </button>
+          {/* Distance */}
+          <div className="flex items-center gap-3 justify-center">
+            <MapPin className="w-5 h-5 text-blue-400" />
+            <div className="text-4xl font-mono text-blue-400 font-bold">
+              {distance.toFixed(2)} km
+            </div>
+          </div>
 
-        <p className="text-white/15 text-xs text-center">
-          Le GPS nécessite la permission de localisation pour fonctionner
+          {/* Total Price */}
+          <div className="flex items-center gap-3 justify-center">
+            <DollarSign className="w-5 h-5 text-green-400" />
+            <div className="text-5xl font-mono text-green-400 font-bold">
+              CHF {totalPrice.toFixed(2)}
+            </div>
+          </div>
+
+          {/* Price Breakdown */}
+          <div className="border-t border-slate-700 pt-4 space-y-2 text-sm text-slate-300">
+            <div className="flex justify-between">
+              <span>Prise en charge:</span>
+              <span>CHF {PriceSettings.base_fare.toFixed(2)}</span>
+            </div>
+            <div className="flex justify-between">
+              <span>Distance ({distance.toFixed(2)} km × CHF {pricePerKm}):</span>
+              <span>CHF {distanceCharge.toFixed(2)}</span>
+            </div>
+            <div className="flex justify-between">
+              <span>Temps ({minutes} min × CHF 0.50):</span>
+              <span>CHF {timeCharge.toFixed(2)}</span>
+            </div>
+          </div>
+        </div>
+
+        {/* Controls */}
+        <div className="grid grid-cols-3 gap-3 mb-6">
+          <button
+            onClick={handleStartStop}
+            className={`h-16 rounded-xl font-bold text-sm uppercase tracking-wider flex items-center justify-center gap-2 transition-all ${
+              isRunning
+                ? 'bg-red-500/10 border border-red-500/30 text-red-400 hover:bg-red-500/20'
+                : 'bg-green-500/10 border border-green-500/30 text-green-400 hover:bg-green-500/20'
+            }`}
+          >
+            {isRunning ? (
+              <>
+                <Pause className="w-5 h-5" />
+                Arrêt
+              </>
+            ) : (
+              <>
+                <Play className="w-5 h-5" />
+                Démarrer
+              </>
+            )}
+          </button>
+          <button
+            onClick={handleReset}
+            disabled={isRunning}
+            className="h-16 rounded-xl bg-slate-700/50 border border-slate-600 text-slate-300 font-bold text-sm uppercase tracking-wider flex items-center justify-center gap-2 hover:bg-slate-700 transition-all disabled:opacity-50"
+          >
+            <RotateCcw className="w-5 h-5" />
+            Réinitialiser
+          </button>
+          <button
+            onClick={handlePayment}
+            disabled={paying || elapsedSeconds === 0}
+            className="h-16 rounded-xl bg-yellow-400 text-slate-900 font-bold text-sm uppercase tracking-wider flex items-center justify-center gap-2 hover:bg-yellow-300 transition-all disabled:opacity-50"
+          >
+            {paying ? (
+              <Loader2 className="w-5 h-5 animate-spin" />
+            ) : (
+              'Paiement'
+            )}
+          </button>
+        </div>
+
+        <p className="text-slate-400 text-xs text-center">
+          Le reçu sera envoyé à l'email du client après confirmation du paiement
         </p>
       </div>
     </div>
