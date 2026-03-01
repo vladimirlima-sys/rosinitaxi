@@ -200,10 +200,10 @@ export default function TaximeterDriver() {
         </div>
 
         {/* Controls */}
-        <div className="grid grid-cols-3 gap-3 mb-6">
+        <div className="grid grid-cols-3 gap-4 mb-6">
           <button
             onClick={handleStartStop}
-            className={`h-16 rounded-xl font-bold text-sm uppercase tracking-wider flex items-center justify-center gap-2 transition-all ${
+            className={`py-4 px-3 rounded-2xl font-bold text-xs uppercase tracking-wider flex flex-col items-center justify-center gap-2 transition-all shadow-lg ${
               isRunning
                 ? 'bg-red-600 text-white hover:bg-red-700'
                 : 'bg-green-600 text-white hover:bg-green-700'
@@ -211,33 +211,36 @@ export default function TaximeterDriver() {
           >
             {isRunning ? (
               <>
-                <Pause className="w-5 h-5" />
-                Arrêt
+                <Pause className="w-6 h-6" />
+                <span>Arrêt</span>
               </>
             ) : (
               <>
-                <Play className="w-5 h-5" />
-                Démarrer
+                <Play className="w-6 h-6" />
+                <span>Démarrer</span>
               </>
             )}
           </button>
           <button
             onClick={handleReset}
             disabled={isRunning}
-            className="h-16 rounded-xl bg-gray-700 text-white font-bold text-sm uppercase tracking-wider flex items-center justify-center gap-2 hover:bg-gray-800 transition-all disabled:opacity-50"
+            className="py-4 px-3 rounded-2xl bg-gray-700 text-white font-bold text-xs uppercase tracking-wider flex flex-col items-center justify-center gap-2 hover:bg-gray-800 transition-all disabled:opacity-50 shadow-lg"
           >
-            <RotateCcw className="w-5 h-5" />
-            Réinitialiser
+            <RotateCcw className="w-6 h-6" />
+            <span>Reset</span>
           </button>
           <button
             onClick={handlePayment}
             disabled={paying || elapsedSeconds === 0}
-            className="h-16 rounded-xl bg-[#F5C300] text-black font-bold text-sm uppercase tracking-wider flex items-center justify-center gap-2 hover:bg-[#E5B300] transition-all disabled:opacity-50"
+            className="py-4 px-3 rounded-2xl bg-[#F5C300] text-black font-bold text-xs uppercase tracking-wider flex flex-col items-center justify-center gap-2 hover:bg-[#E5B300] transition-all disabled:opacity-50 shadow-lg"
           >
             {paying ? (
-              <Loader2 className="w-5 h-5 animate-spin" />
+              <Loader2 className="w-6 h-6 animate-spin" />
             ) : (
-              'Paiement'
+              <>
+                <DollarSign className="w-6 h-6" />
+                <span>Paiement</span>
+              </>
             )}
           </button>
         </div>
