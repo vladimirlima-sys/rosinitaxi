@@ -51,6 +51,10 @@ export default function Taximeter() {
     setRunning(true);
     setStatus('running');
 
+    // Start with base fare of 10 CHF immediately
+    const baseFare = priceSettings?.base_fare ?? 10;
+    setTotalPrice(parseFloat(baseFare.toFixed(2)));
+
     watchIdRef.current = navigator.geolocation.watchPosition(
       (pos) => {
         const { latitude, longitude, accuracy: acc } = pos.coords;
@@ -67,7 +71,7 @@ export default function Taximeter() {
           if (delta > 0 && delta < 0.5 && acc < 50) {
             distanceRef.current += delta;
             const km = distanceRef.current;
-            const price = km * getPricePerKm(priceSettings, vehicleType) + (priceSettings?.base_fare || 0);
+            const price = baseFare + km * getPricePerKm(priceSettings, vehicleType);
             setDistanceKm(parseFloat(km.toFixed(3)));
             setTotalPrice(parseFloat(price.toFixed(2)));
           }
