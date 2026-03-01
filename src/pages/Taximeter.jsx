@@ -113,6 +113,9 @@ export default function Taximeter() {
       navigator.geolocation.clearWatch(watchIdRef.current);
       watchIdRef.current = null;
     }
+    if (waitingIntervalRef.current) {
+      clearInterval(waitingIntervalRef.current);
+    }
     setRunning(false);
     setStatus('completed');
     setShowPayment(true);
