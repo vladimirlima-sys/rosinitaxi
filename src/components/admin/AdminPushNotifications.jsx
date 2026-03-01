@@ -34,6 +34,10 @@ export default function AdminPushNotifications({ isAdmin }) {
   const knownStatuses = useRef({});
 
   const requestPermission = async () => {
+    if (typeof Notification === 'undefined') {
+      toast.error('Notificações não suportadas neste navegador');
+      return;
+    }
     const perm = await Notification.requestPermission();
     setPermStatus(perm);
     if (perm === 'granted') toast.success('Notificações ativadas!');
