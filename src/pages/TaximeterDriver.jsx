@@ -139,14 +139,6 @@ export default function TaximeterDriver() {
         {/* Client Info */}
         <div className="bg-black border border-black/40 rounded-2xl p-4 space-y-3 mb-6">
           <input
-            type="text"
-            placeholder="Nom du client"
-            value={clientName}
-            onChange={(e) => setClientName(e.target.value)}
-            disabled={isRunning}
-            className="w-full bg-white/10 border border-white/20 rounded-lg px-3 py-2 text-white placeholder:text-white/40 outline-none focus:border-white/60 disabled:opacity-50"
-          />
-          <input
             type="email"
             placeholder="Email du client"
             value={clientEmail}
