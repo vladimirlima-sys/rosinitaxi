@@ -184,32 +184,13 @@ Deno.serve(async (req) => {
     // Gerar HTML do e-mail
     const emailHTML = generateEmailHTML(booking, statusInfo);
 
-    // Enviar e-mail via Gmail connector
-    const accessToken = await base44.asServiceRole.connectors.getAccessToken('gmail');
-
-    const response = await fetch('https://www.googleapis.com/gmail/v1/users/me/messages/send', {
-      method: 'POST',
-      headers: {
-        'Authorization': `Bearer ${accessToken}`,
-        'Content-Type': 'application/json'
-      },
-      body: JSON.stringify({
-        raw: btoa(
-          `From: no-reply@rosini.online\r\n` +
-          `To: ${booking.client_email}\r\n` +
-          `Subject: ${statusInfo.subject}\r\n` +
-          `MIME-Version: 1.0\r\n` +
-          `Content-Type: text/html; charset=utf-8\r\n` +
-          `\r\n` +
-          emailHTML
-        )
-      })
+    // Enviar e-mail via Core integration
+    await base44.integrations.Core.SendEmail({
+      to: booking.client_email,
+      subject: statusInfo.subject,
+      body: emailHTML,
+      from_name: 'Rosini Transfert'
     });
-
-    if (!response.ok) {
-      console.error('Gmail API error:', await response.text());
-      return Response.json({ success: false, error: 'Failed to send email' }, { status: 500 });
-    }
 
     return Response.json({ success: true, message: 'Email sent successfully' });
   } catch (error) {
