@@ -193,8 +193,11 @@ export default function Taximeter() {
               <p className="text-[#F5C300] text-xs uppercase tracking-wider font-semibold">Course en cours</p>
             </div>
           )}
+          {status === 'completed' && (
+            <p className="text-green-400 text-xs uppercase tracking-wider">Course terminée</p>
+          )}
           {status === 'stopped' && (
-            <p className="text-white/40 text-xs uppercase tracking-wider">Course terminée</p>
+            <p className="text-white/40 text-xs uppercase tracking-wider">Course arrêtée</p>
           )}
         </div>
 
