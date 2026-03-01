@@ -303,13 +303,13 @@ export default function Finance() {
               </option>
             ))}
             {!availableMonths.includes(selectedMonth) && (
-              <option value={selectedMonth} className="bg-black text-white">{monthLabel}</option>
+              <option value={selectedMonth} className="bg-[#222] text-white">{monthLabel}</option>
             )}
           </select>
         </div>
 
         {loading ? (
-          <div className="text-white/50">Chargement des données...</div>
+          <div className="text-black/50">Chargement des données...</div>
         ) : (
           <>
             {/* Summary Cards */}
