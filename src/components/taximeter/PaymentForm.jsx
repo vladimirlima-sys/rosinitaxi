@@ -23,7 +23,11 @@ export default function PaymentForm({ amount, onPaymentComplete, onCancel, dista
       // Register payment
       await base44.functions.invoke('registerTaximeterPayment', {
         amount: amount,
-        paymentMethod: 'card'
+        paymentMethod: 'card',
+        clientEmail,
+        distance,
+        departure,
+        arrival
       });
       
       // Redirect to Stripe
