@@ -12,7 +12,14 @@ function HomeContent({ bookingRef }) {
     <>
       <SeoHead lang={lang} />
       <div className="min-h-screen bg-[#F5C300]">
-        <div className="fixed top-4 right-4 z-50">
+        <div className="fixed top-4 right-4 z-50 flex items-center gap-2">
+          <a
+            href={createPageUrl('FAQ')}
+            className="flex items-center gap-1.5 bg-black text-[#F5C300] font-semibold px-4 py-2 rounded-full text-sm hover:bg-black/80 transition-all shadow"
+          >
+            <HelpCircle className="w-4 h-4" />
+            FAQ
+          </a>
           <LanguageSwitcher />
         </div>
         <BookingForm bookingRef={bookingRef} />
