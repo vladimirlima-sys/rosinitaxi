@@ -21,8 +21,12 @@ export default function BookingForm({ bookingRef }) {
   const { lang } = useLang();
   const t = translations[lang];
   
+  React.useEffect(() => {
+    console.log('BookingForm mounted, lang:', lang, 't:', !!t);
+  }, [lang, t]);
+  
   if (!t) {
-    return <div className="min-h-screen bg-[#F5C300] flex items-center justify-center"><p className="text-black">Carregando...</p></div>;
+    return <div className="min-h-screen bg-[#F5C300] flex items-center justify-center"><p className="text-black">Carregando traduções...</p></div>;
   }
 
   const [step, setStep] = useState(1); // 1=booking form, 2=vehicle, 3=personal info, 4=payment, 5=confirm
