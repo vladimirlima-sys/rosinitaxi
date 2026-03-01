@@ -546,7 +546,7 @@ Deno.serve(async (req) => {
     // Send confirmation email to client (only if not short notice)
     if (!skip_client_email && client_email) {
       try {
-        await sendGmailEmail(client_email, clientSubject, clientEmailBody);
+        await sendCoreEmail(client_email, clientSubject, clientEmailBody);
         console.log(`Confirmation email sent to ${client_email}`);
       } catch (emailError) {
         console.error(`Error sending client email to ${client_email}:`, emailError);
@@ -555,20 +555,18 @@ Deno.serve(async (req) => {
       console.log(`Short notice booking — skipping client email for ${client_email}`);
     }
 
-    // Send receipt PDF to company
+    // Send receipt to company
     if (client_name && departure_point && arrival_point) {
       try {
-        const pdfBytes = generateReceiptPDF();
         const receiptEmailBody = t.newBookingBody(client_name);
-        await sendGmailEmail(
+        await sendCoreEmail(
           'info@rosini.online',
           t.newBookingSubject(client_name),
-          receiptEmailBody,
-          pdfBytes
+          receiptEmailBody
         );
-        console.log(`Receipt PDF sent to company for booking by ${client_name}`);
+        console.log(`Receipt sent to company for booking by ${client_name}`);
       } catch (receiptError) {
-        console.error(`Error sending receipt PDF:`, receiptError);
+        console.error(`Error sending receipt:`, receiptError);
       }
     }
 
