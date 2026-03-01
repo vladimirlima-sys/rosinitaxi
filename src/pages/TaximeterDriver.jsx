@@ -394,6 +394,17 @@ export default function TaximeterDriver() {
           </div>
         )}
 
+        <button
+          onClick={() => {
+            setDriver(null);
+            setShowLogin(true);
+            resetRide();
+          }}
+          className="w-full h-11 rounded-xl border border-white/10 text-white/40 text-sm uppercase tracking-wider hover:text-white/60 hover:bg-white/5 transition-all flex items-center justify-center gap-2"
+        >
+          <LogIn className="w-4 h-4" /> Mudar motorista
+        </button>
+
         <p className="text-white/15 text-xs text-center">
           Le GPS nécessite la permission de localisation pour fonctionner
         </p>
