@@ -168,7 +168,6 @@ export default function BookingForm({ bookingRef }) {
     const [h, min] = form.departure_time.split(':').map(Number);
     const departure = new Date(y, m - 1, d, h, min, 0);
     const diffMinutes = (departure.getTime() - Date.now()) / 60000;
-    console.log('[ShortNotice] date:', form.departure_date, 'time:', form.departure_time, 'departure:', departure, 'diffMin:', diffMinutes);
     return diffMinutes >= 0 && diffMinutes < 90;
   };
   const isShortNotice = checkShortNotice();
