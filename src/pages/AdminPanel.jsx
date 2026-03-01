@@ -67,16 +67,15 @@ export default function AdminPanel() {
   }
 
   return (
-    <div className="min-h-screen bg-[#0A0A0A] px-4 py-10">
-      <div className="max-w-3xl mx-auto">
-        <div className="flex items-center justify-between mb-10">
-          <div>
-            <h1 className="text-[#F5C300] text-2xl font-light tracking-widest uppercase">Rosini</h1>
-            <p className="text-white/40 text-xs tracking-widest mt-1">PAINEL ADMINISTRATIVO</p>
-          </div>
+    <div className="min-h-screen bg-[#F5C300] px-4 py-12">
+      <div className="max-w-2xl mx-auto">
+        <div className="text-center mb-12">
+          <h1 className="text-black text-6xl font-extralight tracking-[0.3em] uppercase">ROSINI</h1>
+          <p className="text-black/60 text-sm tracking-[0.2em] uppercase mt-2">PAINEL ADMINISTRATIVO</p>
+          <div className="w-8 h-[1px] bg-black/40 mx-auto mt-3" />
           <button
             onClick={() => setUnlocked(false)}
-            className="flex items-center gap-2 text-white/40 hover:text-white text-sm transition-colors"
+            className="flex items-center gap-2 text-black/60 hover:text-black text-sm transition-colors mt-6 mx-auto"
           >
             <LogOut className="w-4 h-4" />
             Sair
@@ -88,14 +87,14 @@ export default function AdminPanel() {
             <a
               key={name}
               href={createPageUrl(name)}
-              className="group flex items-center gap-4 bg-white/[0.03] hover:bg-white/[0.07] border border-white/10 hover:border-[#F5C300]/30 rounded-2xl px-5 py-4 transition-all"
+              className="group flex items-center gap-4 bg-black border border-black/40 rounded-xl px-4 py-3.5 transition-all hover:bg-black/80"
             >
-              <div className="w-10 h-10 rounded-xl bg-[#F5C300]/10 border border-[#F5C300]/20 flex items-center justify-center shrink-0 group-hover:bg-[#F5C300]/20 transition-colors">
-                <Icon className="w-5 h-5 text-[#F5C300]" />
+              <div className="w-10 h-10 rounded-lg bg-white/10 border border-white/20 flex items-center justify-center shrink-0 group-hover:bg-white/20 transition-colors">
+                <Icon className="w-5 h-5 text-white" />
               </div>
               <div>
                 <p className="text-white font-medium text-sm">{label}</p>
-                <p className="text-white/40 text-xs">{desc}</p>
+                <p className="text-white/60 text-xs">{desc}</p>
               </div>
             </a>
           ))}
