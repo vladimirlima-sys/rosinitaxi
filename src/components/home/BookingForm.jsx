@@ -10,6 +10,7 @@ import PriceExamplesCards from './PriceExamplesCards';
 import AddToHomeScreen from './AddToHomeScreen';
 import PreferredDriverSelector from './PreferredDriverSelector';
 import RideCounter from './RideCounter';
+import MyBookingCard from './MyBookingCard';
 import { base44 } from '@/api/base44Client';
 import { toast } from 'sonner';
 import { useLang } from '@/components/LanguageContext';
