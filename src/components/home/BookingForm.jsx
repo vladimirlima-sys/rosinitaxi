@@ -20,6 +20,10 @@ import { createPageUrl } from '@/utils';
 export default function BookingForm({ bookingRef }) {
   const { lang } = useLang();
   const t = translations[lang];
+  
+  if (!t) {
+    return <div className="min-h-screen bg-[#F5C300] flex items-center justify-center"><p className="text-black">Carregando...</p></div>;
+  }
 
   const [step, setStep] = useState(1); // 1=booking form, 2=vehicle, 3=personal info, 4=payment, 5=confirm
   const [isSubmitting, setIsSubmitting] = useState(false);
