@@ -50,7 +50,11 @@ export default function PaymentForm({ amount, onPaymentComplete, onCancel, dista
 
       <div className="w-full h-[1px] bg-white/10" />
 
-      <p className="text-white/40 text-sm uppercase tracking-wider">Mode de paiement</p>
+      {!clientEmail && (
+        <div className="bg-yellow-500/10 border border-yellow-500/20 rounded-xl p-3">
+          <p className="text-yellow-400 text-sm">Veuillez saisir l'email du client</p>
+        </div>
+      )}
 
       <button
         onClick={handleCashPayment}
