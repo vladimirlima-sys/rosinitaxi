@@ -455,7 +455,7 @@ export default function Finance() {
                       {monthBookings.map(booking => (
                         <tr key={booking.id} className="border-b border-white/5 hover:bg-white/5 transition">
                           <td className="text-white py-3 px-3">
-                            {new Date(booking.created_date).toLocaleDateString('fr-FR')}
+                            {new Date(booking.departure_date || booking.created_date).toLocaleDateString('fr-FR')}
                           </td>
                           <td className="text-white py-3 px-3">{booking.client_name}</td>
                           <td className="text-white/70 py-3 px-3 text-xs">
