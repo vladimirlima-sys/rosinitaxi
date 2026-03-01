@@ -11,12 +11,21 @@ function HomeContent({ bookingRef }) {
   const [error, setError] = React.useState(null);
 
   React.useEffect(() => {
+    console.log('HomeContent mounted, lang:', lang);
     const handleError = (event) => {
       console.error('App error:', event.error);
       setError(event.error?.message || 'Erro ao carregar a página');
     };
+    const handleUnhandledRejection = (event) => {
+      console.error('Unhandled promise rejection:', event.reason);
+      setError(event.reason?.message || 'Erro: ' + String(event.reason));
+    };
     window.addEventListener('error', handleError);
-    return () => window.removeEventListener('error', handleError);
+    window.addEventListener('unhandledrejection', handleUnhandledRejection);
+    return () => {
+      window.removeEventListener('error', handleError);
+      window.removeEventListener('unhandledrejection', handleUnhandledRejection);
+    };
   }, []);
 
   if (error) {
