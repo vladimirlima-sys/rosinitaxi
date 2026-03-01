@@ -167,8 +167,8 @@ export default function Drivers() {
 
                 {/* Monthly revenue */}
                 <div className="text-right shrink-0 mr-2">
-                  <p className="text-white/30 text-xs uppercase tracking-wider">Este mês</p>
-                  <p className={`text-sm font-bold mt-0.5 ${monthlyRevenue[driver.id] ? 'text-[#F5C300]' : 'text-white/20'}`}>
+                  <p className="text-white/60 text-xs uppercase tracking-wider">Este mês</p>
+                  <p className={`text-sm font-bold mt-0.5 ${monthlyRevenue[driver.id] ? 'text-white' : 'text-white/40'}`}>
                     {monthlyRevenue[driver.id] ? `CHF ${monthlyRevenue[driver.id].toFixed(2)}` : '—'}
                   </p>
                 </div>
@@ -180,19 +180,19 @@ export default function Drivers() {
                     target="_blank"
                     rel="noopener noreferrer"
                     title="Abrir portal do motorista"
-                    className="w-9 h-9 rounded-lg border border-white/10 flex items-center justify-center text-white/40 hover:text-[#F5C300] hover:border-[#F5C300]/30 transition-all"
+                    className="w-9 h-9 rounded-lg border border-white/20 flex items-center justify-center text-white/40 hover:text-white hover:border-white/40 transition-all"
                   >
                     <ExternalLink className="w-4 h-4" />
                   </a>
                   <button
                     onClick={() => handleEdit(driver)}
-                    className="w-9 h-9 rounded-lg border border-white/10 flex items-center justify-center text-white/40 hover:text-white hover:border-white/30 transition-all"
+                    className="w-9 h-9 rounded-lg border border-white/20 flex items-center justify-center text-white/40 hover:text-white hover:border-white/40 transition-all"
                   >
                     <Pencil className="w-4 h-4" />
                   </button>
                   <button
                     onClick={() => handleDelete(driver.id)}
-                    className="w-9 h-9 rounded-lg border border-white/10 flex items-center justify-center text-white/40 hover:text-red-400 hover:border-red-400/30 transition-all"
+                    className="w-9 h-9 rounded-lg border border-white/20 flex items-center justify-center text-white/40 hover:text-red-400 hover:border-red-400/40 transition-all"
                   >
                     <Trash2 className="w-4 h-4" />
                   </button>
