@@ -386,7 +386,7 @@ export default function DriverPortal() {
             className="w-full mb-4 bg-[#F5C300]/10 border border-[#F5C300]/20 rounded-xl p-3 flex items-center gap-3 text-left hover:bg-[#F5C300]/20 transition-all"
           >
             <Bell className="w-4 h-4 text-[#F5C300] shrink-0" />
-            <p className="text-[#F5C300] text-sm">Ativar notificações para receber alertas de novas corridas</p>
+            <p className="text-[#F5C300] text-sm">Activer les notifications pour recevoir des alertes de nouvelles courses</p>
           </button>
         )}
 
