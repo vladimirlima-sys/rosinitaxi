@@ -147,6 +147,26 @@ Deno.serve(async (req) => {
 
     const pdfBytes = doc.output('arraybuffer');
     
+    // Upload PDF file
+    const blob = new Blob([pdfBytes], { type: 'application/pdf' });
+    const file = new File([blob], `payslip-${driverId}-${month}-${year}.pdf`, { type: 'application/pdf' });
+    
+    const uploadResponse = await base44.integrations.Core.UploadFile({ file });
+    
+    // Save payslip record
+    await base44.asServiceRole.entities.PayslipRecord.create({
+      driver_id: driverId,
+      driver_name: driverData.name,
+      month: month,
+      year: year,
+      gross_amount: grossAmount,
+      net_amount: netAmount,
+      total_deductions: totalDeductions,
+      pdf_url: uploadResponse.file_url,
+      driver_email: driverData.email,
+      sent_to_driver: false
+    });
+    
     return new Response(pdfBytes, {
       status: 200,
       headers: {
