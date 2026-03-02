@@ -125,7 +125,7 @@ Deno.serve(async (req) => {
 
     try {
       if (clientEmail && !isShortNotice) {
-        await sendGmailEmail(clientEmail, `✅ Réservation confirmée — ${departure} → ${arrival}`, clientHtml);
+        await sendGmailEmail(clientEmail, `Votre réservation — Rosini Transfert`, clientHtml);
         console.log("Confirmation email sent to client:", clientEmail);
       } else if (isShortNotice) {
         console.log("Short notice booking — skipping client confirmation email for:", clientEmail);
