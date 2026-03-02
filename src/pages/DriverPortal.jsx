@@ -408,7 +408,7 @@ export default function DriverPortal() {
         {/* Upcoming bookings */}
         {upcoming.length > 0 ? (
           <div className="space-y-3 mb-8">
-            <h2 className="text-white/50 text-xs uppercase tracking-wider px-1">Próximas corridas</h2>
+            <h2 className="text-white/50 text-xs uppercase tracking-wider px-1">Prochaines courses</h2>
             {upcoming.map(b => (
               <BookingCard key={b.id} booking={b} isNew={newBookingIds.has(b.id)} />
             ))}
