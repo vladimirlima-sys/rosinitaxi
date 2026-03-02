@@ -84,14 +84,7 @@ export default function SettingsPage() {
     </div>
   );
 
-  if (!isAdmin) return (
-    <div className="min-h-screen bg-[#0A0A0A] flex items-center justify-center text-white">
-      <div className="text-center">
-        <h1 className="text-2xl font-light mb-2">Acesso Restrito</h1>
-        <p className="text-white/50">Apenas administradores podem acessar esta página.</p>
-      </div>
-    </div>
-  );
+
 
   const standardPreview = (settings.standard_price_per_km || 0);
   const comfortPreview = (settings.comfort_price_per_km || standardPreview * 1.3);
