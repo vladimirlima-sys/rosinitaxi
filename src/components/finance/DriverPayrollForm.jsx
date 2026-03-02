@@ -86,13 +86,13 @@ export default function DriverPayrollForm({ drivers, onCreated }) {
         <form onSubmit={handleSubmit} className="border-t border-gray-200 p-6 space-y-4">
           <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
             <div>
-              <label className="block text-sm font-medium text-gray-700 mb-2">Motorista *</label>
+              <label className="block text-sm font-medium text-gray-700 mb-2">Chauffeur *</label>
               <select
                 value={formData.driver_id}
                 onChange={handleDriverChange}
                 className="w-full border border-gray-300 rounded-lg px-3 py-2 text-sm focus:outline-none focus:border-blue-500"
               >
-                <option value="">Selecionar motorista</option>
+                <option value="">Sélectionner un chauffeur</option>
                 {drivers.map(driver => (
                   <option key={driver.id} value={driver.id}>{driver.name}</option>
                 ))}
