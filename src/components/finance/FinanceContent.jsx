@@ -15,7 +15,9 @@ export default function FinanceContent({
   netResult,
   paymentMethods,
   selectedMonth,
-  onExpenseAdded
+  onExpenseAdded,
+  totalTaxes,
+  taxSettings
 }) {
   if (loading) {
     return <div className="text-black/50 text-center py-12 flex items-center justify-center gap-2"><Loader2 className="w-5 h-5 animate-spin" /> Chargement...</div>;
@@ -24,7 +26,7 @@ export default function FinanceContent({
   return (
     <div className="space-y-8">
       {/* Summary */}
-      <FinanceSummary grandTotal={grandTotal} netResult={netResult} monthBookings={monthBookings} />
+      <FinanceSummary grandTotal={grandTotal} netResult={netResult} monthBookings={monthBookings} totalTaxes={totalTaxes} taxSettings={taxSettings} />
 
       {/* Add Expense */}
       <AddExpenseCard selectedMonth={selectedMonth} onAdded={onExpenseAdded} />
