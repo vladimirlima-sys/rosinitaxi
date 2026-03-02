@@ -287,7 +287,7 @@ Deno.serve(async (req) => {
     const t = T[language] || T.fr;
     const payMethodLabel = payment_method === 'stripe' ? t.payStripe : payment_method === 'twint' ? t.payTwint : t.payCash;
     const isPaid = payment_method === 'stripe';
-    const cancelUrl = `https://rosini.online/CancelBooking?id=${booking_id}&lang=${language}`;
+    const cancelUrl = `https://rosini.online/MyBookings?email=${encodeURIComponent(client_email)}&lang=${language}`;
     const year = new Date().getFullYear();
 
     // ─── Row helper ────────────────────────────────────────────────────────────
