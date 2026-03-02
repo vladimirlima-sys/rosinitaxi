@@ -1,11 +1,10 @@
 import { useState, useEffect } from 'react';
 import { createPageUrl } from '@/utils';
-import { Lock, LayoutDashboard, Users, Car, LogOut } from 'lucide-react';
+import { Lock, LayoutDashboard, Users, LogOut } from 'lucide-react';
 
 const PASSWORD = 'Sophia051009@';
 
 const pages = [
-  { name: 'Drivers', label: 'Motoristas', icon: Car, desc: 'Gerir motoristas' },
   { name: 'Taximeter', label: 'Taxímetro', icon: LayoutDashboard, desc: 'Contador de km ao vivo' },
   { name: 'DriverPortal', label: 'Portal do Motorista', icon: Users, desc: 'Acesso para motoristas' },
 ];
