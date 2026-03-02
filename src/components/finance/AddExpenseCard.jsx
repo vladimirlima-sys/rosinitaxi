@@ -82,6 +82,17 @@ export default function AddExpenseCard({ selectedMonth, onAdded }) {
             className="w-full bg-white/10 border border-white/20 text-white px-3 py-2 rounded-lg outline-none text-sm"
           />
         </div>
+        <div className="md:col-span-2">
+          <label className="flex items-center gap-3 cursor-pointer">
+            <input
+              type="checkbox"
+              checked={form.is_recurring}
+              onChange={e => setForm(f => ({ ...f, is_recurring: e.target.checked }))}
+              className="w-4 h-4 rounded cursor-pointer"
+            />
+            <span className="text-white/60 text-sm">Dépense fixe mensuelle (répétée automatiquement)</span>
+          </label>
+        </div>
         <div className="md:col-span-2 flex justify-end">
           <button
             type="submit"
