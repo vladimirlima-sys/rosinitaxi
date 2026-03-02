@@ -5,10 +5,10 @@ import { createPageUrl } from '@/utils';
 import { toast } from 'sonner';
 
 const statusLabels = {
-  pending: { label: 'Pendente', color: 'text-yellow-400 bg-yellow-400/10' },
-  paid: { label: 'Pago', color: 'text-green-400 bg-green-400/10' },
-  cancelled: { label: 'Cancelado', color: 'text-red-400 bg-red-400/10' },
-  refunded: { label: 'Reembolsado', color: 'text-blue-400 bg-blue-400/10' },
+  pending: { label: 'En attente', color: 'text-yellow-400 bg-yellow-400/10' },
+  paid: { label: 'Payé', color: 'text-green-400 bg-green-400/10' },
+  cancelled: { label: 'Annulé', color: 'text-red-400 bg-red-400/10' },
+  refunded: { label: 'Remboursé', color: 'text-blue-400 bg-blue-400/10' },
 };
 
 function formatDate(dateStr, timeStr) {
