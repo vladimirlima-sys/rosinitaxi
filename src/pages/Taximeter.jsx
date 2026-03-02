@@ -169,7 +169,13 @@ export default function Taximeter() {
       <div className="w-full max-w-sm space-y-5">
 
         {/* Header */}
-        <div className="text-center">
+        <div className="relative text-center">
+          <a
+            href={createPageUrl('DriverPortal')}
+            className="absolute left-0 top-1/2 -translate-y-1/2 flex items-center gap-1 text-white/40 hover:text-white/70 transition-colors text-sm"
+          >
+            <ArrowLeft className="w-4 h-4" />
+          </a>
           <h1 className="text-3xl font-extralight tracking-[0.3em] text-white uppercase">TAXIMÈTRE</h1>
           <p className="text-white/30 text-xs tracking-widest uppercase mt-1">Rosini Transfert</p>
         </div>
