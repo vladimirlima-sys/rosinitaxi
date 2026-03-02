@@ -679,14 +679,23 @@ Deno.serve(async (req) => {
     };
 
     // ─── WhatsApp notification ──────────────────────────────────────────────────
-    try {
-      await base44.asServiceRole.functions.invoke('sendWhatsApp', {
-        type: 'new_booking',
-        booking: { client_name, client_phone, departure_point, arrival_point, departure_date, departure_time, vehicle_type, total_price }
-      });
-      console.log('WhatsApp new_booking notification sent');
-    } catch (waErr) {
-      console.error('WhatsApp notification failed (non-critical):', waErr.message);
+    if (client_phone) {
+      try {
+        const formattedPhone = `whatsapp:+${client_phone.replace(/\D/g, '')}`;
+        const whatsappMessage = language === 'pt' 
+          ? `✓ Olá ${client_name}! Sua reserva foi confirmada.\n\n${departure_point} → ${arrival_point}\n${departure_date} às ${departure_time}\nVeículo: ${vehicleLabel}\nTotal: CHF ${total_price}`
+          : language === 'en'
+          ? `✓ Hello ${client_name}! Your booking has been confirmed.\n\n${departure_point} → ${arrival_point}\n${departure_date} at ${departure_time}\nVehicle: ${vehicleLabel}\nTotal: CHF ${total_price}`
+          : `✓ Bonjour ${client_name}! Votre réservation est confirmée.\n\n${departure_point} → ${arrival_point}\n${departure_date} à ${departure_time}\nVéhicule: ${vehicleLabel}\nTotal: CHF ${total_price}`;
+        
+        await base44.asServiceRole.functions.invoke('sendTwilio', {
+          phone_number: formattedPhone,
+          message: whatsappMessage
+        });
+        console.log('WhatsApp confirmation message sent to ' + formattedPhone);
+      } catch (waErr) {
+        console.error('WhatsApp notification failed (non-critical):', waErr.message);
+      }
     }
 
     // ─── Subject per language ───────────────────────────────────────────────────
