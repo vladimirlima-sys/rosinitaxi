@@ -92,7 +92,7 @@ function BookingCard({ booking, isNew }) {
             href={getMapsUrl(booking.arrival_point)}
             target="_blank"
             rel="noopener noreferrer"
-            title="Navegar até ao destino"
+            title="Naviguer vers la destination"
             className="flex items-center gap-1 bg-blue-500/10 border border-blue-500/20 text-blue-400 text-xs px-2 py-1 rounded-lg hover:bg-blue-500/20 transition-all shrink-0"
           >
             <Navigation className="w-3 h-3" />
