@@ -7,6 +7,7 @@ import FinanceFilters from '@/components/finance/FinanceFilters';
 import FinanceContent from '@/components/finance/FinanceContent';
 import TaxSettingsForm from '@/components/finance/TaxSettingsForm';
 import PayslipGenerator from '@/components/finance/PayslipGenerator';
+import DriverPayrollForm from '@/components/finance/DriverPayrollForm';
 
 export default function Finance() {
   const [bookings, setBookings] = useState([]);

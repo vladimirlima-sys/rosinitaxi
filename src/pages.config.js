@@ -56,10 +56,10 @@ import Finance from './pages/Finance';
 import FinancialReports from './pages/FinancialReports';
 import Home from './pages/Home';
 import MyBookings from './pages/MyBookings';
+import PayslipManagement from './pages/PayslipManagement';
 import Reservas from './pages/Reservas';
 import Settings from './pages/Settings';
 import Taximeter from './pages/Taximeter';
-import PayslipManagement from './pages/PayslipManagement';
 import __Layout from './Layout.jsx';
 
 
@@ -73,10 +73,10 @@ export const PAGES = {
     "FinancialReports": FinancialReports,
     "Home": Home,
     "MyBookings": MyBookings,
+    "PayslipManagement": PayslipManagement,
     "Reservas": Reservas,
     "Settings": Settings,
     "Taximeter": Taximeter,
-    "PayslipManagement": PayslipManagement,
 }
 
 export const pagesConfig = {
