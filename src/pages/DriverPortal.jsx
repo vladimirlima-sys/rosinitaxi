@@ -85,7 +85,7 @@ function BookingCard({ booking, isNew }) {
             <MapPin className="w-3 h-3 text-white/60" />
           </div>
           <div className="flex-1 min-w-0">
-            <p className="text-white/40 text-xs uppercase tracking-wider">Destino</p>
+            <p className="text-white/40 text-xs uppercase tracking-wider">Destination</p>
             <p className="text-white text-sm">{booking.arrival_point}</p>
           </div>
           <a
