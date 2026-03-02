@@ -32,10 +32,13 @@ export default function RouteMapPreview({ departure, arrival, distance, time }) 
         const depResponse = await base44.functions.invoke('hereGeocoding', { searchText: departure });
         const arrResponse = await base44.functions.invoke('hereGeocoding', { searchText: arrival });
 
-        if (depResponse.data?.lat && arrResponse.data?.lat) {
+        if (depResponse.data?.results?.[0] && arrResponse.data?.results?.[0]) {
+          const depCoords = depResponse.data.results[0];
+          const arrCoords = arrResponse.data.results[0];
+          
           const response = await base44.functions.invoke('hereRoutes', {
-            departure: { lat: depResponse.data.lat, lng: depResponse.data.lng },
-            arrival: { lat: arrResponse.data.lat, lng: arrResponse.data.lng },
+            departure: { lat: depCoords.lat, lng: depCoords.lng },
+            arrival: { lat: arrCoords.lat, lng: arrCoords.lng },
           });
 
           if (response.data?.route) {
