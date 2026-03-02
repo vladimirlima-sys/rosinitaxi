@@ -163,6 +163,15 @@ export default function PayslipManagement() {
                       </td>
                       <td className="px-6 py-4">
                         <div className="flex gap-2">
+                          <Button
+                            onClick={() => handleDownloadPayslip(payslip)}
+                            size="sm"
+                            variant="outline"
+                            className="gap-1"
+                          >
+                            <Download className="w-3 h-3" />
+                            Baixar
+                          </Button>
                           {!payslip.sent_to_driver && (
                             <Button
                               onClick={() => handleSendPayslip(payslip)}
