@@ -107,17 +107,32 @@ export default function Finance() {
     .sort((a, b) => a.name.localeCompare(b.name));
 
   const handleDownloadPDF = async () => {
-    const { downloadFinancePDF } = await import('@/functions/downloadFinancePDF');
-    await downloadFinancePDF({
-      selectedMonth,
-      monthLabel,
-      monthBookings,
-      grandTotal,
-      paymentMethods,
-      monthExpenses,
-      totalExpenses,
-      netResult
-    });
+    try {
+      const response = await base44.functions.invoke('downloadFinancePDF', {
+        selectedMonth,
+        monthLabel,
+        monthBookings,
+        grandTotal,
+        paymentMethods,
+        monthExpenses,
+        totalExpenses,
+        netResult
+      });
+      
+      // Create blob and download
+      const blob = new Blob([response.data], { type: 'application/pdf' });
+      const url = window.URL.createObjectURL(blob);
+      const link = document.createElement('a');
+      link.href = url;
+      link.download = `Rosini_Finance_${selectedMonth}.pdf`;
+      document.body.appendChild(link);
+      link.click();
+      document.body.removeChild(link);
+      window.URL.revokeObjectURL(url);
+    } catch (error) {
+      console.error('Erro ao baixar PDF:', error);
+      alert('Erro ao gerar o relatório PDF');
+    }
   };
 
   return (
