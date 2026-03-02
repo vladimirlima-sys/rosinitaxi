@@ -1,4 +1,6 @@
 import { createClientFromRequest } from 'npm:@base44/sdk@0.8.6';
+import nodemailer from 'npm:nodemailer@6.9.7';
+import { google } from 'npm:googleapis@118.0.0';
 
 Deno.serve(async (req) => {
   try {
@@ -39,11 +41,33 @@ Reserva ID: ${data.id}
 Data da Reserva: ${data.created_date}
     `.trim();
 
-    await base44.integrations.Core.SendEmail({
+    // Get Gmail access token via OAuth connector
+    const accessToken = await base44.asServiceRole.connectors.getAccessToken('gmail');
+
+    // Create OAuth2 client
+    const oauth2Client = new google.auth.OAuth2();
+    oauth2Client.setCredentials({ access_token: accessToken });
+
+    // Create nodemailer transporter with OAuth2
+    const transporter = nodemailer.createTransport({
+      host: 'smtp.gmail.com',
+      port: 465,
+      secure: true,
+      auth: {
+        type: 'OAuth2',
+        user: 'rosini.transfert@gmail.com',
+        clientId: Deno.env.get('GMAIL_CLIENT_ID'),
+        clientSecret: Deno.env.get('GMAIL_CLIENT_SECRET'),
+        refreshToken: Deno.env.get('GMAIL_REFRESH_TOKEN'),
+        accessToken: accessToken,
+      },
+    });
+
+    await transporter.sendMail({
+      from: 'Rosini Táxi <rosini.transfert@gmail.com>',
       to: 'info@rosini.online',
       subject: `Nova Reserva - ${data.client_name}`,
-      body: emailBody,
-      from_name: 'Rosini Táxi'
+      text: emailBody,
     });
 
     return Response.json({ success: true });
