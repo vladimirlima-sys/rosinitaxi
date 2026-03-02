@@ -8,6 +8,8 @@ export default function DriverForm({ driver, onSave, onCancel }) {
     email: driver?.email || '',
     vehicle: driver?.vehicle || '',
     license_number: driver?.license_number || '',
+    address: driver?.address || '',
+    avs_number: driver?.avs_number || '',
     status: driver?.status || 'active',
     notes: driver?.notes || '',
   });
