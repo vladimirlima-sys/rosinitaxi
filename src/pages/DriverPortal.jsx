@@ -233,7 +233,7 @@ export default function DriverPortal() {
       sessionStorage.setItem('driver_portal_id', found.id);
       await loadBookings(found.id);
     } catch (e) {
-      setError('Erro ao autenticar. Tente novamente.');
+      setError('Erreur d\'authentification. Réessayez.');
     } finally {
       setLoading(false);
     }
