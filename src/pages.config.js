@@ -48,7 +48,7 @@
  * The mainPage value must match a key in the PAGES object exactly.
  */
 import AdminPanel from './pages/AdminPanel';
-import CancelBooking from './pages/CancelBooking';
+import CompletedTrips from './pages/CompletedTrips';
 import DriverPortal from './pages/DriverPortal';
 import Drivers from './pages/Drivers';
 import FAQ from './pages/FAQ';
@@ -58,13 +58,12 @@ import MyBookings from './pages/MyBookings';
 import Reservas from './pages/Reservas';
 import Settings from './pages/Settings';
 import Taximeter from './pages/Taximeter';
-import CompletedTrips from './pages/CompletedTrips';
 import __Layout from './Layout.jsx';
 
 
 export const PAGES = {
     "AdminPanel": AdminPanel,
-    "CancelBooking": CancelBooking,
+    "CompletedTrips": CompletedTrips,
     "DriverPortal": DriverPortal,
     "Drivers": Drivers,
     "FAQ": FAQ,
@@ -74,7 +73,6 @@ export const PAGES = {
     "Reservas": Reservas,
     "Settings": Settings,
     "Taximeter": Taximeter,
-    "CompletedTrips": CompletedTrips,
 }
 
 export const pagesConfig = {
