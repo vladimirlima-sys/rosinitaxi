@@ -1,10 +1,11 @@
 import React, { useEffect, useState } from 'react';
 import { base44 } from '@/api/base44Client';
-import { Loader2, ArrowLeft } from 'lucide-react';
+import { Loader2, ArrowLeft, ChevronDown, ChevronUp } from 'lucide-react';
 import { createPageUrl } from '@/utils';
 import FinanceHeader from '@/components/finance/FinanceHeader';
 import FinanceFilters from '@/components/finance/FinanceFilters';
 import FinanceContent from '@/components/finance/FinanceContent';
+import TaxSettingsForm from '@/components/finance/TaxSettingsForm';
 
 export default function Finance() {
   const [bookings, setBookings] = useState([]);
@@ -15,6 +16,8 @@ export default function Finance() {
     return `${now.getFullYear()}-${String(now.getMonth() + 1).padStart(2, '0')}`;
   });
   const [filterDriver, setFilterDriver] = useState('all');
+  const [showTaxSettings, setShowTaxSettings] = useState(false);
+  const [taxSettings, setTaxSettings] = useState(null);
 
   useEffect(() => {
     if (localStorage.getItem('admin_unlocked') !== 'true') {
@@ -26,12 +29,16 @@ export default function Finance() {
 
   const fetchData = async () => {
     setLoading(true);
-    const [allBookings, allExpenses] = await Promise.all([
+    const [allBookings, allExpenses, allTaxSettings] = await Promise.all([
       base44.entities.Booking.list(),
       base44.entities.Expense.list(),
+      base44.entities.TaxSettings.list(),
     ]);
     setBookings(allBookings);
     setExpenses(allExpenses);
+    if (allTaxSettings.length > 0) {
+      setTaxSettings(allTaxSettings[0]);
+    }
     setLoading(false);
   };
 
@@ -61,7 +68,20 @@ export default function Finance() {
     grandTotal += booking.total_price || 0;
   });
 
-  const netResult = grandTotal - totalExpenses;
+  // Calculate tax deductions for driver payments
+  let totalTaxes = 0;
+  if (taxSettings) {
+    const totalTaxPercentage = 
+      (taxSettings.avs_percentage || 0) +
+      (taxSettings.ai_percentage || 0) +
+      (taxSettings.impot_source_percentage || 0) +
+      (taxSettings.impot_cantonal_percentage || 0) +
+      (taxSettings.impot_communal_percentage || 0) +
+      (taxSettings.other_deductions_percentage || 0);
+    totalTaxes = grandTotal * (totalTaxPercentage / 100);
+  }
+
+  const netResult = grandTotal - totalExpenses - totalTaxes;
 
   const availableMonths = Array.from(new Set(
     bookings
@@ -118,16 +138,33 @@ export default function Finance() {
           />
         </div>
 
+        {/* Tax Settings Toggle */}
+        <button
+          onClick={() => setShowTaxSettings(!showTaxSettings)}
+          className="flex items-center gap-2 text-black/60 hover:text-black transition-colors mb-6"
+        >
+          {showTaxSettings ? <ChevronUp className="w-4 h-4" /> : <ChevronDown className="w-4 h-4" />}
+          <span className="text-sm">Configurações de Impostos</span>
+        </button>
+
+        {showTaxSettings && (
+          <div className="mb-8">
+            <TaxSettingsForm onTaxesUpdated={fetchData} />
+          </div>
+        )}
+
         <FinanceContent
           loading={loading}
           monthBookings={monthBookings}
           monthExpenses={monthExpenses}
           totalExpenses={totalExpenses}
           grandTotal={grandTotal}
+          totalTaxes={totalTaxes}
           netResult={netResult}
           paymentMethods={paymentMethods}
           selectedMonth={selectedMonth}
           onExpenseAdded={fetchData}
+          taxSettings={taxSettings}
         />
       </div>
     </div>
