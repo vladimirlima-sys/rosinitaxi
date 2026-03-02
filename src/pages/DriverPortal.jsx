@@ -114,8 +114,8 @@ function BookingCard({ booking, isNew }) {
 
       {(booking.passengers || booking.flight_number || booking.notes) && (
         <div className="mt-3 pt-3 border-t border-white/10 space-y-1 text-sm text-white/50">
-          {booking.passengers && <p>👥 {booking.passengers} passageiro(s)</p>}
-          {booking.flight_number && <p>✈️ Voo: {booking.flight_number}</p>}
+          {booking.passengers && <p>👥 {booking.passengers} passager(s)</p>}
+          {booking.flight_number && <p>✈️ Vol : {booking.flight_number}</p>}
           {booking.notes && <p>📝 {booking.notes}</p>}
         </div>
       )}
