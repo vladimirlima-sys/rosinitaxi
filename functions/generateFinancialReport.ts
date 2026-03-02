@@ -107,12 +107,12 @@ Deno.serve(async (req) => {
     doc.text(`Total dépenses : CHF ${totalExpenses.toFixed(2)}`, 25, y);
     y += 10;
 
-    // IMPOSTOS
+    // IMPÔTS
     doc.setFillColor(240, 240, 240);
     doc.rect(20, y - 5, 170, 8, 'F');
     doc.setFontSize(12);
     doc.setFont(undefined, 'bold');
-    doc.text('IMPOSTOS & DÉDUCTIONS', 20, y);
+    doc.text('IMPÔTS & DÉDUCTIONS', 20, y);
     y += 10;
     doc.setFont(undefined, 'normal');
     doc.setFontSize(9);
