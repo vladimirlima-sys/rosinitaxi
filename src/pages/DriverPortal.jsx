@@ -30,9 +30,9 @@ function BookingCard({ booking, isNew }) {
     try {
       await base44.functions.invoke('notifyClientDriverStatus', { booking_id: booking.id, type });
       setNotified(prev => ({ ...prev, [type]: true }));
-      toast.success(type === 'on_the_way' ? 'Cliente notificado: motorista a caminho!' : 'Cliente notificado: motorista chegou!');
+      toast.success(type === 'on_the_way' ? 'Client notifié : chauffeur en route !' : 'Client notifié : chauffeur arrivé !');
     } catch (e) {
-      toast.error('Erro ao enviar notificação. Tente novamente.');
+      toast.error('Erreur lors de l\'envoi. Réessayez.');
     } finally {
       setNotifying(null);
     }
