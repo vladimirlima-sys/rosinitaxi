@@ -222,16 +222,39 @@ Deno.serve(async (req) => {
       }
     }
 
-    // Send email
+    // Send email via Gmail API
     if (client_email) {
       try {
-        await base44.integrations.Core.SendEmail({
-          to: client_email,
-          subject: subject,
-          body: htmlBody,
-          from_name: 'Rosini Transfert'
+        const accessToken = await base44.asServiceRole.connectors.getAccessToken('gmail');
+
+        const emailLines = [
+          `To: ${client_email}`,
+          `Subject: =?UTF-8?B?${btoa(unescape(encodeURIComponent(subject)))}?=`,
+          'MIME-Version: 1.0',
+          'Content-Type: text/html; charset=UTF-8',
+          'From: Rosini Transfert <me>',
+          '',
+          htmlBody,
+        ];
+        const rawEmail = emailLines.join('\r\n');
+        const encodedEmail = btoa(unescape(encodeURIComponent(rawEmail)))
+          .replace(/\+/g, '-').replace(/\//g, '_').replace(/=+$/, '');
+
+        const gmailRes = await fetch('https://gmail.googleapis.com/gmail/v1/users/me/messages/send', {
+          method: 'POST',
+          headers: {
+            'Authorization': `Bearer ${accessToken}`,
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify({ raw: encodedEmail }),
         });
-        console.log('Email sent to client:', client_email, 'lang:', lang);
+
+        const gmailData = await gmailRes.json();
+        if (!gmailRes.ok) {
+          console.error('Gmail API error:', JSON.stringify(gmailData));
+        } else {
+          console.log('Email sent to client:', client_email, 'lang:', lang, 'messageId:', gmailData.id);
+        }
       } catch (emailErr) {
         console.error('Email failed (non-critical):', emailErr.message);
       }
