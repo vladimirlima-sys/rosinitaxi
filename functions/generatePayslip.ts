@@ -97,6 +97,10 @@ Deno.serve(async (req) => {
     y += 6;
     doc.text(`Téléphone: ${driverData.phone || 'N/A'}`, 25, y);
     y += 6;
+    doc.text(`Adresse: ${driverData.address || 'N/A'}`, 25, y);
+    y += 6;
+    doc.text(`Numéro AVS: ${driverData.avs_number || 'N/A'}`, 25, y);
+    y += 6;
     doc.text(`Véhicule: ${driverData.vehicle || 'N/A'}`, 25, y);
     y += 6;
     doc.text(`Permis: ${driverData.license_number || 'N/A'}`, 25, y);
