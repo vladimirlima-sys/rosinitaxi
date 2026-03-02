@@ -217,7 +217,11 @@ Deno.serve(async (req) => {
           body: new URLSearchParams({ From: from, To: formattedTo, Body: msgBody }).toString(),
         });
         const result = await response.json();
-        console.log('WhatsApp sent:', result.sid || JSON.stringify(result));
+        if (response.ok) {
+          console.log('WhatsApp sent successfully:', result.sid);
+        } else {
+          console.warn('WhatsApp API warning:', result.message || JSON.stringify(result));
+        }
       } catch (waErr) {
         console.error('WhatsApp failed (non-critical):', waErr.message);
       }
