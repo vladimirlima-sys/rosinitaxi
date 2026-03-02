@@ -74,6 +74,11 @@ export default function Finance() {
     const totalTaxPercentage = 
       (taxSettings.avs_percentage || 0) +
       (taxSettings.ai_percentage || 0) +
+      (taxSettings.apg_percentage || 0) +
+      (taxSettings.ac_percentage || 0) +
+      (taxSettings.af_percentage || 0) +
+      (taxSettings.pc_percentage || 0) +
+      (taxSettings.cont_frais_admin_percentage || 0) +
       (taxSettings.impot_source_percentage || 0) +
       (taxSettings.impot_cantonal_percentage || 0) +
       (taxSettings.impot_communal_percentage || 0) +
