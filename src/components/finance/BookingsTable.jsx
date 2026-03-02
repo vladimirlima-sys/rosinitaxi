@@ -69,7 +69,7 @@ export default function BookingsTable({ monthBookings }) {
           </div>
         </div>
       </div>
-      {monthBookings.length > 0 ? (
+      {filteredBookings.length > 0 ? (
         <div className="overflow-x-auto">
           <table className="w-full text-sm">
             <thead>
@@ -82,7 +82,7 @@ export default function BookingsTable({ monthBookings }) {
               </tr>
             </thead>
             <tbody>
-              {monthBookings.map(booking => (
+              {filteredBookings.map(booking => (
                 <tr key={booking.id} className="border-b border-white/5 hover:bg-white/5 transition">
                   <td className="text-white py-3 px-3">
                     {new Date(booking.departure_date || booking.created_date).toLocaleDateString('fr-FR')}
