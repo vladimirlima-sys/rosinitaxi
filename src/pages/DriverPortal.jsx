@@ -390,6 +390,21 @@ export default function DriverPortal() {
           </button>
         )}
 
+        {/* Taximeter card */}
+        <a
+          href={createPageUrl('Taximeter')}
+          className="flex items-center gap-4 bg-[#F5C300]/10 border border-[#F5C300]/30 rounded-2xl p-4 mb-6 hover:bg-[#F5C300]/20 transition-all group"
+        >
+          <div className="w-12 h-12 rounded-xl bg-[#F5C300] flex items-center justify-center shrink-0">
+            <Zap className="w-6 h-6 text-black" />
+          </div>
+          <div>
+            <p className="text-white font-semibold text-sm">Taxímetro</p>
+            <p className="text-white/40 text-xs mt-0.5">Iniciar contagem de km ao vivo</p>
+          </div>
+          <div className="ml-auto text-[#F5C300]/60 group-hover:text-[#F5C300] transition-all">›</div>
+        </a>
+
         {/* Upcoming bookings */}
         {upcoming.length > 0 ? (
           <div className="space-y-3 mb-8">

@@ -54,10 +54,10 @@ import Drivers from './pages/Drivers';
 import FAQ from './pages/FAQ';
 import Finance from './pages/Finance';
 import Home from './pages/Home';
+import MyBookings from './pages/MyBookings';
 import Reservas from './pages/Reservas';
 import Settings from './pages/Settings';
 import Taximeter from './pages/Taximeter';
-import MyBookings from './pages/MyBookings';
 import __Layout from './Layout.jsx';
 
 
@@ -69,10 +69,10 @@ export const PAGES = {
     "FAQ": FAQ,
     "Finance": Finance,
     "Home": Home,
+    "MyBookings": MyBookings,
     "Reservas": Reservas,
     "Settings": Settings,
     "Taximeter": Taximeter,
-    "MyBookings": MyBookings,
 }
 
 export const pagesConfig = {
