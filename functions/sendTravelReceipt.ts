@@ -176,6 +176,14 @@ Deno.serve(async (req) => {
       `${pdfBase64}\r\n` +
       `--${boundary}--`;
     
+    // Use TextEncoder to handle Unicode characters properly
+    const encoder = new TextEncoder();
+    const emailBytes = encoder.encode(emailRaw);
+    const emailBase64 = btoa(String.fromCharCode(...emailBytes))
+      .replace(/\+/g, '-')
+      .replace(/\//g, '_')
+      .replace(/=+$/, '');
+
     const response = await fetch('https://www.googleapis.com/gmail/v1/users/me/messages/send', {
       method: 'POST',
       headers: {
@@ -183,7 +191,7 @@ Deno.serve(async (req) => {
         'Content-Type': 'application/json'
       },
       body: JSON.stringify({
-        raw: btoa(emailRaw)
+        raw: emailBase64
       })
     });
 
