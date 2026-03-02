@@ -29,8 +29,8 @@ export default function RouteMapPreview({ departure, arrival, distance, time }) 
       setLoading(true);
       try {
         // Get coordinates for both places
-        const depResponse = await base44.functions.invoke('hereGeocoding', { address: departure });
-        const arrResponse = await base44.functions.invoke('hereGeocoding', { address: arrival });
+        const depResponse = await base44.functions.invoke('hereGeocoding', { searchText: departure });
+        const arrResponse = await base44.functions.invoke('hereGeocoding', { searchText: arrival });
 
         if (depResponse.data?.lat && arrResponse.data?.lat) {
           const response = await base44.functions.invoke('hereRoutes', {
