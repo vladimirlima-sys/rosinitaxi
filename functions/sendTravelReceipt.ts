@@ -196,7 +196,9 @@ Deno.serve(async (req) => {
     });
 
     if (!response.ok) {
-      throw new Error(`Gmail API error: ${response.statusText}`);
+      const errText = await response.text();
+      console.error('Gmail API error response:', errText);
+      throw new Error(`Gmail API error: ${response.status} ${response.statusText} - ${errText}`);
     }
 
     console.log('Travel receipt sent to:', clientEmail);
