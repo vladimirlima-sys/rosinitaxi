@@ -3,6 +3,7 @@ import { base44 } from '@/api/base44Client';
 import { Car, MapPin, Phone, Bell, BellOff, Loader2, LogOut, Navigation, Zap } from 'lucide-react';
 import { createPageUrl } from '@/utils';
 import { toast } from 'sonner';
+import ActiveTripMonitor from '@/components/drivers/ActiveTripMonitor';
 
 const statusLabels = {
   pending: { label: 'En attente', color: 'text-yellow-400 bg-yellow-400/10' },
