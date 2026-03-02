@@ -437,15 +437,20 @@ export default function DriverPortal() {
           </div>
         )}
 
-        {/* Completed bookings */}
-        {completed.length > 0 && (
-          <div className="space-y-3 mb-8">
-            <h2 className="text-white/50 text-xs uppercase tracking-wider px-1">Réserves Effectuées</h2>
-            {completed.map(b => (
-              <BookingCard key={b.id} booking={b} isNew={false} />
-            ))}
+        {/* Link to completed trips */}
+        <a
+          href={createPageUrl('CompletedTrips')}
+          className="flex items-center gap-4 bg-green-500/10 border border-green-500/30 rounded-2xl p-4 mb-6 hover:bg-green-500/20 transition-all group"
+        >
+          <div className="w-12 h-12 rounded-xl bg-green-500 flex items-center justify-center shrink-0">
+            <Car className="w-6 h-6 text-black" />
           </div>
-        )}
+          <div>
+            <p className="text-white font-semibold text-sm">Corridas Finalizadas</p>
+            <p className="text-white/40 text-xs mt-0.5">Ver histórico de corridas completadas</p>
+          </div>
+          <div className="ml-auto text-green-500/60 group-hover:text-green-500 transition-all">›</div>
+        </a>
 
         {/* Past bookings */}
         {past.length > 0 && (
