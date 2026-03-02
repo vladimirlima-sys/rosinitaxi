@@ -1,5 +1,7 @@
 import React, { useState, useEffect } from 'react';
-import { Navigation, MapPin, Clock, DollarSign, CheckCircle, Car, ChevronRight } from 'lucide-react';
+import { Navigation, MapPin, Clock, DollarSign, CheckCircle, Car, ChevronRight, Loader2 } from 'lucide-react';
+import { base44 } from '@/api/base44Client';
+import { toast } from 'sonner';
 
 const TRIP_STATUSES = [
   { key: 'en_route', label: '🚗 En route vers le client', color: 'text-blue-400', bg: 'bg-blue-400/10 border-blue-400/30' },
