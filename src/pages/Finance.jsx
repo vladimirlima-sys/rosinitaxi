@@ -98,6 +98,12 @@ export default function Finance() {
   return (
     <div className="min-h-screen bg-[#F5C300] py-12 px-4">
       <div className="max-w-2xl mx-auto">
+        <a
+          href={createPageUrl('AdminPanel')}
+          className="flex items-center gap-1 text-black/40 hover:text-black/70 transition-colors mb-6 w-fit"
+        >
+          <ArrowLeft className="w-4 h-4" />
+        </a>
         <FinanceHeader onDownloadPDF={handleDownloadPDF} />
 
         <div className="mb-8">
