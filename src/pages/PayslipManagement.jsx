@@ -25,16 +25,21 @@ export default function PayslipManagement() {
   };
 
   const handleSendPayslip = async (payslip) => {
-    if (!payslip.driver_email) {
-      alert('Email do motorista não disponível');
-      return;
-    }
-
     setSendingId(payslip.id);
     try {
+      // Fetch driver email from Driver entity
+      const drivers = await base44.entities.Driver.filter({ id: payslip.driver_id }, '', 1);
+      const driver = drivers[0];
+      
+      if (!driver?.email) {
+        alert('Email do motorista não disponível no cadastro');
+        setSendingId(null);
+        return;
+      }
+
       await base44.functions.invoke('sendPayslipEmail', {
         payslipId: payslip.id,
-        driverEmail: payslip.driver_email,
+        driverEmail: driver.email,
         driverName: payslip.driver_name,
         month: payslip.month,
         year: payslip.year
@@ -43,7 +48,8 @@ export default function PayslipManagement() {
       // Update record
       await base44.entities.PayslipRecord.update(payslip.id, {
         sent_to_driver: true,
-        sent_date: new Date().toISOString()
+        sent_date: new Date().toISOString(),
+        driver_email: driver.email
       });
 
       alert('Ficha de salário enviada com sucesso!');
@@ -53,6 +59,29 @@ export default function PayslipManagement() {
       alert('Erro ao enviar ficha de salário');
     } finally {
       setSendingId(null);
+    }
+  };
+
+  const handleDownloadPayslip = async (payslip) => {
+    if (!payslip.pdf_url) {
+      alert('PDF não disponível');
+      return;
+    }
+
+    try {
+      const response = await fetch(payslip.pdf_url);
+      const blob = await response.blob();
+      const url = window.URL.createObjectURL(blob);
+      const a = document.createElement('a');
+      a.href = url;
+      a.download = `ficha-salario-${payslip.month}-${payslip.year}.pdf`;
+      document.body.appendChild(a);
+      a.click();
+      window.URL.revokeObjectURL(url);
+      a.remove();
+    } catch (error) {
+      console.error('Erro ao baixar:', error);
+      alert('Erro ao baixar ficha de salário');
     }
   };
 
