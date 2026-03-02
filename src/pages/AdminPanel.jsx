@@ -115,8 +115,8 @@ export default function AdminPanel() {
           </button>
         </div>
 
-        <div className="grid grid-cols-2 gap-3 mb-8">
-          {mainPages.map(({ name, label, icon: Icon }) => (
+        <div className="grid grid-cols-3 gap-3">
+          {pages.map(({ name, label }) => (
             <a
               key={name}
               href={createPageUrl(name)}
@@ -125,21 +125,6 @@ export default function AdminPanel() {
               {label}
             </a>
           ))}
-        </div>
-
-        <div>
-          <p className="text-white/60 text-xs tracking-[0.2em] uppercase mb-4">Páginas</p>
-          <div className="grid grid-cols-2 gap-3">
-            {allPages.map(({ name, label }) => (
-              <a
-                key={name}
-                href={createPageUrl(name)}
-                className="bg-black/50 border border-white/10 rounded-lg px-3 py-2.5 text-white/70 text-sm hover:bg-black hover:text-white hover:border-white/30 transition-all text-center"
-              >
-                {label}
-              </a>
-            ))}
-          </div>
         </div>
       </div>
     </div>
