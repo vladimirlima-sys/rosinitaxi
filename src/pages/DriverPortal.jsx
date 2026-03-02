@@ -127,7 +127,7 @@ function BookingCard({ booking, isNew }) {
 
       {/* Client notification buttons */}
       <div className="mt-4 pt-4 border-t border-white/10 space-y-2">
-        <p className="text-white/30 text-xs uppercase tracking-wider mb-2">Notificar o cliente</p>
+        <p className="text-white/30 text-xs uppercase tracking-wider mb-2">Notifier le client</p>
         <button
           onClick={() => sendClientNotification('on_the_way')}
           disabled={!!notifying || notified.on_the_way}
@@ -140,9 +140,9 @@ function BookingCard({ booking, isNew }) {
           {notifying === 'on_the_way' ? (
             <Loader2 className="w-4 h-4 animate-spin" />
           ) : notified.on_the_way ? (
-            '✓ Notificado: a caminho'
+            '✓ Notifié : en route'
           ) : (
-            '🚗 Estou a caminho'
+            '🚗 Je suis en route'
           )}
         </button>
         <button
@@ -157,9 +157,9 @@ function BookingCard({ booking, isNew }) {
           {notifying === 'arrived' ? (
             <Loader2 className="w-4 h-4 animate-spin" />
           ) : notified.arrived ? (
-            '✓ Notificado: chegou'
+            '✓ Notifié : arrivé'
           ) : (
-            '📍 Cheguei ao ponto de partida'
+            '📍 Je suis arrivé au point de départ'
           )}
         </button>
       </div>
