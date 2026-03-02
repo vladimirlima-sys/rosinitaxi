@@ -3,6 +3,8 @@ import { MapContainer, TileLayer, Marker, Popup, Polyline } from 'react-leaflet'
 import L from 'leaflet';
 import 'leaflet/dist/leaflet.css';
 import { base44 } from '@/api/base44Client';
+import { useLang } from '@/components/LanguageContext';
+import { translations } from '@/components/translations';
 
 // Fix default markers
 delete L.Icon.Default.prototype._getIconUrl;
@@ -17,6 +19,8 @@ export default function RouteMapPreview({ departure, arrival, distance, time }) 
   const [startCoords, setStartCoords] = useState(null);
   const [endCoords, setEndCoords] = useState(null);
   const [loading, setLoading] = useState(false);
+  const { lang } = useLang();
+  const t = translations[lang];
 
   useEffect(() => {
     if (!departure || !arrival) return;
@@ -63,14 +67,14 @@ export default function RouteMapPreview({ departure, arrival, distance, time }) 
   return (
     <div className="bg-black border border-black/40 rounded-xl p-4 space-y-3">
       <div className="flex items-center justify-between mb-2">
-        <h4 className="text-white/70 text-xs uppercase tracking-wider">Trajet</h4>
+        <h4 className="text-white/70 text-xs uppercase tracking-wider">{t.routeLabel || 'Trajet'}</h4>
         <div className="flex gap-4 text-sm">
           <div>
-            <p className="text-white/40 text-xs">{t.distance}</p>
+            <p className="text-white/40 text-xs">{t.summaryDistance || 'Distance'}</p>
             <p className="text-white font-semibold">{distance} km</p>
           </div>
           <div>
-            <p className="text-white/40 text-xs">{t.time}</p>
+            <p className="text-white/40 text-xs">{t.duration || 'Durée'}</p>
             <p className="text-white font-semibold">{Math.floor(time / 60)}h {time % 60}min</p>
           </div>
         </div>
