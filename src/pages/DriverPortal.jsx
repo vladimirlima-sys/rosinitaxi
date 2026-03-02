@@ -365,7 +365,7 @@ export default function DriverPortal() {
             </a>
             <button
               onClick={notificationsEnabled ? null : requestNotifications}
-              title={notificationsEnabled ? 'Notificações ativas' : 'Ativar notificações'}
+              title={notificationsEnabled ? 'Notifications actives' : 'Activer les notifications'}
               className={`w-10 h-10 rounded-xl border flex items-center justify-center transition-all ${notificationsEnabled ? 'border-[#F5C300]/50 text-[#F5C300]' : 'border-white/10 text-white/40 hover:border-white/30'}`}
             >
               {notificationsEnabled ? <Bell className="w-4 h-4" /> : <BellOff className="w-4 h-4" />}
