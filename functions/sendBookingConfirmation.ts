@@ -523,15 +523,38 @@ Deno.serve(async (req) => {
       console.error('WhatsApp notification failed (non-critical):', waErr.message);
     }
 
-    // Send emails using Core integration
-    const sendCoreEmail = async (to, subject, htmlBody) => {
-      await base44.integrations.Core.SendEmail({
-        to: to,
-        subject: subject,
-        body: htmlBody,
-        from_name: 'Rosini Transfert'
+    // Send emails using Gmail API
+    const sendGmailEmail = async (to, subject, htmlBody) => {
+      const accessToken = await base44.asServiceRole.connectors.getAccessToken("gmail");
+      
+      const emailLines = [
+        `From: Rosini Transfert <rosinitransportsetlications@gmail.com>`,
+        `To: ${to}`,
+        `Subject: ${subject}`,
+        `MIME-Version: 1.0`,
+        `Content-Type: text/html; charset=UTF-8`,
+        ``,
+        htmlBody
+      ];
+      const email = emailLines.join('\r\n');
+      const encodedEmail = btoa(unescape(encodeURIComponent(email)))
+        .replace(/\+/g, '-').replace(/\//g, '_').replace(/=+$/, '');
+
+      const res = await fetch('https://gmail.googleapis.com/gmail/v1/users/me/messages/send', {
+        method: 'POST',
+        headers: {
+          'Authorization': `Bearer ${accessToken}`,
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({ raw: encodedEmail }),
       });
+
+      if (!res.ok) {
+        const err = await res.text();
+        throw new Error(`Gmail API error: ${err}`);
+      }
     };
+    const sendCoreEmail = sendGmailEmail;
 
     // Subject lines per language
     const subjectMap = {
