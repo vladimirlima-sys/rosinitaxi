@@ -7,7 +7,6 @@ import FinanceFilters from '@/components/finance/FinanceFilters';
 import FinanceContent from '@/components/finance/FinanceContent';
 
 export default function Finance() {
-  const [isAdmin, setIsAdmin] = useState(null);
   const [bookings, setBookings] = useState([]);
   const [expenses, setExpenses] = useState([]);
   const [loading, setLoading] = useState(true);
@@ -18,9 +17,11 @@ export default function Finance() {
   const [filterDriver, setFilterDriver] = useState('all');
 
   useEffect(() => {
-    base44.auth.me()
-      .then(user => setIsAdmin(user?.role === 'admin'))
-      .catch(() => setIsAdmin(false));
+    if (localStorage.getItem('admin_unlocked') !== 'true') {
+      window.location.href = createPageUrl('AdminPanel');
+      return;
+    }
+    fetchData();
   }, []);
 
   const fetchData = async () => {
@@ -33,25 +34,6 @@ export default function Finance() {
     setExpenses(allExpenses);
     setLoading(false);
   };
-
-  useEffect(() => {
-    if (isAdmin) fetchData();
-  }, [isAdmin]);
-
-  if (isAdmin === null) {
-    return <div className="min-h-screen bg-[#F5C300] flex items-center justify-center text-black"><Loader2 className="w-6 h-6 animate-spin" /></div>;
-  }
-
-  if (!isAdmin) {
-    return (
-      <div className="min-h-screen bg-[#F5C300] flex items-center justify-center">
-        <div className="text-center">
-          <h1 className="text-2xl font-light mb-2 text-black">Accès Restreint</h1>
-          <p className="text-black/60">Seuls les administrateurs peuvent accéder à cette page.</p>
-        </div>
-      </div>
-    );
-  }
 
   // Compute finance data
   const monthBookings = bookings.filter(b => {
