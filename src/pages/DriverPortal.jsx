@@ -174,6 +174,7 @@ export default function DriverPortal() {
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState('');
   const [notificationsEnabled, setNotificationsEnabled] = useState(false);
+  const [showEarnings, setShowEarnings] = useState(false);
   const [newBookingIds, setNewBookingIds] = useState(new Set());
   const prevBookingIds = useRef(new Set());
   const audioRef = useRef(null);
