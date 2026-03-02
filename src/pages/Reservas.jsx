@@ -21,6 +21,7 @@ export default function Reservas() {
             <ArrowLeft className="w-5 h-5" />
           </a>
           <h1 className="text-4xl font-light text-white">Reservas</h1>
+        </div>
         <p className="text-white/50 mb-8">Gerencie reservas e configurações da plataforma</p>
 
         <BookingsTable />
