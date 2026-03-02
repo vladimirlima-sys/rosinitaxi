@@ -107,7 +107,7 @@ function BookingCard({ booking, isNew }) {
           <p className="text-white text-sm font-medium">{formatDate(booking.departure_date, booking.departure_time)}</p>
         </div>
         <div className="bg-white/5 rounded-xl p-3">
-          <p className="text-white/40 text-xs mb-1">Veículo</p>
+          <p className="text-white/40 text-xs mb-1">Véhicule</p>
           <p className="text-white text-sm font-medium">{booking.vehicle_type === 'comfort' ? 'COMFORT' : 'STANDARD'}</p>
         </div>
       </div>
