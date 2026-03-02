@@ -14,6 +14,7 @@ export default function PaymentForm({ amount, onPaymentComplete, onCancel, dista
     try {
       setLoading(true);
       setError('');
+      const driverId = sessionStorage.getItem('driver_portal_id');
       await base44.functions.invoke('registerTaximeterPayment', {
         amount: amount,
         paymentMethod: 'cash',
