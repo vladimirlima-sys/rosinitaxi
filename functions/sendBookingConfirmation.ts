@@ -556,13 +556,15 @@ Deno.serve(async (req) => {
     };
     const sendCoreEmail = sendGmailEmail;
 
-    // Subject lines per language
+    // Subject lines per language (short, clean for inbox display)
     const subjectMap = {
-      pt: `✅ Reserva confirmada — ${departure_point} → ${arrival_point}`,
-      fr: `✅ Réservation confirmée — ${departure_point} → ${arrival_point}`,
-      en: `✅ Booking confirmed — ${departure_point} → ${arrival_point}`,
-      de: `✅ Buchung bestätigt — ${departure_point} → ${arrival_point}`,
-      it: `✅ Prenotazione confermata — ${departure_point} → ${arrival_point}`,
+      pt: `Sua reserva — Rosini Transfert`,
+      fr: `Votre réservation — Rosini Transfert`,
+      en: `Your booking — Rosini Transfert`,
+      de: `Ihre Buchung — Rosini Transfert`,
+      it: `La sua prenotazione — Rosini Transfert`,
+      es: `Su reserva — Rosini Transfert`,
+      nl: `Uw boeking — Rosini Transfert`,
     };
     const clientSubject = subjectMap[language] || subjectMap.fr;
 
