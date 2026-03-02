@@ -415,6 +415,14 @@ export default function DriverPortal() {
           <div className="ml-auto text-[#F5C300]/60 group-hover:text-[#F5C300] transition-all">›</div>
         </a>
 
+        {/* Active trip monitor — shows for the next upcoming booking */}
+        {upcoming.length > 0 && (
+          <div className="mb-6">
+            <h2 className="text-white/50 text-xs uppercase tracking-wider px-1 mb-3">Course active</h2>
+            <ActiveTripMonitor booking={upcoming[0]} />
+          </div>
+        )}
+
         {/* Upcoming bookings */}
         {upcoming.length > 0 ? (
           <div className="space-y-3 mb-8">
