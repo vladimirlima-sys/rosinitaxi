@@ -4,20 +4,17 @@ import { Lock, LayoutDashboard, Users, LogOut } from 'lucide-react';
 
 const PASSWORD = 'Sophia051009@';
 
-const mainPages = [
-  { name: 'Taximeter', label: 'Taxímetro', icon: LayoutDashboard, desc: 'Contador de km ao vivo' },
-  { name: 'DriverPortal', label: 'Portal do Motorista', icon: Users, desc: 'Acesso para motoristas' },
-];
-
-const allPages = [
-  { name: 'Home', label: 'Início' },
-  { name: 'FAQ', label: 'FAQ' },
-  { name: 'MyBookings', label: 'Minhas Reservas' },
+const pages = [
+  { name: 'CompletedTrips', label: 'Viagens Finalizadas' },
   { name: 'Drivers', label: 'Motoristas' },
+  { name: 'DriverPortal', label: 'Portal do Motorista' },
+  { name: 'FAQ', label: 'FAQ' },
   { name: 'Finance', label: 'Financeiro' },
+  { name: 'Home', label: 'Início' },
+  { name: 'MyBookings', label: 'Minhas Reservas' },
   { name: 'Reservas', label: 'Reservas' },
   { name: 'Settings', label: 'Configurações' },
-  { name: 'CompletedTrips', label: 'Viagens Finalizadas' },
+  { name: 'Taximeter', label: 'Taxímetro' },
 ];
 
 export default function AdminPanel() {
