@@ -1,31 +1,52 @@
-import React, { useEffect, useState } from 'react';
-import { MapContainer, TileLayer, Marker, Popup, Polyline } from 'react-leaflet';
-import L from 'leaflet';
-import 'leaflet/dist/leaflet.css';
+import React, { useEffect, useState, useRef } from 'react';
 import { base44 } from '@/api/base44Client';
 import { useLang } from '@/components/LanguageContext';
 import { translations } from '@/components/translations';
-
-// Fix default markers
-delete L.Icon.Default.prototype._getIconUrl;
-L.Icon.Default.mergeOptions({
-  iconRetinaUrl: 'https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.7.1/images/marker-icon-2x.png',
-  iconUrl: 'https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.7.1/images/marker-icon.png',
-  shadowUrl: 'https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.7.1/images/marker-shadow.png',
-});
+import { Loader2 } from 'lucide-react';
 
 export default function RouteMapPreview({ departure, arrival, distance, time }) {
-  const [routeCoordinates, setRouteCoordinates] = useState(null);
-  const [startCoords, setStartCoords] = useState(null);
-  const [endCoords, setEndCoords] = useState(null);
+  const mapRef = useRef(null);
   const [loading, setLoading] = useState(false);
+  const [mapLoaded, setMapLoaded] = useState(false);
   const { lang } = useLang();
   const t = translations[lang];
+  const mapInstanceRef = useRef(null);
 
+  // Load HERE Maps API script
   useEffect(() => {
-    if (!departure || !arrival) return;
+    if (mapLoaded) return;
 
-    const fetchRoute = async () => {
+    const script = document.createElement('script');
+    script.src = 'https://js.api.here.com/v3/3.1/mapsjs-core.js';
+    script.async = true;
+    script.onload = () => {
+      const styleScript = document.createElement('script');
+      styleScript.src = 'https://js.api.here.com/v3/3.1/mapsjs-service.js';
+      styleScript.async = true;
+      styleScript.onload = () => {
+        const routingScript = document.createElement('script');
+        routingScript.src = 'https://js.api.here.com/v3/3.1/mapsjs-ui.js';
+        routingScript.async = true;
+        routingScript.onload = () => {
+          const linkElement = document.createElement('link');
+          linkElement.rel = 'stylesheet';
+          linkElement.type = 'text/css';
+          linkElement.href = 'https://js.api.here.com/v3/3.1/mapsjs-ui.css';
+          document.head.appendChild(linkElement);
+          setMapLoaded(true);
+        };
+        document.head.appendChild(routingScript);
+      };
+      document.head.appendChild(styleScript);
+    };
+    document.head.appendChild(script);
+  }, [mapLoaded]);
+
+  // Initialize and render map with route
+  useEffect(() => {
+    if (!departure || !arrival || !mapLoaded || !mapRef.current) return;
+
+    const fetchAndRenderRoute = async () => {
       setLoading(true);
       try {
         // Get coordinates for both places
@@ -41,16 +62,61 @@ export default function RouteMapPreview({ departure, arrival, distance, time }) 
             arrival: { lat: arrCoords.lat, lng: arrCoords.lng },
           });
 
-          if (response.data?.route) {
-            // Decode polyline (simple decoding for flexpolyline format)
+          if (response.data?.route && window.H) {
+            // Decode polyline
             const polyline = response.data.route;
             const coords = decodePolyline(polyline);
             
-            setRouteCoordinates(coords);
-            if (coords.length > 0) {
-              setStartCoords(coords[0]);
-              setEndCoords(coords[coords.length - 1]);
-            }
+            // Initialize map
+            const platform = new window.H.service.Platform({
+              apikey: 'Ap0U6e3qHXxs2Ggx7jMQ3Hs0a3TxkljnBVj-A_FE_qY'
+            });
+
+            const defaultLayers = platform.createDefaultLayers();
+            const map = new window.H.Map(
+              mapRef.current,
+              defaultLayers.vector.normal.map,
+              {
+                center: { lat: depCoords.lat, lng: depCoords.lng },
+                zoom: 11
+              }
+            );
+
+            // Add route line
+            const lineString = new window.H.geo.LineString(
+              coords.map(([lat, lng]) => ({ lat, lng }))
+            );
+            const polylineObject = new window.H.map.Polyline(lineString, {
+              style: { strokeColor: '#F5C300', lineWidth: 4 }
+            });
+            map.addObject(polylineObject);
+
+            // Add start marker
+            const startMarker = new window.H.map.Marker(
+              { lat: depCoords.lat, lng: depCoords.lng },
+              { volatility: true }
+            );
+            map.addObject(startMarker);
+
+            // Add end marker
+            const endMarker = new window.H.map.Marker(
+              { lat: arrCoords.lat, lng: arrCoords.lng },
+              { volatility: true }
+            );
+            map.addObject(endMarker);
+
+            // Fit to bounds
+            map.getViewModel().setLookAtData({
+              bounds: new window.H.geo.Rect(
+                Math.min(depCoords.lat, arrCoords.lat),
+                Math.min(depCoords.lng, arrCoords.lng),
+                Math.max(depCoords.lat, arrCoords.lat),
+                Math.max(depCoords.lng, arrCoords.lng)
+              ),
+              padding: { top: 50, bottom: 50, left: 50, right: 50 }
+            });
+
+            mapInstanceRef.current = map;
           }
         }
       } catch (error) {
@@ -60,10 +126,10 @@ export default function RouteMapPreview({ departure, arrival, distance, time }) 
       }
     };
 
-    fetchRoute();
-  }, [departure, arrival]);
+    fetchAndRenderRoute();
+  }, [departure, arrival, mapLoaded]);
 
-  // Simple flexpolyline decoder
+  // Decode flexpolyline
   const decodePolyline = (encoded) => {
     if (!encoded) return [];
     const points = [];
@@ -96,13 +162,9 @@ export default function RouteMapPreview({ departure, arrival, distance, time }) 
     return points;
   };
 
-  if (!startCoords || !endCoords || !routeCoordinates) {
+  if (!departure || !arrival) {
     return null;
   }
-
-  const bounds = [startCoords, endCoords];
-  const centerLat = (startCoords[0] + endCoords[0]) / 2;
-  const centerLng = (startCoords[1] + endCoords[1]) / 2;
 
   return (
     <div className="bg-black border border-black/40 rounded-xl p-4 space-y-3">
@@ -122,24 +184,14 @@ export default function RouteMapPreview({ departure, arrival, distance, time }) 
 
       {loading ? (
         <div className="h-64 bg-white/5 rounded-lg flex items-center justify-center">
-          <p className="text-white/40 text-sm">Chargement du trajet...</p>
+          <Loader2 className="w-5 h-5 text-white/40 animate-spin" />
         </div>
       ) : (
-        <div className="h-64 rounded-lg overflow-hidden border border-white/10">
-          <MapContainer center={[centerLat, centerLng]} zoom={10} style={{ height: '100%', width: '100%' }}>
-            <TileLayer
-              url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
-              attribution='&copy; OpenStreetMap contributors'
-            />
-            {routeCoordinates && <Polyline positions={routeCoordinates} color="#F5C300" weight={3} />}
-            <Marker position={startCoords}>
-              <Popup>{departure}</Popup>
-            </Marker>
-            <Marker position={endCoords}>
-              <Popup>{arrival}</Popup>
-            </Marker>
-          </MapContainer>
-        </div>
+        <div 
+          ref={mapRef} 
+          className="h-64 rounded-lg overflow-hidden border border-white/10"
+          style={{ width: '100%' }}
+        />
       )}
     </div>
   );
