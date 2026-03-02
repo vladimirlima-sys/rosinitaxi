@@ -100,7 +100,7 @@ export default function DriverPayrollForm({ drivers, onCreated }) {
             </div>
 
             <div>
-              <label className="block text-sm font-medium text-gray-700 mb-2">Taxa Horária (CHF)</label>
+              <label className="block text-sm font-medium text-gray-700 mb-2">Taux Horaire (CHF)</label>
               <input
                 type="number"
                 step="0.01"
@@ -177,7 +177,7 @@ export default function DriverPayrollForm({ drivers, onCreated }) {
             </div>
 
             <div>
-              <label className="block text-sm font-medium text-gray-700 mb-2">Semanas de Férias</label>
+              <label className="block text-sm font-medium text-gray-700 mb-2">Semaines de Congés</label>
               <input
                 type="number"
                 value={formData.holiday_weeks}
@@ -187,7 +187,7 @@ export default function DriverPayrollForm({ drivers, onCreated }) {
             </div>
 
             <div>
-              <label className="block text-sm font-medium text-gray-700 mb-2">Subsídio de Férias (%)</label>
+              <label className="block text-sm font-medium text-gray-700 mb-2">Allocation de Vacances (%)</label>
               <input
                 type="number"
                 step="0.01"
@@ -199,7 +199,7 @@ export default function DriverPayrollForm({ drivers, onCreated }) {
           </div>
 
           <div>
-            <label className="block text-sm font-medium text-gray-700 mb-2">Notas</label>
+            <label className="block text-sm font-medium text-gray-700 mb-2">Notes</label>
             <textarea
               value={formData.notes}
               onChange={(e) => handleInputChange('notes', e.target.value)}
