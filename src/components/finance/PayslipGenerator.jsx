@@ -59,19 +59,19 @@ export default function PayslipGenerator({ drivers = [] }) {
 
   return (
     <div className="bg-white border border-gray-200 rounded-lg p-6">
-      <h3 className="text-lg font-bold text-gray-900 mb-4">Fichas de Salário</h3>
+      <h3 className="text-lg font-bold text-gray-900 mb-4">Fiches de Salaire</h3>
       
       <div className="grid grid-cols-1 md:grid-cols-4 gap-4 mb-4">
         <div>
           <label className="block text-sm font-medium text-gray-700 mb-2">
-            Motorista
+            Chauffeur
           </label>
           <select
             value={selectedDriver}
             onChange={(e) => setSelectedDriver(e.target.value)}
             className="w-full border border-gray-300 rounded-lg px-3 py-2 text-sm focus:outline-none focus:border-blue-500"
           >
-            <option value="">Selecionar motorista</option>
+            <option value="">Sélectionner un chauffeur</option>
             {drivers.map(driver => (
               <option key={driver.id} value={driver.id}>
                 {driver.name}
@@ -82,7 +82,7 @@ export default function PayslipGenerator({ drivers = [] }) {
 
         <div>
           <label className="block text-sm font-medium text-gray-700 mb-2">
-            Mês
+            Mois
           </label>
           <select
             value={selectedMonth}
@@ -99,7 +99,7 @@ export default function PayslipGenerator({ drivers = [] }) {
 
         <div>
           <label className="block text-sm font-medium text-gray-700 mb-2">
-            Ano
+            Année
           </label>
           <select
             value={selectedYear}
@@ -123,12 +123,12 @@ export default function PayslipGenerator({ drivers = [] }) {
             {loading ? (
               <>
                 <Loader2 className="w-4 h-4 animate-spin" />
-                Gerando...
+                Génération...
               </>
             ) : (
               <>
                 <Download className="w-4 h-4" />
-                Gerar PDF
+                Générer PDF
               </>
             )}
           </Button>
