@@ -45,15 +45,14 @@ export default function SettingsPage() {
   const [isSaving, setIsSaving] = useState(false);
 
   useEffect(() => {
+    if (localStorage.getItem('admin_unlocked') !== 'true') {
+      window.location.href = createPageUrl('AdminPanel');
+      return;
+    }
     const init = async () => {
       try {
-        const user = await base44.auth.me();
-        if (user?.role !== 'admin') { setIsAdmin(false); setIsLoading(false); return; }
-        setIsAdmin(true);
         const result = await base44.entities.PriceSettings.list();
         if (result.length > 0) setSettings(result[0]);
-      } catch {
-        setIsAdmin(false);
       } finally {
         setIsLoading(false);
       }
