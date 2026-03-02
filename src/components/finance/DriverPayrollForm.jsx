@@ -39,14 +39,14 @@ export default function DriverPayrollForm({ drivers, onCreated }) {
   const handleSubmit = async (e) => {
     e.preventDefault();
     if (!formData.driver_id) {
-      alert('Selecione um motorista');
+      alert('Sélectionnez un chauffeur');
       return;
     }
 
     setLoading(true);
     try {
       await base44.entities.DriverPayrollSettings.create(formData);
-      alert('Configurações de salário criadas com sucesso!');
+      alert('Configurations de salaire créées avec succès!');
       setFormData({
         driver_id: '',
         driver_name: '',
@@ -65,8 +65,8 @@ export default function DriverPayrollForm({ drivers, onCreated }) {
       setExpanded(false);
       onCreated();
     } catch (error) {
-      console.error('Erro:', error);
-      alert('Erro ao criar configurações');
+      console.error('Erreur:', error);
+      alert('Erreur lors de la création des configurations');
     } finally {
       setLoading(false);
     }
