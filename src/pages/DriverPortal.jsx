@@ -314,13 +314,13 @@ export default function DriverPortal() {
 
           <div className="bg-[#111] border border-white/10 rounded-2xl p-6 space-y-4">
             <div>
-              <label className="text-white/50 text-xs uppercase tracking-wider block mb-2">Código / Nome do Motorista</label>
+              <label className="text-white/50 text-xs uppercase tracking-wider block mb-2">Code / Nom du chauffeur</label>
               <input
                 type="text"
                 value={driverCode}
                 onChange={e => setDriverCode(e.target.value)}
                 onKeyDown={e => e.key === 'Enter' && loginWithId(driverCode.trim())}
-                placeholder="Insira o seu código ou nome"
+                placeholder="Entrez votre code ou nom"
                 className="w-full bg-white/5 border border-white/10 rounded-xl text-white text-sm p-3 outline-none placeholder:text-white/20 focus:border-[#F5C300]/50"
               />
             </div>
