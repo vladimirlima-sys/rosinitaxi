@@ -93,25 +93,43 @@ Deno.serve(async (req) => {
 
     const base44 = createClientFromRequest(req);
 
+    const sendGmailEmail = async (to, subject, htmlBody) => {
+      const accessToken = await base44.asServiceRole.connectors.getAccessToken("gmail");
+      const emailLines = [
+        `From: Rosini Transfert <rosinitransportsetlications@gmail.com>`,
+        `To: ${to}`,
+        `Subject: ${subject}`,
+        `MIME-Version: 1.0`,
+        `Content-Type: text/html; charset=UTF-8`,
+        ``,
+        htmlBody
+      ];
+      const email = emailLines.join('\r\n');
+      const encodedEmail = btoa(unescape(encodeURIComponent(email)))
+        .replace(/\+/g, '-').replace(/\//g, '_').replace(/=+$/, '');
+      const res = await fetch('https://gmail.googleapis.com/gmail/v1/users/me/messages/send', {
+        method: 'POST',
+        headers: {
+          'Authorization': `Bearer ${accessToken}`,
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({ raw: encodedEmail }),
+      });
+      if (!res.ok) {
+        const err = await res.text();
+        throw new Error(`Gmail API error: ${err}`);
+      }
+    };
+
     try {
       if (clientEmail && !isShortNotice) {
-        await base44.integrations.Core.SendEmail({
-          to: clientEmail,
-          subject: `✅ Réservation confirmée — ${departure} → ${arrival}`,
-          body: clientHtml,
-          from_name: 'Rosini Transfert'
-        });
+        await sendGmailEmail(clientEmail, `✅ Réservation confirmée — ${departure} → ${arrival}`, clientHtml);
         console.log("Confirmation email sent to client:", clientEmail);
       } else if (isShortNotice) {
         console.log("Short notice booking — skipping client confirmation email for:", clientEmail);
       }
 
-      await base44.integrations.Core.SendEmail({
-        to: 'info@rosini.online',
-        subject: `🔔 Nouvelle réservation Stripe — ${clientName} | ${departure} → ${arrival} | CHF ${amount}`,
-        body: adminHtml,
-        from_name: 'Rosini Transfert'
-      });
+      await sendGmailEmail('info@rosini.online', `🔔 Nouvelle réservation Stripe — ${clientName} | ${departure} → ${arrival} | CHF ${amount}`, adminHtml);
       console.log("Admin notification sent");
     } catch (err) {
       console.error("Failed to send emails:", err.message);
