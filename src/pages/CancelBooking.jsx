@@ -125,9 +125,8 @@ export default function CancelBooking() {
     if (!bookingId) { setStatus('not_found'); return; }
     const load = async () => {
       try {
-        const results = await base44.entities.Booking.filter({ id: bookingId });
-        if (!results || results.length === 0) { setStatus('not_found'); return; }
-        const b = results[0];
+        const b = await base44.entities.Booking.get(bookingId);
+        if (!b) { setStatus('not_found'); return; }
         setBooking(b);
         if (b.payment_status === 'cancelled' || b.payment_status === 'refunded') { setStatus('already_cancelled'); return; }
         setStatus('confirm');
