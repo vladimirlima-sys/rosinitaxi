@@ -416,19 +416,11 @@ export default function DriverPortal() {
         </a>
 
         {/* Active trip monitor — shows for the next upcoming booking */}
-        {upcoming.length > 0 && (
-          <div className="mb-6">
-            <h2 className="text-white/50 text-xs uppercase tracking-wider px-1 mb-3">Course active</h2>
-            <ActiveTripMonitor booking={upcoming[0]} />
-          </div>
-        )}
-
-        {/* Upcoming bookings */}
         {upcoming.length > 0 ? (
           <div className="space-y-3 mb-8">
-            <h2 className="text-white/50 text-xs uppercase tracking-wider px-1">Prochaines courses</h2>
+            <h2 className="text-white/50 text-xs uppercase tracking-wider px-1 mb-3">Suivi en temps réel</h2>
             {upcoming.map(b => (
-              <BookingCard key={b.id} booking={b} isNew={newBookingIds.has(b.id)} />
+              <ActiveTripMonitor key={b.id} booking={b} />
             ))}
           </div>
         ) : (
