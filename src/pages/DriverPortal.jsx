@@ -443,6 +443,16 @@ export default function DriverPortal() {
           </div>
         )}
 
+        {/* Completed bookings */}
+        {completed.length > 0 && (
+          <div className="space-y-3 mb-8">
+            <h2 className="text-white/50 text-xs uppercase tracking-wider px-1">Réserves Effectuées</h2>
+            {completed.map(b => (
+              <BookingCard key={b.id} booking={b} isNew={false} />
+            ))}
+          </div>
+        )}
+
         {/* Past bookings */}
         {past.length > 0 && (
           <div className="space-y-3">
