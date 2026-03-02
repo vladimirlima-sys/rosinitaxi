@@ -13,8 +13,7 @@ Deno.serve(async (req) => {
     }
 
     // Fetch the booking
-    const bookings = await base44.asServiceRole.entities.Booking.filter({ id: booking_id });
-    const booking = bookings?.[0];
+    const booking = await base44.asServiceRole.entities.Booking.get(booking_id);
     if (!booking) {
       return Response.json({ error: 'Booking not found' }, { status: 404 });
     }
