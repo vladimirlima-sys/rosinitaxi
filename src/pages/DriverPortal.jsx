@@ -292,15 +292,9 @@ export default function DriverPortal() {
     return dep >= new Date();
   }).sort((a, b) => new Date(`${a.departure_date}T${a.departure_time || '00:00'}`) - new Date(`${b.departure_date}T${b.departure_time || '00:00'}`));
 
-  const completed = bookings.filter(b => {
-    const storageKey = `trip_status_${b.id}`;
-    return localStorage.getItem(storageKey) === 'completed';
-  });
-
   const past = bookings.filter(b => {
     const dep = new Date(`${b.departure_date}T${b.departure_time || '00:00'}:00`);
-    const storageKey = `trip_status_${b.id}`;
-    return dep < new Date() && localStorage.getItem(storageKey) !== 'completed';
+    return dep < new Date();
   });
 
   // Calculate current month earnings
