@@ -60,6 +60,17 @@ export default function ActiveTripMonitor({ booking }) {
       localStorage.setItem(startKey, String(now));
       setTripStartedAt(now);
     }
+    
+    // Notify client of status update
+    try {
+      await base44.functions.invoke('notifyRideStatusUpdate', {
+        booking_id: booking.id,
+        status: key,
+      });
+    } catch (notifyErr) {
+      console.error('Notification error:', notifyErr);
+    }
+    
     if (key === 'completed') {
       localStorage.removeItem(startKey);
       setTripStartedAt(null);
