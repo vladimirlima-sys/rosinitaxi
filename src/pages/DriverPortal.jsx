@@ -43,7 +43,7 @@ function BookingCard({ booking, isNew }) {
       {isNew && (
         <div className="flex items-center gap-2 mb-3 text-[#F5C300] text-xs font-semibold uppercase tracking-wider">
           <span className="w-2 h-2 rounded-full bg-[#F5C300] animate-pulse" />
-          Nova corrida atribuída
+          Nouvelle course attribuée
         </div>
       )}
       <div className="flex items-start justify-between mb-4">
