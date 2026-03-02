@@ -2,7 +2,7 @@ import React, { useEffect, useState, useRef } from 'react';
 import { base44 } from '@/api/base44Client';
 import { useLang } from '@/components/LanguageContext';
 import { translations } from '@/components/translations';
-import { Loader2, ZoomIn, ZoomOut, MapPin, Car, Bike, Footprints } from 'lucide-react';
+import { Loader2, ZoomIn, ZoomOut, MapPin } from 'lucide-react';
 
 export default function RouteMapPreview({ departure, arrival, distance, time }) {
   const mapRef = useRef(null);
@@ -242,36 +242,33 @@ export default function RouteMapPreview({ departure, arrival, distance, time }) 
       <div className="flex gap-2">
         <button
           onClick={() => setTransportMode('car')}
-          className={`flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-xs transition-all ${
+          className={`px-3 py-1.5 rounded-lg text-xs font-medium transition-all ${
             transportMode === 'car' 
               ? 'bg-[#F5C300] text-black' 
               : 'bg-white/10 text-white/60 hover:bg-white/20'
           }`}
         >
-          <Car className="w-4 h-4" />
           Carro
         </button>
         <button
           onClick={() => setTransportMode('bike')}
-          className={`flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-xs transition-all ${
+          className={`px-3 py-1.5 rounded-lg text-xs font-medium transition-all ${
             transportMode === 'bike' 
               ? 'bg-[#F5C300] text-black' 
               : 'bg-white/10 text-white/60 hover:bg-white/20'
           }`}
         >
-          <Bike className="w-4 h-4" />
           Bicicleta
         </button>
         <button
           onClick={() => setTransportMode('pedestrian')}
-          className={`flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-xs transition-all ${
+          className={`px-3 py-1.5 rounded-lg text-xs font-medium transition-all ${
             transportMode === 'pedestrian' 
               ? 'bg-[#F5C300] text-black' 
               : 'bg-white/10 text-white/60 hover:bg-white/20'
           }`}
         >
-          <Footprints className="w-4 h-4" />
-          Pedestriano
+          Pedestre
         </button>
       </div>
 
