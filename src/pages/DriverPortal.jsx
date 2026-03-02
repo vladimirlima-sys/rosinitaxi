@@ -310,7 +310,7 @@ export default function DriverPortal() {
     return (
       <div className="min-h-screen bg-[#0A0A0A] flex flex-col items-center justify-center px-6">
         <a
-          href={createPageUrl('AdminPanel')}
+          href={createPageUrl('Home')}
           className="absolute left-4 top-8 flex items-center gap-1 text-white/40 hover:text-white/70 transition-colors text-sm"
         >
           <ArrowLeft className="w-4 h-4" />
