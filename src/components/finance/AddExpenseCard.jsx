@@ -13,7 +13,7 @@ const EXPENSE_CATEGORIES = [
 ];
 
 export default function AddExpenseCard({ selectedMonth, onAdded }) {
-  const [form, setForm] = useState({ category: 'carburant', amount: '', description: '', date: new Date().toISOString().slice(0, 10) });
+  const [form, setForm] = useState({ category: 'carburant', amount: '', description: '', date: new Date().toISOString().slice(0, 10), is_recurring: false });
   const [saving, setSaving] = useState(false);
 
   const handleSubmit = async (e) => {
@@ -23,9 +23,10 @@ export default function AddExpenseCard({ selectedMonth, onAdded }) {
       ...form,
       amount: parseFloat(form.amount),
       month: selectedMonth,
+      recurring_start_month: form.is_recurring ? selectedMonth : null,
     });
     setSaving(false);
-    setForm({ category: 'carburant', amount: '', description: '', date: new Date().toISOString().slice(0, 10) });
+    setForm({ category: 'carburant', amount: '', description: '', date: new Date().toISOString().slice(0, 10), is_recurring: false });
     onAdded();
   };
 
