@@ -92,6 +92,12 @@ export default function SettingsPage() {
   return (
     <div className="min-h-screen bg-[#0A0A0A] py-12 px-6">
       <div className="max-w-2xl mx-auto">
+        <a
+          href={createPageUrl('AdminPanel')}
+          className="flex items-center gap-1 text-white/40 hover:text-white/70 transition-colors mb-6"
+        >
+          <ArrowLeft className="w-4 h-4" />
+        </a>
         {/* Header */}
         <div className="flex items-center gap-3 mb-10">
           <Settings className="w-6 h-6 text-[#C9A96E]" />
