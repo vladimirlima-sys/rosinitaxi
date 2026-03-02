@@ -21,11 +21,18 @@ export default function AdminPanel() {
   const [unlocked, setUnlocked] = useState(false);
   const [error, setError] = useState(false);
 
+  useEffect(() => {
+    if (localStorage.getItem('admin_unlocked') === 'true') {
+      setUnlocked(true);
+    }
+  }, []);
+
   const handleSubmit = (e) => {
     e.preventDefault();
     if (input === PASSWORD) {
       setUnlocked(true);
       setError(false);
+      localStorage.setItem('admin_unlocked', 'true');
     } else {
       setError(true);
       setInput('');
