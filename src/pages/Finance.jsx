@@ -107,6 +107,16 @@ export default function Finance() {
     }, [])
     .sort((a, b) => a.name.localeCompare(b.name));
 
+  const allDrivers = bookings
+    .filter(b => b.driver_id && b.driver_id !== 'null')
+    .reduce((acc, b) => {
+      if (!acc.find(d => d.id === b.driver_id)) {
+        acc.push({ id: b.driver_id, name: b.driver_name });
+      }
+      return acc;
+    }, [])
+    .sort((a, b) => a.name.localeCompare(b.name));
+
   const handleDownloadPDF = async () => {
     try {
       const response = await base44.functions.invoke('generateFinancialReport', {
