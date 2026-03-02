@@ -213,7 +213,7 @@ export default function DriverPayrollForm({ drivers, onCreated }) {
               variant="outline"
               onClick={() => setExpanded(false)}
             >
-              Cancelar
+              Annuler
             </Button>
             <Button
               type="submit"
@@ -223,10 +223,10 @@ export default function DriverPayrollForm({ drivers, onCreated }) {
               {loading ? (
                 <>
                   <Loader2 className="w-4 h-4 animate-spin" />
-                  Salvando...
+                  Enregistrement...
                 </>
               ) : (
-                'Salvar Configurações'
+                'Enregistrer les Configurations'
               )}
             </Button>
           </div>
