@@ -83,7 +83,7 @@ export default function AdminPanel() {
           <p className="text-black/60 text-sm tracking-[0.2em] uppercase mt-2">PAINEL ADMINISTRATIVO</p>
           <div className="w-8 h-[1px] bg-black/40 mx-auto mt-3" />
           <button
-            onClick={() => setUnlocked(false)}
+            onClick={() => { setUnlocked(false); localStorage.removeItem('admin_unlocked'); setInput(''); }}
             className="flex items-center gap-2 text-black/60 hover:text-black text-sm transition-colors mt-6 mx-auto"
           >
             <LogOut className="w-4 h-4" />
