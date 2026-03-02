@@ -309,7 +309,7 @@ export default function DriverPortal() {
         <div className="w-full max-w-sm space-y-6">
           <div className="text-center">
             <h1 className="text-4xl font-extralight tracking-[0.3em] text-white uppercase">ROSINI</h1>
-            <p className="text-white/40 text-xs tracking-[0.2em] uppercase mt-1">Portal do Motorista</p>
+            <p className="text-white/40 text-xs tracking-[0.2em] uppercase mt-1">Portail Chauffeur</p>
           </div>
 
           <div className="bg-[#111] border border-white/10 rounded-2xl p-6 space-y-4">
