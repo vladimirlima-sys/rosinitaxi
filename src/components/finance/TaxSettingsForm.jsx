@@ -146,7 +146,7 @@ export default function TaxSettingsForm({ onTaxesUpdated }) {
             onChange={(e) => handleChange('pc_percentage', e.target.value)}
             className="w-full bg-white/10 border border-white/20 rounded px-3 py-2 text-white text-sm"
           />
-          <p className="text-white/40 text-xs mt-1">Prestações Complementares</p>
+          <p className="text-white/40 text-xs mt-1">Prestations Complémentaires</p>
         </div>
 
         <div>
@@ -158,7 +158,7 @@ export default function TaxSettingsForm({ onTaxesUpdated }) {
             onChange={(e) => handleChange('cont_frais_admin_percentage', e.target.value)}
             className="w-full bg-white/10 border border-white/20 rounded px-3 py-2 text-white text-sm"
           />
-          <p className="text-white/40 text-xs mt-1">Contribuição Frais Administrativos</p>
+          <p className="text-white/40 text-xs mt-1">Contribution Frais Administratifs</p>
         </div>
 
         <div>
@@ -211,7 +211,7 @@ export default function TaxSettingsForm({ onTaxesUpdated }) {
       </div>
 
       <div className="bg-white/10 border border-white/20 rounded-lg p-4 mb-6">
-        <p className="text-white text-sm mb-1">Total de Deduções</p>
+        <p className="text-white text-sm mb-1">Total de Déductions</p>
         <p className="text-white text-2xl font-bold">{totalTaxPercentage.toFixed(2)}%</p>
       </div>
 
@@ -231,7 +231,7 @@ export default function TaxSettingsForm({ onTaxesUpdated }) {
         className="flex items-center gap-2 bg-white text-black px-4 py-2 rounded-lg font-semibold hover:bg-white/90 transition-colors disabled:opacity-50"
       >
         {saving ? <Loader2 className="w-4 h-4 animate-spin" /> : <Save className="w-4 h-4" />}
-        Guardar Configurações
+        Enregistrer les configurations
       </button>
     </div>
   );

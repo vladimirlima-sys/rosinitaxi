@@ -30,13 +30,13 @@ export default function FinanceFilters({
       </div>
 
       <div>
-        <label className="text-black/60 text-sm mb-2 block">Filtrer par motorista</label>
-        <select
-          value={filterDriver}
-          onChange={(e) => setFilterDriver(e.target.value)}
-          className="bg-black border border-black/40 text-white px-4 py-2 rounded-lg outline-none w-full"
-        >
-          <option value="all" className="bg-black text-white">Todos os motoristas</option>
+        <label className="text-black/60 text-sm mb-2 block">Filtrer par chauffeur</label>
+         <select
+           value={filterDriver}
+           onChange={(e) => setFilterDriver(e.target.value)}
+           className="bg-black border border-black/40 text-white px-4 py-2 rounded-lg outline-none w-full"
+         >
+           <option value="all" className="bg-black text-white">Tous les chauffeurs</option>
           {availableDrivers.map(driver => (
             <option key={driver.id} value={driver.id} className="bg-black text-white">
               {driver.name}

@@ -63,7 +63,7 @@ export default function AddExpenseCard({ selectedMonth, onAdded }) {
           />
         </div>
         <div>
-          <label className="text-white/60 text-xs mb-1 block">Data</label>
+          <label className="text-white/60 text-xs mb-1 block">Date</label>
           <input
             type="date"
             required
@@ -73,7 +73,7 @@ export default function AddExpenseCard({ selectedMonth, onAdded }) {
           />
         </div>
         <div>
-          <label className="text-white/60 text-xs mb-1 block">Descrição (optionnel)</label>
+          <label className="text-white/60 text-xs mb-1 block">Description (optionnel)</label>
           <input
             type="text"
             value={form.description}
