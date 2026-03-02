@@ -399,8 +399,8 @@ export default function DriverPortal() {
             <Zap className="w-6 h-6 text-black" />
           </div>
           <div>
-            <p className="text-white font-semibold text-sm">Taxímetro</p>
-            <p className="text-white/40 text-xs mt-0.5">Iniciar contagem de km ao vivo</p>
+            <p className="text-white font-semibold text-sm">Taximètre</p>
+            <p className="text-white/40 text-xs mt-0.5">Démarrer le compteur kilométrique</p>
           </div>
           <div className="ml-auto text-[#F5C300]/60 group-hover:text-[#F5C300] transition-all">›</div>
         </a>
