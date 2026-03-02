@@ -251,7 +251,7 @@ export default function DriverPortal() {
         setNewBookingIds(newIds);
         playSound();
         const newB = mine.find(b => newIds.has(b.id));
-        if (newB) sendNotification('🚗 Nova corrida atribuída!', `${newB.departure_point} → ${newB.arrival_point}`);
+        if (newB) sendNotification('🚗 Nouvelle course attribuée !', `${newB.departure_point} → ${newB.arrival_point}`);
         setTimeout(() => setNewBookingIds(new Set()), 10000);
       }
     }
