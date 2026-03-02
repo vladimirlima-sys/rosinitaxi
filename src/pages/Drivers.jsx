@@ -116,11 +116,11 @@ export default function Drivers() {
                     <p className="text-white font-medium text-sm md:text-base truncate">{driver.name}</p>
                     {driver.status === 'active' ? (
                       <span className="flex items-center gap-1 text-xs text-green-400 bg-green-400/10 px-1.5 py-0.5 rounded-full shrink-0">
-                        <CheckCircle className="w-3 h-3" /> Ativo
+                        <CheckCircle className="w-3 h-3" /> Actif
                       </span>
                     ) : (
                       <span className="flex items-center gap-1 text-xs text-red-400 bg-red-400/10 px-1.5 py-0.5 rounded-full shrink-0">
-                        <XCircle className="w-3 h-3" /> Inativo
+                        <XCircle className="w-3 h-3" /> Inactif
                       </span>
                     )}
                   </div>
