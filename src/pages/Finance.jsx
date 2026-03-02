@@ -108,7 +108,7 @@ export default function Finance() {
 
   const handleDownloadPDF = async () => {
     try {
-      const response = await base44.functions.invoke('downloadFinancePDF', {
+      const response = await base44.functions.invoke('generateFinancialReport', {
         selectedMonth,
         monthLabel,
         monthBookings,
