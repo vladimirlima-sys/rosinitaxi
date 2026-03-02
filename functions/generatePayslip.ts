@@ -130,75 +130,76 @@ Deno.serve(async (req) => {
     doc.text(grossAmount.toFixed(2), 160, y, { align: 'right' });
 
     // === DEDUCTIONS TABLE ===
-    y += 12;
+    y += 10;
+    doc.setFontSize(8);
     doc.setFont(undefined, 'bold');
     
     // Header row
-    doc.rect(20, y - 5, 170, 6);
+    doc.rect(20, y - 4, 170, 5);
     doc.text('GS', 22, y);
     doc.text('Déductions', 35, y);
     doc.text('Déterminant', 70, y);
     doc.text('Taux/Qté', 95, y);
-    doc.text('Pt 9 cert. sal.', 120, y);
-    doc.text('Charges soc.', 145, y);
+    doc.text('Pt 9', 120, y);
+    doc.text('Charges', 140, y);
     doc.text('Valeur', 160, y);
 
-    y += 8;
+    y += 7;
     doc.setFont(undefined, 'normal');
     
     // Cotisation AVS/AI/APG
     doc.text('5010.', 22, y);
     doc.text('Cotisation AVS/AI/APG', 35, y);
-    doc.text(grossAmount.toFixed(2), 70, y, { align: 'right' });
+    doc.text(grossAmount.toFixed(2), 65, y, { align: 'right' });
     doc.text('5.30', 95, y, { align: 'right' });
     doc.text((avsAiApg * -1).toFixed(2), 120, y, { align: 'right' });
-    doc.text((avsAiApg * -1).toFixed(2), 145, y, { align: 'right' });
+    doc.text((avsAiApg * -1).toFixed(2), 140, y, { align: 'right' });
     doc.text((avsAiApg * -1).toFixed(2), 160, y, { align: 'right' });
     
     y += 6;
     doc.text('5016.', 22, y);
     doc.text('Contribution LPC/Fam (VD)', 35, y);
-    doc.text(grossAmount.toFixed(2), 70, y, { align: 'right' });
+    doc.text(grossAmount.toFixed(2), 65, y, { align: 'right' });
     doc.text('0.06', 95, y, { align: 'right' });
     doc.text((lpcFam * -1).toFixed(2), 160, y, { align: 'right' });
     
     y += 6;
     doc.text('5020.', 22, y);
     doc.text('Cotisation AC', 35, y);
-    doc.text(grossAmount.toFixed(2), 70, y, { align: 'right' });
+    doc.text(grossAmount.toFixed(2), 65, y, { align: 'right' });
     doc.text('1.10', 95, y, { align: 'right' });
     doc.text((ac * -1).toFixed(2), 120, y, { align: 'right' });
-    doc.text((ac * -1).toFixed(2), 145, y, { align: 'right' });
+    doc.text((ac * -1).toFixed(2), 140, y, { align: 'right' });
     doc.text((ac * -1).toFixed(2), 160, y, { align: 'right' });
     
     y += 6;
     doc.text('5025.1', 22, y);
     doc.text('Cotisation AANP (code A1)', 35, y);
-    doc.text(grossAmount.toFixed(2), 70, y, { align: 'right' });
+    doc.text(grossAmount.toFixed(2), 65, y, { align: 'right' });
     doc.text('2.114', 95, y, { align: 'right' });
     doc.text((aanp * -1).toFixed(2), 120, y, { align: 'right' });
-    doc.text((aanp * -1).toFixed(2), 145, y, { align: 'right' });
+    doc.text((aanp * -1).toFixed(2), 140, y, { align: 'right' });
     doc.text((aanp * -1).toFixed(2), 160, y, { align: 'right' });
     
     y += 6;
     doc.text('5050.', 22, y);
     doc.text('Cotisation LPP', 35, y);
-    doc.text((grossAmount * 0.53).toFixed(2), 70, y, { align: 'right' });
+    doc.text((grossAmount * 0.53).toFixed(2), 65, y, { align: 'right' });
     doc.text('7.00', 95, y, { align: 'right' });
     doc.text((lpp * -1).toFixed(2), 160, y, { align: 'right' });
     
     y += 6;
     doc.text('5060.', 22, y);
-    doc.text('Retenue impôt à la source (GE-A0N)', 35, y);
-    doc.text(grossAmount.toFixed(2), 70, y, { align: 'right' });
+    doc.text('Retenue impôt à la source', 35, y);
+    doc.text(grossAmount.toFixed(2), 65, y, { align: 'right' });
     doc.text('6.37', 95, y, { align: 'right' });
     doc.text((impot * -1).toFixed(2), 160, y, { align: 'right' });
     
-    y += 8;
+    y += 7;
     doc.setFont(undefined, 'bold');
     doc.text('Totaux', 35, y);
     doc.text((totalDeductions * -1).toFixed(2), 120, y, { align: 'right' });
-    doc.text((totalDeductions * -1).toFixed(2), 145, y, { align: 'right' });
+    doc.text((totalDeductions * -1).toFixed(2), 140, y, { align: 'right' });
     doc.text((totalDeductions * -1).toFixed(2), 160, y, { align: 'right' });
 
     // === NET AMOUNT BOX ===
