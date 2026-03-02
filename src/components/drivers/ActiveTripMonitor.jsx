@@ -52,7 +52,7 @@ export default function ActiveTripMonitor({ booking }) {
   const currentStatusObj = TRIP_STATUSES[currentIndex] || null;
   const isCompleted = tripStatus === 'completed';
 
-  const setStatus = (key) => {
+  const setStatus = async (key) => {
     localStorage.setItem(storageKey, key);
     setTripStatus(key);
     if (key === 'in_progress' && !tripStartedAt) {
@@ -63,6 +63,20 @@ export default function ActiveTripMonitor({ booking }) {
     if (key === 'completed') {
       localStorage.removeItem(startKey);
       setTripStartedAt(null);
+      
+      // Registrar pagamento automaticamente
+      setSavingPayment(true);
+      try {
+        await base44.entities.Booking.update(booking.id, {
+          payment_status: 'paid'
+        });
+        toast.success('Corrida registrada como paga ✓');
+      } catch (error) {
+        toast.error('Erro ao registrar pagamento');
+        console.error('Payment registration error:', error);
+      } finally {
+        setSavingPayment(false);
+      }
     }
   };
 
