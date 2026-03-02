@@ -95,12 +95,12 @@ Deno.serve(async (req) => {
     doc.text(`Période de salaire: 01.${String(month).padStart(2, '0')}.${year} - ${endDay}.${String(month).padStart(2, '0')}.${year}`, 20, 39);
 
     // === INCOME TABLE ===
-    let y = 48;
-    doc.setFontSize(9);
+    let y = 45;
+    doc.setFontSize(8);
     doc.setFont(undefined, 'bold');
     
     // Header row
-    doc.rect(20, y - 5, 170, 6);
+    doc.rect(20, y - 4, 170, 5);
     doc.text('GS', 22, y);
     doc.text('Texte', 35, y);
     doc.text('Déterminant', 70, y);
@@ -109,29 +109,25 @@ Deno.serve(async (req) => {
     doc.text('LAA', 135, y);
     doc.text('BRUT', 155, y);
 
-    y += 8;
+    y += 7;
     doc.setFont(undefined, 'normal');
     
     // Salaire mensuel
     doc.text('1000.', 22, y);
     doc.text('Salaire mensuel', 35, y);
-    doc.text(grossAmount.toFixed(2), 70, y, { align: 'right' });
-    doc.text('8.333333', 95, y, { align: 'right' });
-    doc.text(grossAmount.toFixed(2), 115, y, { align: 'right' });
-    doc.text(grossAmount.toFixed(2), 135, y, { align: 'right' });
-    doc.text(grossAmount.toFixed(2), 155, y, { align: 'right' });
+    doc.text(grossAmount.toFixed(2), 65, y, { align: 'right' });
+    doc.text('—', 95, y, { align: 'right' });
+    doc.text(grossAmount.toFixed(2), 110, y, { align: 'right' });
+    doc.text(grossAmount.toFixed(2), 130, y, { align: 'right' });
+    doc.text(grossAmount.toFixed(2), 160, y, { align: 'right' });
     
-    y += 6;
-    doc.text('1200.', 22, y);
-    doc.text('13e salaire', 35, y);
-    
-    y += 6;
+    y += 7;
     doc.setFont(undefined, 'bold');
     doc.text('Totaux', 35, y);
-    doc.text(grossAmount.toFixed(2), 70, y, { align: 'right' });
-    doc.text(grossAmount.toFixed(2), 115, y, { align: 'right' });
-    doc.text(grossAmount.toFixed(2), 135, y, { align: 'right' });
-    doc.text(grossAmount.toFixed(2), 155, y, { align: 'right' });
+    doc.text(grossAmount.toFixed(2), 65, y, { align: 'right' });
+    doc.text(grossAmount.toFixed(2), 110, y, { align: 'right' });
+    doc.text(grossAmount.toFixed(2), 130, y, { align: 'right' });
+    doc.text(grossAmount.toFixed(2), 160, y, { align: 'right' });
 
     // === DEDUCTIONS TABLE ===
     y += 12;
