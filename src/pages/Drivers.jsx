@@ -5,28 +5,14 @@ import DriverForm from '@/components/drivers/DriverForm';
 import { createPageUrl } from '@/utils';
 
 export default function Drivers() {
-  const [isAdmin, setIsAdmin] = useState(null);
   const [drivers, setDrivers] = useState([]);
-  const [loading, setLoading] = useState(true);
-  const [showForm, setShowForm] = useState(false);
-  const [editingDriver, setEditingDriver] = useState(null);
-  const [monthlyRevenue, setMonthlyRevenue] = useState({}); // { driverId: totalCHF }
-
+...
   useEffect(() => {
-    const checkAuth = async () => {
-      try {
-        const user = await base44.auth.me();
-        setIsAdmin(user?.role === 'admin');
-      } catch {
-        setIsAdmin(false);
-      }
-    };
-    checkAuth();
-  }, []);
-
-  useEffect(() => {
-    if (isAdmin) {
-      fetchDrivers();
+    if (localStorage.getItem('admin_unlocked') !== 'true') {
+      window.location.href = createPageUrl('AdminPanel');
+      return;
+    }
+    fetchDrivers();
       // Subscribe to booking changes to update revenue in real-time
       const unsubscribe = base44.entities.Booking.subscribe((event) => {
         fetchMonthlyRevenue();
