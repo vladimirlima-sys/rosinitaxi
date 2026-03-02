@@ -29,7 +29,6 @@ function Section({ title, children }) {
 }
 
 export default function SettingsPage() {
-  const [isAdmin, setIsAdmin] = useState(null);
   const [settings, setSettings] = useState({
     standard_price_per_km: 2.35,
     comfort_price_per_km: 3.05,
