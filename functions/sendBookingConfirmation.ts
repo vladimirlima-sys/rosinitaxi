@@ -6,540 +6,671 @@ Deno.serve(async (req) => {
     const base44 = createClientFromRequest(req);
     const body = await req.json();
 
-    const { client_name, client_email, client_phone, departure_point, arrival_point, departure_date, departure_time, flight_number, vehicle_type, distance_km, total_price, passengers, notes, payment_method, language = 'fr', skip_client_email = false, booking_id } = body;
+    const {
+      client_name, client_email, client_phone,
+      departure_point, arrival_point,
+      departure_date, departure_time,
+      flight_number, vehicle_type,
+      distance_km, total_price,
+      passengers, notes,
+      payment_method, language = 'fr',
+      skip_client_email = false, booking_id
+    } = body;
 
+    const vehicleLabel = vehicle_type === 'economic' ? 'Standard' : 'Comfort';
 
-
-    // Translation texts by language
-    const texts = {
-      pt: {
-        confirmTitle: '✅ Reserva confirmada',
-        thankYou: (name) => `Obrigado ${name}, seu transfer está confirmado.`,
-        journey: 'Trajeto',
-        date: 'Data',
-        vehicle: 'Veículo',
-        passengers: 'Passageiros',
-        distance: 'Distância',
-        flight: 'Voo',
-        notes: 'Observações',
-        paymentLabel: payment_method === 'stripe' ? 'Total pago' : 'Total a pagar no local',
-        contactText: 'Dúvidas? Entre em contato conosco',
-        client: 'Cliente',
-        email: 'Email',
-        phone: 'Telefone',
-        copyright: (year) => `© ${year} Rosini Transfert. Todos os direitos reservados.`,
-        // Receipt PDF
-        vehicleLabel: vehicle_type === 'economic' ? 'Standard' : 'Conforto',
-        receiptTitle: 'RECIBO',
-        clientInfoTitle: 'INFORMAÇÕES DO CLIENTE',
-        journeyDetailsTitle: 'DETALHES DA VIAGEM',
-        nameLabel: 'Nome:',
-        dep: 'Partida:',
-        arr: 'Chegada:',
-        dateTime: 'Data/Hora:',
-        atLabel: 'às',
-        totalAmount: 'Valor total:',
-        paymentMethodLabel: 'Método:',
-        paid: 'PAGO',
-        toPay: 'A COBRAR',
-        paymentStripe: 'Stripe (online)',
-        paymentTwint: 'TWINT',
-        paymentCash: 'Dinheiro',
-        tripDateLabel: 'Trajeto:',
-        dateLabel: 'Data:',
-        newBookingSubject: (name) => `RECIBO - ${name} | ${departure_point} → ${arrival_point} | ${departure_date}`,
-        newBookingBody: (name) => `<p>Nova reserva de <strong>${name}</strong></p><p>${departure_point} → ${arrival_point}</p><p>CHF ${total_price}</p>`,
-      },
+    // ─── Translations ──────────────────────────────────────────────────────────
+    const T = {
       fr: {
-        confirmTitle: '✅ Réservation confirmée',
-        thankYou: (name) => `Merci ${name}, votre transfer est confirmé.`,
-        journey: 'Trajet',
-        date: 'Date',
-        vehicle: 'Véhicule',
-        passengers: 'Passagers',
-        distance: 'Distance',
-        flight: 'Vol',
-        notes: 'Notes',
-        paymentLabel: payment_method === 'stripe' ? 'Total payé' : 'Total à payer sur place',
-        contactText: 'Des questions ? Contactez-nous',
-        client: 'Client',
-        email: 'Email',
-        phone: 'Téléphone',
-        copyright: (year) => `© ${year} Rosini Transfert. Tous droits réservés.`,
-        // Receipt PDF
-        vehicleLabel: vehicle_type === 'economic' ? 'Standard' : 'Confort',
+        subject: 'VOTRE RÉSERVATION',
+        confirmed: 'Réservation confirmée',
+        dear: (n) => `Bonjour ${n},`,
+        intro: 'Votre transfert est confirmé. Voici le récapitulatif de votre réservation :',
+        sectionTrip: 'DÉTAILS DU TRAJET',
+        sectionClient: 'VOS COORDONNÉES',
+        sectionPayment: 'PAIEMENT',
+        labelFrom: 'Départ',
+        labelTo: 'Arrivée',
+        labelDate: 'Date',
+        labelTime: 'Heure',
+        labelVehicle: 'Véhicule',
+        labelPassengers: 'Passagers',
+        labelDistance: 'Distance',
+        labelFlight: 'N° de vol',
+        labelNotes: 'Notes',
+        labelName: 'Nom',
+        labelEmail: 'Email',
+        labelPhone: 'Téléphone',
+        labelPayMethod: 'Méthode',
+        labelTotal: payment_method === 'stripe' ? 'Total payé' : 'Total à payer sur place',
+        cancelTitle: 'Annuler ma réservation',
+        cancelText: 'Vous souhaitez annuler ? Cliquez sur le bouton ci-dessous.',
+        cancelBtn: 'Annuler ma réservation',
+        questions: 'Des questions ?',
+        contactUs: 'Contactez-nous :',
+        copyright: (y) => `© ${y} Rosini Transports et Locations Sàrl — Tous droits réservés`,
+        payStripe: 'Carte bancaire (Stripe)',
+        payTwint: 'TWINT',
+        payCash: 'Espèces',
+        // Company email
+        companySubject: (n) => `Nouvelle réservation — ${n} | ${departure_point} → ${arrival_point} | ${departure_date}`,
+        companyIntro: 'Une nouvelle réservation a été enregistrée.',
+        // PDF
         receiptTitle: 'REÇU',
-        clientInfoTitle: 'INFORMATIONS DU CLIENT',
-        journeyDetailsTitle: 'DÉTAILS DU TRAJET',
-        nameLabel: 'Nom:',
-        dep: 'Départ:',
-        arr: 'Arrivée:',
-        dateTime: 'Date/Heure:',
-        atLabel: 'à',
-        totalAmount: 'Montant total:',
-        paymentMethodLabel: 'Méthode:',
         paid: 'PAYÉ',
         toPay: 'À ENCAISSER',
-        paymentStripe: 'Stripe (en ligne)',
-        paymentTwint: 'TWINT',
-        paymentCash: 'Espèces',
-        tripDateLabel: 'Trajet:',
-        dateLabel: 'Date:',
-        newBookingSubject: (name) => `REÇU - ${name} | ${departure_point} → ${arrival_point} | ${departure_date}`,
-        newBookingBody: (name) => `<p>Nouvelle réservation de <strong>${name}</strong></p><p>${departure_point} → ${arrival_point}</p><p>CHF ${total_price}</p>`,
+      },
+      pt: {
+        subject: 'A SUA RESERVA',
+        confirmed: 'Reserva confirmada',
+        dear: (n) => `Olá ${n},`,
+        intro: 'O seu transfer está confirmado. Aqui está o resumo da sua reserva:',
+        sectionTrip: 'DETALHES DA VIAGEM',
+        sectionClient: 'OS SEUS DADOS',
+        sectionPayment: 'PAGAMENTO',
+        labelFrom: 'Partida',
+        labelTo: 'Chegada',
+        labelDate: 'Data',
+        labelTime: 'Hora',
+        labelVehicle: 'Veículo',
+        labelPassengers: 'Passageiros',
+        labelDistance: 'Distância',
+        labelFlight: 'Nº do voo',
+        labelNotes: 'Observações',
+        labelName: 'Nome',
+        labelEmail: 'Email',
+        labelPhone: 'Telefone',
+        labelPayMethod: 'Método',
+        labelTotal: payment_method === 'stripe' ? 'Total pago' : 'Total a pagar no local',
+        cancelTitle: 'Cancelar reserva',
+        cancelText: 'Deseja cancelar? Clique no botão abaixo.',
+        cancelBtn: 'Cancelar minha reserva',
+        questions: 'Perguntas?',
+        contactUs: 'Contacte-nos:',
+        copyright: (y) => `© ${y} Rosini Transports et Locations Sàrl — Todos os direitos reservados`,
+        payStripe: 'Cartão bancário (Stripe)',
+        payTwint: 'TWINT',
+        payCash: 'Dinheiro',
+        companySubject: (n) => `Nova reserva — ${n} | ${departure_point} → ${arrival_point} | ${departure_date}`,
+        companyIntro: 'Uma nova reserva foi registada.',
+        receiptTitle: 'RECIBO',
+        paid: 'PAGO',
+        toPay: 'A COBRAR',
       },
       en: {
-        confirmTitle: '✅ Booking confirmed',
-        thankYou: (name) => `Thank you ${name}, your transfer is confirmed.`,
-        journey: 'Journey',
-        date: 'Date',
-        vehicle: 'Vehicle',
-        passengers: 'Passengers',
-        distance: 'Distance',
-        flight: 'Flight',
-        notes: 'Notes',
-        paymentLabel: payment_method === 'stripe' ? 'Total paid' : 'Total to pay on site',
-        contactText: 'Questions? Contact us',
-        client: 'Client',
-        email: 'Email',
-        phone: 'Phone',
-        copyright: (year) => `© ${year} Rosini Transfert. All rights reserved.`,
-        // Receipt PDF
-        vehicleLabel: vehicle_type === 'economic' ? 'Standard' : 'Comfort',
+        subject: 'YOUR BOOKING',
+        confirmed: 'Booking confirmed',
+        dear: (n) => `Hello ${n},`,
+        intro: 'Your transfer is confirmed. Here is your booking summary:',
+        sectionTrip: 'TRIP DETAILS',
+        sectionClient: 'YOUR DETAILS',
+        sectionPayment: 'PAYMENT',
+        labelFrom: 'Departure',
+        labelTo: 'Arrival',
+        labelDate: 'Date',
+        labelTime: 'Time',
+        labelVehicle: 'Vehicle',
+        labelPassengers: 'Passengers',
+        labelDistance: 'Distance',
+        labelFlight: 'Flight number',
+        labelNotes: 'Notes',
+        labelName: 'Name',
+        labelEmail: 'Email',
+        labelPhone: 'Phone',
+        labelPayMethod: 'Method',
+        labelTotal: payment_method === 'stripe' ? 'Total paid' : 'Total to pay on site',
+        cancelTitle: 'Cancel booking',
+        cancelText: 'Do you wish to cancel? Click the button below.',
+        cancelBtn: 'Cancel my booking',
+        questions: 'Questions?',
+        contactUs: 'Contact us:',
+        copyright: (y) => `© ${y} Rosini Transports et Locations Sàrl — All rights reserved`,
+        payStripe: 'Credit card (Stripe)',
+        payTwint: 'TWINT',
+        payCash: 'Cash',
+        companySubject: (n) => `New booking — ${n} | ${departure_point} → ${arrival_point} | ${departure_date}`,
+        companyIntro: 'A new booking has been registered.',
         receiptTitle: 'RECEIPT',
-        clientInfoTitle: 'CLIENT INFORMATION',
-        journeyDetailsTitle: 'JOURNEY DETAILS',
-        nameLabel: 'Name:',
-        dep: 'Departure:',
-        arr: 'Arrival:',
-        dateTime: 'Date/Time:',
-        atLabel: 'at',
-        totalAmount: 'Total amount:',
-        paymentMethodLabel: 'Method:',
         paid: 'PAID',
         toPay: 'TO COLLECT',
-        paymentStripe: 'Stripe (online)',
-        paymentTwint: 'TWINT',
-        paymentCash: 'Cash',
-        tripDateLabel: 'Trip:',
-        dateLabel: 'Date:',
-        newBookingSubject: (name) => `RECEIPT - ${name} | ${departure_point} → ${arrival_point} | ${departure_date}`,
-        newBookingBody: (name) => `<p>New booking from <strong>${name}</strong></p><p>${departure_point} → ${arrival_point}</p><p>CHF ${total_price}</p>`,
       },
       de: {
-        confirmTitle: '✅ Buchung bestätigt',
-        thankYou: (name) => `Danke ${name}, Ihr Transfer ist bestätigt.`,
-        journey: 'Strecke',
-        date: 'Datum',
-        vehicle: 'Fahrzeug',
-        passengers: 'Passagiere',
-        distance: 'Entfernung',
-        flight: 'Flug',
-        notes: 'Notizen',
-        paymentLabel: payment_method === 'stripe' ? 'Gezahlter Gesamtbetrag' : 'Gesamtbetrag vor Ort zahlbar',
-        contactText: 'Fragen? Kontaktieren Sie uns',
-        client: 'Kunde',
-        email: 'Email',
-        phone: 'Telefon',
-        copyright: (year) => `© ${year} Rosini Transfert. Alle Rechte vorbehalten.`,
-        // Receipt PDF
-        vehicleLabel: vehicle_type === 'economic' ? 'Standard' : 'Komfort',
+        subject: 'IHRE BUCHUNG',
+        confirmed: 'Buchung bestätigt',
+        dear: (n) => `Hallo ${n},`,
+        intro: 'Ihr Transfer ist bestätigt. Hier ist Ihre Buchungsübersicht:',
+        sectionTrip: 'REISEDETAILS',
+        sectionClient: 'IHRE DATEN',
+        sectionPayment: 'ZAHLUNG',
+        labelFrom: 'Abfahrt',
+        labelTo: 'Ankunft',
+        labelDate: 'Datum',
+        labelTime: 'Uhrzeit',
+        labelVehicle: 'Fahrzeug',
+        labelPassengers: 'Passagiere',
+        labelDistance: 'Entfernung',
+        labelFlight: 'Flugnummer',
+        labelNotes: 'Notizen',
+        labelName: 'Name',
+        labelEmail: 'Email',
+        labelPhone: 'Telefon',
+        labelPayMethod: 'Methode',
+        labelTotal: payment_method === 'stripe' ? 'Bezahlter Betrag' : 'Vor Ort zu zahlen',
+        cancelTitle: 'Buchung stornieren',
+        cancelText: 'Möchten Sie stornieren? Klicken Sie auf die Schaltfläche unten.',
+        cancelBtn: 'Buchung stornieren',
+        questions: 'Fragen?',
+        contactUs: 'Kontaktieren Sie uns:',
+        copyright: (y) => `© ${y} Rosini Transports et Locations Sàrl — Alle Rechte vorbehalten`,
+        payStripe: 'Kreditkarte (Stripe)',
+        payTwint: 'TWINT',
+        payCash: 'Bargeld',
+        companySubject: (n) => `Neue Buchung — ${n} | ${departure_point} → ${arrival_point} | ${departure_date}`,
+        companyIntro: 'Eine neue Buchung wurde registriert.',
         receiptTitle: 'QUITTUNG',
-        clientInfoTitle: 'KUNDENDATEN',
-        journeyDetailsTitle: 'REISEDETAILS',
-        nameLabel: 'Name:',
-        dep: 'Abfahrt:',
-        arr: 'Ankunft:',
-        dateTime: 'Datum/Zeit:',
-        atLabel: 'um',
-        totalAmount: 'Gesamtbetrag:',
-        paymentMethodLabel: 'Methode:',
         paid: 'BEZAHLT',
         toPay: 'EINZUZIEHEN',
-        paymentStripe: 'Stripe (online)',
-        paymentTwint: 'TWINT',
-        paymentCash: 'Bargeld',
-        tripDateLabel: 'Fahrt:',
-        dateLabel: 'Datum:',
-        newBookingSubject: (name) => `QUITTUNG - ${name} | ${departure_point} → ${arrival_point} | ${departure_date}`,
-        newBookingBody: (name) => `<p>Neue Buchung von <strong>${name}</strong></p><p>${departure_point} → ${arrival_point}</p><p>CHF ${total_price}</p>`,
       },
       it: {
-        confirmTitle: '✅ Prenotazione confermata',
-        thankYou: (name) => `Grazie ${name}, il vostro trasferimento è confermato.`,
-        journey: 'Percorso',
-        date: 'Data',
-        vehicle: 'Veicolo',
-        passengers: 'Passeggeri',
-        distance: 'Distanza',
-        flight: 'Volo',
-        notes: 'Note',
-        paymentLabel: payment_method === 'stripe' ? 'Totale pagato' : 'Totale da pagare in loco',
-        contactText: 'Domande? Contattaci',
-        client: 'Cliente',
-        email: 'Email',
-        phone: 'Telefono',
-        copyright: (year) => `© ${year} Rosini Transfert. Tutti i diritti riservati.`,
-        // Receipt PDF
-        vehicleLabel: vehicle_type === 'economic' ? 'Standard' : 'Comfort',
+        subject: 'LA SUA PRENOTAZIONE',
+        confirmed: 'Prenotazione confermata',
+        dear: (n) => `Salve ${n},`,
+        intro: 'Il suo trasferimento è confermato. Ecco il riepilogo della sua prenotazione:',
+        sectionTrip: 'DETTAGLI DEL PERCORSO',
+        sectionClient: 'I SUOI DATI',
+        sectionPayment: 'PAGAMENTO',
+        labelFrom: 'Partenza',
+        labelTo: 'Arrivo',
+        labelDate: 'Data',
+        labelTime: 'Orario',
+        labelVehicle: 'Veicolo',
+        labelPassengers: 'Passeggeri',
+        labelDistance: 'Distanza',
+        labelFlight: 'N° volo',
+        labelNotes: 'Note',
+        labelName: 'Nome',
+        labelEmail: 'Email',
+        labelPhone: 'Telefono',
+        labelPayMethod: 'Metodo',
+        labelTotal: payment_method === 'stripe' ? 'Totale pagato' : 'Totale da pagare in loco',
+        cancelTitle: 'Annullare prenotazione',
+        cancelText: 'Desidera annullare? Clicchi sul pulsante qui sotto.',
+        cancelBtn: 'Annulla la mia prenotazione',
+        questions: 'Domande?',
+        contactUs: 'Contattateci:',
+        copyright: (y) => `© ${y} Rosini Transports et Locations Sàrl — Tutti i diritti riservati`,
+        payStripe: 'Carta di credito (Stripe)',
+        payTwint: 'TWINT',
+        payCash: 'Contanti',
+        companySubject: (n) => `Nuova prenotazione — ${n} | ${departure_point} → ${arrival_point} | ${departure_date}`,
+        companyIntro: 'Una nuova prenotazione è stata registrata.',
         receiptTitle: 'RICEVUTA',
-        clientInfoTitle: 'INFORMAZIONI SUL CLIENTE',
-        journeyDetailsTitle: 'DETTAGLI DEL PERCORSO',
-        nameLabel: 'Nome:',
-        dep: 'Partenza:',
-        arr: 'Arrivo:',
-        dateTime: 'Data/Ora:',
-        atLabel: 'alle',
-        totalAmount: 'Importo totale:',
-        paymentMethodLabel: 'Metodo:',
         paid: 'PAGATO',
         toPay: 'DA INCASSARE',
-        paymentStripe: 'Stripe (online)',
-        paymentTwint: 'TWINT',
-        paymentCash: 'Contanti',
-        tripDateLabel: 'Percorso:',
-        dateLabel: 'Data:',
-        newBookingSubject: (name) => `RICEVUTA - ${name} | ${departure_point} → ${arrival_point} | ${departure_date}`,
-        newBookingBody: (name) => `<p>Nuova prenotazione da <strong>${name}</strong></p><p>${departure_point} → ${arrival_point}</p><p>CHF ${total_price}</p>`,
+      },
+      es: {
+        subject: 'SU RESERVA',
+        confirmed: 'Reserva confirmada',
+        dear: (n) => `Hola ${n},`,
+        intro: 'Su traslado está confirmado. Aquí está el resumen de su reserva:',
+        sectionTrip: 'DETALLES DEL VIAJE',
+        sectionClient: 'SUS DATOS',
+        sectionPayment: 'PAGO',
+        labelFrom: 'Salida',
+        labelTo: 'Llegada',
+        labelDate: 'Fecha',
+        labelTime: 'Hora',
+        labelVehicle: 'Vehículo',
+        labelPassengers: 'Pasajeros',
+        labelDistance: 'Distancia',
+        labelFlight: 'N° de vuelo',
+        labelNotes: 'Notas',
+        labelName: 'Nombre',
+        labelEmail: 'Email',
+        labelPhone: 'Teléfono',
+        labelPayMethod: 'Método',
+        labelTotal: payment_method === 'stripe' ? 'Total pagado' : 'Total a pagar en el lugar',
+        cancelTitle: 'Cancelar reserva',
+        cancelText: '¿Desea cancelar? Haga clic en el botón de abajo.',
+        cancelBtn: 'Cancelar mi reserva',
+        questions: '¿Preguntas?',
+        contactUs: 'Contáctenos:',
+        copyright: (y) => `© ${y} Rosini Transports et Locations Sàrl — Todos los derechos reservados`,
+        payStripe: 'Tarjeta bancaria (Stripe)',
+        payTwint: 'TWINT',
+        payCash: 'Efectivo',
+        companySubject: (n) => `Nueva reserva — ${n} | ${departure_point} → ${arrival_point} | ${departure_date}`,
+        companyIntro: 'Se ha registrado una nueva reserva.',
+        receiptTitle: 'RECIBO',
+        paid: 'PAGADO',
+        toPay: 'A COBRAR',
+      },
+      nl: {
+        subject: 'UW BOEKING',
+        confirmed: 'Boeking bevestigd',
+        dear: (n) => `Hallo ${n},`,
+        intro: 'Uw transfer is bevestigd. Hier is uw boekingsoverzicht:',
+        sectionTrip: 'REISDETAILS',
+        sectionClient: 'UW GEGEVENS',
+        sectionPayment: 'BETALING',
+        labelFrom: 'Vertrek',
+        labelTo: 'Aankomst',
+        labelDate: 'Datum',
+        labelTime: 'Tijd',
+        labelVehicle: 'Voertuig',
+        labelPassengers: 'Passagiers',
+        labelDistance: 'Afstand',
+        labelFlight: 'Vluchtnummer',
+        labelNotes: 'Notities',
+        labelName: 'Naam',
+        labelEmail: 'Email',
+        labelPhone: 'Telefoon',
+        labelPayMethod: 'Methode',
+        labelTotal: payment_method === 'stripe' ? 'Totaal betaald' : 'Totaal ter plaatse te betalen',
+        cancelTitle: 'Boeking annuleren',
+        cancelText: 'Wilt u annuleren? Klik op de onderstaande knop.',
+        cancelBtn: 'Mijn boeking annuleren',
+        questions: 'Vragen?',
+        contactUs: 'Neem contact op:',
+        copyright: (y) => `© ${y} Rosini Transports et Locations Sàrl — Alle rechten voorbehouden`,
+        payStripe: 'Creditcard (Stripe)',
+        payTwint: 'TWINT',
+        payCash: 'Contant',
+        companySubject: (n) => `Nieuwe boeking — ${n} | ${departure_point} → ${arrival_point} | ${departure_date}`,
+        companyIntro: 'Er is een nieuwe boeking geregistreerd.',
+        receiptTitle: 'ONTVANGSTBEWIJS',
+        paid: 'BETAALD',
+        toPay: 'TE INNEN',
       },
     };
 
-    const t = texts[language] || texts.fr;
-    const vehicleLabel = t.vehicleLabel;
+    const t = T[language] || T.fr;
+    const payMethodLabel = payment_method === 'stripe' ? t.payStripe : payment_method === 'twint' ? t.payTwint : t.payCash;
+    const isPaid = payment_method === 'stripe';
+    const cancelUrl = `https://rosini.online/CancelBooking?id=${booking_id}&lang=${language}`;
+    const year = new Date().getFullYear();
 
-    const flightRow = flight_number ? `<tr><td style="padding:6px 0;color:#888;">${t.flight}</td><td style="padding:6px 0;color:#fff;">${flight_number}</td></tr>` : '';
-    const notesRow = notes ? `<tr><td style="padding:6px 0;color:#888;">${t.notes}</td><td style="padding:6px 0;color:#fff;">${notes}</td></tr>` : '';
+    // ─── Row helper ────────────────────────────────────────────────────────────
+    const row = (label, value, highlight = false) => `
+      <tr>
+        <td style="padding:9px 12px;color:#999;font-size:13px;white-space:nowrap;width:40%;">${label}</td>
+        <td style="padding:9px 12px;color:${highlight ? '#F5C300' : '#ffffff'};font-size:${highlight ? '18px' : '13px'};font-weight:${highlight ? 'bold' : 'normal'};">${value}</td>
+      </tr>`;
 
-    const clientEmailBody = `
-<!DOCTYPE html>
-<html>
-<head><meta charset="UTF-8"></head>
-<body style="margin:0;padding:0;background:#0A0A0A;font-family:Arial,sans-serif;">
-  <div style="max-width:600px;margin:0 auto;padding:40px 20px;">
-    <div style="text-align:center;margin-bottom:32px;">
-      <h1 style="color:#F5C300;font-size:28px;font-weight:700;letter-spacing:4px;margin:0;">ROSINI</h1>
-      <p style="color:#F5C300;font-size:11px;letter-spacing:3px;margin:4px 0 0;">TRANSFERT</p>
-    </div>
+    const sectionHeader = (title) => `
+      <tr>
+        <td colspan="2" style="padding:0;">
+          <div style="background:#F5C300;padding:8px 12px;">
+            <span style="color:#000;font-size:11px;font-weight:bold;letter-spacing:1.5px;">${title}</span>
+          </div>
+        </td>
+      </tr>`;
 
-    <div style="background:#111;border:1px solid #F5C300;border-radius:12px;padding:32px;margin-bottom:24px;">
-      <h2 style="color:#F5C300;font-size:20px;font-weight:600;margin:0 0 8px;">${t.confirmTitle}</h2>
-      <p style="color:#aaa;margin:0 0 24px;">${t.thankYou(client_name)}</p>
+    const spacer = () => `<tr><td colspan="2" style="height:12px;"></td></tr>`;
 
-      <table style="width:100%;border-collapse:collapse;">
-        <tr><td style="padding:7px 0;color:#888;width:40%;">${t.journey}</td><td style="padding:7px 0;color:#fff;">${departure_point} → ${arrival_point}</td></tr>
-        <tr><td style="padding:7px 0;color:#888;">${t.date}</td><td style="padding:7px 0;color:#fff;">${departure_date} à ${departure_time}</td></tr>
-        <tr><td style="padding:7px 0;color:#888;">${t.vehicle}</td><td style="padding:7px 0;color:#fff;">${vehicleLabel}</td></tr>
-        <tr><td style="padding:7px 0;color:#888;">${t.passengers}</td><td style="padding:7px 0;color:#fff;">${passengers || 1}</td></tr>
-        <tr><td style="padding:7px 0;color:#888;">${t.distance}</td><td style="padding:7px 0;color:#fff;">${distance_km} km</td></tr>
-        ${flightRow}
-        ${notesRow}
-        <tr><td colspan="2" style="padding:12px 0;"><hr style="border:none;border-top:1px solid #333;margin:0;"></td></tr>
-        <tr><td style="padding:7px 0;color:#aaa;font-weight:bold;">${t.paymentLabel}</td><td style="padding:7px 0;color:#F5C300;font-size:20px;font-weight:bold;">CHF ${total_price}</td></tr>
-      </table>
-    </div>
+    // ─── CLIENT EMAIL BODY ──────────────────────────────────────────────────────
+    const clientEmailBody = `<!DOCTYPE html>
+<html lang="${language}">
+<head><meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1"></head>
+<body style="margin:0;padding:0;background:#0A0A0A;font-family:Arial,Helvetica,sans-serif;">
+<div style="max-width:620px;margin:0 auto;padding:32px 16px;">
 
-    <div style="text-align:center;padding:24px;background:#111;border:1px solid #F5C300;border-radius:12px;margin-bottom:16px;">
-      <p style="color:#aaa;margin:0 0 4px;font-size:13px;">${t.contactText}</p>
-      <a href="mailto:info@rosini.online" style="color:#F5C300;text-decoration:none;font-weight:bold;">info@rosini.online</a>
-    </div>
-
-    ${booking_id ? `
-    <div style="text-align:center;padding:16px;background:#111;border:1px solid #333;border-radius:12px;">
-      <p style="color:#888;margin:0 0 8px;font-size:12px;">Vous souhaitez annuler votre réservation ?</p>
-      <a href="https://rosini.online/CancelBooking?id=${booking_id}&lang=${language}" style="color:#aaa;font-size:13px;text-decoration:underline;">Annuler ma réservation</a>
-    </div>
-    ` : ''}
-
-    <p style="color:#444;text-align:center;font-size:11px;margin-top:24px;">${t.copyright(new Date().getFullYear())}</p>
+  <!-- HEADER -->
+  <div style="background:#000;border-top:4px solid #F5C300;border-radius:12px 12px 0 0;padding:28px 32px;text-align:center;">
+    <p style="margin:0;color:#F5C300;font-size:32px;font-weight:900;letter-spacing:6px;">ROSINI</p>
+    <p style="margin:4px 0 0;color:#F5C300;font-size:10px;letter-spacing:3px;opacity:0.8;">TRANSPORTS ET LOCATIONS SÀRL</p>
+    <div style="margin:16px auto 0;width:40px;height:2px;background:#F5C300;opacity:0.4;"></div>
+    <p style="margin:12px 0 0;color:#F5C300;font-size:18px;font-weight:bold;letter-spacing:2px;">✓ ${t.confirmed.toUpperCase()}</p>
   </div>
-</body>
-</html>`;
 
-    // Receipt for company (dark theme, black & yellow)
-    const receiptBody = `
-<!DOCTYPE html>
-<html>
-<head><meta charset="UTF-8"></head>
-<body style="margin:0;padding:0;background:#0A0A0A;font-family:'Arial', sans-serif;color:#fff;">
-<div style="max-width:700px;margin:0 auto;padding:40px 20px;">
-  <!-- Header -->
-  <div style="background:#111;border:1px solid #F5C300;border-radius:12px;padding:32px;margin-bottom:24px;">
+  <!-- GREETING -->
+  <div style="background:#111;padding:24px 32px;border-left:1px solid #222;border-right:1px solid #222;">
+    <p style="margin:0;color:#ffffff;font-size:15px;">${t.dear(client_name)}</p>
+    <p style="margin:10px 0 0;color:#aaa;font-size:13px;line-height:1.7;">${t.intro}</p>
+  </div>
+
+  <!-- TRIP DETAILS -->
+  <div style="background:#111;border-left:1px solid #222;border-right:1px solid #222;margin-top:2px;">
     <table style="width:100%;border-collapse:collapse;">
+      ${sectionHeader(t.sectionTrip)}
+      ${row(t.labelFrom, departure_point)}
+      ${row(t.labelTo, arrival_point)}
+      ${row(t.labelDate, departure_date)}
+      ${row(t.labelTime, departure_time)}
+      ${row(t.labelVehicle, vehicleLabel)}
+      ${row(t.labelPassengers, String(passengers || 1))}
+      ${row(t.labelDistance, `${distance_km} km`)}
+      ${flight_number ? row(t.labelFlight, flight_number) : ''}
+      ${notes ? row(t.labelNotes, notes) : ''}
+      ${spacer()}
+    </table>
+  </div>
+
+  <!-- CLIENT DETAILS -->
+  <div style="background:#111;border-left:1px solid #222;border-right:1px solid #222;margin-top:2px;">
+    <table style="width:100%;border-collapse:collapse;">
+      ${sectionHeader(t.sectionClient)}
+      ${row(t.labelName, client_name)}
+      ${row(t.labelEmail, client_email)}
+      ${client_phone ? row(t.labelPhone, client_phone) : ''}
+      ${spacer()}
+    </table>
+  </div>
+
+  <!-- PAYMENT -->
+  <div style="background:#111;border-left:1px solid #222;border-right:1px solid #222;margin-top:2px;">
+    <table style="width:100%;border-collapse:collapse;">
+      ${sectionHeader(t.sectionPayment)}
+      ${row(t.labelPayMethod, payMethodLabel)}
       <tr>
-        <td style="vertical-align:top;width:50%;">
-          <h1 style="color:#F5C300;font-size:32px;font-weight:bold;margin:0;letter-spacing:3px;">ROSINI</h1>
-          <p style="color:#F5C300;font-size:11px;letter-spacing:2px;margin:4px 0 0;">TRANSPORTS ET LOCATIONS SARL</p>
-          <div style="margin-top:16px;color:#888;font-size:11px;line-height:1.8;">
-            <p style="margin:0;">Chemin des Bulesses 16</p>
-            <p style="margin:0;">1814 La Tour-de-Peilz</p>
-            <p style="margin:6px 0 0;">IDE: CHE-264.039.709</p>
-            <p style="margin:6px 0 0;">+41 77 249 22 45 | info@rosini.online</p>
-          </div>
+        <td style="padding:9px 12px;color:#999;font-size:13px;">${t.labelTotal}</td>
+        <td style="padding:9px 12px;">
+          <span style="color:#F5C300;font-size:22px;font-weight:bold;">CHF ${total_price}</span>
+          ${isPaid ? `<span style="margin-left:10px;background:#F5C300;color:#000;font-size:10px;font-weight:bold;padding:3px 8px;border-radius:4px;vertical-align:middle;">${t.paid}</span>` : ''}
         </td>
-        <td style="vertical-align:top;text-align:right;">
-          <div style="font-size:32px;color:#F5C300;font-weight:bold;margin-bottom:16px;">REÇU</div>
-          <div style="font-size:11px;color:#888;line-height:1.8;">
-            <div>Date: ${new Date().toLocaleDateString()}</div>
-            <div>Trajet: ${departure_date}</div>
-          </div>
-        </td>
       </tr>
+      ${spacer()}
     </table>
   </div>
 
-  <!-- Client Info -->
-  <div style="background:#111;border:1px solid #333;border-left:4px solid #F5C300;border-radius:8px;padding:24px;margin-bottom:16px;">
-    <h3 style="color:#F5C300;font-size:12px;font-weight:bold;margin:0 0 12px;text-transform:uppercase;letter-spacing:1px;">Informations du client</h3>
-    <table style="border-collapse:collapse;font-size:13px;line-height:1.8;width:100%;">
-      <tr><td style="width:30%;color:#888;">Nom:</td><td style="color:#fff;">${client_name}</td></tr>
-      <tr><td style="color:#888;">Email:</td><td style="color:#fff;">${client_email}</td></tr>
-      <tr><td style="color:#888;">Téléphone:</td><td style="color:#fff;">${client_phone || '—'}</td></tr>
-    </table>
+  <!-- CANCEL -->
+  ${booking_id ? `
+  <div style="background:#111;border-left:1px solid #222;border-right:1px solid #222;margin-top:2px;padding:20px 32px;text-align:center;">
+    <p style="margin:0 0 4px;color:#666;font-size:12px;">${t.cancelText}</p>
+    <a href="${cancelUrl}" style="display:inline-block;margin-top:10px;padding:10px 24px;background:transparent;border:1px solid #444;border-radius:6px;color:#aaa;font-size:12px;text-decoration:none;">${t.cancelBtn}</a>
+  </div>` : ''}
+
+  <!-- CONTACT -->
+  <div style="background:#000;border:1px solid #F5C300;border-radius:0 0 12px 12px;margin-top:2px;padding:20px 32px;text-align:center;">
+    <p style="margin:0;color:#aaa;font-size:12px;">${t.questions} ${t.contactUs}</p>
+    <a href="mailto:info@rosini.online" style="color:#F5C300;font-size:14px;font-weight:bold;text-decoration:none;">info@rosini.online</a>
+    <span style="color:#555;margin:0 8px;">|</span>
+    <a href="tel:+41772492245" style="color:#F5C300;font-size:14px;font-weight:bold;text-decoration:none;">+41 77 249 22 45</a>
+    <p style="margin:16px 0 0;color:#333;font-size:10px;">${t.copyright(year)}</p>
+    <p style="margin:2px 0 0;color:#333;font-size:10px;">Chemin des Bulesses 16, 1814 La Tour-de-Peilz — IDE: CHE-264.039.709</p>
   </div>
 
-  <!-- Journey Details -->
-  <div style="background:#111;border:1px solid #333;border-left:4px solid #F5C300;border-radius:8px;padding:24px;margin-bottom:16px;">
-    <h3 style="color:#F5C300;font-size:12px;font-weight:bold;margin:0 0 16px;text-transform:uppercase;letter-spacing:1px;">Détails du trajet</h3>
-    <table style="border-collapse:collapse;width:100%;font-size:13px;">
-      <tr style="border-bottom:1px solid #222;">
-        <td style="padding:8px 0;color:#888;width:25%;">Départ:</td>
-        <td style="padding:8px 0;color:#fff;">${departure_point}</td>
-        <td style="padding:8px 0 8px 20px;color:#888;text-align:right;">Date/Heure:</td>
-        <td style="padding:8px 0 8px 16px;color:#fff;">${departure_date} à ${departure_time}</td>
-      </tr>
-      <tr style="border-bottom:1px solid #222;">
-        <td style="padding:8px 0;color:#888;">Arrivée:</td>
-        <td style="padding:8px 0;color:#fff;">${arrival_point}</td>
-        <td style="padding:8px 0 8px 20px;color:#888;text-align:right;">Véhicule:</td>
-        <td style="padding:8px 0 8px 16px;color:#fff;">${vehicleLabel}</td>
-      </tr>
-      <tr style="border-bottom:1px solid #222;">
-        <td style="padding:8px 0;color:#888;">Distance:</td>
-        <td style="padding:8px 0;color:#fff;">${distance_km} km</td>
-        <td style="padding:8px 0 8px 20px;color:#888;text-align:right;">Passagers:</td>
-        <td style="padding:8px 0 8px 16px;color:#fff;">${passengers || 1}</td>
-      </tr>
-      ${flight_number ? `<tr style="border-bottom:1px solid #222;"><td style="padding:8px 0;color:#888;">Vol:</td><td colspan="3" style="padding:8px 0;color:#fff;">${flight_number}</td></tr>` : ''}
-      ${notes ? `<tr><td style="padding:8px 0;color:#888;">Notes:</td><td colspan="3" style="padding:8px 0;color:#fff;">${notes}</td></tr>` : ''}
-    </table>
-  </div>
-
-  <!-- Amount -->
-  <div style="background:#111;border:1px solid #F5C300;border-radius:8px;padding:24px;margin-bottom:24px;">
-    <table style="border-collapse:collapse;width:100%;font-size:13px;">
-      <tr>
-        <td style="color:#888;">Méthode de paiement:</td>
-        <td style="color:#fff;">${payment_method === 'stripe' ? 'Stripe (en ligne)' : payment_method === 'twint' ? 'TWINT' : 'Espèces'}</td>
-        <td style="text-align:right;"><span style="background:#F5C300;padding:3px 10px;border-radius:4px;font-size:11px;color:#000;font-weight:bold;">${payment_method === 'stripe' ? 'PAYÉ' : 'À ENCAISSER'}</span></td>
-      </tr>
-      <tr>
-        <td colspan="2" style="padding-top:12px;color:#aaa;font-size:14px;font-weight:bold;">Montant total:</td>
-        <td style="padding-top:12px;text-align:right;"><span style="font-size:24px;color:#F5C300;font-weight:bold;">CHF ${total_price}</span></td>
-      </tr>
-    </table>
-  </div>
-
-  <!-- Footer -->
-  <p style="color:#444;text-align:center;font-size:11px;margin:0;">Rosini Transports et locations Sarl | Chemin des Bulesses 16 | 1814 La Tour-de-Peilz</p>
-  <p style="color:#333;text-align:center;font-size:11px;margin:4px 0 0;">© ${new Date().getFullYear()} Rosini Transfert. Tous droits réservés.</p>
 </div>
 </body>
 </html>`;
 
-    // Generate receipt PDF (translated)
+    // ─── COMPANY EMAIL BODY ─────────────────────────────────────────────────────
+    const companyEmailBody = `<!DOCTYPE html>
+<html>
+<head><meta charset="UTF-8"></head>
+<body style="margin:0;padding:0;background:#0A0A0A;font-family:Arial,Helvetica,sans-serif;">
+<div style="max-width:620px;margin:0 auto;padding:32px 16px;">
+
+  <!-- HEADER -->
+  <div style="background:#000;border-top:4px solid #F5C300;border-radius:12px 12px 0 0;padding:24px 32px;">
+    <p style="margin:0;color:#F5C300;font-size:24px;font-weight:900;letter-spacing:4px;">ROSINI</p>
+    <p style="margin:4px 0 0;color:#F5C300;font-size:10px;letter-spacing:2px;opacity:0.7;">TRANSPORTS ET LOCATIONS SÀRL</p>
+    <p style="margin:12px 0 0;color:#ffffff;font-size:16px;font-weight:bold;">🔔 Nouvelle réservation</p>
+    <p style="margin:4px 0 0;color:#aaa;font-size:12px;">${t.companyIntro}</p>
+  </div>
+
+  <!-- CLIENT -->
+  <div style="background:#111;border-left:1px solid #222;border-right:1px solid #222;margin-top:2px;">
+    <table style="width:100%;border-collapse:collapse;">
+      ${sectionHeader('CLIENT')}
+      ${row('Nom', client_name)}
+      ${row('Email', client_email)}
+      ${row('Téléphone', client_phone || '—')}
+      ${client_phone ? `<tr><td colspan="2" style="padding:0 12px 12px;"><a href="https://wa.me/${client_phone.replace(/\D/g,'')}" style="display:inline-block;background:#25D366;color:#fff;font-size:12px;font-weight:bold;padding:6px 16px;border-radius:6px;text-decoration:none;">💬 WhatsApp</a></td></tr>` : ''}
+    </table>
+  </div>
+
+  <!-- TRAJET -->
+  <div style="background:#111;border-left:1px solid #222;border-right:1px solid #222;margin-top:2px;">
+    <table style="width:100%;border-collapse:collapse;">
+      ${sectionHeader('TRAJET')}
+      ${row('Départ', departure_point)}
+      ${row('Arrivée', arrival_point)}
+      ${row('Date', departure_date)}
+      ${row('Heure', departure_time)}
+      ${row('Véhicule', vehicleLabel)}
+      ${row('Passagers', String(passengers || 1))}
+      ${row('Distance', `${distance_km} km`)}
+      ${flight_number ? row('Vol', flight_number) : ''}
+      ${notes ? row('Notes', notes) : ''}
+      ${spacer()}
+    </table>
+  </div>
+
+  <!-- PAIEMENT -->
+  <div style="background:#111;border-left:1px solid #222;border-right:1px solid #222;margin-top:2px;">
+    <table style="width:100%;border-collapse:collapse;">
+      ${sectionHeader('PAIEMENT')}
+      ${row('Méthode', payMethodLabel)}
+      <tr>
+        <td style="padding:9px 12px;color:#999;font-size:13px;">Montant total</td>
+        <td style="padding:9px 12px;">
+          <span style="color:#F5C300;font-size:22px;font-weight:bold;">CHF ${total_price}</span>
+          <span style="margin-left:10px;background:#F5C300;color:#000;font-size:11px;font-weight:bold;padding:4px 10px;border-radius:4px;vertical-align:middle;">${isPaid ? 'PAYÉ' : 'À ENCAISSER'}</span>
+        </td>
+      </tr>
+      ${spacer()}
+    </table>
+  </div>
+
+  <!-- FOOTER -->
+  <div style="background:#000;border:1px solid #333;border-radius:0 0 12px 12px;margin-top:2px;padding:16px 32px;text-align:center;">
+    <p style="margin:0;color:#444;font-size:11px;">Rosini Transports et Locations Sàrl — Notification automatique</p>
+    <p style="margin:4px 0 0;color:#333;font-size:10px;">© ${year} — Chemin des Bulesses 16, 1814 La Tour-de-Peilz</p>
+  </div>
+
+</div>
+</body>
+</html>`;
+
+    // ─── PDF RECEIPT (for company) ──────────────────────────────────────────────
     const generateReceiptPDF = () => {
       const doc = new jsPDF('p', 'mm', 'a4');
-      const pageWidth = doc.internal.pageSize.getWidth();
-      const pageHeight = doc.internal.pageSize.getHeight();
-      let yPos = 15;
+      const pw = doc.internal.pageSize.getWidth();
+      const ph = doc.internal.pageSize.getHeight();
 
-      // Header
-      doc.setFontSize(24);
-      doc.setTextColor(201, 169, 110);
-      doc.text('ROSINI', 15, yPos);
-      doc.setFontSize(9);
-      doc.text('TRANSPORTS ET LOCATIONS SARL', 15, yPos + 7);
-      
-      // Receipt title (translated)
-      doc.setFontSize(18);
-      doc.setTextColor(201, 169, 110);
-      doc.text(t.receiptTitle, pageWidth - 40, yPos + 3);
-      
-      // Company details (always in French/address format)
-      doc.setFontSize(9);
-      doc.setTextColor(100, 100, 100);
-      yPos += 20;
-      doc.text('Chemin des Bulesses 16', 15, yPos);
-      doc.text('1814 La Tour-de-Peilz', 15, yPos + 5);
-      doc.text('IDE: CHE-264.039.709', 15, yPos + 10);
-      doc.text('+41 77 249 22 45 | info@rosini.online', 15, yPos + 15);
-      
-      doc.setTextColor(150, 150, 150);
-      doc.text(`${t.dateLabel} ${new Date().toLocaleDateString('fr-CH')}`, pageWidth - 60, yPos + 5);
-      doc.text(`${t.tripDateLabel} ${departure_date}`, pageWidth - 60, yPos + 10);
-      
-      // Separator
-      yPos += 25;
-      doc.setDrawColor(201, 169, 110);
-      doc.line(15, yPos, pageWidth - 15, yPos);
-      
-      // Client info (translated)
-      yPos += 8;
-      doc.setFontSize(11);
-      doc.setTextColor(51, 51, 51);
+      // Background
+      doc.setFillColor(10, 10, 10);
+      doc.rect(0, 0, pw, ph, 'F');
+
+      // Yellow top bar
+      doc.setFillColor(245, 195, 0);
+      doc.rect(0, 0, pw, 3, 'F');
+
+      let y = 18;
+
+      // Company name
+      doc.setFontSize(22);
+      doc.setTextColor(245, 195, 0);
       doc.setFont(undefined, 'bold');
-      doc.text(t.clientInfoTitle, 15, yPos);
-      
-      doc.setFont(undefined, 'normal');
-      doc.setFontSize(10);
-      yPos += 7;
-      doc.setTextColor(100, 100, 100);
-      doc.text(t.nameLabel, 15, yPos);
-      doc.setTextColor(0, 0, 0);
-      doc.text(client_name, 45, yPos);
-      
-      yPos += 6;
-      doc.setTextColor(100, 100, 100);
-      doc.text('Email:', 15, yPos);
-      doc.setTextColor(0, 0, 0);
-      doc.text(client_email, 45, yPos);
-      
-      yPos += 6;
-      doc.setTextColor(100, 100, 100);
-      doc.text(`${t.phone}:`, 15, yPos);
-      doc.setTextColor(0, 0, 0);
-      doc.text(client_phone || '—', 45, yPos);
-      
-      // Journey details (translated)
-      yPos += 12;
-      doc.setFontSize(11);
-      doc.setTextColor(51, 51, 51);
-      doc.setFont(undefined, 'bold');
-      doc.text(t.journeyDetailsTitle, 15, yPos);
-      
-      doc.setFont(undefined, 'normal');
-      doc.setFontSize(10);
-      yPos += 7;
-      doc.setTextColor(100, 100, 100);
-      doc.text(t.dep, 15, yPos);
-      doc.setTextColor(0, 0, 0);
-      doc.text(departure_point, 45, yPos);
-      
-      yPos += 6;
-      doc.setTextColor(100, 100, 100);
-      doc.text(t.arr, 15, yPos);
-      doc.setTextColor(0, 0, 0);
-      doc.text(arrival_point, 45, yPos);
-      
-      yPos += 6;
-      doc.setTextColor(100, 100, 100);
-      doc.text(t.dateTime, 15, yPos);
-      doc.setTextColor(0, 0, 0);
-      doc.text(`${departure_date} ${t.atLabel} ${departure_time}`, 45, yPos);
-      
-      yPos += 6;
-      doc.setTextColor(100, 100, 100);
-      doc.text(`${t.vehicle}:`, 15, yPos);
-      doc.setTextColor(0, 0, 0);
-      doc.text(vehicleLabel, 45, yPos);
-      
-      yPos += 6;
-      doc.setTextColor(100, 100, 100);
-      doc.text(`${t.distance}:`, 15, yPos);
-      doc.setTextColor(0, 0, 0);
-      doc.text(`${distance_km} km`, 45, yPos);
-      
-      yPos += 6;
-      doc.setTextColor(100, 100, 100);
-      doc.text(`${t.passengers}:`, 15, yPos);
-      doc.setTextColor(0, 0, 0);
-      doc.text(String(passengers || 1), 45, yPos);
-      
-      if (flight_number) {
-        yPos += 6;
-        doc.setTextColor(100, 100, 100);
-        doc.text(`${t.flight}:`, 15, yPos);
-        doc.setTextColor(0, 0, 0);
-        doc.text(flight_number, 45, yPos);
-      }
-      
-      // Amount section
-      yPos += 15;
-      doc.setDrawColor(201, 169, 110);
-      doc.line(15, yPos, pageWidth - 15, yPos);
-      
-      yPos += 8;
-      doc.setFontSize(12);
-      doc.setTextColor(100, 100, 100);
-      doc.setFont(undefined, 'bold');
-      doc.text(t.totalAmount, 15, yPos);
-      doc.setTextColor(201, 169, 110);
-      doc.setFontSize(20);
-      doc.text(`CHF ${total_price}`, pageWidth - 40, yPos - 2);
-      
-      // Payment info (translated)
-      yPos += 10;
-      doc.setFontSize(9);
-      doc.setTextColor(100, 100, 100);
-      doc.setFont(undefined, 'normal');
-      const payMethodLabel = payment_method === 'stripe' ? t.paymentStripe : payment_method === 'twint' ? t.paymentTwint : t.paymentCash;
-      const statusLabel = payment_method === 'stripe' ? t.paid : t.toPay;
-      doc.text(`${t.paymentMethodLabel} ${payMethodLabel}`, 15, yPos);
-      doc.setTextColor(201, 169, 110);
-      doc.setFont(undefined, 'bold');
-      doc.text(statusLabel, pageWidth - 40, yPos);
-      
-      // Footer
-      yPos = pageHeight - 20;
-      doc.setDrawColor(220, 220, 220);
-      doc.line(15, yPos, pageWidth - 15, yPos);
-      
-      yPos += 5;
+      doc.text('ROSINI', 15, y);
       doc.setFontSize(8);
+      doc.setFont(undefined, 'normal');
+      doc.text('TRANSPORTS ET LOCATIONS SÀRL', 15, y + 6);
+
+      // Receipt title (right)
+      doc.setFontSize(20);
+      doc.setFont(undefined, 'bold');
+      doc.setTextColor(245, 195, 0);
+      doc.text('REÇU', pw - 15, y + 2, { align: 'right' });
+
+      // Company details
+      y += 14;
+      doc.setFontSize(8);
+      doc.setFont(undefined, 'normal');
+      doc.setTextColor(140, 140, 140);
+      doc.text('Chemin des Bulesses 16 — 1814 La Tour-de-Peilz', 15, y);
+      doc.text('IDE: CHE-264.039.709  |  +41 77 249 22 45  |  info@rosini.online', 15, y + 5);
+
+      // Date right
       doc.setTextColor(150, 150, 150);
-      doc.text('Rosini Transports et locations Sarl | Chemin des Bulesses 16 | 1814 La Tour-de-Peilz', 15, yPos, { maxWidth: pageWidth - 30, align: 'center' });
-      doc.text(t.copyright(new Date().getFullYear()), pageWidth / 2, yPos + 5, { align: 'center' });
-      
+      doc.text(`Émis le ${new Date().toLocaleDateString('fr-CH')}`, pw - 15, y, { align: 'right' });
+      doc.text(`Trajet prévu: ${departure_date}`, pw - 15, y + 5, { align: 'right' });
+
+      // Divider
+      y += 14;
+      doc.setDrawColor(245, 195, 0);
+      doc.setLineWidth(0.4);
+      doc.line(15, y, pw - 15, y);
+
+      // ── Section: Client ──
+      y += 8;
+      doc.setFillColor(245, 195, 0);
+      doc.rect(15, y, pw - 30, 7, 'F');
+      doc.setFontSize(9);
+      doc.setFont(undefined, 'bold');
+      doc.setTextColor(0, 0, 0);
+      doc.text('INFORMATIONS DU CLIENT', 18, y + 5);
+
+      y += 10;
+      const clientRows = [
+        ['Nom', client_name],
+        ['Email', client_email],
+        ['Téléphone', client_phone || '—'],
+      ];
+      for (const [label, value] of clientRows) {
+        doc.setFontSize(9);
+        doc.setFont(undefined, 'normal');
+        doc.setTextColor(120, 120, 120);
+        doc.text(label + ':', 18, y);
+        doc.setTextColor(230, 230, 230);
+        doc.text(value, 65, y);
+        y += 6;
+      }
+
+      // ── Section: Trajet ──
+      y += 4;
+      doc.setFillColor(245, 195, 0);
+      doc.rect(15, y, pw - 30, 7, 'F');
+      doc.setFontSize(9);
+      doc.setFont(undefined, 'bold');
+      doc.setTextColor(0, 0, 0);
+      doc.text('DÉTAILS DU TRAJET', 18, y + 5);
+
+      y += 10;
+      const tripRows = [
+        ['Départ', departure_point],
+        ['Arrivée', arrival_point],
+        ['Date', departure_date],
+        ['Heure', departure_time],
+        ['Véhicule', vehicleLabel],
+        ['Passagers', String(passengers || 1)],
+        ['Distance', `${distance_km} km`],
+      ];
+      if (flight_number) tripRows.push(['N° de vol', flight_number]);
+      if (notes) tripRows.push(['Notes', notes]);
+
+      for (const [label, value] of tripRows) {
+        doc.setFontSize(9);
+        doc.setFont(undefined, 'normal');
+        doc.setTextColor(120, 120, 120);
+        doc.text(label + ':', 18, y);
+        doc.setTextColor(230, 230, 230);
+        // wrap long text
+        const lines = doc.splitTextToSize(value, pw - 80);
+        doc.text(lines, 65, y);
+        y += lines.length > 1 ? lines.length * 5 + 1 : 6;
+      }
+
+      // ── Section: Paiement ──
+      y += 4;
+      doc.setDrawColor(245, 195, 0);
+      doc.setLineWidth(0.4);
+      doc.line(15, y, pw - 15, y);
+      y += 8;
+
+      // Payment method
+      doc.setFontSize(9);
+      doc.setFont(undefined, 'normal');
+      doc.setTextColor(120, 120, 120);
+      doc.text('Méthode de paiement:', 18, y);
+      doc.setTextColor(200, 200, 200);
+      doc.text(payMethodLabel, 70, y);
+
+      // Total
+      y += 8;
+      doc.setFontSize(11);
+      doc.setFont(undefined, 'bold');
+      doc.setTextColor(120, 120, 120);
+      doc.text('Montant total:', 18, y);
+      doc.setFontSize(20);
+      doc.setTextColor(245, 195, 0);
+      doc.text(`CHF ${total_price}`, 65, y);
+
+      // PAID / TO COLLECT badge
+      y += 3;
+      const badge = isPaid ? 'PAYÉ' : 'À ENCAISSER';
+      const badgeW = 28;
+      doc.setFillColor(245, 195, 0);
+      doc.roundedRect(pw - 15 - badgeW, y - 6, badgeW, 8, 2, 2, 'F');
+      doc.setFontSize(8);
+      doc.setFont(undefined, 'bold');
+      doc.setTextColor(0, 0, 0);
+      doc.text(badge, pw - 15 - badgeW / 2, y - 0.5, { align: 'center' });
+
+      // ── Footer ──
+      y = ph - 18;
+      doc.setDrawColor(50, 50, 50);
+      doc.setLineWidth(0.3);
+      doc.line(15, y, pw - 15, y);
+      y += 5;
+      doc.setFontSize(7);
+      doc.setFont(undefined, 'normal');
+      doc.setTextColor(80, 80, 80);
+      doc.text('Rosini Transports et Locations Sàrl  |  Chemin des Bulesses 16  |  1814 La Tour-de-Peilz  |  IDE: CHE-264.039.709', pw / 2, y, { align: 'center' });
+      doc.text(`© ${year} Rosini Transfert`, pw / 2, y + 4, { align: 'center' });
+
       return doc.output('arraybuffer');
     };
 
-    // Send WhatsApp notification for new booking
-    try {
-      await base44.asServiceRole.functions.invoke('sendWhatsApp', {
-        type: 'new_booking',
-        booking: {
-          client_name,
-          client_phone,
-          departure_point,
-          arrival_point,
-          departure_date,
-          departure_time,
-          vehicle_type,
-          total_price,
-        }
-      });
-      console.log('WhatsApp new_booking notification sent');
-    } catch (waErr) {
-      console.error('WhatsApp notification failed (non-critical):', waErr.message);
-    }
-
-    // Send emails using Gmail API
-    const sendGmailEmail = async (to, subject, htmlBody) => {
+    // ─── Gmail sender with optional PDF attachment ──────────────────────────────
+    const sendGmailEmail = async (to, subject, htmlBody, pdfBuffer = null) => {
       const accessToken = await base44.asServiceRole.connectors.getAccessToken("gmail");
-      
       const encodedName = `=?UTF-8?B?${btoa(unescape(encodeURIComponent('Rosini Transports')))}?=`;
       const encodedSubject = `=?UTF-8?B?${btoa(unescape(encodeURIComponent(subject)))}?=`;
-      const emailLines = [
-        `From: ${encodedName} <rosinitransportsetlications@gmail.com>`,
-        `To: ${to}`,
-        `Subject: ${encodedSubject}`,
-        `MIME-Version: 1.0`,
-        `Content-Type: text/html; charset=UTF-8`,
-        ``,
-        htmlBody
-      ];
-      const email = emailLines.join('\r\n');
-      const encodedEmail = btoa(unescape(encodeURIComponent(email)))
+      const boundary = 'RosiniEmailBoundary_' + Date.now();
+
+      let rawEmail;
+
+      if (pdfBuffer) {
+        // Multipart email with PDF attachment
+        const pdfBase64 = btoa(String.fromCharCode(...new Uint8Array(pdfBuffer)));
+        const pdfFilename = `recu-rosini-${departure_date}.pdf`;
+        rawEmail = [
+          `From: ${encodedName} <rosinitransportsetlications@gmail.com>`,
+          `To: ${to}`,
+          `Subject: ${encodedSubject}`,
+          `MIME-Version: 1.0`,
+          `Content-Type: multipart/mixed; boundary="${boundary}"`,
+          ``,
+          `--${boundary}`,
+          `Content-Type: text/html; charset=UTF-8`,
+          `Content-Transfer-Encoding: 7bit`,
+          ``,
+          htmlBody,
+          ``,
+          `--${boundary}`,
+          `Content-Type: application/pdf; name="${pdfFilename}"`,
+          `Content-Transfer-Encoding: base64`,
+          `Content-Disposition: attachment; filename="${pdfFilename}"`,
+          ``,
+          pdfBase64,
+          ``,
+          `--${boundary}--`,
+        ].join('\r\n');
+      } else {
+        rawEmail = [
+          `From: ${encodedName} <rosinitransportsetlications@gmail.com>`,
+          `To: ${to}`,
+          `Subject: ${encodedSubject}`,
+          `MIME-Version: 1.0`,
+          `Content-Type: text/html; charset=UTF-8`,
+          ``,
+          htmlBody,
+        ].join('\r\n');
+      }
+
+      const encodedEmail = btoa(unescape(encodeURIComponent(rawEmail)))
         .replace(/\+/g, '-').replace(/\//g, '_').replace(/=+$/, '');
 
       const res = await fetch('https://gmail.googleapis.com/gmail/v1/users/me/messages/send', {
@@ -556,50 +687,48 @@ Deno.serve(async (req) => {
         throw new Error(`Gmail API error: ${err}`);
       }
     };
-    const sendCoreEmail = sendGmailEmail;
 
-    // Subject lines per language (short, clean for inbox display)
-    const subjectMap = {
-      pt: `Sua reserva — Rosini Transfert`,
-      fr: `Votre réservation — Rosini Transfert`,
-      en: `Your booking — Rosini Transfert`,
-      de: `Ihre Buchung — Rosini Transfert`,
-      it: `La sua prenotazione — Rosini Transfert`,
-      es: `Su reserva — Rosini Transfert`,
-      nl: `Uw boeking — Rosini Transfert`,
-    };
-    const clientSubject = subjectMap[language] || subjectMap.fr;
+    // ─── WhatsApp notification ──────────────────────────────────────────────────
+    try {
+      await base44.asServiceRole.functions.invoke('sendWhatsApp', {
+        type: 'new_booking',
+        booking: { client_name, client_phone, departure_point, arrival_point, departure_date, departure_time, vehicle_type, total_price }
+      });
+      console.log('WhatsApp new_booking notification sent');
+    } catch (waErr) {
+      console.error('WhatsApp notification failed (non-critical):', waErr.message);
+    }
 
-    // Send confirmation email to client (only if not short notice)
+    // ─── Subject per language ───────────────────────────────────────────────────
+    const clientSubject = t.subject;
+
+    // ─── Send to client ─────────────────────────────────────────────────────────
     if (!skip_client_email && client_email) {
       try {
-        await sendCoreEmail(client_email, clientSubject, clientEmailBody);
+        await sendGmailEmail(client_email, clientSubject, clientEmailBody);
         console.log(`Confirmation email sent to ${client_email}`);
       } catch (emailError) {
-        console.error(`Error sending client email to ${client_email}:`, emailError);
+        console.error(`Error sending client email:`, emailError);
       }
     } else {
       console.log(`Short notice booking — skipping client email for ${client_email}`);
     }
 
-    // Send receipt to company
+    // ─── Send to company (with PDF) ─────────────────────────────────────────────
     if (client_name && departure_point && arrival_point) {
       try {
-        const receiptEmailBody = t.newBookingBody(client_name);
-        await sendCoreEmail(
-          'info@rosini.online',
-          t.newBookingSubject(client_name),
-          receiptEmailBody
-        );
-        console.log(`Receipt sent to company for booking by ${client_name}`);
+        const pdfBuffer = generateReceiptPDF();
+        const companySubject = t.companySubject(client_name);
+        await sendGmailEmail('info@rosini.online', companySubject, companyEmailBody, pdfBuffer);
+        console.log(`Company email with PDF receipt sent for booking by ${client_name}`);
       } catch (receiptError) {
-        console.error(`Error sending receipt:`, receiptError);
+        console.error(`Error sending company email:`, receiptError);
       }
     }
 
     return Response.json({ success: true, message: 'Booking processed successfully' });
   } catch (error) {
-    console.error('Error sending confirmation emails:', error);
+    console.error('Error in sendBookingConfirmation:', error);
     return Response.json({ error: error.message, details: error.toString() }, { status: 500 });
   }
 });
