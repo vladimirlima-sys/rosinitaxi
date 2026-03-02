@@ -225,7 +225,7 @@ export default function DriverPortal() {
       const drivers = await base44.entities.Driver.list();
       const found = drivers.find(d => d.id === id || d.id.startsWith(id) || (d.name && d.name.toLowerCase() === id.toLowerCase()));
       if (!found) {
-        setError('Motorista não encontrado. Verifique o código.');
+        setError('Chauffeur introuvable. Vérifiez le code.');
         setLoading(false);
         return;
       }
