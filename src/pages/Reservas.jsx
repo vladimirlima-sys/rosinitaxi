@@ -1,5 +1,5 @@
-import React, { useEffect, useState } from 'react';
-import { base44 } from '@/api/base44Client';
+import React, { useEffect } from 'react';
+import { createPageUrl } from '@/utils';
 import BookingsTable from '@/components/admin/BookingsTable';
 
 export default function Reservas() {
