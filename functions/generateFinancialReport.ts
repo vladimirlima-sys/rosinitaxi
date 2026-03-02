@@ -9,6 +9,15 @@ Deno.serve(async (req) => {
 
     const doc = new jsPDF();
 
+    // Fetch company settings
+    const companySettings = await base44.asServiceRole.entities.CompanySettings.list();
+    const company = companySettings.length > 0 ? companySettings[0] : {
+      company_name: 'ROSINI',
+      company_address: 'Route de Lausanne 123, 1700 Fribourg',
+      registration_number: 'CHE-123.456.789 TVA',
+      phone: '+41 26 123 45 67'
+    };
+
     const EXPENSE_CATEGORIES = [
       { value: 'carburant', label: 'Carburant' },
       { value: 'assurance', label: 'Assurance voiture' },
@@ -26,11 +35,11 @@ Deno.serve(async (req) => {
     doc.rect(0, 0, 210, 45, 'F');
     doc.setTextColor(255, 255, 255);
     doc.setFontSize(24);
-    doc.text('ROSINI', 20, 20);
+    doc.text(company.company_name, 20, 20);
     doc.setFontSize(9);
     doc.text('Entreprise de Transport Privé', 20, 28);
-    doc.text('Adresse: Route de Lausanne 123, 1700 Fribourg', 20, 33);
-    doc.text('Numéro de Registre: CHE-123.456.789 TVA | Téléphone: +41 26 123 45 67', 20, 38);
+    doc.text(`Adresse: ${company.company_address}`, 20, 33);
+    doc.text(`Numéro de Registre: ${company.registration_number} | Téléphone: ${company.phone}`, 20, 38);
 
     doc.setTextColor(0, 0, 0);
     doc.setFontSize(14);
