@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { createPageUrl } from '@/utils';
 import { Lock, LayoutDashboard, Users, CreditCard, Calendar, Settings, Car, Star, FileText, LogOut, BarChart3, MessageCircle } from 'lucide-react';
 
