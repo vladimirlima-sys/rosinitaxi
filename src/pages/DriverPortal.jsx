@@ -1,6 +1,6 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { base44 } from '@/api/base44Client';
-import { Car, MapPin, Phone, Bell, BellOff, Loader2, LogOut, Navigation, Zap } from 'lucide-react';
+import { Car, MapPin, Phone, Bell, BellOff, Loader2, LogOut, Navigation, Zap, ArrowLeft } from 'lucide-react';
 import { createPageUrl } from '@/utils';
 import { toast } from 'sonner';
 import ActiveTripMonitor from '@/components/drivers/ActiveTripMonitor';
