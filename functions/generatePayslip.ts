@@ -60,42 +60,39 @@ Deno.serve(async (req) => {
     doc.setFont(undefined, 'bold');
     doc.text(company?.company_name || 'ROSINI', 20, 12);
     
-    doc.setFontSize(10);
-    doc.setFont(undefined, 'normal');
-    doc.text(company?.company_address || '', 20, 16);
-    
-    // Right side header
-    doc.setFontSize(10);
+    doc.setFontSize(9);
     doc.setFont(undefined, 'normal');
     doc.text('Tél.', 160, 12);
-    doc.text('1004 Lausanne', 160, 16);
 
     // === TITLE ===
     doc.setFontSize(12);
     doc.setFont(undefined, 'bold');
-    doc.text(`Bulletin de salaire ${monthName} ${year}`, 20, 22);
+    doc.text(`Bulletin de salaire ${monthName} ${year}`, 20, 20);
     
-    doc.setFontSize(9);
+    doc.setFontSize(8);
     doc.setFont(undefined, 'normal');
-    doc.text(`Imprimé le ${new Date().toLocaleDateString('fr-CH')} Page 1 / 1`, 160, 22);
+    doc.text(`Imprimé le ${new Date().toLocaleDateString('fr-CH')} Page 1 / 1`, 160, 20);
 
     // === EMPLOYEE NAME ===
-    doc.setFontSize(11);
+    doc.setFontSize(10);
     doc.setFont(undefined, 'bold');
-    doc.text(driverData.name || 'N/A', 20, 28);
+    doc.text(driverData.name || 'N/A', 20, 27);
 
     // === EMPLOYEE ADDRESS (right side) ===
-    doc.setFontSize(9);
+    doc.setFontSize(8);
     doc.setFont(undefined, 'normal');
-    doc.text('Monsieur', 120, 28);
-    doc.text(driverData.name || 'N/A', 120, 32);
-    doc.text(driverData.address || '', 120, 36);
-    doc.text('1205 Genève', 120, 40);
+    doc.text('Monsieur', 120, 27);
+    doc.text(driverData.name || 'N/A', 120, 31);
+    if (driverData.address) {
+      doc.text(driverData.address, 120, 35);
+      doc.text('1205 Genève', 120, 39);
+    }
 
     // === SALARY INFO ===
-    doc.setFontSize(9);
+    doc.setFontSize(8);
     doc.text(`Numéro assurance sociale: ${driverData.avs_number || 'N/A'}`, 20, 35);
-    doc.text(`Période de salaire: 01.${String(month).padStart(2, '0')}.${year} - ${new Date(year, month, 0).getDate()}.${String(month).padStart(2, '0')}.${year}`, 20, 39);
+    const endDay = new Date(year, month, 0).getDate();
+    doc.text(`Période de salaire: 01.${String(month).padStart(2, '0')}.${year} - ${endDay}.${String(month).padStart(2, '0')}.${year}`, 20, 39);
 
     // === INCOME TABLE ===
     let y = 48;
