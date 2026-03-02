@@ -103,7 +103,7 @@ function BookingCard({ booking, isNew }) {
 
       <div className="grid grid-cols-2 gap-3 mt-4">
         <div className="bg-white/5 rounded-xl p-3">
-          <p className="text-white/40 text-xs mb-1">Data & Hora</p>
+          <p className="text-white/40 text-xs mb-1">Date & Heure</p>
           <p className="text-white text-sm font-medium">{formatDate(booking.departure_date, booking.departure_time)}</p>
         </div>
         <div className="bg-white/5 rounded-xl p-3">
