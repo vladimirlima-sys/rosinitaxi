@@ -1,4 +1,5 @@
 import { createClientFromRequest } from 'npm:@base44/sdk@0.8.6';
+import nodemailer from 'npm:nodemailer@6.9.7';
 
 const getStatusMessage = (status, lang = 'pt') => {
   const messages = {
@@ -184,12 +185,29 @@ Deno.serve(async (req) => {
     // Gerar HTML do e-mail
     const emailHTML = generateEmailHTML(booking, statusInfo);
 
-    // Enviar e-mail via Core integration
-    await base44.integrations.Core.SendEmail({
+    // Get Gmail access token via OAuth connector
+    const accessToken = await base44.asServiceRole.connectors.getAccessToken('gmail');
+
+    // Create nodemailer transporter with OAuth2
+    const transporter = nodemailer.createTransport({
+      host: 'smtp.gmail.com',
+      port: 465,
+      secure: true,
+      auth: {
+        type: 'OAuth2',
+        user: 'rosini.transfert@gmail.com',
+        clientId: Deno.env.get('GMAIL_CLIENT_ID'),
+        clientSecret: Deno.env.get('GMAIL_CLIENT_SECRET'),
+        refreshToken: Deno.env.get('GMAIL_REFRESH_TOKEN'),
+        accessToken: accessToken,
+      },
+    });
+
+    await transporter.sendMail({
+      from: 'Rosini Transfert <rosini.transfert@gmail.com>',
       to: booking.client_email,
       subject: statusInfo.subject,
-      body: emailHTML,
-      from_name: 'Rosini Transfert'
+      html: emailHTML,
     });
 
     return Response.json({ success: true, message: 'Email sent successfully' });
