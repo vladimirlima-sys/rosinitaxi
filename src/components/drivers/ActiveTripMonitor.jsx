@@ -108,14 +108,29 @@ export default function ActiveTripMonitor({ booking }) {
     <div className="bg-[#0f0f0f] border border-white/10 rounded-2xl overflow-hidden">
       {/* Header */}
       <div className="flex items-center justify-between p-4 border-b border-white/10">
+        <div>
+          <p className="text-white text-sm font-semibold">{booking.client_name}</p>
+          <p className="text-white/40 text-xs mt-1">{new Date(`${booking.departure_date}T${booking.departure_time || '00:00'}`).toLocaleDateString('fr-CH')} à {booking.departure_time}</p>
+        </div>
         <div className="flex items-center gap-2">
           <div className="w-2 h-2 rounded-full bg-[#F5C300] animate-pulse" />
-          <p className="text-white text-sm font-semibold">Suivi en temps réel</p>
+          <p className="text-white text-xs font-semibold">EN COURS</p>
         </div>
-        {tripStatus && (
-          <button onClick={resetTrip} className="text-white/20 text-xs hover:text-white/50 transition-colors">
-            Réinitialiser
-          </button>
+      </div>
+
+      {/* Client info */}
+      <div className="p-4 border-b border-white/10 space-y-2">
+        {booking.client_phone && (
+          <a href={`tel:${booking.client_phone}`} className="flex items-center gap-2 text-white/60 hover:text-[#F5C300] transition-colors text-sm">
+            <Phone className="w-3 h-3" />
+            {booking.client_phone}
+          </a>
+        )}
+        {booking.client_email && (
+          <a href={`mailto:${booking.client_email}`} className="flex items-center gap-2 text-white/60 hover:text-[#F5C300] transition-colors text-sm">
+            <Mail className="w-3 h-3" />
+            {booking.client_email}
+          </a>
         )}
       </div>
 
