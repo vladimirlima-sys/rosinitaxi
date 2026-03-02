@@ -178,10 +178,11 @@ export default function ActiveTripMonitor({ booking }) {
           <button
             key={step.key}
             onClick={() => setStatus(step.key)}
-            className={`w-full h-11 rounded-xl border font-semibold text-sm flex items-center justify-center gap-2 transition-all ${step.bg} ${step.color} hover:opacity-80`}
+            disabled={savingPayment}
+            className={`w-full h-11 rounded-xl border font-semibold text-sm flex items-center justify-center gap-2 transition-all ${step.bg} ${step.color} hover:opacity-80 disabled:opacity-50`}
           >
-            {step.label}
-            <ChevronRight className="w-4 h-4 ml-auto" />
+            {savingPayment && step.key === 'completed' ? <Loader2 className="w-4 h-4 animate-spin" /> : step.label}
+            {!savingPayment && <ChevronRight className="w-4 h-4 ml-auto" />}
           </button>
         ))}
         {isCompleted && (
