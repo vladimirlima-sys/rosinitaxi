@@ -66,7 +66,7 @@ function BookingCard({ booking, isNew }) {
             <MapPin className="w-3 h-3 text-[#F5C300]" />
           </div>
           <div className="flex-1 min-w-0">
-            <p className="text-white/40 text-xs uppercase tracking-wider">Partida</p>
+            <p className="text-white/40 text-xs uppercase tracking-wider">Départ</p>
             <p className="text-white text-sm">{booking.departure_point}</p>
           </div>
           <a
