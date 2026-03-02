@@ -185,6 +185,11 @@ export default function Finance() {
           </div>
         )}
 
+        {/* Payslip Generator */}
+        <div className="mb-8">
+          <PayslipGenerator drivers={allDrivers} />
+        </div>
+
         <FinanceContent
           loading={loading}
           monthBookings={monthBookings}
