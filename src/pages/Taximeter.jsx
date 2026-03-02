@@ -65,10 +65,9 @@ export default function Taximeter() {
     const newWaitingPrice = (waitingSeconds / 60) * 0.30;
     setWaitingPrice(newWaitingPrice);
     
-    if (priceSettings && running) {
-      const baseFare = priceSettings.base_fare ?? 10;
+    if (running) {
       const km = distanceRef.current;
-      const price = baseFare + km * getPricePerKm(priceSettings, vehicleType) + newWaitingPrice;
+      const price = TAXIMETER_BASE_FARE + km * TAXIMETER_PRICE_PER_KM + newWaitingPrice;
       setTotalPrice(parseFloat(price.toFixed(2)));
     }
   }, [waitingSeconds]);
