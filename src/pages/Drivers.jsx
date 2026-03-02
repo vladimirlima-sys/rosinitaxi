@@ -84,24 +84,24 @@ export default function Drivers() {
         </a>
         <div className="text-center mb-6 md:mb-12">
           <h1 className="text-black text-4xl md:text-6xl font-extralight tracking-[0.3em] uppercase">ROSINI</h1>
-          <p className="text-black/60 text-xs md:text-sm tracking-[0.2em] uppercase mt-2">MOTORISTAS</p>
+          <p className="text-black/60 text-xs md:text-sm tracking-[0.2em] uppercase mt-2">CHAUFFEURS</p>
           <div className="w-8 h-[1px] bg-black/40 mx-auto mt-3 mb-6 md:mb-8" />
           <button
             onClick={() => { setEditingDriver(null); setShowForm(true); }}
             className="flex items-center gap-2 bg-black text-white px-3 md:px-4 py-2 md:py-2.5 rounded-lg font-semibold text-xs md:text-sm hover:bg-black/80 transition-all mx-auto mb-3 md:mb-4"
           >
             <Plus className="w-4 h-4" />
-            Novo Motorista
+            Nouveau chauffeur
           </button>
-          <p className="text-black/60 text-xs md:text-sm">{active} ativos · {inactive} inativos</p>
+          <p className="text-black/60 text-xs md:text-sm">{active} actifs · {inactive} inactifs</p>
         </div>
 
         {loading ? (
-          <div className="text-black/30 text-center py-20">Carregando...</div>
+          <div className="text-black/30 text-center py-20">Chargement...</div>
         ) : drivers.length === 0 ? (
           <div className="text-center py-20">
             <User className="w-10 h-10 text-black/20 mx-auto mb-3" />
-            <p className="text-black/30">Nenhum motorista cadastrado ainda.</p>
+            <p className="text-black/30">Aucun chauffeur enregistré pour le moment.</p>
           </div>
         ) : (
           <div className="grid gap-2 md:gap-3">
