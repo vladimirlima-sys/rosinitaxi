@@ -434,7 +434,7 @@ export default function DriverPortal() {
         )}
 
         <p className="text-white/20 text-xs text-center mt-8">
-          Atualiza em tempo real · Rosini Transfert
+          Mise à jour en temps réel · Rosini Transfert
         </p>
       </div>
     </div>
