@@ -203,22 +203,22 @@ Deno.serve(async (req) => {
     doc.text((totalDeductions * -1).toFixed(2), 160, y, { align: 'right' });
 
     // === NET AMOUNT BOX ===
-    y += 10;
+    y += 8;
     doc.setFillColor(240, 240, 240);
-    doc.rect(120, y - 4, 70, 8, 'F');
+    doc.rect(120, y - 3, 70, 6, 'F');
     doc.setFont(undefined, 'bold');
+    doc.setFontSize(8);
     doc.text('Montant versé', 125, y);
     doc.text(netAmount.toFixed(2), 175, y, { align: 'right' });
 
     // === FOOTER ===
-    y = 270;
-    doc.setFontSize(9);
+    doc.setFontSize(8);
     doc.setFont(undefined, 'normal');
-    doc.text(`Lausanne, le ${new Date().toLocaleDateString('fr-CH').split(' ')[0]} ${monthName} ${year}`, 20, y);
+    doc.text(`Lausanne, le ${new Date().toLocaleDateString('fr-CH').split(' ')[0]} ${monthName} ${year}`, 20, 270);
     
-    doc.setFontSize(10);
+    doc.setFontSize(9);
     doc.setFont(undefined, 'bold');
-    doc.text(company?.company_name || 'ROSINI', 160, y);
+    doc.text(company?.company_name || 'ROSINI', 160, 270);
 
     const pdfBytes = doc.output('arraybuffer');
     
