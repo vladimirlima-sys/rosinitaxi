@@ -177,30 +177,17 @@ export default function Taximeter() {
           <p className="text-white/30 text-xs tracking-widest uppercase mt-1">Rosini Transfert</p>
         </div>
 
-        {/* Vehicle selector */}
-        <div className="bg-[#111] border border-white/10 rounded-2xl p-4">
-          <p className="text-white/40 text-xs uppercase tracking-wider mb-3">Type de véhicule</p>
-          <div className="grid grid-cols-2 gap-2">
-            {['economic', 'comfort'].map(type => (
-              <button
-                key={type}
-                onClick={() => { if (!running) setVehicleType(type); }}
-                disabled={running}
-                className={`h-12 rounded-xl font-semibold text-sm uppercase tracking-wider transition-all ${
-                  vehicleType === type
-                    ? 'bg-[#F5C300] text-black'
-                    : 'bg-white/5 text-white/50 hover:bg-white/10'
-                } disabled:cursor-not-allowed`}
-              >
-                {type === 'economic' ? 'Standard' : 'Comfort'}
-              </button>
-            ))}
+        {/* Tarif info */}
+        <div className="bg-[#111] border border-white/10 rounded-2xl p-4 flex items-center justify-between">
+          <div>
+            <p className="text-white/40 text-xs uppercase tracking-wider">Prise en charge</p>
+            <p className="text-white font-semibold">CHF 10.00</p>
           </div>
-          {priceSettings && (
-            <p className="text-white/30 text-xs text-center mt-2">
-              CHF {pricePerKm.toFixed(2)}/km
-            </p>
-          )}
+          <div className="w-[1px] h-8 bg-white/10" />
+          <div>
+            <p className="text-white/40 text-xs uppercase tracking-wider">Prix au km</p>
+            <p className="text-white font-semibold">CHF 2.30</p>
+          </div>
         </div>
 
         {/* Main display */}
