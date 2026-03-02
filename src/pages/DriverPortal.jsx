@@ -332,7 +332,7 @@ export default function DriverPortal() {
               disabled={loading || !driverCode.trim()}
               className="w-full h-12 rounded-xl bg-[#F5C300] text-black font-bold text-sm uppercase tracking-wider hover:bg-[#e6b800] transition-all disabled:opacity-50 flex items-center justify-center gap-2"
             >
-              {loading ? <Loader2 className="w-4 h-4 animate-spin" /> : 'Entrar'}
+              {loading ? <Loader2 className="w-4 h-4 animate-spin" /> : 'Connexion'}
             </button>
           </div>
 
