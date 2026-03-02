@@ -354,7 +354,15 @@ export default function DriverPortal() {
           <div>
             <h1 className="text-2xl font-light text-white">Bonjour, {driver.name.split(' ')[0]} 👋</h1>
             <p className="text-white/40 text-sm mt-0.5">{upcoming.length} course{upcoming.length !== 1 ? 's' : ''} à venir</p>
-            <p className="text-[#F5C300] text-sm font-semibold mt-2">CHF {monthlyEarnings.toFixed(2)} ce mois</p>
+            <p
+              className="text-sm font-semibold mt-2 cursor-pointer select-none"
+              onClick={() => { setShowEarnings(true); setTimeout(() => setShowEarnings(false), 3000); }}
+            >
+              <span className="text-white/30 text-xs uppercase tracking-wider mr-1">ce mois</span>
+              <span className={`transition-all duration-300 ${showEarnings ? 'text-[#F5C300]' : 'text-[#F5C300]/20 blur-sm'}`}>
+                CHF {monthlyEarnings.toFixed(2)}
+              </span>
+            </p>
           </div>
           <div className="flex gap-2">
             <a
