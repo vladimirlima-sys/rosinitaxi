@@ -463,63 +463,55 @@ Deno.serve(async (req) => {
 </body>
 </html>`;
 
-    // ─── PDF RECEIPT (for company) ──────────────────────────────────────────────
+    // ─── PDF RECEIPT (B&W, for company only) ───────────────────────────────────
     const generateReceiptPDF = () => {
       const doc = new jsPDF('p', 'mm', 'a4');
       const pw = doc.internal.pageSize.getWidth();
       const ph = doc.internal.pageSize.getHeight();
 
-      // Background
-      doc.setFillColor(10, 10, 10);
-      doc.rect(0, 0, pw, ph, 'F');
-
-      // Yellow top bar
-      doc.setFillColor(245, 195, 0);
-      doc.rect(0, 0, pw, 3, 'F');
-
       let y = 18;
 
       // Company name
       doc.setFontSize(22);
-      doc.setTextColor(245, 195, 0);
+      doc.setTextColor(0, 0, 0);
       doc.setFont(undefined, 'bold');
       doc.text('ROSINI', 15, y);
       doc.setFontSize(8);
       doc.setFont(undefined, 'normal');
+      doc.setTextColor(80, 80, 80);
       doc.text('TRANSPORTS ET LOCATIONS SÀRL', 15, y + 6);
 
       // Receipt title (right)
       doc.setFontSize(20);
       doc.setFont(undefined, 'bold');
-      doc.setTextColor(245, 195, 0);
+      doc.setTextColor(0, 0, 0);
       doc.text('REÇU', pw - 15, y + 2, { align: 'right' });
 
       // Company details
       y += 14;
       doc.setFontSize(8);
       doc.setFont(undefined, 'normal');
-      doc.setTextColor(140, 140, 140);
+      doc.setTextColor(100, 100, 100);
       doc.text('Chemin des Bulesses 16 — 1814 La Tour-de-Peilz', 15, y);
       doc.text('IDE: CHE-264.039.709  |  +41 77 249 22 45  |  info@rosini.online', 15, y + 5);
 
-      // Date right
-      doc.setTextColor(150, 150, 150);
+      doc.setTextColor(120, 120, 120);
       doc.text(`Émis le ${new Date().toLocaleDateString('fr-CH')}`, pw - 15, y, { align: 'right' });
       doc.text(`Trajet prévu: ${departure_date}`, pw - 15, y + 5, { align: 'right' });
 
       // Divider
       y += 14;
-      doc.setDrawColor(245, 195, 0);
-      doc.setLineWidth(0.4);
+      doc.setDrawColor(0, 0, 0);
+      doc.setLineWidth(0.5);
       doc.line(15, y, pw - 15, y);
 
       // ── Section: Client ──
       y += 8;
-      doc.setFillColor(245, 195, 0);
+      doc.setFillColor(30, 30, 30);
       doc.rect(15, y, pw - 30, 7, 'F');
       doc.setFontSize(9);
       doc.setFont(undefined, 'bold');
-      doc.setTextColor(0, 0, 0);
+      doc.setTextColor(255, 255, 255);
       doc.text('INFORMATIONS DU CLIENT', 18, y + 5);
 
       y += 10;
@@ -531,20 +523,20 @@ Deno.serve(async (req) => {
       for (const [label, value] of clientRows) {
         doc.setFontSize(9);
         doc.setFont(undefined, 'normal');
-        doc.setTextColor(120, 120, 120);
+        doc.setTextColor(100, 100, 100);
         doc.text(label + ':', 18, y);
-        doc.setTextColor(230, 230, 230);
+        doc.setTextColor(0, 0, 0);
         doc.text(value, 65, y);
         y += 6;
       }
 
       // ── Section: Trajet ──
       y += 4;
-      doc.setFillColor(245, 195, 0);
+      doc.setFillColor(30, 30, 30);
       doc.rect(15, y, pw - 30, 7, 'F');
       doc.setFontSize(9);
       doc.setFont(undefined, 'bold');
-      doc.setTextColor(0, 0, 0);
+      doc.setTextColor(255, 255, 255);
       doc.text('DÉTAILS DU TRAJET', 18, y + 5);
 
       y += 10;
@@ -563,10 +555,9 @@ Deno.serve(async (req) => {
       for (const [label, value] of tripRows) {
         doc.setFontSize(9);
         doc.setFont(undefined, 'normal');
-        doc.setTextColor(120, 120, 120);
+        doc.setTextColor(100, 100, 100);
         doc.text(label + ':', 18, y);
-        doc.setTextColor(230, 230, 230);
-        // wrap long text
+        doc.setTextColor(0, 0, 0);
         const lines = doc.splitTextToSize(value, pw - 80);
         doc.text(lines, 65, y);
         y += lines.length > 1 ? lines.length * 5 + 1 : 6;
@@ -574,49 +565,48 @@ Deno.serve(async (req) => {
 
       // ── Section: Paiement ──
       y += 4;
-      doc.setDrawColor(245, 195, 0);
-      doc.setLineWidth(0.4);
+      doc.setDrawColor(0, 0, 0);
+      doc.setLineWidth(0.5);
       doc.line(15, y, pw - 15, y);
       y += 8;
 
-      // Payment method
       doc.setFontSize(9);
       doc.setFont(undefined, 'normal');
-      doc.setTextColor(120, 120, 120);
+      doc.setTextColor(100, 100, 100);
       doc.text('Méthode de paiement:', 18, y);
-      doc.setTextColor(200, 200, 200);
+      doc.setTextColor(0, 0, 0);
       doc.text(payMethodLabel, 70, y);
 
       // Total
       y += 8;
       doc.setFontSize(11);
       doc.setFont(undefined, 'bold');
-      doc.setTextColor(120, 120, 120);
+      doc.setTextColor(80, 80, 80);
       doc.text('Montant total:', 18, y);
       doc.setFontSize(20);
-      doc.setTextColor(245, 195, 0);
+      doc.setTextColor(0, 0, 0);
       doc.text(`CHF ${total_price}`, 65, y);
 
-      // PAID / TO COLLECT badge
+      // PAID / TO COLLECT badge (black box, white text)
       y += 3;
       const badge = isPaid ? 'PAYÉ' : 'À ENCAISSER';
-      const badgeW = 28;
-      doc.setFillColor(245, 195, 0);
+      const badgeW = 32;
+      doc.setFillColor(0, 0, 0);
       doc.roundedRect(pw - 15 - badgeW, y - 6, badgeW, 8, 2, 2, 'F');
       doc.setFontSize(8);
       doc.setFont(undefined, 'bold');
-      doc.setTextColor(0, 0, 0);
+      doc.setTextColor(255, 255, 255);
       doc.text(badge, pw - 15 - badgeW / 2, y - 0.5, { align: 'center' });
 
       // ── Footer ──
       y = ph - 18;
-      doc.setDrawColor(50, 50, 50);
+      doc.setDrawColor(180, 180, 180);
       doc.setLineWidth(0.3);
       doc.line(15, y, pw - 15, y);
       y += 5;
       doc.setFontSize(7);
       doc.setFont(undefined, 'normal');
-      doc.setTextColor(80, 80, 80);
+      doc.setTextColor(150, 150, 150);
       doc.text('Rosini Transports et Locations Sàrl  |  Chemin des Bulesses 16  |  1814 La Tour-de-Peilz  |  IDE: CHE-264.039.709', pw / 2, y, { align: 'center' });
       doc.text(`© ${year} Rosini Transfert`, pw / 2, y + 4, { align: 'center' });
 
