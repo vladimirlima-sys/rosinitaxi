@@ -76,6 +76,12 @@ export default function Drivers() {
   return (
     <div className="min-h-screen bg-[#F5C300] py-6 md:py-12 px-4">
       <div className="max-w-2xl mx-auto">
+        <a
+          href={createPageUrl('AdminPanel')}
+          className="flex items-center gap-1 text-black/40 hover:text-black/70 transition-colors mb-6 w-fit"
+        >
+          <ArrowLeft className="w-4 h-4" />
+        </a>
         <div className="text-center mb-6 md:mb-12">
           <h1 className="text-black text-4xl md:text-6xl font-extralight tracking-[0.3em] uppercase">ROSINI</h1>
           <p className="text-black/60 text-xs md:text-sm tracking-[0.2em] uppercase mt-2">MOTORISTAS</p>
