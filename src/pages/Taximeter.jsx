@@ -1,7 +1,8 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { base44 } from '@/api/base44Client';
-import { Play, Square, Navigation, Car, Loader2, Clock, Pause, Play as PlayIcon } from 'lucide-react';
+import { Play, Square, Navigation, Car, Loader2, Clock, ArrowLeft } from 'lucide-react';
 import PaymentForm from '@/components/taximeter/PaymentForm';
+import { createPageUrl } from '@/utils';
 
 export default function Taximeter() {
   const [priceSettings, setPriceSettings] = useState(null);
