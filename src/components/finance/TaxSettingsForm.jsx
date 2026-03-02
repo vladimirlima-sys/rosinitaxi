@@ -62,6 +62,11 @@ export default function TaxSettingsForm({ onTaxesUpdated }) {
   const totalTaxPercentage = 
     (settings.avs_percentage || 0) +
     (settings.ai_percentage || 0) +
+    (settings.apg_percentage || 0) +
+    (settings.ac_percentage || 0) +
+    (settings.af_percentage || 0) +
+    (settings.pc_percentage || 0) +
+    (settings.cont_frais_admin_percentage || 0) +
     (settings.impot_source_percentage || 0) +
     (settings.impot_cantonal_percentage || 0) +
     (settings.impot_communal_percentage || 0) +
@@ -94,6 +99,66 @@ export default function TaxSettingsForm({ onTaxesUpdated }) {
             className="w-full bg-white/10 border border-white/20 rounded px-3 py-2 text-white text-sm"
           />
           <p className="text-white/40 text-xs mt-1">Assurance-Invalidité</p>
+        </div>
+
+        <div>
+          <label className="block text-white/60 text-sm mb-2">APG (%)</label>
+          <input
+            type="number"
+            step="0.01"
+            value={settings.apg_percentage || 0}
+            onChange={(e) => handleChange('apg_percentage', e.target.value)}
+            className="w-full bg-white/10 border border-white/20 rounded px-3 py-2 text-white text-sm"
+          />
+          <p className="text-white/40 text-xs mt-1">Assurance-Placement Gratuit</p>
+        </div>
+
+        <div>
+          <label className="block text-white/60 text-sm mb-2">AC (%)</label>
+          <input
+            type="number"
+            step="0.01"
+            value={settings.ac_percentage || 0}
+            onChange={(e) => handleChange('ac_percentage', e.target.value)}
+            className="w-full bg-white/10 border border-white/20 rounded px-3 py-2 text-white text-sm"
+          />
+          <p className="text-white/40 text-xs mt-1">Assurance Chômage</p>
+        </div>
+
+        <div>
+          <label className="block text-white/60 text-sm mb-2">AF (%)</label>
+          <input
+            type="number"
+            step="0.01"
+            value={settings.af_percentage || 0}
+            onChange={(e) => handleChange('af_percentage', e.target.value)}
+            className="w-full bg-white/10 border border-white/20 rounded px-3 py-2 text-white text-sm"
+          />
+          <p className="text-white/40 text-xs mt-1">Allocations Familiales</p>
+        </div>
+
+        <div>
+          <label className="block text-white/60 text-sm mb-2">PC (%)</label>
+          <input
+            type="number"
+            step="0.01"
+            value={settings.pc_percentage || 0}
+            onChange={(e) => handleChange('pc_percentage', e.target.value)}
+            className="w-full bg-white/10 border border-white/20 rounded px-3 py-2 text-white text-sm"
+          />
+          <p className="text-white/40 text-xs mt-1">Prestações Complementares</p>
+        </div>
+
+        <div>
+          <label className="block text-white/60 text-sm mb-2">Cont. Frais Admin (%)</label>
+          <input
+            type="number"
+            step="0.01"
+            value={settings.cont_frais_admin_percentage || 0}
+            onChange={(e) => handleChange('cont_frais_admin_percentage', e.target.value)}
+            className="w-full bg-white/10 border border-white/20 rounded px-3 py-2 text-white text-sm"
+          />
+          <p className="text-white/40 text-xs mt-1">Contribuição Frais Administrativos</p>
         </div>
 
         <div>
