@@ -14,7 +14,7 @@ const statusLabels = {
 function formatDate(dateStr, timeStr) {
   if (!dateStr) return '';
   const [y, m, d] = dateStr.split('-');
-  return `${d}/${m}/${y}${timeStr ? ' às ' + timeStr : ''}`;
+  return `${d}/${m}/${y}${timeStr ? ' à ' + timeStr : ''}`;
 }
 
 function getMapsUrl(address) {
