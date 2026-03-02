@@ -116,7 +116,8 @@ export default function Finance() {
         paymentMethods,
         monthExpenses,
         totalExpenses,
-        netResult
+        netResult,
+        totalTaxes
       });
       
       // Create blob and download
