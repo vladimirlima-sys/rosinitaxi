@@ -29,11 +29,10 @@ export default function Taximeter() {
     });
   }, []);
 
-  const getPricePerKm = (settings, type) => {
-    if (!settings) return 0;
-    if (type === 'comfort') return settings.comfort_price_per_km || settings.standard_price_per_km * 1.3;
-    return settings.standard_price_per_km || 0;
-  };
+  const TAXIMETER_PRICE_PER_KM = 2.30;
+  const TAXIMETER_BASE_FARE = 10;
+
+  const getPricePerKm = () => TAXIMETER_PRICE_PER_KM;
 
   const haversineKm = (lat1, lon1, lat2, lon2) => {
     const R = 6371;
