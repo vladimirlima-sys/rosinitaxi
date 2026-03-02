@@ -31,7 +31,7 @@ Deno.serve(async (req) => {
       distance_km: distance || 0,
       total_price: amount,
       passengers: 1,
-      payment_status: paymentMethod === 'card' ? 'paid' : 'pending',
+      payment_status: 'paid',
       payment_method: paymentMethod === 'card' ? 'stripe' : (paymentMethod === 'twint' ? 'twint' : 'cash'),
       driver_id: driverId || null,
       driver_name: driverName,
