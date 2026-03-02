@@ -527,10 +527,12 @@ Deno.serve(async (req) => {
     const sendGmailEmail = async (to, subject, htmlBody) => {
       const accessToken = await base44.asServiceRole.connectors.getAccessToken("gmail");
       
+      const encodedName = `=?UTF-8?B?${btoa(unescape(encodeURIComponent('Rosini Transports')))}?=`;
+      const encodedSubject = `=?UTF-8?B?${btoa(unescape(encodeURIComponent(subject)))}?=`;
       const emailLines = [
-        `From: Rosini Transfert <rosinitransportsetlications@gmail.com>`,
+        `From: ${encodedName} <rosinitransportsetlications@gmail.com>`,
         `To: ${to}`,
-        `Subject: ${subject}`,
+        `Subject: ${encodedSubject}`,
         `MIME-Version: 1.0`,
         `Content-Type: text/html; charset=UTF-8`,
         ``,
