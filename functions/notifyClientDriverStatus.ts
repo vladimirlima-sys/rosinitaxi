@@ -206,10 +206,11 @@ Deno.serve(async (req) => {
         const authToken = Deno.env.get('TWILIO_AUTH_TOKEN');
         const from = Deno.env.get('TWILIO_WHATSAPP_FROM');
         const msgBody = type === 'on_the_way'
-          ? t.on_the_way_whatsapp(client_name, departure_point, driverName)
-          : t.arrived_whatsapp(client_name, departure_point, driverName);
-        const toNumber = client_phone.replace(/\s/g, '').replace(/^00/, '+');
-        const formattedTo = toNumber.startsWith('+') ? `whatsapp:${toNumber}` : `whatsapp:+${toNumber}`;
+          ? t.on_the_way_whatsapp(client_name, departure_point, driverName, driverWaLink || '')
+          : t.arrived_whatsapp(client_name, departure_point, driverName, driverWaLink || '');
+        // Format number: remove all non-digits, ensure it starts with +
+        const digitsOnly = client_phone.replace(/\D/g, '');
+        const formattedTo = `whatsapp:+${digitsOnly}`;
         const response = await fetch(`https://api.twilio.com/2010-04-01/Accounts/${accountSid}/Messages.json`, {
           method: 'POST',
           headers: { 'Authorization': 'Basic ' + btoa(`${accountSid}:${authToken}`), 'Content-Type': 'application/x-www-form-urlencoded' },
