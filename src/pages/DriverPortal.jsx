@@ -351,9 +351,9 @@ export default function DriverPortal() {
         {/* Header */}
         <div className="flex items-center justify-between mb-6">
           <div>
-            <h1 className="text-2xl font-light text-white">Olá, {driver.name.split(' ')[0]} 👋</h1>
-            <p className="text-white/40 text-sm mt-0.5">{upcoming.length} corrida{upcoming.length !== 1 ? 's' : ''} a vir</p>
-            <p className="text-[#F5C300] text-sm font-semibold mt-2">CHF {monthlyEarnings.toFixed(2)} este mês</p>
+            <h1 className="text-2xl font-light text-white">Bonjour, {driver.name.split(' ')[0]} 👋</h1>
+            <p className="text-white/40 text-sm mt-0.5">{upcoming.length} course{upcoming.length !== 1 ? 's' : ''} à venir</p>
+            <p className="text-[#F5C300] text-sm font-semibold mt-2">CHF {monthlyEarnings.toFixed(2)} ce mois</p>
           </div>
           <div className="flex gap-2">
             <a
