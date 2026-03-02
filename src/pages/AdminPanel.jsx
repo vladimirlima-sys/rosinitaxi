@@ -13,10 +13,16 @@ export default function AdminPanel() {
   const [input, setInput] = useState('');
   const [unlocked, setUnlocked] = useState(false);
   const [error, setError] = useState(false);
+  const [rememberPassword, setRememberPassword] = useState(false);
 
   useEffect(() => {
     if (localStorage.getItem('admin_unlocked') === 'true') {
       setUnlocked(true);
+    }
+    const savedPassword = localStorage.getItem('admin_password');
+    if (savedPassword) {
+      setInput(savedPassword);
+      setRememberPassword(true);
     }
   }, []);
 
@@ -26,6 +32,11 @@ export default function AdminPanel() {
       setUnlocked(true);
       setError(false);
       localStorage.setItem('admin_unlocked', 'true');
+      if (rememberPassword) {
+        localStorage.setItem('admin_password', input);
+      } else {
+        localStorage.removeItem('admin_password');
+      }
     } else {
       setError(true);
       setInput('');
@@ -55,6 +66,15 @@ export default function AdminPanel() {
               className="w-full bg-white/10 border border-white/20 rounded-lg px-4 py-3 text-white text-sm placeholder-white/40 focus:outline-none focus:border-white/60"
               autoFocus
             />
+            <label className="flex items-center gap-2 text-white/60 text-sm cursor-pointer hover:text-white/80">
+              <input
+                type="checkbox"
+                checked={rememberPassword}
+                onChange={(e) => setRememberPassword(e.target.checked)}
+                className="w-4 h-4 rounded bg-white/10 border border-white/20 cursor-pointer"
+              />
+              Lembrar senha
+            </label>
             {error && <p className="text-red-400 text-xs text-center">Senha incorreta</p>}
             <button
               type="submit"
