@@ -352,6 +352,12 @@ export default function DriverPortal() {
       <div className="max-w-lg mx-auto">
         {/* Header */}
         <div className="flex items-center justify-between mb-6">
+          <a
+            href={createPageUrl('Home')}
+            className="absolute left-4 top-8 flex items-center gap-1 text-white/40 hover:text-white/70 transition-colors text-sm"
+          >
+            <ArrowLeft className="w-4 h-4" />
+          </a>
           <div>
             <h1 className="text-2xl font-light text-white">Bonjour, {driver.name.split(' ')[0]} 👋</h1>
             <p className="text-white/40 text-sm mt-0.5">{upcoming.length} course{upcoming.length !== 1 ? 's' : ''} à venir</p>
