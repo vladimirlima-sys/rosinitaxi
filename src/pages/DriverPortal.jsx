@@ -337,7 +337,7 @@ export default function DriverPortal() {
           </div>
 
           <p className="text-white/20 text-xs text-center">
-            O código é fornecido pelo administrador da Rosini Transfert.
+            Le code est fourni par l'administrateur de Rosini Transfert.
           </p>
         </div>
       </div>
