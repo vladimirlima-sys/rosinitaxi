@@ -1,256 +1,209 @@
 import { createClientFromRequest } from 'npm:@base44/sdk@0.8.6';
+import { jsPDF } from 'npm:jspdf@4.0.0';
 
 Deno.serve(async (req) => {
-  try {
-    const base44 = createClientFromRequest(req);
-    const { driverId, month, year } = await req.json();
+    try {
+        const base44 = createClientFromRequest(req);
+        const { driverId, month, year, grossAmount } = await req.json();
 
-    // Fetch driver info
-    const drivers = await base44.entities.Driver.filter({ id: driverId });
-    if (!drivers || drivers.length === 0) {
-      return Response.json({ error: 'Chauffeur introuvable' }, { status: 404 });
+        // Fetch driver data
+        const driverData = await base44.asServiceRole.entities.Driver.get(driverId);
+        
+        // Fetch company settings
+        const companySettings = await base44.asServiceRole.entities.CompanySettings.list();
+        const company = companySettings[0] || {};
+
+        // Fetch payroll settings for this driver
+        const payrollSettingsList = await base44.asServiceRole.entities.DriverPayrollSettings.filter({ driver_id: driverId });
+        const payrollSettings = payrollSettingsList[0] || {};
+
+        // Fetch tax settings
+        const taxSettingsList = await base44.asServiceRole.entities.TaxSettings.list();
+        const taxSettings = taxSettingsList[0] || {};
+
+        // Create PDF
+        const doc = new jsPDF('p', 'mm', 'A4');
+        const pageWidth = doc.internal.pageSize.getWidth();
+        const pageHeight = doc.internal.pageSize.getHeight();
+
+        // Use black and white theme
+        doc.setTextColor(0, 0, 0);
+        
+        // === HEADER ===
+        let y = 15;
+        
+        // Company name and info
+        doc.setFontSize(14);
+        doc.setFont(undefined, 'bold');
+        doc.text(company.company_name || 'ROSINI', 20, y);
+        
+        doc.setFontSize(9);
+        doc.setFont(undefined, 'normal');
+        y += 6;
+        if (company.company_address) doc.text(company.company_address, 20, y);
+        y += 4;
+        if (company.registration_number) doc.text(`CHE: ${company.registration_number}`, 20, y);
+        y += 4;
+        if (company.phone) doc.text(`Tél: ${company.phone}`, 20, y);
+
+        // Title on right
+        y = 15;
+        doc.setFontSize(13);
+        doc.setFont(undefined, 'bold');
+        const monthName = new Date(year, month - 1).toLocaleString('fr-CH', { month: 'long', year: 'numeric' }).charAt(0).toUpperCase() + 
+                         new Date(year, month - 1).toLocaleString('fr-CH', { month: 'long', year: 'numeric' }).slice(1);
+        doc.text(`Bulletin de salaire`, pageWidth - 20, y, { align: 'right' });
+        doc.setFontSize(10);
+        doc.setFont(undefined, 'normal');
+        doc.text(monthName, pageWidth - 20, y + 6, { align: 'right' });
+
+        // === EMPLOYEE SECTION ===
+        y = 40;
+        doc.setFontSize(10);
+        doc.setFont(undefined, 'bold');
+        doc.text('Collaborateur', 20, y);
+        
+        doc.setFontSize(10);
+        doc.setFont(undefined, 'normal');
+        y += 6;
+        doc.text(driverData.name || 'N/A', 20, y);
+        y += 5;
+        if (driverData.address) doc.text(driverData.address, 20, y);
+        y += 5;
+        if (driverData.avs_number) doc.text(`Numéro AVS: ${driverData.avs_number}`, 20, y);
+
+        // === SALARY CALCULATION ===
+        y = 40;
+        doc.setFontSize(10);
+        doc.setFont(undefined, 'bold');
+        doc.text('Période', pageWidth - 80, y);
+        
+        doc.setFontSize(9);
+        doc.setFont(undefined, 'normal');
+        y += 6;
+        const daysInMonth = new Date(year, month, 0).getDate();
+        doc.text(`01.${String(month).padStart(2, '0')}.${year} - ${daysInMonth}.${String(month).padStart(2, '0')}.${year}`, pageWidth - 80, y);
+
+        // === SEPARATOR LINE ===
+        y = 65;
+        doc.setDrawColor(200, 200, 200);
+        doc.line(20, y, pageWidth - 20, y);
+
+        // === INCOME SECTION ===
+        y = 72;
+        doc.setFontSize(10);
+        doc.setFont(undefined, 'bold');
+        doc.text('Rémunérations', 20, y);
+
+        // Table header
+        y += 8;
+        doc.setFontSize(9);
+        doc.setFont(undefined, 'bold');
+        doc.text('Description', 20, y);
+        doc.text('Montant', pageWidth - 40, y, { align: 'right' });
+
+        // Draw header line
+        doc.setDrawColor(220, 220, 220);
+        doc.line(20, y + 1, pageWidth - 20, y + 1);
+
+        // Salary row
+        y += 7;
+        doc.setFont(undefined, 'normal');
+        doc.text('Salaire brut', 20, y);
+        doc.text(`CHF ${grossAmount.toFixed(2)}`, pageWidth - 40, y, { align: 'right' });
+
+        // === DEDUCTIONS SECTION ===
+        y += 12;
+        doc.setFontSize(10);
+        doc.setFont(undefined, 'bold');
+        doc.text('Déductions', 20, y);
+
+        // Deductions from tax settings
+        const deductions = [
+            { name: 'Cotisation AVS/AI/APG', rate: (payrollSettings.avs_percentage || taxSettings.avs_percentage || 5.15) + (payrollSettings.ai_percentage || taxSettings.ai_percentage || 0.8) + (payrollSettings.apg_percentage || taxSettings.apg_percentage || 0) },
+            { name: 'Cotisation AC', rate: payrollSettings.ac_percentage || taxSettings.ac_percentage || 1.1 },
+            { name: 'Cotisation LAA', rate: payrollSettings.laa_percentage || taxSettings.laa_percentage || 1.3 },
+            { name: 'Cotisation LPP', rate: payrollSettings.lpp_percentage || taxSettings.lpp_percentage || 7.7 },
+            { name: 'Impôt à la source', rate: payrollSettings.impot_source_percentage || taxSettings.impot_source_percentage || 0 }
+        ];
+
+        let totalDeductions = 0;
+
+        // Table header
+        y += 8;
+        doc.setFontSize(9);
+        doc.setFont(undefined, 'bold');
+        doc.text('Description', 20, y);
+        doc.text('Taux', 90, y);
+        doc.text('Montant', pageWidth - 40, y, { align: 'right' });
+
+        // Draw header line
+        doc.setDrawColor(220, 220, 220);
+        doc.line(20, y + 1, pageWidth - 20, y + 1);
+
+        // Deduction rows
+        deductions.forEach((deduction) => {
+            y += 6;
+            const amount = (grossAmount * deduction.rate) / 100;
+            totalDeductions += amount;
+            
+            doc.setFont(undefined, 'normal');
+            doc.setFontSize(8);
+            doc.text(deduction.name, 20, y);
+            doc.text(`${deduction.rate.toFixed(2)}%`, 90, y);
+            doc.text(`CHF ${amount.toFixed(2)}`, pageWidth - 40, y, { align: 'right' });
+        });
+
+        // === TOTALS SECTION ===
+        y += 12;
+        doc.setDrawColor(200, 200, 200);
+        doc.line(20, y, pageWidth - 20, y);
+        
+        y += 6;
+        doc.setFontSize(10);
+        doc.setFont(undefined, 'bold');
+        doc.text('Total déductions', 20, y);
+        doc.text(`CHF ${totalDeductions.toFixed(2)}`, pageWidth - 40, y, { align: 'right' });
+
+        const netAmount = grossAmount - totalDeductions;
+
+        y += 8;
+        doc.setFillColor(240, 240, 240);
+        doc.rect(20, y - 4, pageWidth - 40, 8);
+        doc.setFontSize(11);
+        doc.setFont(undefined, 'bold');
+        doc.text('Montant net à verser', 20, y);
+        doc.text(`CHF ${netAmount.toFixed(2)}`, pageWidth - 40, y, { align: 'right' });
+
+        // === FOOTER ===
+        const footerY = pageHeight - 15;
+        doc.setFontSize(8);
+        doc.setFont(undefined, 'normal');
+        
+        // Left side - Date and city
+        const today = new Date();
+        const dateStr = `${today.getDate()}.${String(today.getMonth() + 1).padStart(2, '0')}.${today.getFullYear()}`;
+        doc.text(`${company.company_address?.split(',')[0] || 'Lausanne'}, le ${dateStr}`, 20, footerY);
+        
+        // Right side - Company name and CHE
+        doc.setFont(undefined, 'bold');
+        doc.text(company.company_name || 'ROSINI', pageWidth - 20, footerY, { align: 'right' });
+        if (company.registration_number) {
+            doc.setFont(undefined, 'normal');
+            doc.text(`CHE: ${company.registration_number}`, pageWidth - 20, footerY + 4, { align: 'right' });
+        }
+
+        // Return PDF
+        const pdfBytes = doc.output('arraybuffer');
+        return new Response(pdfBytes, {
+            status: 200,
+            headers: {
+                'Content-Type': 'application/pdf',
+                'Content-Disposition': `attachment; filename=bulletin_salaire_${driverData.name?.replace(/\s+/g, '_')}_${month}_${year}.pdf`
+            }
+        });
+    } catch (error) {
+        console.error('Error generating payslip:', error);
+        return Response.json({ error: error.message }, { status: 500 });
     }
-
-    const driverData = drivers[0];
-
-    // Fetch company settings
-    const companySettings = await base44.entities.CompanySettings.list();
-    const company = companySettings.length > 0 ? companySettings[0] : null;
-
-    // Fetch payroll settings
-    const payrollSettings = await base44.entities.DriverPayrollSettings.filter({ driver_id: driverId });
-    if (!payrollSettings || payrollSettings.length === 0) {
-      return Response.json({ error: 'Paramètres de salaire introuvables' }, { status: 404 });
-    }
-
-    const settings = payrollSettings[0];
-
-    // Fetch bookings for the month
-    const monthStr = `${year}-${String(month).padStart(2, '0')}`;
-    const allBookings = await base44.entities.Booking.list();
-    const monthBookings = allBookings.filter(b => {
-      const bookingMonth = b.departure_date ? b.departure_date.substring(0, 7) : b.created_date.substring(0, 7);
-      return bookingMonth === monthStr && b.driver_id === driverId && b.payment_status === 'paid';
-    });
-
-    // Calculate gross amount
-    const grossAmount = monthBookings.reduce((sum, b) => sum + (b.total_price || 0), 0);
-    
-    // Calculate deductions
-    const avsAiApg = (grossAmount * (settings.avs_percentage + settings.ai_percentage + settings.apg_percentage)) / 100;
-    const lpcFam = (grossAmount * 0.06) / 100; // LPC/Fam (VD)
-    const ac = (grossAmount * settings.ac_percentage) / 100;
-    const aanp = (grossAmount * 2.114) / 100; // AANP code A1
-    const lpp = (grossAmount * settings.lpp_percentage) / 100;
-    const impot = (grossAmount * settings.impot_source_percentage) / 100;
-    
-    const totalDeductions = avsAiApg + lpcFam + ac + aanp + lpp + impot;
-    const netAmount = grossAmount - totalDeductions;
-
-    // Generate PDF using professional layout
-    const { jsPDF } = await import('npm:jspdf@4.0.0');
-    const doc = new jsPDF();
-
-    const monthNames = ['', 'Janvier', 'Février', 'Mars', 'Avril', 'Mai', 'Juin', 
-                        'Juillet', 'Août', 'Septembre', 'Octobre', 'Novembre', 'Décembre'];
-    const monthName = monthNames[month];
-
-    // === HEADER ===
-    doc.setFontSize(12);
-    doc.setFont(undefined, 'bold');
-    doc.text(company?.company_name || 'ROSINI', 20, 12);
-    
-    doc.setFontSize(9);
-    doc.setFont(undefined, 'normal');
-    doc.text('Tél.', 160, 12);
-
-    // === TITLE ===
-    doc.setFontSize(12);
-    doc.setFont(undefined, 'bold');
-    doc.text(`Bulletin de salaire ${monthName} ${year}`, 20, 20);
-    
-    doc.setFontSize(8);
-    doc.setFont(undefined, 'normal');
-    doc.text(`Imprimé le ${new Date().toLocaleDateString('fr-CH')} Page 1 / 1`, 160, 20);
-
-    // === EMPLOYEE NAME ===
-    doc.setFontSize(10);
-    doc.setFont(undefined, 'bold');
-    doc.text(driverData.name || 'N/A', 20, 27);
-
-    // === EMPLOYEE ADDRESS (right side) ===
-    doc.setFontSize(8);
-    doc.setFont(undefined, 'normal');
-    doc.text('Monsieur', 120, 27);
-    doc.text(driverData.name || 'N/A', 120, 31);
-    if (driverData.address) {
-      doc.text(driverData.address, 120, 35);
-      doc.text('1205 Genève', 120, 39);
-    }
-
-    // === SALARY INFO ===
-    doc.setFontSize(8);
-    doc.text(`Numéro assurance sociale: ${driverData.avs_number || 'N/A'}`, 20, 35);
-    const endDay = new Date(year, month, 0).getDate();
-    doc.text(`Période de salaire: 01.${String(month).padStart(2, '0')}.${year} - ${endDay}.${String(month).padStart(2, '0')}.${year}`, 20, 39);
-
-    // === INCOME TABLE ===
-    let y = 45;
-    doc.setFontSize(8);
-    doc.setFont(undefined, 'bold');
-    
-    // Header row
-    doc.rect(20, y - 4, 170, 5);
-    doc.text('GS', 22, y);
-    doc.text('Texte', 35, y);
-    doc.text('Déterminant', 70, y);
-    doc.text('Taux/Qté', 95, y);
-    doc.text('AVS', 115, y);
-    doc.text('LAA', 135, y);
-    doc.text('BRUT', 155, y);
-
-    y += 7;
-    doc.setFont(undefined, 'normal');
-    
-    // Salaire mensuel
-    doc.text('1000.', 22, y);
-    doc.text('Salaire mensuel', 35, y);
-    doc.text(grossAmount.toFixed(2), 65, y, { align: 'right' });
-    doc.text('—', 95, y, { align: 'right' });
-    doc.text(grossAmount.toFixed(2), 110, y, { align: 'right' });
-    doc.text(grossAmount.toFixed(2), 130, y, { align: 'right' });
-    doc.text(grossAmount.toFixed(2), 160, y, { align: 'right' });
-    
-    y += 7;
-    doc.setFont(undefined, 'bold');
-    doc.text('Totaux', 35, y);
-    doc.text(grossAmount.toFixed(2), 65, y, { align: 'right' });
-    doc.text(grossAmount.toFixed(2), 110, y, { align: 'right' });
-    doc.text(grossAmount.toFixed(2), 130, y, { align: 'right' });
-    doc.text(grossAmount.toFixed(2), 160, y, { align: 'right' });
-
-    // === DEDUCTIONS TABLE ===
-    y += 10;
-    doc.setFontSize(8);
-    doc.setFont(undefined, 'bold');
-    
-    // Header row
-    doc.rect(20, y - 4, 170, 5);
-    doc.text('GS', 22, y);
-    doc.text('Déductions', 35, y);
-    doc.text('Déterminant', 70, y);
-    doc.text('Taux/Qté', 95, y);
-    doc.text('Pt 9', 120, y);
-    doc.text('Charges', 140, y);
-    doc.text('Valeur', 160, y);
-
-    y += 7;
-    doc.setFont(undefined, 'normal');
-    
-    // Cotisation AVS/AI/APG
-    doc.text('5010.', 22, y);
-    doc.text('Cotisation AVS/AI/APG', 35, y);
-    doc.text(grossAmount.toFixed(2), 65, y, { align: 'right' });
-    doc.text('5.30', 95, y, { align: 'right' });
-    doc.text((avsAiApg * -1).toFixed(2), 120, y, { align: 'right' });
-    doc.text((avsAiApg * -1).toFixed(2), 140, y, { align: 'right' });
-    doc.text((avsAiApg * -1).toFixed(2), 160, y, { align: 'right' });
-    
-    y += 6;
-    doc.text('5016.', 22, y);
-    doc.text('Contribution LPC/Fam (VD)', 35, y);
-    doc.text(grossAmount.toFixed(2), 65, y, { align: 'right' });
-    doc.text('0.06', 95, y, { align: 'right' });
-    doc.text((lpcFam * -1).toFixed(2), 160, y, { align: 'right' });
-    
-    y += 6;
-    doc.text('5020.', 22, y);
-    doc.text('Cotisation AC', 35, y);
-    doc.text(grossAmount.toFixed(2), 65, y, { align: 'right' });
-    doc.text('1.10', 95, y, { align: 'right' });
-    doc.text((ac * -1).toFixed(2), 120, y, { align: 'right' });
-    doc.text((ac * -1).toFixed(2), 140, y, { align: 'right' });
-    doc.text((ac * -1).toFixed(2), 160, y, { align: 'right' });
-    
-    y += 6;
-    doc.text('5025.1', 22, y);
-    doc.text('Cotisation AANP (code A1)', 35, y);
-    doc.text(grossAmount.toFixed(2), 65, y, { align: 'right' });
-    doc.text('2.114', 95, y, { align: 'right' });
-    doc.text((aanp * -1).toFixed(2), 120, y, { align: 'right' });
-    doc.text((aanp * -1).toFixed(2), 140, y, { align: 'right' });
-    doc.text((aanp * -1).toFixed(2), 160, y, { align: 'right' });
-    
-    y += 6;
-    doc.text('5050.', 22, y);
-    doc.text('Cotisation LPP', 35, y);
-    doc.text((grossAmount * 0.53).toFixed(2), 65, y, { align: 'right' });
-    doc.text('7.00', 95, y, { align: 'right' });
-    doc.text((lpp * -1).toFixed(2), 160, y, { align: 'right' });
-    
-    y += 6;
-    doc.text('5060.', 22, y);
-    doc.text('Retenue impôt à la source', 35, y);
-    doc.text(grossAmount.toFixed(2), 65, y, { align: 'right' });
-    doc.text('6.37', 95, y, { align: 'right' });
-    doc.text((impot * -1).toFixed(2), 160, y, { align: 'right' });
-    
-    y += 7;
-    doc.setFont(undefined, 'bold');
-    doc.text('Totaux', 35, y);
-    doc.text((totalDeductions * -1).toFixed(2), 120, y, { align: 'right' });
-    doc.text((totalDeductions * -1).toFixed(2), 140, y, { align: 'right' });
-    doc.text((totalDeductions * -1).toFixed(2), 160, y, { align: 'right' });
-
-    // === NET AMOUNT BOX ===
-    y += 8;
-    doc.setFillColor(240, 240, 240);
-    doc.rect(120, y - 3, 70, 6, 'F');
-    doc.setFont(undefined, 'bold');
-    doc.setFontSize(8);
-    doc.text('Montant versé', 125, y);
-    doc.text(netAmount.toFixed(2), 175, y, { align: 'right' });
-
-    // === FOOTER ===
-    doc.setFontSize(8);
-    doc.setFont(undefined, 'normal');
-    doc.text(`Lausanne, le ${new Date().toLocaleDateString('fr-CH').split(' ')[0]} ${monthName} ${year}`, 20, 270);
-    
-    doc.setFontSize(9);
-    doc.setFont(undefined, 'bold');
-    doc.text(company?.company_name || 'ROSINI', 160, 270);
-
-    const pdfBytes = doc.output('arraybuffer');
-    
-    // Upload PDF file
-    const blob = new Blob([pdfBytes], { type: 'application/pdf' });
-    const file = new File([blob], `bulletin-salaire-${driverId}-${month}-${year}.pdf`, { type: 'application/pdf' });
-    
-    const uploadResponse = await base44.integrations.Core.UploadFile({ file });
-    
-    // Save payslip record
-    await base44.asServiceRole.entities.PayslipRecord.create({
-      driver_id: driverId,
-      driver_name: driverData.name,
-      month: month,
-      year: year,
-      gross_amount: grossAmount,
-      net_amount: netAmount,
-      total_deductions: totalDeductions,
-      pdf_url: uploadResponse.file_url,
-      driver_email: driverData.email,
-      sent_to_driver: false
-    });
-    
-    return new Response(pdfBytes, {
-      status: 200,
-      headers: {
-        'Content-Type': 'application/pdf',
-        'Content-Disposition': `attachment; filename=bulletin-salaire-${month}-${year}.pdf`
-      }
-    });
-  } catch (error) {
-    console.error('Erro ao gerar ficha de salário:', error);
-    return Response.json({ error: error.message }, { status: 500 });
-  }
 });
