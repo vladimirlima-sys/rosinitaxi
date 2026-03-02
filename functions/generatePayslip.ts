@@ -6,15 +6,15 @@ Deno.serve(async (req) => {
     const { driverId, month, year } = await req.json();
 
     // Fetch driver info
-    const driver = await base44.entities.Driver.list({ id: driverId }, undefined, 1);
-    if (!driver || driver.length === 0) {
+    const drivers = await base44.entities.Driver.filter({ id: driverId });
+    if (!drivers || drivers.length === 0) {
       return Response.json({ error: 'Motorista não encontrado' }, { status: 404 });
     }
 
-    const driverData = driver[0];
+    const driverData = drivers[0];
 
     // Fetch payroll settings
-    const payrollSettings = await base44.entities.DriverPayrollSettings.filter({ driver_id: driverId }, undefined, 1);
+    const payrollSettings = await base44.entities.DriverPayrollSettings.filter({ driver_id: driverId });
     if (!payrollSettings || payrollSettings.length === 0) {
       return Response.json({ error: 'Configurações de salário não encontradas' }, { status: 404 });
     }
