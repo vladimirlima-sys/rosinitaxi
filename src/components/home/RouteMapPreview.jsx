@@ -28,22 +28,26 @@ export default function RouteMapPreview({ departure, arrival, distance, time }) 
     const fetchRoute = async () => {
       setLoading(true);
       try {
-        const response = await base44.functions.invoke('hereRoutes', {
-          departure,
-          arrival,
-        });
+        // Get coordinates for both places
+        const depResponse = await base44.functions.invoke('hereGeocoding', { address: departure });
+        const arrResponse = await base44.functions.invoke('hereGeocoding', { address: arrival });
 
-        if (response.data?.route && response.data.route.length > 0) {
-          const route = response.data.route[0];
-          
-          // Extract coordinates from polyline
-          const coords = route.shape?.map(([lat, lng]) => [lat, lng]) || [];
-          setRouteCoordinates(coords);
+        if (depResponse.data?.lat && arrResponse.data?.lat) {
+          const response = await base44.functions.invoke('hereRoutes', {
+            departure: { lat: depResponse.data.lat, lng: depResponse.data.lng },
+            arrival: { lat: arrResponse.data.lat, lng: arrResponse.data.lng },
+          });
 
-          // Get start and end points
-          if (coords.length > 0) {
-            setStartCoords(coords[0]);
-            setEndCoords(coords[coords.length - 1]);
+          if (response.data?.route) {
+            // Decode polyline (simple decoding for flexpolyline format)
+            const polyline = response.data.route;
+            const coords = decodePolyline(polyline);
+            
+            setRouteCoordinates(coords);
+            if (coords.length > 0) {
+              setStartCoords(coords[0]);
+              setEndCoords(coords[coords.length - 1]);
+            }
           }
         }
       } catch (error) {
@@ -55,6 +59,39 @@ export default function RouteMapPreview({ departure, arrival, distance, time }) 
 
     fetchRoute();
   }, [departure, arrival]);
+
+  // Simple flexpolyline decoder
+  const decodePolyline = (encoded) => {
+    if (!encoded) return [];
+    const points = [];
+    let lat = 0, lng = 0, precision = 5;
+    const factor = Math.pow(10, precision);
+    
+    for (let i = 0; i < encoded.length;) {
+      let dlat = 0, shift = 0, result = 0;
+      do {
+        const byte = encoded.charCodeAt(i++) - 63;
+        result |= (byte & 0x1f) << shift;
+        shift += 5;
+      } while (shift < 32 && encoded.charCodeAt(i - 1) > 127);
+      dlat = (result & 1) ? ~(result >> 1) : (result >> 1);
+      
+      let dlng = 0;
+      shift = 0;
+      result = 0;
+      do {
+        const byte = encoded.charCodeAt(i++) - 63;
+        result |= (byte & 0x1f) << shift;
+        shift += 5;
+      } while (shift < 32 && encoded.charCodeAt(i - 1) > 127);
+      dlng = (result & 1) ? ~(result >> 1) : (result >> 1);
+      
+      lat += dlat;
+      lng += dlng;
+      points.push([lat / factor, lng / factor]);
+    }
+    return points;
+  };
 
   if (!startCoords || !endCoords || !routeCoordinates) {
     return null;
