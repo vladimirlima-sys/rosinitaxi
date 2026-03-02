@@ -78,7 +78,7 @@ export default function DriverPayrollForm({ drivers, onCreated }) {
         onClick={() => setExpanded(!expanded)}
         className="w-full px-6 py-4 flex items-center justify-between hover:bg-gray-50 transition-colors"
       >
-        <h3 className="text-lg font-bold text-gray-900">Configurar Salário de Motorista</h3>
+        <h3 className="text-lg font-bold text-gray-900">Configurer le Salaire du Chauffeur</h3>
         {expanded ? <ChevronUp className="w-5 h-5" /> : <ChevronDown className="w-5 h-5" />}
       </button>
 
