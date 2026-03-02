@@ -28,7 +28,7 @@ export default function PayslipGenerator({ drivers = [] }) {
 
   const handleGeneratePayslip = async () => {
     if (!selectedDriver) {
-      alert('Selecione um motorista');
+      alert('Sélectionnez un chauffeur');
       return;
     }
 
@@ -49,6 +49,8 @@ export default function PayslipGenerator({ drivers = [] }) {
       a.click();
       window.URL.revokeObjectURL(url);
       a.remove();
+
+      alert('Ficha de salário gerada com sucesso!');
     } catch (error) {
       console.error('Erro ao gerar ficha:', error);
       alert('Erro ao gerar ficha de salário');
