@@ -3,7 +3,7 @@ Deno.serve(async (req) => {
     const data = await req.json();
     const { selectedMonth, monthLabel, monthBookings, grandTotal, paymentMethods, monthExpenses, totalExpenses, netResult, totalTaxes } = data;
 
-    const jsPDF = (await import('npm:jspdf@4.0.0')).jsPDF;
+    const { jsPDF } = await import('npm:jspdf@4.0.0');
     const doc = new jsPDF();
 
     const EXPENSE_CATEGORIES = [
@@ -149,5 +149,4 @@ Deno.serve(async (req) => {
     console.error('Erro ao gerar PDF:', error);
     return Response.json({ error: error.message }, { status: 500 });
   }
-}
-}
+});
