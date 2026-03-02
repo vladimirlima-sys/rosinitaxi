@@ -19,6 +19,9 @@ function HomeContent({ bookingRef }) {
         <div className="fixed top-5 right-5 z-50">
           <LanguageSwitcher />
         </div>
+        <div className="fixed bottom-5 right-5 z-50">
+          <img src="https://flagcdn.com/ch.svg" alt="Suíça" className="w-12 h-8 rounded shadow-lg" />
+        </div>
         <BookingForm bookingRef={bookingRef} />
       </div>
     </>);
