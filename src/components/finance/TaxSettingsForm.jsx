@@ -25,7 +25,7 @@ export default function TaxSettingsForm({ onTaxesUpdated }) {
           impot_cantonal_percentage: 8.5,
           impot_communal_percentage: 8,
           other_deductions_percentage: 0,
-          notes: 'Configurações padrão - Vaud, Suíça'
+          notes: 'Paramètres par défaut - Vaud, Suisse'
         };
         const created = await base44.entities.TaxSettings.create(defaultSettings);
         setSettings(created);
@@ -54,7 +54,7 @@ export default function TaxSettingsForm({ onTaxesUpdated }) {
   };
 
   if (loading) {
-    return <div className="text-center text-black/50">Carregando...</div>;
+    return <div className="text-center text-black/50">Chargement...</div>;
   }
 
   if (!settings) return null;
@@ -170,7 +170,7 @@ export default function TaxSettingsForm({ onTaxesUpdated }) {
             onChange={(e) => handleChange('impot_source_percentage', e.target.value)}
             className="w-full bg-white/10 border border-white/20 rounded px-3 py-2 text-white text-sm"
           />
-          <p className="text-white/40 text-xs mt-1">Opcional</p>
+          <p className="text-white/40 text-xs mt-1">Optionnel</p>
         </div>
 
         <div>
@@ -186,7 +186,7 @@ export default function TaxSettingsForm({ onTaxesUpdated }) {
         </div>
 
         <div>
-          <label className="block text-white/60 text-sm mb-2">Impôt Comunal (%)</label>
+          <label className="block text-white/60 text-sm mb-2">Impôt Communal (%)</label>
           <input
             type="number"
             step="0.01"
@@ -198,7 +198,7 @@ export default function TaxSettingsForm({ onTaxesUpdated }) {
         </div>
 
         <div>
-          <label className="block text-white/60 text-sm mb-2">Outras Deduções (%)</label>
+          <label className="block text-white/60 text-sm mb-2">Autres Déductions (%)</label>
           <input
             type="number"
             step="0.01"
@@ -206,7 +206,7 @@ export default function TaxSettingsForm({ onTaxesUpdated }) {
             onChange={(e) => handleChange('other_deductions_percentage', e.target.value)}
             className="w-full bg-white/10 border border-white/20 rounded px-3 py-2 text-white text-sm"
           />
-          <p className="text-white/40 text-xs mt-1">Outros descontos</p>
+          <p className="text-white/40 text-xs mt-1">Autres déductions</p>
         </div>
       </div>
 
@@ -216,7 +216,7 @@ export default function TaxSettingsForm({ onTaxesUpdated }) {
       </div>
 
       <div className="mb-4">
-        <label className="block text-white/60 text-sm mb-2">Notas</label>
+        <label className="block text-white/60 text-sm mb-2">Notes</label>
         <textarea
           value={settings.notes || ''}
           onChange={(e) => setSettings(prev => ({ ...prev, notes: e.target.value }))}
