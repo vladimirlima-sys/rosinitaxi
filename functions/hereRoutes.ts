@@ -3,7 +3,6 @@ Deno.serve(async (req) => {
     const body = await req.json();
     const departure = body.departure;
     const arrival = body.arrival;
-    const mode = body.mode || 'car';
     
     if (!departure || !arrival) {
       return Response.json({ error: 'departure and arrival are required' }, { status: 400 });
@@ -14,7 +13,7 @@ Deno.serve(async (req) => {
       return Response.json({ error: 'HERE_API_KEY not configured' }, { status: 500 });
     }
 
-    const url = `https://router.hereapi.com/v8/routes?transportMode=${mode}&origin=${departure.lat},${departure.lng}&destination=${arrival.lat},${arrival.lng}&return=polyline,summary&apikey=${apiKey}`;
+    const url = `https://router.hereapi.com/v8/routes?transportMode=car&origin=${departure.lat},${departure.lng}&destination=${arrival.lat},${arrival.lng}&return=polyline,summary&apikey=${apiKey}`;
     
     const response = await fetch(url);
     const data = await response.json();

@@ -11,7 +11,6 @@ import AddToHomeScreen from './AddToHomeScreen';
 import PreferredDriverSelector from './PreferredDriverSelector';
 import RideCounter from './RideCounter';
 import MyBookingCard from './MyBookingCard';
-import RouteMapPreview from './RouteMapPreview';
 import { base44 } from '@/api/base44Client';
 import { toast } from 'sonner';
 import { useLang } from '@/components/LanguageContext';
@@ -382,16 +381,6 @@ export default function BookingForm({ bookingRef }) {
                 ))}
               </div>
             </div>
-
-            {/* Route map preview */}
-            {form.departure_point && form.arrival_point && estimatedDistance > 0 && !isCalculatingRoute && (
-              <RouteMapPreview
-                departure={form.departure_point}
-                arrival={form.arrival_point}
-                distance={estimatedDistance}
-                time={estimatedTime}
-              />
-            )}
 
             {/* Price preview */}
             {estimatedDistance > 0 && (
