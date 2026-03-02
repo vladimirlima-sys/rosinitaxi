@@ -84,19 +84,19 @@ export default function AdminPanel() {
           </button>
         </div>
 
-        <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+        <div className="grid grid-cols-1 gap-4">
           {pages.map(({ name, label, icon: Icon, desc }) => (
             <a
               key={name}
               href={createPageUrl(name)}
-              className="group flex items-center gap-4 bg-black border border-black/40 rounded-xl px-4 py-3.5 transition-all hover:bg-black/80"
+              className="group flex flex-col items-start gap-4 bg-black border border-black/40 rounded-2xl px-6 py-6 transition-all hover:bg-black/80 hover:border-white/20"
             >
-              <div className="w-10 h-10 rounded-lg bg-white/10 border border-white/20 flex items-center justify-center shrink-0 group-hover:bg-white/20 transition-colors">
-                <Icon className="w-5 h-5 text-white" />
+              <div className="w-14 h-14 rounded-xl bg-white/10 border border-white/20 flex items-center justify-center group-hover:bg-white/20 transition-colors">
+                <Icon className="w-6 h-6 text-white" />
               </div>
               <div>
-                <p className="text-white font-medium text-sm">{label}</p>
-                <p className="text-white/60 text-xs">{desc}</p>
+                <p className="text-white font-semibold text-lg">{label}</p>
+                <p className="text-white/60 text-sm mt-1">{desc}</p>
               </div>
             </a>
           ))}
