@@ -10,9 +10,8 @@ Deno.serve(async (req) => {
     const authToken = Deno.env.get('TWILIO_AUTH_TOKEN');
     const from = Deno.env.get('TWILIO_WHATSAPP_FROM');
 
-    // Format phone number: remove all non-digits, ensure it starts with +
-    const digitsOnly = phone_number.replace(/\D/g, '');
-    const formattedTo = `whatsapp:+${digitsOnly}`;
+    // Format phone number: ensure whatsapp: prefix
+    const formattedTo = phone_number.includes('whatsapp:') ? phone_number : `whatsapp:+${phone_number.replace(/\D/g, '')}`;
 
     const response = await fetch(`https://api.twilio.com/2010-04-01/Accounts/${accountSid}/Messages.json`, {
       method: 'POST',
