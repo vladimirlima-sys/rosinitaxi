@@ -186,6 +186,11 @@ export default function Finance() {
           </div>
         )}
 
+        {/* Driver Payroll Settings */}
+        <div className="mb-8">
+          <DriverPayrollForm drivers={availableDrivers} onCreated={fetchData} />
+        </div>
+
         {/* Payslip Generator */}
         <div className="mb-8">
           <PayslipGenerator drivers={allDrivers} />
