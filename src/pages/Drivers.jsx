@@ -65,7 +65,7 @@ export default function Drivers() {
   };
 
   const handleDelete = async (id) => {
-    if (!confirm('Tem certeza que deseja remover este motorista?')) return;
+    if (!confirm('Êtes-vous sûr de vouloir supprimer ce chauffeur ?')) return;
     await base44.entities.Driver.delete(id);
     fetchDrivers();
   };
