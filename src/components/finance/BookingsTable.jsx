@@ -110,7 +110,9 @@ export default function BookingsTable({ monthBookings }) {
           </table>
         </div>
       ) : (
-        <p className="text-white/50 text-center py-8">Aucune course payée sur cette période</p>
+        <p className="text-white/50 text-center py-8">
+          {monthBookings.length === 0 ? 'Aucune course payée sur cette période' : 'Aucune course correspondant aux filtres sélectionnés'}
+        </p>
       )}
     </div>
   );
