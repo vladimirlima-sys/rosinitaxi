@@ -11,7 +11,7 @@ function HomeContent({ bookingRef }) {
   return (
     <>
       <SeoHead lang={lang} />
-      <div className="min-h-screen bg-[#F5C300]">
+      <div className="min-h-screen bg-[#F5C300] relative">
         <a
           href={createPageUrl('FAQ')} className="fixed top-5 left-5 z-50 bg-black text-[#F5C300] p-2.5 opacity-40 rounded-full flex items-center gap-1.5 hover:bg-black/80 transition-all shadow">
           <HelpCircle className="w-5 h-5" />
