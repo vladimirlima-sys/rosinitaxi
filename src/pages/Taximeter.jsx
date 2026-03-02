@@ -307,19 +307,17 @@ export default function Taximeter() {
         ) : null}
 
         {/* Breakdown */}
-        {distanceKm > 0 && priceSettings && (
+        {distanceKm > 0 && (
           <div className="bg-[#111] border border-white/10 rounded-2xl p-4 space-y-2">
             <p className="text-white/30 text-xs uppercase tracking-wider mb-2">Détails</p>
             <div className="flex justify-between text-sm">
-              <span className="text-white/50">{distanceKm.toFixed(3)} km × CHF {pricePerKm.toFixed(2)}</span>
-              <span className="text-white">CHF {(distanceKm * pricePerKm).toFixed(2)}</span>
+              <span className="text-white/50">{distanceKm.toFixed(3)} km × CHF 2.30</span>
+              <span className="text-white">CHF {(distanceKm * TAXIMETER_PRICE_PER_KM).toFixed(2)}</span>
             </div>
-            {priceSettings.base_fare > 0 && (
-              <div className="flex justify-between text-sm">
-                <span className="text-white/50">Prise en charge</span>
-                <span className="text-white">CHF {priceSettings.base_fare.toFixed(2)}</span>
-              </div>
-            )}
+            <div className="flex justify-between text-sm">
+              <span className="text-white/50">Prise en charge</span>
+              <span className="text-white">CHF 10.00</span>
+            </div>
             {waitingPrice > 0 && (
               <div className="flex justify-between text-sm">
                 <span className="text-white/50">Temps d'attente</span>
@@ -329,7 +327,6 @@ export default function Taximeter() {
             <div className="w-full h-[1px] bg-white/10 my-1" />
             <div className="flex justify-between text-sm font-bold">
               <span className="text-white">Total</span>
-
               <span className="text-[#F5C300]">CHF {totalPrice.toFixed(2)}</span>
             </div>
           </div>
