@@ -159,13 +159,13 @@ export default function Finance() {
         </div>
 
         {/* Tax Settings Toggle */}
-        <button
-          onClick={() => setShowTaxSettings(!showTaxSettings)}
-          className="flex items-center gap-2 text-black/60 hover:text-black transition-colors mb-6"
-        >
-          {showTaxSettings ? <ChevronUp className="w-4 h-4" /> : <ChevronDown className="w-4 h-4" />}
-          <span className="text-sm">Configurações de Impostos</span>
-        </button>
+         <button
+           onClick={() => setShowTaxSettings(!showTaxSettings)}
+           className="flex items-center gap-2 text-black/60 hover:text-black transition-colors mb-6"
+         >
+           {showTaxSettings ? <ChevronUp className="w-4 h-4" /> : <ChevronDown className="w-4 h-4" />}
+           <span className="text-sm">Paramètres des impôts</span>
+         </button>
 
         {showTaxSettings && (
           <div className="mb-8">
