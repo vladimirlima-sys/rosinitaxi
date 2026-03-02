@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { base44 } from '@/api/base44Client';
-import { Loader2 } from 'lucide-react';
+import { Loader2, ArrowLeft } from 'lucide-react';
 import { createPageUrl } from '@/utils';
 import FinanceHeader from '@/components/finance/FinanceHeader';
 import FinanceFilters from '@/components/finance/FinanceFilters';
