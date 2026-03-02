@@ -46,6 +46,7 @@ export default function ActiveTripMonitor({ booking }) {
     const v = localStorage.getItem(startKey);
     return v ? parseInt(v) : null;
   });
+  const [savingPayment, setSavingPayment] = useState(false);
 
   const currentIndex = TRIP_STATUSES.findIndex(s => s.key === tripStatus);
   const currentStatusObj = TRIP_STATUSES[currentIndex] || null;
