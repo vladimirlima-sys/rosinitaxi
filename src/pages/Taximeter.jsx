@@ -284,14 +284,9 @@ export default function Taximeter() {
           <div className="space-y-2">
             <button
               onClick={startRide}
-              disabled={!priceSettings}
-              className="w-full h-14 rounded-2xl bg-[#F5C300] text-black font-bold text-base uppercase tracking-wider hover:bg-[#e6b800] transition-all disabled:opacity-40 disabled:cursor-not-allowed flex items-center justify-center gap-2"
+              className="w-full h-14 rounded-2xl bg-[#F5C300] text-black font-bold text-base uppercase tracking-wider hover:bg-[#e6b800] transition-all flex items-center justify-center gap-2"
             >
-              {!priceSettings ? (
-                <><Loader2 className="w-5 h-5 animate-spin" /> Chargement...</>
-              ) : (
-                <><Play className="w-5 h-5" /> Démarrer la course</>
-              )}
+              <><Play className="w-5 h-5" /> Démarrer la course</>
             </button>
             {status !== 'idle' && (
               <button
