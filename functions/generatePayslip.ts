@@ -6,6 +6,10 @@ Deno.serve(async (req) => {
         const base44 = createClientFromRequest(req);
         const { driverId, month, year, grossAmount } = await req.json();
 
+        if (!driverId || !month || !year || !grossAmount) {
+            return Response.json({ error: 'Paramètres manquants: driverId, month, year, grossAmount requis' }, { status: 400 });
+        }
+
         // Fetch driver data
         const driverData = await base44.asServiceRole.entities.Driver.get(driverId);
         
