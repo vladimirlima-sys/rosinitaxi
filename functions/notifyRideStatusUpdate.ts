@@ -69,22 +69,25 @@ Deno.serve(async (req) => {
       return Response.json({ error: 'Booking not found' }, { status: 404 });
     }
 
-    const { client_email, client_phone, client_name, departure_point, arrival_point, language = 'fr' } = booking;
+    const { client_phone, client_name, departure_point, language = 'fr' } = booking;
     const lang = language || 'fr';
+
+    // Only send WhatsApp for en_route and arrived
     const langMessages = statusMessages[status];
     if (!langMessages) {
-      return Response.json({ error: 'Invalid status' }, { status: 400 });
+      console.log(`Status "${status}" skipped — no WhatsApp message configured.`);
+      return Response.json({ success: true, skipped: true });
     }
+
     const messages = langMessages[lang] || langMessages['fr'];
 
-    // Send WhatsApp notification
     if (client_phone) {
       try {
         const accountSid = Deno.env.get('TWILIO_ACCOUNT_SID');
         const authToken = Deno.env.get('TWILIO_AUTH_TOKEN');
         const from = Deno.env.get('TWILIO_WHATSAPP_FROM');
         const formattedTo = `whatsapp:+${client_phone.replace(/\D/g, '')}`;
-        const msgBody = `${messages.title}\n${messages.body}`;
+        const msgBody = messages.whatsapp(client_name, departure_point);
         const response = await fetch(`https://api.twilio.com/2010-04-01/Accounts/${accountSid}/Messages.json`, {
           method: 'POST',
           headers: {
@@ -101,47 +104,6 @@ Deno.serve(async (req) => {
         }
       } catch (waErr) {
         console.error('WhatsApp notification failed:', waErr.message);
-      }
-    }
-
-    // Send Email via Gmail connector
-    if (client_email) {
-      try {
-        const { accessToken } = await base44.asServiceRole.connectors.getConnection('gmail');
-        const htmlBody = buildEmailHtml(messages.title, messages.body, client_name, departure_point, arrival_point);
-        const encodedSubject = `=?UTF-8?B?${btoa(unescape(encodeURIComponent(messages.title)))}?=`;
-        const encodedName = `=?UTF-8?B?${btoa(unescape(encodeURIComponent('Rosini Transfert')))}?=`;
-
-        const rawEmail = [
-          `From: ${encodedName} <rosinitransportsetlications@gmail.com>`,
-          `To: ${client_email}`,
-          `Subject: ${encodedSubject}`,
-          `MIME-Version: 1.0`,
-          `Content-Type: text/html; charset=UTF-8`,
-          ``,
-          htmlBody,
-        ].join('\r\n');
-
-        const encodedEmail = btoa(unescape(encodeURIComponent(rawEmail)))
-          .replace(/\+/g, '-').replace(/\//g, '_').replace(/=+$/, '');
-
-        const gmailRes = await fetch('https://gmail.googleapis.com/gmail/v1/users/me/messages/send', {
-          method: 'POST',
-          headers: {
-            'Authorization': `Bearer ${accessToken}`,
-            'Content-Type': 'application/json',
-          },
-          body: JSON.stringify({ raw: encodedEmail }),
-        });
-
-        const gmailData = await gmailRes.json();
-        if (!gmailRes.ok) {
-          console.error('Gmail API error:', JSON.stringify(gmailData));
-        } else {
-          console.log(`Email sent to ${client_email}`, gmailData.id);
-        }
-      } catch (emailErr) {
-        console.error('Email notification failed:', emailErr.message);
       }
     }
 
