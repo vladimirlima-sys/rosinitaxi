@@ -114,6 +114,7 @@ Deno.serve(async (req) => {
         
         const plainTextBody = emailBody.replace(/<br>/g, '\n').replace(/<[^>]*>/g, '');
         const emailMessage = [
+          `From: ROSINI TRANSPORTS <noreply@rosini.ch>`,
           `To: ${email}`,
           `Subject: Rosini Transfert - ${emailSubject}`,
           `Content-Type: text/plain; charset="UTF-8"`,
