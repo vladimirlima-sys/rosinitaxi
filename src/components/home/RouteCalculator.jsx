@@ -44,6 +44,11 @@ export default function RouteCalculator({ departure, arrival, onRouteCalculated,
       onCalculating?.();
       try {
         let depCoords = departureCoords.current;
+        // Fallback: use last geolocation coords if departure matches
+        if (!depCoords && window.__lastGeolocatedCoords?.address === departure) {
+          depCoords = { lat: window.__lastGeolocatedCoords.lat, lng: window.__lastGeolocatedCoords.lng };
+          departureCoords.current = depCoords;
+        }
         let arrCoords = arrivalCoords.current;
 
         // Geocode departure if not yet resolved
