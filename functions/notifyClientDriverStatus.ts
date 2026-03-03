@@ -160,21 +160,12 @@ async function sendWhatsApp(accountSid, authToken, from, to, body) {
 }
 
 async function sendEmail(to, subject, htmlBody, accessToken) {
-  const rawEmail = [
-    `From: Rosini Transferts <info@rosini.online>`,
-    `To: ${to}`,
-    `Subject: ${subject}`,
-    `MIME-Version: 1.0`,
-    `Content-Type: text/html; charset=UTF-8`,
-    `Content-Transfer-Encoding: base64`,
-    ``,
-    htmlBody,
-  ].join('\r\n');
+  const rawEmail = `From: Rosini Transferts <info@rosini.online>\r\nTo: ${to}\r\nSubject: ${subject}\r\nMIME-Version: 1.0\r\nContent-Type: text/html; charset=UTF-8\r\nContent-Transfer-Encoding: base64\r\n\r\n${htmlBody}`;
 
   const encoder = new TextEncoder();
   const encoded = encoder.encode(rawEmail);
   const binaryString = String.fromCharCode(...encoded);
-  const encodedEmail = btoa(binaryString).replace(/\+/g, '-').replace(/\//g, '_').replace(/=/g, '');
+  const base64Email = btoa(binaryString);
 
   const res = await fetch('https://www.googleapis.com/gmail/v1/users/me/messages/send', {
     method: 'POST',
@@ -182,7 +173,7 @@ async function sendEmail(to, subject, htmlBody, accessToken) {
       'Authorization': `Bearer ${accessToken}`,
       'Content-Type': 'application/json',
     },
-    body: JSON.stringify({ raw: encodedEmail }),
+    body: JSON.stringify({ raw: base64Email }),
   });
   const data = await res.json();
   if (!res.ok) {
