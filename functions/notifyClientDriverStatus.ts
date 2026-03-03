@@ -1,159 +1,192 @@
-import { createClientFromRequest } from 'npm:@base44/sdk@0.8.6';
+import { createClientFromRequest } from 'npm:@base44/sdk@0.8.20';
 
 const translations = {
   fr: {
     on_the_way_subject: `🚗 Votre chauffeur est en route — Rosini Transfert`,
     arrived_subject: `✅ Votre chauffeur est arrivé — Rosini Transfert`,
-    on_the_way_title: `🚗 Votre chauffeur est en route !`,
-    on_the_way_body: (name, dep, driverName) => `Bonjour <strong style="color:#fff;">${name}</strong>, votre chauffeur <strong style="color:#F5C300;">${driverName}</strong> est en chemin et sera bientôt à votre point de départ.`,
-    arrived_title: `✅ Votre chauffeur est arrivé !`,
-    arrived_body: (name, driverName) => `Bonjour <strong style="color:#fff;">${name}</strong>, votre chauffeur <strong style="color:#F5C300;">${driverName}</strong> vous attend au point de départ. Bonne route !`,
-    departure_label: `POINT DE DÉPART`,
-    destination_label: `DESTINATION`,
-    contact_driver: `Besoin d'aide ? Contactez votre chauffeur directement sur WhatsApp :`,
-    contact: `Questions ? Contactez-nous`,
-    copyright: (y) => `© ${y} Rosini Transfert. Tous droits réservés.`,
-    on_the_way_whatsapp: (name, dep, driverName, driverWaLink) => `🚗 *Rosini Transfert* — Bonjour ${name}, votre chauffeur *${driverName}* est en route vers ${dep}. À tout de suite !\n\n💬 Besoin d'aide ? Contactez votre chauffeur directement :\n${driverWaLink}`,
-    arrived_whatsapp: (name, dep, driverName, driverWaLink) => `✅ *Rosini Transfert* — Votre chauffeur *${driverName}* est arrivé à ${dep} et vous attend. Bonne route !\n\n💬 Besoin d'aide ? Contactez votre chauffeur directement :\n${driverWaLink}`,
+    on_the_way_whatsapp: (name, dep, driverName) =>
+      `🚗 *Rosini Transfert*\n\nBonjour ${name}, votre chauffeur *${driverName}* est en route et arrivera dans environ 5 minutes à votre point de départ :\n📍 ${dep}\n\nTenez-vous prêt(e) !`,
+    arrived_whatsapp: (name, dep, driverName) =>
+      `✅ *Rosini Transfert*\n\nBonjour ${name}, votre chauffeur *${driverName}* est arrivé à votre point de départ :\n📍 ${dep}\n\nIl vous attend. Bonne route !`,
+    on_the_way_email_title: `🚗 Votre chauffeur est en route !`,
+    on_the_way_email_body: (name, dep, driverName) =>
+      `Bonjour ${name},<br><br>Votre chauffeur <strong>${driverName}</strong> est en route et arrivera dans environ 5 minutes à :<br><strong>${dep}</strong>`,
+    arrived_email_title: `✅ Votre chauffeur est arrivé !`,
+    arrived_email_body: (name, dep, driverName) =>
+      `Bonjour ${name},<br><br>Votre chauffeur <strong>${driverName}</strong> est arrivé à votre point de départ :<br><strong>${dep}</strong><br><br>Il vous attend. Bonne route !`,
   },
   pt: {
     on_the_way_subject: `🚗 O seu motorista está a caminho — Rosini Transfert`,
     arrived_subject: `✅ O seu motorista chegou — Rosini Transfert`,
-    on_the_way_title: `🚗 O seu motorista está a caminho!`,
-    on_the_way_body: (name, dep, driverName) => `Olá <strong style="color:#fff;">${name}</strong>, o seu motorista <strong style="color:#F5C300;">${driverName}</strong> está a caminho e chegará em breve ao seu ponto de partida.`,
-    arrived_title: `✅ O seu motorista chegou!`,
-    arrived_body: (name, dep, driverName) => `Olá <strong style="color:#fff;">${name}</strong>, o seu motorista <strong style="color:#F5C300;">${driverName}</strong> está à sua espera no ponto de partida. Boa viagem!`,
-    departure_label: `PONTO DE PARTIDA`,
-    destination_label: `DESTINO`,
-    contact_driver: `Precisa de ajuda? Contacte o seu motorista diretamente pelo WhatsApp:`,
-    contact: `Dúvidas? Entre em contato`,
-    copyright: (y) => `© ${y} Rosini Transfert. Todos os direitos reservados.`,
-    on_the_way_whatsapp: (name, dep, driverName, driverWaLink) => `🚗 *Rosini Transfert* — Olá ${name}, o seu motorista *${driverName}* está a caminho de ${dep}. Até já!\n\n💬 Precisa de ajuda? Contacte o motorista diretamente:\n${driverWaLink}`,
-    arrived_whatsapp: (name, dep, driverName, driverWaLink) => `✅ *Rosini Transfert* — O seu motorista *${driverName}* chegou a ${dep} e está à sua espera. Boa viagem!\n\n💬 Precisa de ajuda? Contacte o motorista diretamente:\n${driverWaLink}`,
+    on_the_way_whatsapp: (name, dep, driverName) =>
+      `🚗 *Rosini Transfert*\n\nOlá ${name}, o seu motorista *${driverName}* está a caminho e chegará em aproximadamente 5 minutos em :\n📍 ${dep}\n\nPor favor, prepare-se!`,
+    arrived_whatsapp: (name, dep, driverName) =>
+      `✅ *Rosini Transfert*\n\nOlá ${name}, o seu motorista *${driverName}* chegou ao ponto de partida :\n📍 ${dep}\n\nEle está à sua espera. Boa viagem!`,
+    on_the_way_email_title: `🚗 O seu motorista está a caminho!`,
+    on_the_way_email_body: (name, dep, driverName) =>
+      `Olá ${name},<br><br>O seu motorista <strong>${driverName}</strong> está a caminho e chegará em breve a :<br><strong>${dep}</strong>`,
+    arrived_email_title: `✅ O seu motorista chegou!`,
+    arrived_email_body: (name, dep, driverName) =>
+      `Olá ${name},<br><br>O seu motorista <strong>${driverName}</strong> chegou ao ponto de partida :<br><strong>${dep}</strong><br><br>Ele está à sua espera. Boa viagem!`,
   },
   en: {
     on_the_way_subject: `🚗 Your driver is on the way — Rosini Transfert`,
     arrived_subject: `✅ Your driver has arrived — Rosini Transfert`,
-    on_the_way_title: `🚗 Your driver is on the way!`,
-    on_the_way_body: (name, dep, driverName) => `Hello <strong style="color:#fff;">${name}</strong>, your driver <strong style="color:#F5C300;">${driverName}</strong> is on the way and will arrive at your departure point shortly.`,
-    arrived_title: `✅ Your driver has arrived!`,
-    arrived_body: (name, dep, driverName) => `Hello <strong style="color:#fff;">${name}</strong>, your driver <strong style="color:#F5C300;">${driverName}</strong> is waiting for you at the departure point. Have a great trip!`,
-    departure_label: `DEPARTURE POINT`,
-    destination_label: `DESTINATION`,
-    contact_driver: `Need help? Contact your driver directly on WhatsApp:`,
-    contact: `Questions? Contact us`,
-    copyright: (y) => `© ${y} Rosini Transfert. All rights reserved.`,
-    on_the_way_whatsapp: (name, dep, driverName, driverWaLink) => `🚗 *Rosini Transfert* — Hello ${name}, your driver *${driverName}* is on the way to ${dep}. See you soon!\n\n💬 Need help? Contact your driver directly:\n${driverWaLink}`,
-    arrived_whatsapp: (name, dep, driverName, driverWaLink) => `✅ *Rosini Transfert* — Your driver *${driverName}* has arrived at ${dep} and is waiting for you. Have a great trip!\n\n💬 Need help? Contact your driver directly:\n${driverWaLink}`,
+    on_the_way_whatsapp: (name, dep, driverName) =>
+      `🚗 *Rosini Transfert*\n\nHello ${name}, your driver *${driverName}* is on the way and will arrive in about 5 minutes at:\n📍 ${dep}\n\nPlease get ready!`,
+    arrived_whatsapp: (name, dep, driverName) =>
+      `✅ *Rosini Transfert*\n\nHello ${name}, your driver *${driverName}* has arrived at your pickup point:\n📍 ${dep}\n\nHe is waiting for you. Have a great trip!`,
+    on_the_way_email_title: `🚗 Your driver is on the way!`,
+    on_the_way_email_body: (name, dep, driverName) =>
+      `Hello ${name},<br><br>Your driver <strong>${driverName}</strong> is on the way and will arrive shortly at:<br><strong>${dep}</strong>`,
+    arrived_email_title: `✅ Your driver has arrived!`,
+    arrived_email_body: (name, dep, driverName) =>
+      `Hello ${name},<br><br>Your driver <strong>${driverName}</strong> has arrived at your pickup point:<br><strong>${dep}</strong><br><br>He is waiting for you. Have a great trip!`,
   },
   de: {
     on_the_way_subject: `🚗 Ihr Fahrer ist unterwegs — Rosini Transfert`,
     arrived_subject: `✅ Ihr Fahrer ist angekommen — Rosini Transfert`,
-    on_the_way_title: `🚗 Ihr Fahrer ist unterwegs!`,
-    on_the_way_body: (name, dep, driverName) => `Hallo <strong style="color:#fff;">${name}</strong>, Ihr Fahrer <strong style="color:#F5C300;">${driverName}</strong> ist auf dem Weg und wird bald an Ihrem Abholpunkt sein.`,
-    arrived_title: `✅ Ihr Fahrer ist angekommen!`,
-    arrived_body: (name, dep, driverName) => `Hallo <strong style="color:#fff;">${name}</strong>, Ihr Fahrer <strong style="color:#F5C300;">${driverName}</strong> wartet an Ihrem Abholpunkt. Gute Fahrt!`,
-    departure_label: `ABHOLPUNKT`,
-    destination_label: `ZIEL`,
-    contact_driver: `Brauchen Sie Hilfe? Kontaktieren Sie Ihren Fahrer direkt auf WhatsApp:`,
-    contact: `Fragen? Kontaktieren Sie uns`,
-    copyright: (y) => `© ${y} Rosini Transfert. Alle Rechte vorbehalten.`,
-    on_the_way_whatsapp: (name, dep, driverName, driverWaLink) => `🚗 *Rosini Transfert* — Hallo ${name}, Ihr Fahrer *${driverName}* ist auf dem Weg nach ${dep}. Bis gleich!\n\n💬 Brauchen Sie Hilfe? Kontaktieren Sie Ihren Fahrer direkt:\n${driverWaLink}`,
-    arrived_whatsapp: (name, dep, driverName, driverWaLink) => `✅ *Rosini Transfert* — Ihr Fahrer *${driverName}* ist in ${dep} angekommen und wartet auf Sie. Gute Fahrt!\n\n💬 Brauchen Sie Hilfe? Kontaktieren Sie Ihren Fahrer direkt:\n${driverWaLink}`,
+    on_the_way_whatsapp: (name, dep, driverName) =>
+      `🚗 *Rosini Transfert*\n\nHallo ${name}, Ihr Fahrer *${driverName}* ist unterwegs und kommt in ca. 5 Minuten bei:\n📍 ${dep}\n\nBitte machen Sie sich bereit!`,
+    arrived_whatsapp: (name, dep, driverName) =>
+      `✅ *Rosini Transfert*\n\nHallo ${name}, Ihr Fahrer *${driverName}* ist angekommen bei:\n📍 ${dep}\n\nEr wartet auf Sie. Gute Fahrt!`,
+    on_the_way_email_title: `🚗 Ihr Fahrer ist unterwegs!`,
+    on_the_way_email_body: (name, dep, driverName) =>
+      `Hallo ${name},<br><br>Ihr Fahrer <strong>${driverName}</strong> ist unterwegs und wird bald ankommen bei:<br><strong>${dep}</strong>`,
+    arrived_email_title: `✅ Ihr Fahrer ist angekommen!`,
+    arrived_email_body: (name, dep, driverName) =>
+      `Hallo ${name},<br><br>Ihr Fahrer <strong>${driverName}</strong> ist angekommen bei:<br><strong>${dep}</strong><br><br>Er wartet auf Sie. Gute Fahrt!`,
   },
   it: {
     on_the_way_subject: `🚗 Il vostro autista è in arrivo — Rosini Transfert`,
     arrived_subject: `✅ Il vostro autista è arrivato — Rosini Transfert`,
-    on_the_way_title: `🚗 Il vostro autista è in arrivo!`,
-    on_the_way_body: (name, dep, driverName) => `Salve <strong style="color:#fff;">${name}</strong>, il vostro autista <strong style="color:#F5C300;">${driverName}</strong> è in arrivo e sarà presto al vostro punto di partenza.`,
-    arrived_title: `✅ Il vostro autista è arrivato!`,
-    arrived_body: (name, dep, driverName) => `Salve <strong style="color:#fff;">${name}</strong>, il vostro autista <strong style="color:#F5C300;">${driverName}</strong> vi aspetta al punto di partenza. Buon viaggio!`,
-    departure_label: `PUNTO DI PARTENZA`,
-    destination_label: `DESTINAZIONE`,
-    contact_driver: `Hai bisogno di aiuto? Contatta il tuo autista direttamente su WhatsApp:`,
-    contact: `Domande? Contattateci`,
-    copyright: (y) => `© ${y} Rosini Transfert. Tutti i diritti riservati.`,
-    on_the_way_whatsapp: (name, dep, driverName, driverWaLink) => `🚗 *Rosini Transfert* — Salve ${name}, il vostro autista *${driverName}* è in arrivo a ${dep}. A presto!\n\n💬 Hai bisogno di aiuto? Contatta il tuo autista direttamente:\n${driverWaLink}`,
-    arrived_whatsapp: (name, dep, driverName, driverWaLink) => `✅ *Rosini Transfert* — Il vostro autista *${driverName}* è arrivato a ${dep} e vi sta aspettando. Buon viaggio!\n\n💬 Hai bisogno di aiuto? Contatta il tuo autista direttamente:\n${driverWaLink}`,
+    on_the_way_whatsapp: (name, dep, driverName) =>
+      `🚗 *Rosini Transfert*\n\nSalve ${name}, il vostro autista *${driverName}* è in arrivo e arriverà in circa 5 minuti a:\n📍 ${dep}\n\nPreparatevi!`,
+    arrived_whatsapp: (name, dep, driverName) =>
+      `✅ *Rosini Transfert*\n\nSalve ${name}, il vostro autista *${driverName}* è arrivato a:\n📍 ${dep}\n\nVi sta aspettando. Buon viaggio!`,
+    on_the_way_email_title: `🚗 Il vostro autista è in arrivo!`,
+    on_the_way_email_body: (name, dep, driverName) =>
+      `Salve ${name},<br><br>Il vostro autista <strong>${driverName}</strong> è in arrivo e sarà presto a:<br><strong>${dep}</strong>`,
+    arrived_email_title: `✅ Il vostro autista è arrivato!`,
+    arrived_email_body: (name, dep, driverName) =>
+      `Salve ${name},<br><br>Il vostro autista <strong>${driverName}</strong> è arrivato a:<br><strong>${dep}</strong><br><br>Vi sta aspettando. Buon viaggio!`,
   },
   es: {
     on_the_way_subject: `🚗 Su conductor está en camino — Rosini Transfert`,
     arrived_subject: `✅ Su conductor ha llegado — Rosini Transfert`,
-    on_the_way_title: `🚗 ¡Su conductor está en camino!`,
-    on_the_way_body: (name, dep, driverName) => `Hola <strong style="color:#fff;">${name}</strong>, su conductor <strong style="color:#F5C300;">${driverName}</strong> está en camino y llegará pronto a su punto de salida.`,
-    arrived_title: `✅ ¡Su conductor ha llegado!`,
-    arrived_body: (name, dep, driverName) => `Hola <strong style="color:#fff;">${name}</strong>, su conductor <strong style="color:#F5C300;">${driverName}</strong> le espera en el punto de salida. ¡Buen viaje!`,
-    departure_label: `PUNTO DE SALIDA`,
-    destination_label: `DESTINO`,
-    contact_driver: `¿Necesita ayuda? Contacte a su conductor directamente por WhatsApp:`,
-    contact: `¿Preguntas? Contáctenos`,
-    copyright: (y) => `© ${y} Rosini Transfert. Todos los derechos reservados.`,
-    on_the_way_whatsapp: (name, dep, driverName, driverWaLink) => `🚗 *Rosini Transfert* — Hola ${name}, su conductor *${driverName}* está en camino hacia ${dep}. ¡Hasta pronto!\n\n💬 ¿Necesita ayuda? Contacte a su conductor directamente:\n${driverWaLink}`,
-    arrived_whatsapp: (name, dep, driverName, driverWaLink) => `✅ *Rosini Transfert* — Su conductor *${driverName}* ha llegado a ${dep} y le está esperando. ¡Buen viaje!\n\n💬 ¿Necesita ayuda? Contacte a su conductor directamente:\n${driverWaLink}`,
+    on_the_way_whatsapp: (name, dep, driverName) =>
+      `🚗 *Rosini Transfert*\n\nHola ${name}, su conductor *${driverName}* está en camino y llegará en unos 5 minutos a:\n📍 ${dep}\n\n¡Prepárese!`,
+    arrived_whatsapp: (name, dep, driverName) =>
+      `✅ *Rosini Transfert*\n\nHola ${name}, su conductor *${driverName}* ha llegado a:\n📍 ${dep}\n\nLe está esperando. ¡Buen viaje!`,
+    on_the_way_email_title: `🚗 ¡Su conductor está en camino!`,
+    on_the_way_email_body: (name, dep, driverName) =>
+      `Hola ${name},<br><br>Su conductor <strong>${driverName}</strong> está en camino y llegará pronto a:<br><strong>${dep}</strong>`,
+    arrived_email_title: `✅ ¡Su conductor ha llegado!`,
+    arrived_email_body: (name, dep, driverName) =>
+      `Hola ${name},<br><br>Su conductor <strong>${driverName}</strong> ha llegado a:<br><strong>${dep}</strong><br><br>Le está esperando. ¡Buen viaje!`,
   },
   nl: {
     on_the_way_subject: `🚗 Uw chauffeur is onderweg — Rosini Transfert`,
     arrived_subject: `✅ Uw chauffeur is gearriveerd — Rosini Transfert`,
-    on_the_way_title: `🚗 Uw chauffeur is onderweg!`,
-    on_the_way_body: (name, dep, driverName) => `Hallo <strong style="color:#fff;">${name}</strong>, uw chauffeur <strong style="color:#F5C300;">${driverName}</strong> is onderweg en zal binnenkort bij uw vertrekpunt zijn.`,
-    arrived_title: `✅ Uw chauffeur is gearriveerd!`,
-    arrived_body: (name, dep, driverName) => `Hallo <strong style="color:#fff;">${name}</strong>, uw chauffeur <strong style="color:#F5C300;">${driverName}</strong> wacht op u bij het vertrekpunt. Goede reis!`,
-    departure_label: `VERTREKPUNT`,
-    destination_label: `BESTEMMING`,
-    contact_driver: `Hulp nodig? Neem direct contact op met uw chauffeur via WhatsApp:`,
-    contact: `Vragen? Neem contact op`,
-    copyright: (y) => `© ${y} Rosini Transfert. Alle rechten voorbehouden.`,
-    on_the_way_whatsapp: (name, dep, driverName, driverWaLink) => `🚗 *Rosini Transfert* — Hallo ${name}, uw chauffeur *${driverName}* is onderweg naar ${dep}. Tot zo!\n\n💬 Hulp nodig? Neem direct contact op met uw chauffeur:\n${driverWaLink}`,
-    arrived_whatsapp: (name, dep, driverName, driverWaLink) => `✅ *Rosini Transfert* — Uw chauffeur *${driverName}* is aangekomen bij ${dep} en wacht op u. Goede reis!\n\n💬 Hulp nodig? Neem direct contact op met uw chauffeur:\n${driverWaLink}`,
+    on_the_way_whatsapp: (name, dep, driverName) =>
+      `🚗 *Rosini Transfert*\n\nHallo ${name}, uw chauffeur *${driverName}* is onderweg en arriveert over ongeveer 5 minuten bij:\n📍 ${dep}\n\nMaakt u zich klaar!`,
+    arrived_whatsapp: (name, dep, driverName) =>
+      `✅ *Rosini Transfert*\n\nHallo ${name}, uw chauffeur *${driverName}* is aangekomen bij:\n📍 ${dep}\n\nHij wacht op u. Goede reis!`,
+    on_the_way_email_title: `🚗 Uw chauffeur is onderweg!`,
+    on_the_way_email_body: (name, dep, driverName) =>
+      `Hallo ${name},<br><br>Uw chauffeur <strong>${driverName}</strong> is onderweg en zal binnenkort aankomen bij:<br><strong>${dep}</strong>`,
+    arrived_email_title: `✅ Uw chauffeur is gearriveerd!`,
+    arrived_email_body: (name, dep, driverName) =>
+      `Hallo ${name},<br><br>Uw chauffeur <strong>${driverName}</strong> is aangekomen bij:<br><strong>${dep}</strong><br><br>Hij wacht op u. Goede reis!`,
   },
 };
 
-function buildEmailBody(t, type, client_name, departure_point, arrival_point, driver_name, driver_phone) {
+function buildEmailHtml(title, body, dep, arr) {
   const year = new Date().getFullYear();
-  const title = type === 'on_the_way' ? t.on_the_way_title : t.arrived_title;
-  const body = type === 'on_the_way' ? t.on_the_way_body(client_name, departure_point, driver_name) : t.arrived_body(client_name, departure_point, driver_name);
-  const showDestination = type === 'on_the_way';
-
-  const driverWaNumber = driver_phone ? driver_phone.replace(/\s/g, '').replace(/^00/, '+').replace(/^\+/, '') : null;
-  const driverWaUrl = driverWaNumber ? `https://wa.me/${driverWaNumber}` : null;
-
   return `<!DOCTYPE html>
-<html>
-<head><meta charset="UTF-8"></head>
+<html><head><meta charset="UTF-8"></head>
 <body style="margin:0;padding:0;background:#0A0A0A;font-family:Arial,sans-serif;">
-  <div style="max-width:600px;margin:0 auto;padding:40px 20px;">
-    <div style="text-align:center;margin-bottom:32px;">
-      <h1 style="color:#F5C300;font-size:28px;font-weight:300;letter-spacing:4px;margin:0;">ROSINI</h1>
-      <p style="color:#F5C300;font-size:11px;letter-spacing:3px;margin:4px 0 0;">TRANSFERT</p>
-    </div>
-    <div style="background:#111;border:1px solid #222;border-radius:12px;padding:32px;margin-bottom:24px;">
-      <h2 style="color:#fff;font-size:22px;font-weight:400;margin:0 0 12px;">${title}</h2>
-      <p style="color:#aaa;font-size:14px;margin:0 0 24px;">${body}</p>
-      <div style="background:#1a1a1a;border-radius:8px;padding:16px;margin-bottom:${showDestination ? '16px' : '0'};">
-        <p style="color:#888;font-size:12px;margin:0 0 4px;">${t.departure_label}</p>
-        <p style="color:#fff;font-size:14px;margin:0;">${departure_point}</p>
-      </div>
-      ${showDestination ? `
-      <div style="background:#1a1a1a;border-radius:8px;padding:16px;">
-        <p style="color:#888;font-size:12px;margin:0 0 4px;">${t.destination_label}</p>
-        <p style="color:#fff;font-size:14px;margin:0;">${arrival_point}</p>
-      </div>` : ''}
-    </div>
-    ${driverWaUrl ? `
-    <div style="text-align:center;padding:20px;background:#111;border:1px solid #25D366/30;border-radius:12px;margin-bottom:16px;">
-      <p style="color:#888;font-size:13px;margin:0 0 12px;">${t.contact_driver}</p>
-      <a href="${driverWaUrl}" style="display:inline-flex;align-items:center;gap:8px;background:#25D366;color:#fff;text-decoration:none;font-size:14px;font-weight:bold;padding:12px 24px;border-radius:8px;">
-        <span style="font-size:18px;">💬</span> WhatsApp — ${driver_name}
-      </a>
-    </div>` : ''}
-    <div style="text-align:center;padding:20px;background:#111;border:1px solid #222;border-radius:12px;">
-      <p style="color:#888;font-size:13px;margin:0 0 8px;">${t.contact}</p>
-      <a href="tel:+41772492245" style="color:#F5C300;text-decoration:none;font-size:14px;">+41 77 249 22 45</a>
-    </div>
-    <p style="color:#444;text-align:center;font-size:11px;margin-top:24px;">${t.copyright(year)}</p>
+<div style="max-width:600px;margin:0 auto;padding:40px 20px;">
+  <div style="text-align:center;margin-bottom:32px;">
+    <h1 style="color:#F5C300;font-size:28px;font-weight:300;letter-spacing:4px;margin:0;">ROSINI</h1>
+    <p style="color:#F5C300;font-size:11px;letter-spacing:3px;margin:4px 0 0;">TRANSFERT</p>
   </div>
-</body>
-</html>`;
+  <div style="background:#111;border:1px solid #222;border-radius:12px;padding:32px;margin-bottom:24px;">
+    <h2 style="color:#fff;font-size:20px;font-weight:400;margin:0 0 16px;">${title}</h2>
+    <p style="color:#aaa;font-size:14px;line-height:1.6;margin:0 0 24px;">${body}</p>
+    <div style="background:#1a1a1a;border-radius:8px;padding:16px;margin-bottom:12px;">
+      <p style="color:#888;font-size:11px;margin:0 0 4px;text-transform:uppercase;">Point de départ</p>
+      <p style="color:#fff;font-size:14px;margin:0;">${dep}</p>
+    </div>
+    ${arr ? `<div style="background:#1a1a1a;border-radius:8px;padding:16px;">
+      <p style="color:#888;font-size:11px;margin:0 0 4px;text-transform:uppercase;">Destination</p>
+      <p style="color:#fff;font-size:14px;margin:0;">${arr}</p>
+    </div>` : ''}
+  </div>
+  <div style="text-align:center;padding:20px;background:#111;border:1px solid #222;border-radius:12px;">
+    <p style="color:#888;font-size:13px;margin:0 0 8px;">Questions ? Contactez-nous</p>
+    <a href="tel:+41772492245" style="color:#F5C300;text-decoration:none;font-size:14px;font-weight:bold;">+41 77 249 22 45</a>
+  </div>
+  <p style="color:#444;text-align:center;font-size:11px;margin-top:24px;">© ${year} Rosini Transfert</p>
+</div>
+</body></html>`;
+}
+
+function formatPhone(phone) {
+  if (!phone) return null;
+  const digits = phone.replace(/\D/g, '');
+  return `whatsapp:+${digits}`;
+}
+
+async function sendWhatsApp(accountSid, authToken, from, to, body) {
+  const res = await fetch(`https://api.twilio.com/2010-04-01/Accounts/${accountSid}/Messages.json`, {
+    method: 'POST',
+    headers: {
+      'Authorization': 'Basic ' + btoa(`${accountSid}:${authToken}`),
+      'Content-Type': 'application/x-www-form-urlencoded',
+    },
+    body: new URLSearchParams({ From: from, To: to, Body: body }).toString(),
+  });
+  const result = await res.json();
+  if (!res.ok) {
+    console.error(`Twilio error ${res.status}:`, JSON.stringify(result));
+    throw new Error(result.message || 'Twilio error');
+  }
+  console.log(`WhatsApp sent OK. SID: ${result.sid} | To: ${to}`);
+  return result;
+}
+
+async function sendEmail(accessToken, to, subject, htmlBody) {
+  const encodedSubject = `=?UTF-8?B?${btoa(unescape(encodeURIComponent(subject)))}?=`;
+  const encodedName = `=?UTF-8?B?${btoa(unescape(encodeURIComponent('Rosini Transfert')))}?=`;
+  const rawEmail = [
+    `From: ${encodedName} <me>`,
+    `To: ${to}`,
+    `Subject: ${encodedSubject}`,
+    `MIME-Version: 1.0`,
+    `Content-Type: text/html; charset=UTF-8`,
+    ``,
+    htmlBody,
+  ].join('\r\n');
+
+  const encodedEmail = btoa(unescape(encodeURIComponent(rawEmail)))
+    .replace(/\+/g, '-').replace(/\//g, '_').replace(/=+$/, '');
+
+  const res = await fetch('https://gmail.googleapis.com/gmail/v1/users/me/messages/send', {
+    method: 'POST',
+    headers: {
+      'Authorization': `Bearer ${accessToken}`,
+      'Content-Type': 'application/json',
+    },
+    body: JSON.stringify({ raw: encodedEmail }),
+  });
+  const data = await res.json();
+  if (!res.ok) {
+    console.error('Gmail API error:', JSON.stringify(data));
+    throw new Error(data.error?.message || 'Gmail error');
+  }
+  console.log(`Email sent OK to ${to}. MessageId: ${data.id}`);
+  return data;
 }
 
 Deno.serve(async (req) => {
@@ -165,39 +198,31 @@ Deno.serve(async (req) => {
       return Response.json({ error: 'Missing booking_id or type' }, { status: 400 });
     }
 
-    const bookings = await base44.asServiceRole.entities.Booking.list();
-    const booking = bookings.find(b => b.id === booking_id);
+    if (type !== 'on_the_way' && type !== 'arrived') {
+      return Response.json({ error: 'Invalid type. Must be on_the_way or arrived' }, { status: 400 });
+    }
 
-    if (!booking) {
+    const bookings = await base44.asServiceRole.entities.Booking.filter({ id: booking_id });
+    if (!bookings || bookings.length === 0) {
       return Response.json({ error: 'Booking not found' }, { status: 404 });
     }
+    const booking = bookings[0];
 
     const { client_name, client_email, client_phone, departure_point, arrival_point, language, driver_name, driver_id } = booking;
-    const lang = language || 'fr';
-    const t = translations[lang] || translations.fr;
+    const lang = (language && translations[language]) ? language : 'fr';
+    const t = translations[lang];
     const driverName = driver_name || 'Rosini';
 
-    // Fetch driver phone for WhatsApp contact link
-    let driverPhone = null;
-    if (driver_id) {
-      try {
-        const drivers = await base44.asServiceRole.entities.Driver.list();
-        const driver = drivers.find(d => d.id === driver_id);
-        if (driver) driverPhone = driver.phone;
-      } catch (e) {
-        console.warn('Could not fetch driver phone:', e.message);
-      }
-    }
-
-    const driverWaNumber = driverPhone ? driverPhone.replace(/\s/g, '').replace(/^00/, '+').replace(/^\+/, '') : null;
-    const driverWaLink = driverWaNumber ? `https://wa.me/${driverWaNumber}` : null;
+    console.log(`notifyClientDriverStatus | type=${type} | lang=${lang} | email=${client_email} | phone=${client_phone}`);
 
     const subject = type === 'on_the_way' ? t.on_the_way_subject : t.arrived_subject;
-    const htmlBody = buildEmailBody(t, type, client_name, departure_point, arrival_point, driverName, driverPhone);
-
-    if (!subject) {
-      return Response.json({ error: 'Invalid notification type' }, { status: 400 });
-    }
+    const emailTitle = type === 'on_the_way' ? t.on_the_way_email_title : t.arrived_email_title;
+    const emailBodyText = type === 'on_the_way'
+      ? t.on_the_way_email_body(client_name, departure_point, driverName)
+      : t.arrived_email_body(client_name, departure_point, driverName);
+    const waMsg = type === 'on_the_way'
+      ? t.on_the_way_whatsapp(client_name, departure_point, driverName)
+      : t.arrived_whatsapp(client_name, departure_point, driverName);
 
     // Send WhatsApp
     if (client_phone) {
@@ -205,69 +230,36 @@ Deno.serve(async (req) => {
         const accountSid = Deno.env.get('TWILIO_ACCOUNT_SID');
         const authToken = Deno.env.get('TWILIO_AUTH_TOKEN');
         const from = Deno.env.get('TWILIO_WHATSAPP_FROM');
-        const msgBody = type === 'on_the_way'
-          ? t.on_the_way_whatsapp(client_name, departure_point, driverName, driverWaLink || '')
-          : t.arrived_whatsapp(client_name, departure_point, driverName, driverWaLink || '');
-        // Format number: remove all non-digits, ensure it starts with +
-        const digitsOnly = client_phone.replace(/\D/g, '');
-        const formattedTo = `whatsapp:+${digitsOnly}`;
-        const response = await fetch(`https://api.twilio.com/2010-04-01/Accounts/${accountSid}/Messages.json`, {
-          method: 'POST',
-          headers: { 'Authorization': 'Basic ' + btoa(`${accountSid}:${authToken}`), 'Content-Type': 'application/x-www-form-urlencoded' },
-          body: new URLSearchParams({ From: from, To: formattedTo, Body: msgBody }).toString(),
-        });
-        const result = await response.json();
-        if (response.ok) {
-          console.log('WhatsApp sent successfully:', result.sid);
+        if (!accountSid || !authToken || !from) {
+          console.error('Missing Twilio env vars');
         } else {
-          console.warn('WhatsApp API warning:', result.message || JSON.stringify(result));
+          const formattedTo = formatPhone(client_phone);
+          console.log(`Sending WhatsApp to ${formattedTo}`);
+          await sendWhatsApp(accountSid, authToken, from, formattedTo, waMsg);
         }
-      } catch (waErr) {
-        console.error('WhatsApp failed (non-critical):', waErr.message);
+      } catch (err) {
+        console.error('WhatsApp failed:', err.message);
       }
+    } else {
+      console.warn('No client_phone — skipping WhatsApp');
     }
 
-    // Send email via Gmail API
+    // Send Email
     if (client_email) {
       try {
-        const accessToken = await base44.asServiceRole.connectors.getAccessToken('gmail');
-
-        const emailLines = [
-          `To: ${client_email}`,
-          `Subject: =?UTF-8?B?${btoa(unescape(encodeURIComponent(subject)))}?=`,
-          'MIME-Version: 1.0',
-          'Content-Type: text/html; charset=UTF-8',
-          'From: Rosini Transfert <me>',
-          '',
-          htmlBody,
-        ];
-        const rawEmail = emailLines.join('\r\n');
-        const encodedEmail = btoa(unescape(encodeURIComponent(rawEmail)))
-          .replace(/\+/g, '-').replace(/\//g, '_').replace(/=+$/, '');
-
-        const gmailRes = await fetch('https://gmail.googleapis.com/gmail/v1/users/me/messages/send', {
-          method: 'POST',
-          headers: {
-            'Authorization': `Bearer ${accessToken}`,
-            'Content-Type': 'application/json',
-          },
-          body: JSON.stringify({ raw: encodedEmail }),
-        });
-
-        const gmailData = await gmailRes.json();
-        if (!gmailRes.ok) {
-          console.error('Gmail API error:', JSON.stringify(gmailData));
-        } else {
-          console.log('Email sent to client:', client_email, 'lang:', lang, 'messageId:', gmailData.id);
-        }
-      } catch (emailErr) {
-        console.error('Email failed (non-critical):', emailErr.message);
+        const { accessToken } = await base44.asServiceRole.connectors.getConnection('gmail');
+        const htmlBody = buildEmailHtml(emailTitle, emailBodyText, departure_point, arrival_point);
+        await sendEmail(accessToken, client_email, subject, htmlBody);
+      } catch (err) {
+        console.error('Email failed:', err.message);
       }
+    } else {
+      console.warn('No client_email — skipping email');
     }
 
     return Response.json({ success: true });
   } catch (error) {
-    console.error('notifyClientDriverStatus error:', error);
+    console.error('notifyClientDriverStatus error:', error.message);
     return Response.json({ error: error.message }, { status: 500 });
   }
 });
