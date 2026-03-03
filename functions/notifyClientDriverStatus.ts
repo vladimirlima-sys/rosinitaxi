@@ -245,8 +245,8 @@ Deno.serve(async (req) => {
         const appId = Deno.env.get('BASE44_APP_ID');
         const trackingLink = `https://base44.app/${appId}/pages/RideTracking?id=${booking_id}`;
         const { accessToken } = await base44.asServiceRole.connectors.getConnection('gmail');
-        const htmlBody = buildEmailHtml(emailTitle, emailBodyText, departure_point, arrival_point, trackingLink);
-        await sendEmail(client_email, subject, htmlBody, accessToken);
+        const htmlBodyBase64 = buildEmailHtml(emailTitle, emailBodyText, departure_point, arrival_point, trackingLink);
+        await sendEmail(client_email, subject, htmlBodyBase64, accessToken);
       } catch (err) {
         console.error('Email failed:', err.message);
       }
