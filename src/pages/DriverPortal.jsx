@@ -459,18 +459,6 @@ export default function DriverPortal() {
           <div className="ml-auto text-green-500/60 group-hover:text-green-500 transition-all">›</div>
         </a>
 
-        {/* Past bookings */}
-        {past.length > 0 && (
-          <div className="space-y-3">
-            <h2 className="text-white/30 text-xs uppercase tracking-wider px-1">Historique</h2>
-            {past.slice(0, 5).map(b => (
-              <div key={b.id} className="opacity-50">
-                <BookingCard key={b.id} booking={b} isNew={false} />
-              </div>
-            ))}
-          </div>
-        )}
-
         <p className="text-white/20 text-xs text-center mt-8">
           Mise à jour en temps réel · Rosini Transfert
         </p>
