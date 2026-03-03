@@ -23,7 +23,9 @@ const messages = {
 
 Deno.serve(async (req) => {
   try {
-    const { booking_id, status } = await req.json();
+    const base44 = createClientFromRequest(req);
+    const body = await req.json();
+    const { booking_id, status, client_name, client_phone, departure_point, language } = body;
 
     if (!booking_id || !status) {
       return Response.json({ error: 'Missing booking_id or status' }, { status: 400 });
@@ -34,41 +36,32 @@ Deno.serve(async (req) => {
       return Response.json({ success: true, skipped: true });
     }
 
-    // Get booking data via Base44 HTTP API directly
-    const appId = Deno.env.get('BASE44_APP_ID');
-    const apiBase = `https://api.base44.com/api/apps/${appId}/entities/Booking`;
+    // Use booking data passed directly OR fetch from DB
+    let phone = client_phone;
+    let name = client_name;
+    let dep = departure_point;
+    let lang = language;
 
-    const listRes = await fetch(`${apiBase}?filters=${encodeURIComponent(JSON.stringify({ id: booking_id }))}`, {
-      headers: { 'x-api-key': Deno.env.get('BASE44_SERVICE_ROLE_KEY') || '' },
-    });
-
-    // Fallback: parse from request body if needed
-    // Actually, just use the SDK properly with a timeout
-    const base44 = createClientFromRequest(req);
-    
-    let booking;
-    try {
-      const results = await Promise.race([
-        base44.asServiceRole.entities.Booking.filter({ id: booking_id }),
-        new Promise((_, reject) => setTimeout(() => reject(new Error('Timeout')), 8000))
-      ]);
-      booking = results[0];
-    } catch (e) {
-      console.error('Booking fetch failed:', e.message);
-      return Response.json({ error: 'Could not fetch booking: ' + e.message }, { status: 500 });
+    if (!phone || !name || !dep) {
+      // Fetch from DB
+      console.log('Fetching booking from DB...');
+      const allBookings = await base44.asServiceRole.entities.Booking.list('-created_date', 200);
+      const booking = allBookings.find(b => b.id === booking_id);
+      if (!booking) {
+        return Response.json({ error: 'Booking not found' }, { status: 404 });
+      }
+      phone = phone || booking.client_phone;
+      name = name || booking.client_name;
+      dep = dep || booking.departure_point;
+      lang = lang || booking.language;
     }
 
-    if (!booking) {
-      return Response.json({ error: 'Booking not found' }, { status: 404 });
-    }
+    lang = (lang && messages[status][lang]) ? lang : 'fr';
+    const msgBody = messages[status][lang](name || 'Client', dep || '');
 
-    const { client_name, client_phone, departure_point, language } = booking;
-    const lang = (language && messages[status][language]) ? language : 'fr';
-    const msgBody = messages[status][lang](client_name || 'Client', departure_point || '');
+    console.log(`Sending WhatsApp | status=${status} | lang=${lang} | phone=${phone}`);
 
-    console.log(`Sending WhatsApp | status=${status} | lang=${lang} | phone=${client_phone}`);
-
-    if (!client_phone) {
+    if (!phone) {
       console.warn('No client phone — skipping WhatsApp.');
       return Response.json({ success: true, skipped: 'no_phone' });
     }
@@ -82,7 +75,7 @@ Deno.serve(async (req) => {
       return Response.json({ error: 'Twilio not configured' }, { status: 500 });
     }
 
-    const digits = client_phone.replace(/\D/g, '');
+    const digits = phone.replace(/\D/g, '');
     const formattedTo = `whatsapp:+${digits}`;
     console.log(`Formatted phone: ${formattedTo} | From: ${from}`);
 
