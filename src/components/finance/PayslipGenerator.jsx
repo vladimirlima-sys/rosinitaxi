@@ -7,6 +7,7 @@ export default function PayslipGenerator({ drivers = [] }) {
   const [selectedDriver, setSelectedDriver] = useState('');
   const [selectedMonth, setSelectedMonth] = useState(new Date().getMonth() + 1);
   const [selectedYear, setSelectedYear] = useState(new Date().getFullYear());
+  const [grossAmount, setGrossAmount] = useState('');
   const [loading, setLoading] = useState(false);
 
   const months = [

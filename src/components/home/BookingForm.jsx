@@ -201,6 +201,10 @@ export default function BookingForm({ bookingRef }) {
           departure: form.departure_point, arrival: form.arrival_point,
           vehicle_type: form.vehicle_type, distance_km: estimatedDistance,
           departure_date: form.departure_date, departure_time: form.departure_time,
+          flight_number: form.flight_number || '',
+          passengers: form.passengers || 1,
+          notes: form.notes || '',
+          language: lang,
           origin: window.location.origin,
           is_short_notice: isShortNotice,
           booking_id: createdBookingForStripe.id
