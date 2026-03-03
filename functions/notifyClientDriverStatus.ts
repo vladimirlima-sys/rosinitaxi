@@ -101,7 +101,7 @@ const translations = {
   },
 };
 
-function buildEmailHtml(title, body, dep, arr) {
+function buildEmailHtml(title, body, dep, arr, trackingLink) {
   const year = new Date().getFullYear();
   return `<!DOCTYPE html>
 <html><head><meta charset="UTF-8"></head>
@@ -118,13 +118,16 @@ function buildEmailHtml(title, body, dep, arr) {
       <p style="color:#888;font-size:11px;margin:0 0 4px;text-transform:uppercase;">Point de départ</p>
       <p style="color:#fff;font-size:14px;margin:0;">${dep}</p>
     </div>
-    ${arr ? `<div style="background:#1a1a1a;border-radius:8px;padding:16px;">
+    ${arr ? `<div style="background:#1a1a1a;border-radius:8px;padding:16px;margin-bottom:12px;">
       <p style="color:#888;font-size:11px;margin:0 0 4px;text-transform:uppercase;">Destination</p>
       <p style="color:#fff;font-size:14px;margin:0;">${arr}</p>
     </div>` : ''}
+    ${trackingLink ? `<div style="text-align:center;margin-top:20px;">
+      <a href="${trackingLink}" style="display:inline-block;background:#F5C300;color:#000;padding:12px 24px;border-radius:8px;text-decoration:none;font-weight:bold;font-size:14px;">Rastrear Corrida</a>
+    </div>` : ''}
   </div>
   <div style="text-align:center;padding:20px;background:#111;border:1px solid #222;border-radius:12px;">
-    <p style="color:#888;font-size:13px;margin:0 0 8px;">Questions ? Contactez-nous</p>
+    <p style="color:#888;font-size:13px;margin:0 0 8px;">Perguntas? Entre em contato</p>
     <a href="tel:+41772492245" style="color:#F5C300;text-decoration:none;font-size:14px;font-weight:bold;">+41 77 249 22 45</a>
   </div>
   <p style="color:#444;text-align:center;font-size:11px;margin-top:24px;">© ${year} Rosini Transfert</p>
