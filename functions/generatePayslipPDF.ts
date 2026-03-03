@@ -1,6 +1,21 @@
 import { createClientFromRequest } from 'npm:@base44/sdk@0.8.20';
 import { jsPDF } from 'npm:jspdf@4.0.0';
 
+// Replace accented characters not supported by helvetica
+function s(text) {
+  if (!text && text !== 0) return '';
+  return String(text)
+    .replace(/[àâä]/g, 'a').replace(/[ÀÂÄÄ]/g, 'A')
+    .replace(/[éèêë]/g, 'e').replace(/[ÉÈÊË]/g, 'E')
+    .replace(/[îï]/g, 'i').replace(/[ÎÏ]/g, 'I')
+    .replace(/[ôö]/g, 'o').replace(/[ÔÖ]/g, 'O')
+    .replace(/[ùûü]/g, 'u').replace(/[ÙÛÜ]/g, 'U')
+    .replace(/[ç]/g, 'c').replace(/[Ç]/g, 'C')
+    .replace(/[°]/g, 'o')
+    .replace(/[×]/g, 'x')
+    .replace(/[–—]/g, '-');
+}
+
 Deno.serve(async (req) => {
   try {
     const base44 = createClientFromRequest(req);
