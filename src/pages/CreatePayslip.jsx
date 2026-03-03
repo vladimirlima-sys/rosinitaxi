@@ -248,12 +248,12 @@ export default function CreatePayslip() {
           <div className="bg-white border border-gray-200 rounded-xl p-5 shadow-sm">
             <h2 className="font-bold text-gray-900 mb-4 text-sm uppercase tracking-wide">Salaire</h2>
             <div className="space-y-3">
-              <Input label="Salaire brut (CHF)" value={form.salary_brut} onChange={v => set('salary_brut', v)} type="number" placeholder="0.00" />
+              <FormInput label="Salaire brut (CHF)" value={form.salary_brut} onChange={v => set('salary_brut', v)} type="number" placeholder="0.00" />
               <div className="grid grid-cols-2 gap-3">
-                <Input label="Heures travaillées" value={form.heures_travaillees} onChange={v => set('heures_travaillees', v)} type="number" placeholder="0" />
-                <Input label="Taux horaire (CHF)" value={form.taux_horaire} onChange={v => set('taux_horaire', v)} type="number" placeholder="0.00" />
+                <FormInput label="Heures travaillées" value={form.heures_travaillees} onChange={v => set('heures_travaillees', v)} type="number" placeholder="0" />
+                <FormInput label="Taux horaire (CHF)" value={form.taux_horaire} onChange={v => set('taux_horaire', v)} type="number" placeholder="0.00" />
               </div>
-              <Input label="Notes" value={form.notes} onChange={v => set('notes', v)} placeholder="Remarques éventuelles..." />
+              <FormInput label="Notes" value={form.notes} onChange={v => set('notes', v)} placeholder="Remarques éventuelles..." />
             </div>
           </div>
         </div>
