@@ -49,11 +49,11 @@ Deno.serve(async (req) => {
     doc.setTextColor(255, 255, 255);
     doc.setFontSize(13);
     doc.setFont('helvetica', 'bold');
-    doc.text(company.company_name || 'Rosini Transports et locations SArl', margin + 4, y + 7);
+    doc.text(s(company.company_name || 'Rosini Transports et locations SArl'), margin + 4, y + 7);
     doc.setFontSize(8);
     doc.setFont('helvetica', 'normal');
-    doc.text(company.company_address || '', margin + 4, y + 12.5);
-    doc.text(`CHE: ${company.registration_number || ''} | Tél: ${company.phone || ''}`, margin + 4, y + 16.5);
+    doc.text(s(company.company_address || ''), margin + 4, y + 12.5);
+    doc.text(`CHE: ${s(company.registration_number || '')} | Tel: ${s(company.phone || '')}`, margin + 4, y + 16.5);
     y += 22;
 
     // Title
