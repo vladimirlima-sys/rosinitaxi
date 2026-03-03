@@ -125,18 +125,7 @@ export default function CreatePayslip() {
     setDownloading(false);
   };
 
-  const Input = ({ label, value, onChange, type = 'text', placeholder = '' }) => (
-    <div>
-      <label className="block text-xs font-semibold text-gray-500 uppercase tracking-wide mb-1">{label}</label>
-      <input
-        type={type}
-        value={value}
-        onChange={e => onChange(e.target.value)}
-        placeholder={placeholder}
-        className="w-full border border-gray-200 rounded-lg px-3 py-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-black"
-      />
-    </div>
-  );
+
 
   const DeductRow = ({ label, pct, amount }) => {
     if (!pct && !amount) return null;
