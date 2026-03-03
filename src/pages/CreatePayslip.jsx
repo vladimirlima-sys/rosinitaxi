@@ -64,10 +64,9 @@ export default function CreatePayslip() {
   const ac_amount = calc(tx.ac_percentage);
   const af_amount = calc(tx.af_percentage);
   const pc_amount = calc(tx.pc_percentage);
-  const cont_frais_admin_amount = calc(tx.cont_frais_admin_percentage);
   const impot_source_amount = calc(tx.impot_source_percentage);
   const other_deductions_amount = calc(tx.other_deductions_percentage);
-  const total_deductions = avs_amount + ai_amount + apg_amount + ac_amount + af_amount + pc_amount + cont_frais_admin_amount + impot_source_amount + other_deductions_amount;
+  const total_deductions = avs_amount + ai_amount + apg_amount + ac_amount + af_amount + pc_amount + impot_source_amount + other_deductions_amount;
   const salary_net = salaire_brut - total_deductions;
 
   const monthLabel = `${MONTHS.find(m => m.value === form.month)?.label || ''} ${form.year}`;
