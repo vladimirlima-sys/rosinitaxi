@@ -482,6 +482,8 @@ export default function BookingForm({ bookingRef }) {
                 lang={lang}
                 selectedDriverId={selectedDriver?.id || null}
                 onSelect={(driver) => setSelectedDriver(driver)}
+                departureDate={form.departure_date}
+                departureTime={form.departure_time}
               />
             </div>
 
