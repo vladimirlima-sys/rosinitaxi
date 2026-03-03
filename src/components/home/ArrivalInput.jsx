@@ -53,9 +53,18 @@ export default function ArrivalInput({ value, onChange, placeholder, t }) {
           value={value}
           onChange={handleInputChange}
           onFocus={() => suggestions.length > 0 && setShowSuggestions(true)}
-          className="bg-white/5 border border-white/10 text-white placeholder:text-white/30 focus:border-[#C9A96E] focus:bg-white/[0.08] h-12 pl-12 pr-4 transition-all rounded-xl"
+          className="bg-white/5 border border-white/10 text-white placeholder:text-white/30 focus:border-[#C9A96E] focus:bg-white/[0.08] h-12 pl-12 pr-10 transition-all rounded-xl"
           autoComplete="off"
         />
+        {value && (
+          <button
+            type="button"
+            onClick={() => { onChange(''); setSuggestions([]); setShowSuggestions(false); }}
+            className="absolute right-3 top-1/2 -translate-y-1/2 p-1.5 hover:bg-white/10 rounded-lg transition-all"
+          >
+            <X className="w-4 h-4 text-white/50 hover:text-white" />
+          </button>
+        )}
       </div>
 
       {showSuggestions && suggestions.length > 0 && (
