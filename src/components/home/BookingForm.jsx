@@ -351,14 +351,14 @@ export default function BookingForm({ bookingRef }) {
                 />
               </div>
               <div className="bg-black border border-black/40 rounded-xl p-4">
-                <label className={labelClass}>{t.timeLabel}</label>
+                <label className={labelClass}><Clock className="inline w-3 h-3 mr-1" />{t.timeLabel}</label>
                 <input
                   type="time"
                   value={form.departure_time}
                   onChange={(e) => update('departure_time', e.target.value)}
                   onBlur={(e) => e.target.blur()}
                   onKeyDown={(e) => { if (e.key === 'Enter') e.target.blur(); }}
-                  className="w-full bg-transparent text-white text-sm outline-none border-none [color-scheme:dark]"
+                  className="w-full bg-transparent text-white text-lg font-medium outline-none border-none [color-scheme:dark] h-10"
                 />
               </div>
             </div>
