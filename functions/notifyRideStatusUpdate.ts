@@ -117,11 +117,16 @@ Deno.serve(async (req) => {
           `To: ${email}`,
           `Subject: Rosini Transfert - ${emailSubject}`,
           `Content-Type: text/plain; charset="UTF-8"`,
+          'Content-Transfer-Encoding: base64',
           '',
           plainTextBody
-        ].join('\n');
+        ].join('\r\n');
         
-        const encodedMessage = btoa(emailMessage).replace(/\+/g, '-').replace(/\//g, '_');
+        // Use TextEncoder for proper UTF-8 encoding
+        const encoder = new TextEncoder();
+        const encoded = encoder.encode(emailMessage);
+        const binaryString = String.fromCharCode(...encoded);
+        const encodedMessage = btoa(binaryString).replace(/\+/g, '-').replace(/\//g, '_').replace(/=/g, '');
         
         const gmailRes = await fetch('https://www.googleapis.com/gmail/v1/users/me/messages/send', {
           method: 'POST',
