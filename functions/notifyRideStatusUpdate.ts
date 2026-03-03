@@ -1,41 +1,24 @@
 import { createClientFromRequest } from 'npm:@base44/sdk@0.8.20';
 
+// Only send WhatsApp for en_route and arrived
 const statusMessages = {
   en_route: {
-    pt: { title: '🚗 Motorista a caminho', body: 'O seu motorista saiu em direção ao ponto de partida.' },
-    fr: { title: '🚗 Chauffeur en route', body: 'Votre chauffeur se dirige vers le point de départ.' },
-    en: { title: '🚗 Driver on the way', body: 'Your driver is heading to the pickup point.' },
-    de: { title: '🚗 Fahrer unterwegs', body: 'Ihr Fahrer ist auf dem Weg zum Abholpunkt.' },
-    it: { title: '🚗 Autista in arrivo', body: 'Il vostro autista si sta dirigendo verso il punto di partenza.' },
-    es: { title: '🚗 Conductor en camino', body: 'Su conductor se dirige al punto de recogida.' },
-    nl: { title: '🚗 Chauffeur onderweg', body: 'Uw chauffeur is op weg naar het vertrekpunt.' },
+    pt: { whatsapp: (name, dep) => `🚗 *Rosini Transfert* — Olá ${name}, o seu motorista está a caminho e deve chegar em aproximadamente 5 minutos ao ponto de partida: ${dep}. Por favor, prepare-se!` },
+    fr: { whatsapp: (name, dep) => `🚗 *Rosini Transfert* — Bonjour ${name}, votre chauffeur est proche et devrait arriver dans environ 5 minutes à votre point de départ : ${dep}. Tenez-vous prêt(e) !` },
+    en: { whatsapp: (name, dep) => `🚗 *Rosini Transfert* — Hello ${name}, your driver is nearby and should arrive in about 5 minutes at your pickup point: ${dep}. Please get ready!` },
+    de: { whatsapp: (name, dep) => `🚗 *Rosini Transfert* — Hallo ${name}, Ihr Fahrer ist in der Nähe und sollte in ca. 5 Minuten an Ihrem Abholpunkt ankommen: ${dep}. Bitte machen Sie sich bereit!` },
+    it: { whatsapp: (name, dep) => `🚗 *Rosini Transfert* — Salve ${name}, il vostro autista è vicino e dovrebbe arrivare in circa 5 minuti al punto di partenza: ${dep}. Per favore preparatevi!` },
+    es: { whatsapp: (name, dep) => `🚗 *Rosini Transfert* — Hola ${name}, su conductor está cerca y debería llegar en unos 5 minutos a su punto de recogida: ${dep}. ¡Por favor prepárese!` },
+    nl: { whatsapp: (name, dep) => `🚗 *Rosini Transfert* — Hallo ${name}, uw chauffeur is in de buurt en zou over ongeveer 5 minuten bij uw vertrekpunt moeten zijn: ${dep}. Maakt u zich klaar!` },
   },
   arrived: {
-    pt: { title: '📍 Motorista chegou!', body: 'O seu motorista chegou ao ponto de partida. Prepare-se!' },
-    fr: { title: '📍 Chauffeur arrivé!', body: 'Votre chauffeur est arrivé au point de départ. Préparez-vous!' },
-    en: { title: '📍 Driver arrived!', body: 'Your driver has arrived at the pickup point. Get ready!' },
-    de: { title: '📍 Fahrer angekommen!', body: 'Ihr Fahrer ist am Abholpunkt angekommen. Machen Sie sich bereit!' },
-    it: { title: '📍 Autista arrivato!', body: 'Il vostro autista è arrivato al punto di partenza. Preparatevi!' },
-    es: { title: '📍 Conductor llegó!', body: '¡Su conductor ha llegado al punto de recogida. Prepárese!' },
-    nl: { title: '📍 Chauffeur gearriveerd!', body: 'Uw chauffeur is aangekomen bij het vertrekpunt. Maak u klaar!' },
-  },
-  in_progress: {
-    pt: { title: '⚡ Corrida iniciada', body: 'A sua corrida começou. Boa viagem!' },
-    fr: { title: '⚡ Trajet commencé', body: 'Votre trajet a commencé. Bon voyage!' },
-    en: { title: '⚡ Trip started', body: 'Your trip has started. Enjoy the ride!' },
-    de: { title: '⚡ Fahrt begonnen', body: 'Ihre Fahrt hat begonnen. Gute Reise!' },
-    it: { title: '⚡ Viaggio iniziato', body: 'Il vostro viaggio è iniziato. Buon viaggio!' },
-    es: { title: '⚡ Viaje iniciado', body: '¡Su viaje ha comenzado. ¡Buen viaje!' },
-    nl: { title: '⚡ Rit begonnen', body: 'Uw rit is begonnen. Goede reis!' },
-  },
-  completed: {
-    pt: { title: '✅ Corrida concluída', body: 'Obrigado por usar Rosini Transfert. Deixe uma avaliação!' },
-    fr: { title: '✅ Trajet terminé', body: "Merci d'avoir utilisé Rosini Transfert. Laissez un avis!" },
-    en: { title: '✅ Trip completed', body: 'Thank you for using Rosini Transfert. Leave a review!' },
-    de: { title: '✅ Fahrt abgeschlossen', body: 'Vielen Dank für die Nutzung von Rosini Transfert. Hinterlassen Sie eine Bewertung!' },
-    it: { title: '✅ Viaggio completato', body: 'Grazie per aver utilizzato Rosini Transfert. Lascia una recensione!' },
-    es: { title: '✅ Viaje completado', body: '¡Gracias por usar Rosini Transfert. ¡Deje una reseña!' },
-    nl: { title: '✅ Rit voltooid', body: 'Bedankt voor het gebruik van Rosini Transfert. Laat een beoordeling achter!' },
+    pt: { whatsapp: (name, dep) => `📍 *Rosini Transfert* — Olá ${name}, o seu motorista chegou ao ponto de partida: ${dep}. Ele está à sua espera!` },
+    fr: { whatsapp: (name, dep) => `📍 *Rosini Transfert* — Bonjour ${name}, votre chauffeur est arrivé au point de départ : ${dep}. Il vous attend !` },
+    en: { whatsapp: (name, dep) => `📍 *Rosini Transfert* — Hello ${name}, your driver has arrived at the pickup point: ${dep}. He is waiting for you!` },
+    de: { whatsapp: (name, dep) => `📍 *Rosini Transfert* — Hallo ${name}, Ihr Fahrer ist am Abholpunkt angekommen: ${dep}. Er wartet auf Sie!` },
+    it: { whatsapp: (name, dep) => `📍 *Rosini Transfert* — Salve ${name}, il vostro autista è arrivato al punto di partenza: ${dep}. Vi sta aspettando!` },
+    es: { whatsapp: (name, dep) => `📍 *Rosini Transfert* — Hola ${name}, su conductor ha llegado al punto de recogida: ${dep}. ¡Le está esperando!` },
+    nl: { whatsapp: (name, dep) => `📍 *Rosini Transfert* — Hallo ${name}, uw chauffeur is aangekomen bij het vertrekpunt: ${dep}. Hij wacht op u!` },
   },
 };
 
