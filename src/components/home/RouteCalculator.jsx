@@ -38,6 +38,7 @@ export default function RouteCalculator({ departure, arrival, onRouteCalculated,
     const calculateRoute = async () => {
       setCalculating(true);
       onCalculating?.();
+      window.dispatchEvent(new Event('routeCalculating'));
       try {
         let depCoords = departureCoords.current;
         let arrCoords = arrivalCoords.current;

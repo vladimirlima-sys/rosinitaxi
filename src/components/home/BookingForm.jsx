@@ -119,7 +119,6 @@ export default function BookingForm({ bookingRef }) {
   }, []);
 
   const handleRouteCalculated = (routeData) => {
-    setIsCalculatingRoute(false);
     if (routeData.distance_km > 0) {
       setEstimatedDistance(routeData.distance_km);
       setEstimatedTime(routeData.estimated_time_minutes);
@@ -174,6 +173,19 @@ export default function BookingForm({ bookingRef }) {
   const isShortNotice = checkShortNotice();
 
   const [isCalculatingRoute, setIsCalculatingRoute] = useState(false);
+  const [routeError, setRouteError] = useState(null);
+
+  // Listen for route calculation status
+  useEffect(() => {
+    const handleCalculating = () => {
+      setEstimatedDistance(0);
+      setIsCalculatingRoute(true);
+      setRouteError(null);
+    };
+
+    window.addEventListener('routeCalculating', handleCalculating);
+    return () => window.removeEventListener('routeCalculating', handleCalculating);
+  }, []);
 
   const canProceedStep1 = form.departure_point && form.arrival_point && form.departure_date && form.departure_time && estimatedDistance > 0;
   const canProceedStep2 = !!form.vehicle_type;
