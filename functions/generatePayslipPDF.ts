@@ -142,7 +142,7 @@ Deno.serve(async (req) => {
     if (p.notes) {
       gap(4);
       doc.setFont('helvetica', 'italic');
-      doc.text(`Notes: ${p.notes}`, margin, y);
+      doc.text(`Notes: ${s(p.notes)}`, margin, y);
       gap(5);
     }
 
@@ -151,7 +151,7 @@ Deno.serve(async (req) => {
     doc.setFont('helvetica', 'normal');
     doc.setFontSize(8);
     doc.text('Signature employeur: _______________________________', margin, y);
-    doc.text('Signature employé: _______________________________', col2, y);
+    doc.text('Signature employe: _______________________________', col2, y);
 
     const pdfB64 = doc.output('datauristring');
     const pdfBytes = doc.output('arraybuffer');
