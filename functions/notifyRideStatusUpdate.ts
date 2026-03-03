@@ -106,18 +106,46 @@ Deno.serve(async (req) => {
       }
     }
 
-    // Send Email using Gmail integration
+    // Send Email via Resend (alternative to Gmail)
     if (email) {
       try {
         console.log(`Attempting to send email to ${email}`);
-        const plainTextBody = emailBody.replace(/<br>/g, '\n').replace(/<[^>]*>/g, '');
-        await base44.integrations.Core.SendEmail({
-          to: email,
-          subject: `Rosini Transfert - ${emailSubject}`,
-          body: plainTextBody
-        });
-        results.email = 'sent';
-        console.log('Email sent successfully to', email);
+        const resendApiKey = Deno.env.get('RESEND_API_KEY');
+        
+        if (resendApiKey) {
+          const plainTextBody = emailBody.replace(/<br>/g, '\n').replace(/<[^>]*>/g, '');
+          const resendRes = await fetch('https://api.resend.com/emails', {
+            method: 'POST',
+            headers: {
+              'Authorization': `Bearer ${resendApiKey}`,
+              'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({
+              from: 'Rosini Transfert <noreply@rosini.ch>',
+              to: email,
+              subject: `Rosini Transfert - ${emailSubject}`,
+              html: `<html><body style="font-family: Arial, sans-serif; line-height: 1.6; color: #333;">
+                <div style="max-width: 600px; margin: 0 auto; padding: 20px;">
+                  <h2 style="color: #F5C300;">Rosini Transfert</h2>
+                  ${emailBody}
+                  <hr style="border: none; border-top: 1px solid #eee; margin: 20px 0;">
+                  <p style="color: #999; font-size: 12px;">© 2026 Rosini Transfert. Todos os direitos reservados.</p>
+                </div>
+              </body></html>`
+            })
+          });
+          
+          const resendData = await resendRes.json();
+          if (resendRes.ok && resendData.id) {
+            results.email = 'sent';
+            console.log('Email sent successfully via Resend to', email);
+          } else {
+            console.error('Resend error:', JSON.stringify(resendData));
+            results.email = 'failed';
+          }
+        } else {
+          console.warn('Resend API key not configured');
+        }
       } catch (err) {
         console.error('Email send error:', err.message);
         results.email = `error: ${err.message}`;
