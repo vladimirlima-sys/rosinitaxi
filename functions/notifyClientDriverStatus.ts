@@ -161,7 +161,7 @@ async function sendWhatsApp(accountSid, authToken, from, to, body) {
 
 async function sendEmail(accessToken, to, subject, htmlBody) {
   const rawEmail = [
-    `From: Rosini Transfert`,
+    `From: Rosini Transfert <noreply@rosini.ch>`,
     `To: ${to}`,
     `Subject: ${subject}`,
     `MIME-Version: 1.0`,
