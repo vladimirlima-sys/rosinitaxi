@@ -61,11 +61,15 @@ export default function ActiveTripMonitor({ booking }) {
       setTripStartedAt(now);
     }
     
-    // Notify client of status update
+    // Notify client of status update (pass booking data directly to avoid DB timeout)
     try {
       await base44.functions.invoke('notifyRideStatusUpdate', {
         booking_id: booking.id,
         status: key,
+        client_name: booking.client_name,
+        client_phone: booking.client_phone,
+        departure_point: booking.departure_point,
+        language: booking.language || 'fr',
       });
     } catch (notifyErr) {
       console.error('Notification error:', notifyErr);
