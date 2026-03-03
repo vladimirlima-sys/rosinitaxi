@@ -106,45 +106,41 @@ Deno.serve(async (req) => {
       }
     }
 
-    // Send Email via Resend (alternative to Gmail)
+    // Send Email via Gmail (authorized connector)
     if (email) {
       try {
-        console.log(`Attempting to send email to ${email}`);
-        const resendApiKey = Deno.env.get('RESEND_API_KEY');
+        console.log(`Attempting to send email via Gmail to ${email}`);
+        const { accessToken } = await base44.asServiceRole.connectors.getConnection('gmail');
         
-        if (resendApiKey) {
-          const plainTextBody = emailBody.replace(/<br>/g, '\n').replace(/<[^>]*>/g, '');
-          const resendRes = await fetch('https://api.resend.com/emails', {
-            method: 'POST',
-            headers: {
-              'Authorization': `Bearer ${resendApiKey}`,
-              'Content-Type': 'application/json',
-            },
-            body: JSON.stringify({
-              from: 'Rosini Transfert <noreply@rosini.ch>',
-              to: email,
-              subject: `Rosini Transfert - ${emailSubject}`,
-              html: `<html><body style="font-family: Arial, sans-serif; line-height: 1.6; color: #333;">
-                <div style="max-width: 600px; margin: 0 auto; padding: 20px;">
-                  <h2 style="color: #F5C300;">Rosini Transfert</h2>
-                  ${emailBody}
-                  <hr style="border: none; border-top: 1px solid #eee; margin: 20px 0;">
-                  <p style="color: #999; font-size: 12px;">© 2026 Rosini Transfert. Todos os direitos reservados.</p>
-                </div>
-              </body></html>`
-            })
-          });
-          
-          const resendData = await resendRes.json();
-          if (resendRes.ok && resendData.id) {
-            results.email = 'sent';
-            console.log('Email sent successfully via Resend to', email);
-          } else {
-            console.error('Resend error:', JSON.stringify(resendData));
-            results.email = 'failed';
-          }
+        const plainTextBody = emailBody.replace(/<br>/g, '\n').replace(/<[^>]*>/g, '');
+        const emailMessage = [
+          `To: ${email}`,
+          `Subject: Rosini Transfert - ${emailSubject}`,
+          `Content-Type: text/plain; charset="UTF-8"`,
+          '',
+          plainTextBody
+        ].join('\n');
+        
+        const encodedMessage = btoa(emailMessage).replace(/\+/g, '-').replace(/\//g, '_');
+        
+        const gmailRes = await fetch('https://www.googleapis.com/gmail/v1/users/me/messages/send', {
+          method: 'POST',
+          headers: {
+            'Authorization': `Bearer ${accessToken}`,
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify({
+            raw: encodedMessage
+          })
+        });
+        
+        if (gmailRes.ok) {
+          results.email = 'sent';
+          console.log('Email sent successfully via Gmail to', email);
         } else {
-          console.warn('Resend API key not configured');
+          const gmailError = await gmailRes.json();
+          console.error('Gmail error:', JSON.stringify(gmailError));
+          results.email = 'failed';
         }
       } catch (err) {
         console.error('Email send error:', err.message);
