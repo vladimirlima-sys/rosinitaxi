@@ -159,39 +159,14 @@ async function sendWhatsApp(accountSid, authToken, from, to, body) {
   return result;
 }
 
-async function sendEmail(accessToken, to, subject, htmlBody) {
-  const rawEmail = [
-    `From: Rosini Transfert <noreply@rosini.ch>`,
-    `To: ${to}`,
-    `Subject: ${subject}`,
-    `MIME-Version: 1.0`,
-    `Content-Type: text/html; charset=UTF-8`,
-    `Content-Transfer-Encoding: base64`,
-    ``,
-    htmlBody,
-  ].join('\r\n');
-
-  // Use TextEncoder for proper UTF-8 encoding
-  const encoder = new TextEncoder();
-  const encoded = encoder.encode(rawEmail);
-  const binaryString = String.fromCharCode(...encoded);
-  const encodedEmail = btoa(binaryString).replace(/\+/g, '-').replace(/\//g, '_').replace(/=/g, '');
-
-  const res = await fetch('https://www.googleapis.com/gmail/v1/users/me/messages/send', {
-    method: 'POST',
-    headers: {
-      'Authorization': `Bearer ${accessToken}`,
-      'Content-Type': 'application/json',
-    },
-    body: JSON.stringify({ raw: encodedEmail }),
+async function sendEmail(to, subject, htmlBody, base44) {
+  await base44.integrations.Core.SendEmail({
+    to,
+    subject,
+    body: htmlBody,
+    from_name: 'Rosini Transferts'
   });
-  const data = await res.json();
-  if (!res.ok) {
-    console.error('Gmail API error:', JSON.stringify(data));
-    throw new Error(data.error?.message || 'Gmail error');
-  }
-  console.log(`Email sent OK to ${to}. MessageId: ${data.id}`);
-  return data;
+  console.log(`Email sent OK to ${to}`);
 }
 
 Deno.serve(async (req) => {
