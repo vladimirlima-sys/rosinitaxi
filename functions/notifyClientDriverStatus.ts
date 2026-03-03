@@ -160,11 +160,11 @@ async function sendWhatsApp(accountSid, authToken, from, to, body) {
   return result;
 }
 
-async function sendEmail(to, subject, htmlBody, accessToken) {
-  const rawEmail = `From: Rosini Transferts <info@rosini.online>\r\nTo: ${to}\r\nSubject: ${subject}\r\nMIME-Version: 1.0\r\nContent-Type: text/html; charset=UTF-8\r\nContent-Transfer-Encoding: base64\r\n\r\n${htmlBody}`;
-
+async function sendEmail(to, subject, htmlBodyBase64, accessToken) {
   const encoder = new TextEncoder();
-  const encoded = encoder.encode(rawEmail);
+  const headers = `From: Rosini Transferts <info@rosini.online>\r\nTo: ${to}\r\nSubject: ${subject}\r\nMIME-Version: 1.0\r\nContent-Type: text/html; charset=UTF-8\r\nContent-Transfer-Encoding: base64\r\n\r\n${htmlBodyBase64}`;
+  
+  const encoded = encoder.encode(headers);
   const binaryString = String.fromCharCode(...encoded);
   const base64Email = btoa(binaryString);
 
