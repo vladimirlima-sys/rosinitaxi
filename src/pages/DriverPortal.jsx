@@ -170,6 +170,7 @@ function BookingCard({ booking, isNew }) {
 
 export default function DriverPortal() {
   const [driverCode, setDriverCode] = useState('');
+  const [rememberPassword, setRememberPassword] = useState(false);
   const [driver, setDriver] = useState(null);
   const [bookings, setBookings] = useState([]);
   const [loading, setLoading] = useState(false);
@@ -180,10 +181,12 @@ export default function DriverPortal() {
   const prevBookingIds = useRef(new Set());
   const audioRef = useRef(null);
 
-  // Load saved driver from sessionStorage
+  // Load saved driver from sessionStorage or localStorage
   useEffect(() => {
-    const saved = sessionStorage.getItem('driver_portal_id');
+    const saved = sessionStorage.getItem('driver_portal_id') || localStorage.getItem('driver_portal_code');
     if (saved) {
+      setDriverCode(saved);
+      setRememberPassword(!!localStorage.getItem('driver_portal_code'));
       loginWithId(saved);
     }
   }, []);
@@ -233,6 +236,14 @@ export default function DriverPortal() {
       }
       setDriver(found);
       sessionStorage.setItem('driver_portal_id', found.id);
+      
+      // Handle remember password
+      if (rememberPassword) {
+        localStorage.setItem('driver_portal_code', id);
+      } else {
+        localStorage.removeItem('driver_portal_code');
+      }
+      
       await loadBookings(found.id);
     } catch (e) {
       setError('Erreur d\'authentification. Réessayez.');
@@ -281,9 +292,12 @@ export default function DriverPortal() {
 
   const handleLogout = () => {
     sessionStorage.removeItem('driver_portal_id');
+    if (!rememberPassword) {
+      localStorage.removeItem('driver_portal_code');
+      setDriverCode('');
+    }
     setDriver(null);
     setBookings([]);
-    setDriverCode('');
     prevBookingIds.current = new Set();
   };
 
@@ -333,6 +347,16 @@ export default function DriverPortal() {
                 className="w-full bg-white/5 border border-white/10 rounded-xl text-white text-sm p-3 outline-none placeholder:text-white/20 focus:border-[#F5C300]/50"
               />
             </div>
+
+            <label className="flex items-center gap-3 cursor-pointer">
+              <input
+                type="checkbox"
+                checked={rememberPassword}
+                onChange={e => setRememberPassword(e.target.checked)}
+                className="w-4 h-4 rounded border-white/20 bg-white/5 accent-[#F5C300] cursor-pointer"
+              />
+              <span className="text-white/50 text-sm">Se souvenir de moi</span>
+            </label>
 
             {error && <p className="text-red-400 text-sm">{error}</p>}
 

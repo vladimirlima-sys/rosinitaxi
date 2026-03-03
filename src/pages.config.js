@@ -50,6 +50,7 @@
 import AdminPanel from './pages/AdminPanel';
 import Calendar from './pages/Calendar';
 import CompletedTrips from './pages/CompletedTrips';
+import CreatePayslip from './pages/CreatePayslip';
 import DriverPortal from './pages/DriverPortal';
 import Drivers from './pages/Drivers';
 import FAQ from './pages/FAQ';
@@ -57,11 +58,10 @@ import Finance from './pages/Finance';
 import FinancialReports from './pages/FinancialReports';
 import Home from './pages/Home';
 import MyBookings from './pages/MyBookings';
+import Payslips from './pages/Payslips';
 import Reservas from './pages/Reservas';
 import Settings from './pages/Settings';
 import Taximeter from './pages/Taximeter';
-import Payslips from './pages/Payslips';
-import CreatePayslip from './pages/CreatePayslip';
 import __Layout from './Layout.jsx';
 
 
@@ -69,6 +69,7 @@ export const PAGES = {
     "AdminPanel": AdminPanel,
     "Calendar": Calendar,
     "CompletedTrips": CompletedTrips,
+    "CreatePayslip": CreatePayslip,
     "DriverPortal": DriverPortal,
     "Drivers": Drivers,
     "FAQ": FAQ,
@@ -76,11 +77,10 @@ export const PAGES = {
     "FinancialReports": FinancialReports,
     "Home": Home,
     "MyBookings": MyBookings,
+    "Payslips": Payslips,
     "Reservas": Reservas,
     "Settings": Settings,
     "Taximeter": Taximeter,
-    "Payslips": Payslips,
-    "CreatePayslip": CreatePayslip,
 }
 
 export const pagesConfig = {
