@@ -103,8 +103,9 @@ const translations = {
 
 function buildEmailHtml(title, body, dep, arr, trackingLink) {
   const year = new Date().getFullYear();
-  return `<!DOCTYPE html>
-<html><head><meta charset="UTF-8"></head>
+  const bodyEncoded = Buffer.from(body).toString('base64');
+  return Buffer.from(`<!DOCTYPE html>
+<html><head><meta charset="UTF-8"><meta http-equiv="Content-Type" content="text/html; charset=UTF-8"></head>
 <body style="margin:0;padding:0;background:#0A0A0A;font-family:Arial,sans-serif;">
 <div style="max-width:600px;margin:0 auto;padding:40px 20px;">
   <div style="text-align:center;margin-bottom:32px;">
@@ -132,7 +133,7 @@ function buildEmailHtml(title, body, dep, arr, trackingLink) {
   </div>
   <p style="color:#444;text-align:center;font-size:11px;margin-top:24px;">© ${year} Rosini Transfert</p>
 </div>
-</body></html>`;
+</body></html>`).toString('base64');
 }
 
 function formatPhone(phone) {
