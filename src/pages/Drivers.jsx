@@ -65,7 +65,7 @@ export default function Drivers() {
   };
 
   const handleDelete = async (id) => {
-    if (!confirm('Êtes-vous sûr de vouloir supprimer ce chauffeur ?')) return;
+    if (!confirm('Tem certeza que deseja remover este motorista?')) return;
     await base44.entities.Driver.delete(id);
     fetchDrivers();
   };
@@ -84,24 +84,24 @@ export default function Drivers() {
         </a>
         <div className="text-center mb-6 md:mb-12">
           <h1 className="text-black text-4xl md:text-6xl font-extralight tracking-[0.3em] uppercase">ROSINI</h1>
-          <p className="text-black/60 text-xs md:text-sm tracking-[0.2em] uppercase mt-2">CHAUFFEURS</p>
+          <p className="text-black/60 text-xs md:text-sm tracking-[0.2em] uppercase mt-2">MOTORISTAS</p>
           <div className="w-8 h-[1px] bg-black/40 mx-auto mt-3 mb-6 md:mb-8" />
           <button
             onClick={() => { setEditingDriver(null); setShowForm(true); }}
             className="flex items-center gap-2 bg-black text-white px-3 md:px-4 py-2 md:py-2.5 rounded-lg font-semibold text-xs md:text-sm hover:bg-black/80 transition-all mx-auto mb-3 md:mb-4"
           >
             <Plus className="w-4 h-4" />
-            Nouveau chauffeur
+            Novo Motorista
           </button>
-          <p className="text-black/60 text-xs md:text-sm">{active} actifs · {inactive} inactifs</p>
+          <p className="text-black/60 text-xs md:text-sm">{active} ativos · {inactive} inativos</p>
         </div>
 
         {loading ? (
-          <div className="text-black/30 text-center py-20">Chargement...</div>
+          <div className="text-black/30 text-center py-20">Carregando...</div>
         ) : drivers.length === 0 ? (
           <div className="text-center py-20">
             <User className="w-10 h-10 text-black/20 mx-auto mb-3" />
-            <p className="text-black/30">Aucun chauffeur enregistré pour le moment.</p>
+            <p className="text-black/30">Nenhum motorista cadastrado ainda.</p>
           </div>
         ) : (
           <div className="grid gap-2 md:gap-3">
@@ -116,11 +116,11 @@ export default function Drivers() {
                     <p className="text-white font-medium text-sm md:text-base truncate">{driver.name}</p>
                     {driver.status === 'active' ? (
                       <span className="flex items-center gap-1 text-xs text-green-400 bg-green-400/10 px-1.5 py-0.5 rounded-full shrink-0">
-                        <CheckCircle className="w-3 h-3" /> Actif
+                        <CheckCircle className="w-3 h-3" /> Ativo
                       </span>
                     ) : (
                       <span className="flex items-center gap-1 text-xs text-red-400 bg-red-400/10 px-1.5 py-0.5 rounded-full shrink-0">
-                        <XCircle className="w-3 h-3" /> Inactif
+                        <XCircle className="w-3 h-3" /> Inativo
                       </span>
                     )}
                   </div>
@@ -145,20 +145,20 @@ export default function Drivers() {
                 </div>
 
                 <div className="flex items-center justify-between md:block md:text-right shrink-0 md:mr-2 border-t md:border-t-0 border-white/10 pt-2 md:pt-0">
-                   <p className="text-white/60 text-xs uppercase tracking-wider">Ce mois</p>
-                   <p className={`text-sm font-bold ${monthlyRevenue[driver.id] ? 'text-white' : 'text-white/40'}`}>
-                     {monthlyRevenue[driver.id] ? `CHF ${monthlyRevenue[driver.id].toFixed(2)}` : '—'}
-                   </p>
-                 </div>
+                  <p className="text-white/60 text-xs uppercase tracking-wider">Este mês</p>
+                  <p className={`text-sm font-bold ${monthlyRevenue[driver.id] ? 'text-white' : 'text-white/40'}`}>
+                    {monthlyRevenue[driver.id] ? `CHF ${monthlyRevenue[driver.id].toFixed(2)}` : '—'}
+                  </p>
+                </div>
 
-                 <div className="flex gap-1 md:gap-2 shrink-0">
-                   <a
-                     href={createPageUrl('DriverPortal')}
-                     target="_blank"
-                     rel="noopener noreferrer"
-                     title="Ouvrir le portail"
-                     className="w-8 h-8 md:w-9 md:h-9 rounded-lg border border-white/20 flex items-center justify-center text-white/40 hover:text-white hover:border-white/40 transition-all"
-                   >
+                <div className="flex gap-1 md:gap-2 shrink-0">
+                  <a
+                    href={createPageUrl('DriverPortal')}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    title="Abrir portal"
+                    className="w-8 h-8 md:w-9 md:h-9 rounded-lg border border-white/20 flex items-center justify-center text-white/40 hover:text-white hover:border-white/40 transition-all"
+                  >
                     <ExternalLink className="w-3 h-3 md:w-4 md:h-4" />
                   </a>
                   <button

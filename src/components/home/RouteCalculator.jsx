@@ -16,18 +16,14 @@ export default function RouteCalculator({ departure, arrival, onRouteCalculated,
   useEffect(() => {
     const handlePlaceSelected = (event) => {
       const detail = event.detail;
-      // Store coords whenever the address matches current departure or arrival
-      // Also store as "last known" for the field that just changed
-      if (detail.address === departure) {
-        departureCoords.current = { lat: detail.lat, lng: detail.lng };
+      // Match by address OR store the latest coords for each field
+      if (detail.address === departure || (!departureCoords.current && departure && detail.address)) {
+        if (detail.address === departure) {
+          departureCoords.current = { lat: detail.lat, lng: detail.lng };
+        }
       }
       if (detail.address === arrival) {
         arrivalCoords.current = { lat: detail.lat, lng: detail.lng };
-      }
-      // When geolocation sets departure and dispatches event before state updates,
-      // store by a global key so we can retrieve it
-      if (detail.isGeolocation) {
-        window.__lastGeolocatedCoords = { address: detail.address, lat: detail.lat, lng: detail.lng };
       }
     };
 
@@ -44,11 +40,6 @@ export default function RouteCalculator({ departure, arrival, onRouteCalculated,
       onCalculating?.();
       try {
         let depCoords = departureCoords.current;
-        // Fallback: use last geolocation coords if departure matches
-        if (!depCoords && window.__lastGeolocatedCoords?.address === departure) {
-          depCoords = { lat: window.__lastGeolocatedCoords.lat, lng: window.__lastGeolocatedCoords.lng };
-          departureCoords.current = depCoords;
-        }
         let arrCoords = arrivalCoords.current;
 
         // Geocode departure if not yet resolved

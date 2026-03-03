@@ -6,8 +6,6 @@ import FinanceHeader from '@/components/finance/FinanceHeader';
 import FinanceFilters from '@/components/finance/FinanceFilters';
 import FinanceContent from '@/components/finance/FinanceContent';
 import TaxSettingsForm from '@/components/finance/TaxSettingsForm';
-import PayslipGenerator from '@/components/finance/PayslipGenerator';
-import DriverPayrollForm from '@/components/finance/DriverPayrollForm';
 
 export default function Finance() {
   const [bookings, setBookings] = useState([]);
@@ -108,16 +106,6 @@ export default function Finance() {
     }, [])
     .sort((a, b) => a.name.localeCompare(b.name));
 
-  const allDrivers = bookings
-    .filter(b => b.driver_id && b.driver_id !== 'null')
-    .reduce((acc, b) => {
-      if (!acc.find(d => d.id === b.driver_id)) {
-        acc.push({ id: b.driver_id, name: b.driver_name });
-      }
-      return acc;
-    }, [])
-    .sort((a, b) => a.name.localeCompare(b.name));
-
   const handleDownloadPDF = async () => {
     try {
       const response = await base44.functions.invoke('generateFinancialReport', {
@@ -185,16 +173,6 @@ export default function Finance() {
             <TaxSettingsForm onTaxesUpdated={fetchData} />
           </div>
         )}
-
-        {/* Driver Payroll Settings */}
-        <div className="mb-8">
-          <DriverPayrollForm drivers={availableDrivers} onCreated={fetchData} />
-        </div>
-
-        {/* Payslip Generator */}
-        <div className="mb-8">
-          <PayslipGenerator drivers={allDrivers} />
-        </div>
 
         <FinanceContent
           loading={loading}
