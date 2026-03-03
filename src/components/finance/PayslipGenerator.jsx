@@ -32,13 +32,18 @@ export default function PayslipGenerator({ drivers = [] }) {
       alert('Sélectionnez un chauffeur');
       return;
     }
+    if (!grossAmount || parseFloat(grossAmount) <= 0) {
+      alert('Entrez le salaire brut du mois');
+      return;
+    }
 
     setLoading(true);
     try {
       const { data } = await base44.functions.invoke('generatePayslip', {
         driverId: selectedDriver,
         month: selectedMonth,
-        year: selectedYear
+        year: selectedYear,
+        grossAmount: parseFloat(grossAmount)
       });
 
       const blob = new Blob([data], { type: 'application/pdf' });
