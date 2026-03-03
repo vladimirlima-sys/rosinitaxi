@@ -91,7 +91,7 @@ export default function BookingForm({ bookingRef }) {
             update('departure_point', address);
             // Dispatch placeSelected so RouteCalculator gets the coords directly
             window.dispatchEvent(new CustomEvent('placeSelected', {
-              detail: { address, lat: latitude, lng: longitude }
+              detail: { address, lat: latitude, lng: longitude, isGeolocation: true }
             }));
           } else {
             toast.error(t.locationError);
