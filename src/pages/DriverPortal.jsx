@@ -290,16 +290,7 @@ export default function DriverPortal() {
     return () => clearInterval(interval);
   }, [driver]);
 
-  // Real-time subscription
-  useEffect(() => {
-    if (!driver) return;
-    const unsubscribe = base44.entities.Booking.subscribe((event) => {
-      if (event.data?.driver_id === driver.id) {
-        loadBookings(driver.id);
-      }
-    });
-    return unsubscribe;
-  }, [driver]);
+
 
   const handleLogout = () => {
     sessionStorage.removeItem('driver_portal_id');
