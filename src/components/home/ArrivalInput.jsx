@@ -1,7 +1,7 @@
 import React, { useRef, useState, useEffect } from 'react';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
-import { MapPin } from 'lucide-react';
+import { MapPin, X } from 'lucide-react';
 
 export default function ArrivalInput({ value, onChange, placeholder, t }) {
   const inputRef = useRef(null);
