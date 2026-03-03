@@ -239,8 +239,8 @@ export default function CreatePayslip() {
                   )}
                 </div>
               </div>
-              <Input label="Adresse" value={form.driver_address} onChange={v => set('driver_address', v)} placeholder="Rue, NPA Ville" />
-              <Input label="N° AVS" value={form.driver_avs} onChange={v => set('driver_avs', v)} placeholder="756.XXXX.XXXX.XX" />
+              <FormInput label="Adresse" value={form.driver_address} onChange={v => set('driver_address', v)} placeholder="Rue, NPA Ville" />
+              <FormInput label="N° AVS" value={form.driver_avs} onChange={v => set('driver_avs', v)} placeholder="756.XXXX.XXXX.XX" />
             </div>
           </div>
 
