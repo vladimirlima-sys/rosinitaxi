@@ -254,23 +254,33 @@ export default function DriverPortal() {
   };
 
   const loadBookings = async (driverId) => {
-    const all = await base44.entities.Booking.list('-departure_date', 200);
-    const mine = all.filter(b => b.driver_id === driverId && b.payment_status !== 'cancelled' && b.payment_status !== 'refunded');
+    // Prevent concurrent requests
+    if (loadingRef.current) return;
     
-    // Detect new bookings
-    const currentIds = new Set(mine.map(b => b.id));
-    if (prevBookingIds.current.size > 0) {
-      const newIds = new Set([...currentIds].filter(id => !prevBookingIds.current.has(id)));
-      if (newIds.size > 0) {
-        setNewBookingIds(newIds);
-        playSound();
-        const newB = mine.find(b => newIds.has(b.id));
-        if (newB) sendNotification('🚗 Nouvelle course attribuée !', `${newB.departure_point} → ${newB.arrival_point}`);
-        setTimeout(() => setNewBookingIds(new Set()), 10000);
+    loadingRef.current = true;
+    try {
+      const all = await base44.entities.Booking.list('-departure_date', 200);
+      const mine = all.filter(b => b.driver_id === driverId && b.payment_status !== 'cancelled' && b.payment_status !== 'refunded');
+      
+      // Detect new bookings
+      const currentIds = new Set(mine.map(b => b.id));
+      if (prevBookingIds.current.size > 0) {
+        const newIds = new Set([...currentIds].filter(id => !prevBookingIds.current.has(id)));
+        if (newIds.size > 0) {
+          setNewBookingIds(newIds);
+          playSound();
+          const newB = mine.find(b => newIds.has(b.id));
+          if (newB) sendNotification('🚗 Nouvelle course attribuée !', `${newB.departure_point} → ${newB.arrival_point}`);
+          setTimeout(() => setNewBookingIds(new Set()), 10000);
+        }
       }
+      prevBookingIds.current = currentIds;
+      setBookings(mine);
+    } catch (err) {
+      console.error('Error loading bookings:', err);
+    } finally {
+      loadingRef.current = false;
     }
-    prevBookingIds.current = currentIds;
-    setBookings(mine);
   };
 
   // Poll for updates every 30 seconds
