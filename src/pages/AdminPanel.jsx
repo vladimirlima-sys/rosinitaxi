@@ -6,6 +6,7 @@ const PASSWORD = 'Sophia051009@';
 
 const pages = [
   { name: 'CompletedTrips', label: 'Viagens Finalizadas' },
+  { name: 'Calendar', label: '📅 Calendário' },
   { name: 'Drivers', label: 'Motoristas' },
   { name: 'DriverPortal', label: 'Portal do Motorista' },
   { name: 'FAQ', label: 'FAQ' },
