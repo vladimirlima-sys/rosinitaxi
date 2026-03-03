@@ -25,7 +25,7 @@ Deno.serve(async (req) => {
   try {
     const base44 = createClientFromRequest(req);
     const body = await req.json();
-    const { booking_id, status, client_name, client_phone, departure_point, language } = body;
+    const { booking_id, status, client_name, client_phone, client_email, departure_point, language } = body;
 
     if (!booking_id || !status) {
       return Response.json({ error: 'Missing booking_id or status' }, { status: 400 });
@@ -39,10 +39,11 @@ Deno.serve(async (req) => {
     // Use booking data passed directly OR fetch from DB
     let phone = client_phone;
     let name = client_name;
+    let email = client_email;
     let dep = departure_point;
     let lang = language;
 
-    if (!phone || !name || !dep) {
+    if (!phone || !name || !dep || !email) {
       // Fetch from DB
       console.log('Fetching booking from DB...');
       const allBookings = await base44.asServiceRole.entities.Booking.list('-created_date', 200);
@@ -52,6 +53,7 @@ Deno.serve(async (req) => {
       }
       phone = phone || booking.client_phone;
       name = name || booking.client_name;
+      email = email || booking.client_email;
       dep = dep || booking.departure_point;
       lang = lang || booking.language;
     }
@@ -105,25 +107,29 @@ Deno.serve(async (req) => {
     }
 
     // Send Email using Gmail integration
-    if (body.client_email) {
+    if (email) {
       try {
+        console.log(`Attempting to send email to ${email}`);
         const gmailRes = await base44.integrations.Core.SendEmail({
-          to: body.client_email,
+          to: email,
           subject: `Rosini Transfert - ${emailSubject}`,
           body: `<html><body style="font-family: Arial, sans-serif; line-height: 1.6; color: #333;">
             <div style="max-width: 600px; margin: 0 auto; padding: 20px;">
               <h2 style="color: #F5C300;">Rosini Transfert</h2>
               ${emailBody}
               <hr style="border: none; border-top: 1px solid #eee; margin: 20px 0;">
-              <p style="color: #999; font-size: 12px;">© 2026 Rosini Transfert. Tous droits réservés.</p>
+              <p style="color: #999; font-size: 12px;">© 2026 Rosini Transfert. Todos os direitos reservados.</p>
             </div>
           </body></html>`
         });
         results.email = 'sent';
-        console.log('Email sent to', body.client_email);
+        console.log('Email sent successfully to', email);
       } catch (err) {
         console.error('Email send error:', err.message);
+        console.error('Email error details:', err);
       }
+    } else {
+      console.warn('No client email to send notification');
     }
 
     return Response.json({ success: true, results });
