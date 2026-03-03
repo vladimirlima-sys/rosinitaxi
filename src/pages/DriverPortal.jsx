@@ -180,6 +180,7 @@ export default function DriverPortal() {
   const [newBookingIds, setNewBookingIds] = useState(new Set());
   const prevBookingIds = useRef(new Set());
   const audioRef = useRef(null);
+  const loadingRef = useRef(false);
 
   // Load saved driver from sessionStorage or localStorage
   useEffect(() => {
