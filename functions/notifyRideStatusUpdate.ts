@@ -110,23 +110,17 @@ Deno.serve(async (req) => {
     if (email) {
       try {
         console.log(`Attempting to send email to ${email}`);
-        const gmailRes = await base44.integrations.Core.SendEmail({
+        const plainTextBody = emailBody.replace(/<br>/g, '\n').replace(/<[^>]*>/g, '');
+        await base44.integrations.Core.SendEmail({
           to: email,
           subject: `Rosini Transfert - ${emailSubject}`,
-          body: `<html><body style="font-family: Arial, sans-serif; line-height: 1.6; color: #333;">
-            <div style="max-width: 600px; margin: 0 auto; padding: 20px;">
-              <h2 style="color: #F5C300;">Rosini Transfert</h2>
-              ${emailBody}
-              <hr style="border: none; border-top: 1px solid #eee; margin: 20px 0;">
-              <p style="color: #999; font-size: 12px;">© 2026 Rosini Transfert. Todos os direitos reservados.</p>
-            </div>
-          </body></html>`
+          body: plainTextBody
         });
         results.email = 'sent';
         console.log('Email sent successfully to', email);
       } catch (err) {
         console.error('Email send error:', err.message);
-        console.error('Email error details:', err);
+        results.email = `error: ${err.message}`;
       }
     } else {
       console.warn('No client email to send notification');
