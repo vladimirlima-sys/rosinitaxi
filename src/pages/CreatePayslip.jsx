@@ -56,17 +56,25 @@ export default function CreatePayslip() {
   const salaire_brut = parseFloat(form.salary_brut) || 0;
   const tx = taxSettings || {};
 
+  // Taux fixes pour la fiche de salaire (part employé)
+  const RATES = {
+    avs: 4.35,
+    ai: 0.70,
+    apg: 0.25,
+    ac: 1.10,
+    pc: 0.09,
+  };
+
   const calc = (pct) => salaire_brut * (parseFloat(pct) || 0) / 100;
 
-  const avs_amount = calc(tx.avs_percentage);
-  const ai_amount = calc(tx.ai_percentage);
-  const apg_amount = calc(tx.apg_percentage);
-  const ac_amount = calc(tx.ac_percentage);
-  const af_amount = calc(tx.af_percentage);
-  const pc_amount = calc(tx.pc_percentage);
+  const avs_amount = salaire_brut * RATES.avs / 100;
+  const ai_amount = salaire_brut * RATES.ai / 100;
+  const apg_amount = salaire_brut * RATES.apg / 100;
+  const ac_amount = salaire_brut * RATES.ac / 100;
+  const pc_amount = salaire_brut * RATES.pc / 100;
   const impot_source_amount = calc(tx.impot_source_percentage);
   const other_deductions_amount = calc(tx.other_deductions_percentage);
-  const total_deductions = avs_amount + ai_amount + apg_amount + ac_amount + af_amount + pc_amount + impot_source_amount + other_deductions_amount;
+  const total_deductions = avs_amount + ai_amount + apg_amount + ac_amount + pc_amount + impot_source_amount + other_deductions_amount;
   const salary_net = salaire_brut - total_deductions;
 
   const monthLabel = `${MONTHS.find(m => m.value === form.month)?.label || ''} ${form.year}`;
