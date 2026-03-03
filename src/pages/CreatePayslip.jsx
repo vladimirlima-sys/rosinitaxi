@@ -3,6 +3,19 @@ import { base44 } from '@/api/base44Client';
 import { createPageUrl } from '@/utils';
 import { ArrowLeft, Save, Eye, Calculator } from 'lucide-react';
 
+const FormInput = ({ label, value, onChange, type = 'text', placeholder = '' }) => (
+  <div>
+    <label className="block text-xs font-semibold text-gray-500 uppercase tracking-wide mb-1">{label}</label>
+    <input
+      type={type}
+      value={value}
+      onChange={e => onChange(e.target.value)}
+      placeholder={placeholder}
+      className="w-full border border-gray-200 rounded-lg px-3 py-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-black"
+    />
+  </div>
+);
+
 const MONTHS = [
   { value: '01', label: 'Janvier' }, { value: '02', label: 'Février' },
   { value: '03', label: 'Mars' }, { value: '04', label: 'Avril' },
