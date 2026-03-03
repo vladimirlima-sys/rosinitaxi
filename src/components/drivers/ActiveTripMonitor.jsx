@@ -68,6 +68,7 @@ export default function ActiveTripMonitor({ booking }) {
         status: key,
         client_name: booking.client_name,
         client_phone: booking.client_phone,
+        client_email: booking.client_email,
         departure_point: booking.departure_point,
         language: booking.language || 'fr',
       });
