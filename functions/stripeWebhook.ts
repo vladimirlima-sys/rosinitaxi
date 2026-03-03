@@ -31,9 +31,6 @@ Deno.serve(async (req) => {
     const amount = (session.amount_total / 100).toFixed(2);
     const isShortNotice = meta.is_short_notice === 'true';
     const language = meta.language || 'fr';
-    const flightNumber = meta.flight_number || '';
-    const passengers = meta.passengers || 1;
-    const notes = meta.notes || '';
     const bookingId = meta.booking_id || null;
     const flightNumber = meta.flight_number || '';
     const passengers = meta.passengers || 1;
