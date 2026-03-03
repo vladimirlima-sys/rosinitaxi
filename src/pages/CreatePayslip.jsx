@@ -287,12 +287,11 @@ export default function CreatePayslip() {
 
             <div className="mb-3">
               <p className="text-xs font-bold text-gray-400 uppercase tracking-wide mb-2">Déductions (part employé)</p>
-              <DeductRow label="AVS" pct={tx.avs_percentage} amount={avs_amount} />
-              <DeductRow label="AI" pct={tx.ai_percentage} amount={ai_amount} />
-              <DeductRow label="APG" pct={tx.apg_percentage} amount={apg_amount} />
-              <DeductRow label="AC" pct={tx.ac_percentage} amount={ac_amount} />
-              <DeductRow label="AF" pct={tx.af_percentage} amount={af_amount} />
-              <DeductRow label="PC" pct={tx.pc_percentage} amount={pc_amount} />
+              <DeductRow label="AVS" pct={RATES.avs} amount={avs_amount} />
+              <DeductRow label="AI" pct={RATES.ai} amount={ai_amount} />
+              <DeductRow label="APG" pct={RATES.apg} amount={apg_amount} />
+              <DeductRow label="AC" pct={RATES.ac} amount={ac_amount} />
+              <DeductRow label="PC" pct={RATES.pc} amount={pc_amount} />
               <DeductRow label="Impôt à la source" pct={tx.impot_source_percentage} amount={impot_source_amount} />
               {tx.other_deductions_percentage > 0 && (
                 <DeductRow label="Autres" pct={tx.other_deductions_percentage} amount={other_deductions_amount} />
