@@ -61,11 +61,11 @@ Deno.serve(async (req) => {
       return Response.json({ success: true, skipped: true });
     }
 
-    const bookings = await base44.asServiceRole.entities.Booking.filter({ id: booking_id });
-    if (!bookings || bookings.length === 0) {
+    const allBookings = await base44.asServiceRole.entities.Booking.list();
+    const booking = allBookings.find(b => b.id === booking_id);
+    if (!booking) {
       return Response.json({ error: 'Booking not found' }, { status: 404 });
     }
-    const booking = bookings[0];
 
     const { client_name, client_phone, departure_point, language } = booking;
     const lang = (language && messages[status][language]) ? language : 'fr';
