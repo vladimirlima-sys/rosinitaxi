@@ -39,12 +39,20 @@ export default function BookingForm({ bookingRef }) {
     passengers: 1,
     client_name: '',
     client_email: '',
-    client_phone: '',
+    client_phone: '+41',
     notes: '',
     distance_km: 0
   });
+  const [phoneError, setPhoneError] = useState('');
 
-  const update = (field, value) => setForm((prev) => ({ ...prev, [field]: value }));
+  const update = (field, value) => {
+    setForm((prev) => ({ ...prev, [field]: value }));
+    if (field === 'client_phone') {
+      setPhoneError('');
+    }
+  };
+
+  const isValidPhone = (phone) => /^\+\d{1,3}\d{6,}$/.test(phone.replace(/[\s-]/g, ''));
 
   useEffect(() => {
     const fetchSettings = async () => {
@@ -189,7 +197,7 @@ export default function BookingForm({ bookingRef }) {
 
   const canProceedStep1 = form.departure_point && form.arrival_point && form.departure_date && form.departure_time && estimatedDistance > 0;
   const canProceedStep2 = !!form.vehicle_type;
-  const canProceedStep3 = form.client_name && form.client_email && form.client_phone;
+  const canProceedStep3 = form.client_name && form.client_email && isValidPhone(form.client_phone);
 
   const handlePayment = async () => {
     if (!totalPrice) return;
@@ -253,9 +261,10 @@ export default function BookingForm({ bookingRef }) {
   const resetForm = () => {
     setStep(1);
     setPaymentMethod('stripe');
-    setForm({ departure_point: '', arrival_point: '', departure_date: '', departure_time: '', flight_number: '', vehicle_type: '', passengers: 1, client_name: '', client_email: '', client_phone: '', notes: '', distance_km: 0 });
+    setForm({ departure_point: '', arrival_point: '', departure_date: '', departure_time: '', flight_number: '', vehicle_type: '', passengers: 1, client_name: '', client_email: '', client_phone: '+41', notes: '', distance_km: 0 });
     setEstimatedDistance(0);
     setEstimatedTime(0);
+    setPhoneError('');
   };
 
   const inputClass = "bg-white/10 border border-white/20 text-white placeholder:text-white/40 focus:border-white/60 focus:ring-0 h-12 rounded-lg text-sm";
@@ -542,11 +551,19 @@ export default function BookingForm({ bookingRef }) {
                 <label className={labelClass}><Phone className="inline w-3 h-3 mr-1" />{t.phoneLabel}</label>
                 <input
                   type="tel"
-                  placeholder={t.phonePlaceholder}
+                  placeholder="+41..."
                   value={form.client_phone}
                   onChange={(e) => update('client_phone', e.target.value)}
-                  className="w-full bg-white/10 border border-white/20 rounded-lg text-white text-sm p-3 outline-none placeholder:text-white/40 focus:border-white/60"
+                  className={`w-full bg-white/10 border rounded-lg text-white text-sm p-3 outline-none placeholder:text-white/40 focus:border-white/60 ${
+                    phoneError ? 'border-red-500/50' : 'border-white/20'
+                  }`}
+                  onBlur={() => {
+                    if (form.client_phone && !isValidPhone(form.client_phone)) {
+                      setPhoneError(t.phoneRequired || 'Veuillez entrer un numéro avec le préfixe du pays (ex: +41)');
+                    }
+                  }}
                 />
+                {phoneError && <p className="text-red-400 text-xs mt-1">{phoneError}</p>}
               </div>
               <div>
                 <label className={labelClass}><MessageSquare className="inline w-3 h-3 mr-1" />{t.notesLabel}</label>
