@@ -285,7 +285,6 @@ export default function CreatePayslip() {
               <DeductRow label="AC" pct={tx.ac_percentage} amount={ac_amount} />
               <DeductRow label="AF" pct={tx.af_percentage} amount={af_amount} />
               <DeductRow label="PC" pct={tx.pc_percentage} amount={pc_amount} />
-              <DeductRow label="Frais Admin." pct={tx.cont_frais_admin_percentage} amount={cont_frais_admin_amount} />
               <DeductRow label="Impôt à la source" pct={tx.impot_source_percentage} amount={impot_source_amount} />
               {tx.other_deductions_percentage > 0 && (
                 <DeductRow label="Autres" pct={tx.other_deductions_percentage} amount={other_deductions_amount} />
