@@ -64,67 +64,67 @@ Deno.serve(async (req) => {
     gap(2);
     doc.setFontSize(10);
     doc.setFont('helvetica', 'normal');
-    doc.text(`Période: ${p.month_label}`, W / 2, y, { align: 'center' });
+    doc.text(`Periode: ${s(p.month_label)}`, W / 2, y, { align: 'center' });
     gap(6);
     line();
 
     // Employee section
     doc.setFontSize(9);
     doc.setFont('helvetica', 'bold');
-    doc.text('EMPLOYÉ', margin, y);
+    doc.text('EMPLOYE', margin, y);
     gap(5);
     doc.setFont('helvetica', 'normal');
     const col2 = W / 2 + 5;
-    doc.text(`Nom: ${p.driver_name}`, margin, y);
-    doc.text(`Adresse: ${p.driver_address || '—'}`, col2, y);
+    doc.text(`Nom: ${s(p.driver_name)}`, margin, y);
+    doc.text(`Adresse: ${s(p.driver_address || '-')}`, col2, y);
     gap(5);
-    doc.text(`N° AVS: ${p.driver_avs || '—'}`, margin, y);
+    doc.text(`No AVS: ${s(p.driver_avs || '-')}`, margin, y);
     gap(5);
     line();
 
     // Salary details
     doc.setFont('helvetica', 'bold');
-    doc.text('DÉTAIL DU SALAIRE', margin, y);
+    doc.text('DETAIL DU SALAIRE', margin, y);
     gap(5);
 
     const row = (label, value, bold = false) => {
       doc.setFont('helvetica', bold ? 'bold' : 'normal');
-      doc.text(label, margin, y);
+      doc.text(s(label), margin, y);
       doc.text(typeof value === 'number' ? `CHF ${value.toFixed(2)}` : value, W - margin, y, { align: 'right' });
       gap(5);
     };
 
     row('Salaire brut', p.salary_brut, true);
-    if (p.heures_travaillees) row(`Heures travaillées: ${p.heures_travaillees}h × CHF ${p.taux_horaire || 0}`, '');
+    if (p.heures_travaillees) row(`Heures travaillees: ${p.heures_travaillees}h x CHF ${p.taux_horaire || 0}`, '');
     gap(2);
     line();
 
     // Deductions
     doc.setFont('helvetica', 'bold');
-    doc.text('DÉDUCTIONS (part employé)', margin, y);
+    doc.text('DEDUCTIONS (part employe)', margin, y);
     gap(5);
 
     const deductRow = (label, pct, amount) => {
       if (!amount) return;
       doc.setFont('helvetica', 'normal');
-      doc.text(`${label} (${pct}%)`, margin + 3, y);
+      doc.text(`${s(label)} (${pct}%)`, margin + 3, y);
       doc.text(`- CHF ${amount.toFixed(2)}`, W - margin, y, { align: 'right' });
       gap(5);
     };
 
     deductRow('AVS (Assurance-Vieillesse et Survivants)', p.avs_percentage, p.avs_amount);
-    deductRow('AI (Assurance-Invalidité)', p.ai_percentage, p.ai_amount);
+    deductRow('AI (Assurance-Invalidite)', p.ai_percentage, p.ai_amount);
     deductRow('APG (Allocations pour perte de gain)', p.apg_percentage, p.apg_amount);
-    deductRow('AC (Assurance-Chômage)', p.ac_percentage, p.ac_amount);
+    deductRow('AC (Assurance-Chomage)', p.ac_percentage, p.ac_amount);
     deductRow('AF (Allocations Familiales)', p.af_percentage, p.af_amount);
-    deductRow('PC (Prestations Complémentaires)', p.pc_percentage, p.pc_amount);
+    deductRow('PC (Prestations Complementaires)', p.pc_percentage, p.pc_amount);
     deductRow('Contribution Frais Administratifs', p.cont_frais_admin_percentage, p.cont_frais_admin_amount);
-    deductRow('Impôt à la source', p.impot_source_percentage, p.impot_source_amount);
-    if (p.other_deductions_amount) deductRow('Autres déductions', p.other_deductions_percentage, p.other_deductions_amount);
+    deductRow('Impot a la source', p.impot_source_percentage, p.impot_source_amount);
+    if (p.other_deductions_amount) deductRow('Autres deductions', p.other_deductions_percentage, p.other_deductions_amount);
 
     gap(2);
     line();
-    row('Total déductions', p.total_deductions);
+    row('Total deductions', p.total_deductions);
     line();
 
     // Net salary
@@ -133,7 +133,7 @@ Deno.serve(async (req) => {
     doc.setTextColor(255, 255, 255);
     doc.setFont('helvetica', 'bold');
     doc.setFontSize(11);
-    doc.text('SALAIRE NET À PAYER', margin + 4, y + 6.5);
+    doc.text('SALAIRE NET A PAYER', margin + 4, y + 6.5);
     doc.text(`CHF ${p.salary_net.toFixed(2)}`, W - margin - 4, y + 6.5, { align: 'right' });
     y += 14;
     doc.setTextColor(0, 0, 0);
