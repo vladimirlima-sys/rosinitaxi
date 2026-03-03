@@ -62,6 +62,7 @@ import Payslips from './pages/Payslips';
 import Reservas from './pages/Reservas';
 import Settings from './pages/Settings';
 import Taximeter from './pages/Taximeter';
+import RideTracking from './pages/RideTracking';
 import __Layout from './Layout.jsx';
 
 
@@ -81,6 +82,7 @@ export const PAGES = {
     "Reservas": Reservas,
     "Settings": Settings,
     "Taximeter": Taximeter,
+    "RideTracking": RideTracking,
 }
 
 export const pagesConfig = {
