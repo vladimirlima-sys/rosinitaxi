@@ -157,22 +157,24 @@ async function sendWhatsApp(accountSid, authToken, from, to, body) {
 }
 
 async function sendEmail(accessToken, to, subject, htmlBody) {
-  const encodedSubject = `=?UTF-8?B?${btoa(unescape(encodeURIComponent(subject)))}?=`;
-  const encodedName = `=?UTF-8?B?${btoa(unescape(encodeURIComponent('Rosini Transfert')))}?=`;
   const rawEmail = [
-    `From: ${encodedName} <me>`,
+    `From: ROSINI TRANSPORTS <noreply@rosini.ch>`,
     `To: ${to}`,
-    `Subject: ${encodedSubject}`,
+    `Subject: ${subject}`,
     `MIME-Version: 1.0`,
     `Content-Type: text/html; charset=UTF-8`,
+    `Content-Transfer-Encoding: base64`,
     ``,
     htmlBody,
   ].join('\r\n');
 
-  const encodedEmail = btoa(unescape(encodeURIComponent(rawEmail)))
-    .replace(/\+/g, '-').replace(/\//g, '_').replace(/=+$/, '');
+  // Use TextEncoder for proper UTF-8 encoding
+  const encoder = new TextEncoder();
+  const encoded = encoder.encode(rawEmail);
+  const binaryString = String.fromCharCode(...encoded);
+  const encodedEmail = btoa(binaryString).replace(/\+/g, '-').replace(/\//g, '_').replace(/=/g, '');
 
-  const res = await fetch('https://gmail.googleapis.com/gmail/v1/users/me/messages/send', {
+  const res = await fetch('https://www.googleapis.com/gmail/v1/users/me/messages/send', {
     method: 'POST',
     headers: {
       'Authorization': `Bearer ${accessToken}`,
