@@ -44,7 +44,7 @@ export default function AdminPanel() {
 
   const verifyToken = async (token) => {
     try {
-      const { data } = await base44.functions.invoke('validateAdminAccess', { token });
+      const { data } = await base44.functions.invoke('validateAdminLogin', { token });
       if (data.valid) {
         setUnlocked(true);
       } else {
@@ -61,7 +61,7 @@ export default function AdminPanel() {
     setLoading(true);
     
     try {
-      const { data } = await base44.functions.invoke('validateAdminAccess', {
+      const { data } = await base44.functions.invoke('validateAdminLogin', {
         email: email.toLowerCase(),
         password
       });
