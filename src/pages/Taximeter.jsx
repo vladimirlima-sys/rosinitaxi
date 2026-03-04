@@ -163,74 +163,34 @@ export default function Taximeter() {
     }
 
     watchIdRef.current = navigator.geolocation.watchPosition(
-      async (pos) => {
-        const { latitude, longitude, accuracy: acc } = pos.coords;
-        
-        try {
-          // Refine coordinates with HERE Positioning
-          const refined = await base44.functions.invoke('herePositioning', {
-            latitude,
-            longitude,
-            accuracy: acc
-          });
-          
-          const finalLat = refined.latitude;
-          const finalLon = refined.longitude;
-          const finalAcc = refined.accuracy;
-          
-          setAccuracy(Math.round(finalAcc));
+      (pos) => {
+         const { latitude, longitude, accuracy: acc } = pos.coords;
+         setAccuracy(Math.round(acc));
 
-          if (lastPositionRef.current) {
-            const delta = haversineKm(
-              lastPositionRef.current.lat,
-              lastPositionRef.current.lon,
-              finalLat,
-              finalLon
-            );
-            if (delta > 0 && delta < 0.5 && finalAcc < 50) {
-              distanceRef.current += delta;
-              const km = distanceRef.current;
-              const baseFare = getBaseFare();
-              const pricePerKm = getPricePerKm();
-              const nightSurchargePercent = getNightSurchargePercentage();
-              
-              const basePrice = baseFare + km * pricePerKm;
-              const nightSurcharge = basePrice * (nightSurchargePercent / 100);
-              const price = basePrice + nightSurcharge + waitingPrice;
-              
-              setDistanceKm(parseFloat(km.toFixed(3)));
-              setTotalPrice(parseFloat(price.toFixed(2)));
-            }
-          }
-          lastPositionRef.current = { lat: finalLat, lon: finalLon };
-        } catch (err) {
-          // Fallback to raw coordinates if HERE fails
-          setAccuracy(Math.round(acc));
-          
-          if (lastPositionRef.current) {
-            const delta = haversineKm(
-              lastPositionRef.current.lat,
-              lastPositionRef.current.lon,
-              latitude,
-              longitude
-            );
-            if (delta > 0 && delta < 0.5 && acc < 50) {
-              distanceRef.current += delta;
-              const km = distanceRef.current;
-              const baseFare = getBaseFare();
-              const pricePerKm = getPricePerKm();
-              const nightSurchargePercent = getNightSurchargePercentage();
-              
-              const basePrice = baseFare + km * pricePerKm;
-              const nightSurcharge = basePrice * (nightSurchargePercent / 100);
-              const price = basePrice + nightSurcharge + waitingPrice;
-              
-              setDistanceKm(parseFloat(km.toFixed(3)));
-              setTotalPrice(parseFloat(price.toFixed(2)));
-            }
-          }
-          lastPositionRef.current = { lat: latitude, lon: longitude };
-        }
+         // Use raw coordinates directly - simplify by removing HERE call
+         if (lastPositionRef.current) {
+           const delta = haversineKm(
+             lastPositionRef.current.lat,
+             lastPositionRef.current.lon,
+             latitude,
+             longitude
+           );
+           if (delta > 0 && delta < 0.5 && acc < 50) {
+             distanceRef.current += delta;
+             const km = distanceRef.current;
+             const baseFare = getBaseFare();
+             const pricePerKm = getPricePerKm();
+             const nightSurchargePercent = getNightSurchargePercentage();
+
+             const basePrice = baseFare + km * pricePerKm;
+             const nightSurcharge = basePrice * (nightSurchargePercent / 100);
+             const price = basePrice + nightSurcharge + waitingPrice;
+
+             setDistanceKm(parseFloat(km.toFixed(3)));
+             setTotalPrice(parseFloat(price.toFixed(2)));
+           }
+         }
+         lastPositionRef.current = { lat: latitude, lon: longitude };
       },
       (err) => {
         let message = err.message;
