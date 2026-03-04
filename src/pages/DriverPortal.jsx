@@ -6,7 +6,10 @@ import ActiveTripMonitor from '@/components/drivers/ActiveTripMonitor';
 // DriverPortal - clean version
 
 export default function DriverPortal() {
+  const [authMode, setAuthMode] = useState('code'); // 'code' ou 'email'
   const [driverCode, setDriverCode] = useState('');
+  const [email, setEmail] = useState('');
+  const [password, setPassword] = useState('');
   const [rememberPassword, setRememberPassword] = useState(false);
   const [driver, setDriver] = useState(null);
   const [bookings, setBookings] = useState([]);
@@ -16,6 +19,7 @@ export default function DriverPortal() {
   const [showEarnings, setShowEarnings] = useState(false);
   const [lastUpdated, setLastUpdated] = useState(null);
   const [newBookingIds, setNewBookingIds] = useState(new Set());
+  const [allowedPages, setAllowedPages] = useState([]);
   const prevBookingIds = useRef(new Set());
   const loadingRef = useRef(false);
   const tokenRef = useRef(null);
@@ -98,6 +102,34 @@ export default function DriverPortal() {
       }
     } catch (err) {
       setError('Erreur de connexion. Réessayez.');
+      console.error('Login error:', err);
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  const loginWithEmail = async (emailInput, passwordInput) => {
+    if (!emailInput || !passwordInput) return;
+    setLoading(true);
+    setError('');
+    try {
+      const { data } = await base44.functions.invoke('validateDriverCredentials', { 
+        email: emailInput.toLowerCase(),
+        password: passwordInput
+      });
+      
+      if (data.success) {
+        setDriver(data.driver);
+        setAllowedPages(data.allowed_pages || []);
+        tokenRef.current = data.token;
+        localStorage.setItem('driver_auth_token', data.token);
+        if (rememberPassword) localStorage.setItem('driver_portal_email', emailInput);
+        await loadBookings(data.driver.id);
+      } else {
+        setError('Email ou senha incorretos.');
+      }
+    } catch (err) {
+      setError(err.response?.data?.error || 'Erreur de connexion. Réessayez.');
       console.error('Login error:', err);
     } finally {
       setLoading(false);
