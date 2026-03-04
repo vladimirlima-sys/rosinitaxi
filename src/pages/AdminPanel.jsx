@@ -66,7 +66,7 @@ export default function AdminPanel() {
             <p className="text-black/60 text-sm tracking-[0.2em] uppercase mt-2">PANNEAU ADMINISTRATIF</p>
           </div>
           <form onSubmit={handleSubmit} className="bg-black border border-black/40 rounded-xl p-6 space-y-4">
-            <a href={createPageUrl('Home')} className="text-white/60 hover:text-white text-sm transition-colors mb-2 block">← Voltar</a>
+            <a href={createPageUrl('Home')} className="text-white/60 hover:text-white text-sm transition-colors mb-2 block">← Retour</a>
             <div className="flex justify-center mb-4">
               <div className="w-12 h-12 rounded-full bg-white/10 border border-white/20 flex items-center justify-center">
                 <Lock className="w-5 h-5 text-white" />
