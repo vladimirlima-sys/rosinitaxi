@@ -1,5 +1,6 @@
-import React, { useState } from 'react';
-import { ChevronDown, User } from 'lucide-react';
+import React, { useState, useEffect, useRef } from 'react';
+import { ChevronDown, User, GripVertical, ExternalLink } from 'lucide-react';
+import { createPageUrl } from '@/utils';
 
 const STATUS_STYLES = {
   pending: { border: 'border-l-yellow-400', bg: 'bg-yellow-400/10', dot: 'bg-yellow-400', label: 'En attente' },
