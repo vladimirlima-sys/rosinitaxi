@@ -5,7 +5,8 @@ import AdminKPIs from '@/components/admin/AdminKPIs';
 import {
   Lock, LogOut, LayoutDashboard, List,
   CalendarDays, Car, Users, Settings, BarChart2,
-  FileText, Map, Smartphone, HelpCircle, ChevronRight, Eye, EyeOff
+  FileText, Map, Smartphone, HelpCircle, ChevronRight, Eye, EyeOff,
+  Receipt, BookOpen, Star
 } from 'lucide-react';
 
 const navPages = [
@@ -14,7 +15,10 @@ const navPages = [
   { name: 'Drivers', label: 'Chauffeurs', icon: Car },
   { name: 'Clients', label: 'Clients', icon: Users },
   { name: 'Finance', label: 'Finances', icon: BarChart2 },
-  { name: 'FinancialReports', label: 'Rapports', icon: FileText },
+  { name: 'FinancialReports', label: 'Rapports financiers', icon: FileText },
+  { name: 'Payslips', label: 'Fiches de paie', icon: Receipt },
+  { name: 'CreatePayslip', label: 'Créer fiche de paie', icon: Receipt },
+  { name: 'MyBookings', label: 'Mes réservations (client)', icon: BookOpen },
   { name: 'Settings', label: 'Paramètres', icon: Settings },
   { name: 'Taximeter', label: 'Taximètre', icon: Smartphone },
   { name: 'DriverPortal', label: 'Portail Chauffeur', icon: Map },
