@@ -24,13 +24,32 @@ export default function Taximeter() {
   const waitingIntervalRef = useRef(null);
 
   useEffect(() => {
+    // Load from cache first
+    const cached = localStorage.getItem('price_settings_cache');
+    if (cached) {
+      const { data, timestamp } = JSON.parse(cached);
+      if (Date.now() - timestamp < 10 * 60 * 1000) {
+        setPriceSettings(data);
+      }
+    }
+
     base44.entities.PriceSettings.list().then(data => {
-      if (data?.length > 0) setPriceSettings(data[0]);
+      if (data?.length > 0) {
+        setPriceSettings(data[0]);
+        localStorage.setItem('price_settings_cache', JSON.stringify({
+          data: data[0],
+          timestamp: Date.now()
+        }));
+      }
     });
 
     // Subscribe to price settings changes
     const unsubscribe = base44.entities.PriceSettings.subscribe((event) => {
       setPriceSettings(event.data);
+      localStorage.setItem('price_settings_cache', JSON.stringify({
+        data: event.data,
+        timestamp: Date.now()
+      }));
     });
 
     return unsubscribe;

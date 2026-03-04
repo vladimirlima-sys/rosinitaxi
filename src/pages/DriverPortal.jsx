@@ -118,7 +118,8 @@ export default function DriverPortal() {
   }, [driver]);
 
   const handleLogout = () => {
-    sessionStorage.removeItem('driver_portal_id');
+    localStorage.removeItem('driver_auth_token');
+    tokenRef.current = null;
     if (!rememberPassword) {
       localStorage.removeItem('driver_portal_code');
       setDriverCode('');
