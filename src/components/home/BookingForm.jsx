@@ -222,6 +222,13 @@ export default function BookingForm({ bookingRef }) {
 
   const handlePayment = async () => {
     if (!totalPrice) return;
+    
+    // Check if running from iframe - applies to all payment methods
+    if (window.self !== window.top) {
+      toast.error(t.checkoutFromPublishedApp);
+      return;
+    }
+    
     setIsSubmitting(true);
     try {
       const driverFields = selectedDriver
@@ -229,11 +236,6 @@ export default function BookingForm({ bookingRef }) {
         : {};
 
       if (paymentMethod === 'stripe') {
-        if (window.self !== window.top) {
-          toast.error(t.checkoutFromPublishedApp);
-          setIsSubmitting(false);
-          return;
-        }
         const createdBookingForStripe = await base44.entities.Booking.create({ ...form, ...driverFields, total_price: parseFloat(totalPrice), payment_status: 'pending', payment_method: 'stripe', language: lang });
         sessionStorage.setItem('pendingBooking', JSON.stringify({ ...form, total_price: parseFloat(totalPrice), distance_km: estimatedDistance, language: lang }));
         const response = await base44.functions.invoke('createCheckout', {

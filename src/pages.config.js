@@ -57,13 +57,13 @@ import Drivers from './pages/Drivers';
 import FAQ from './pages/FAQ';
 import Finance from './pages/Finance';
 import FinancialReports from './pages/FinancialReports';
-import Home from './pages/Home';
 import MyBookings from './pages/MyBookings';
 import Payslips from './pages/Payslips';
 import Reservas from './pages/Reservas';
 import RideTracking from './pages/RideTracking';
 import Settings from './pages/Settings';
 import Taximeter from './pages/Taximeter';
+import Home from './pages/Home';
 import __Layout from './Layout.jsx';
 
 
@@ -78,13 +78,13 @@ export const PAGES = {
     "FAQ": FAQ,
     "Finance": Finance,
     "FinancialReports": FinancialReports,
-    "Home": Home,
     "MyBookings": MyBookings,
     "Payslips": Payslips,
     "Reservas": Reservas,
     "RideTracking": RideTracking,
     "Settings": Settings,
     "Taximeter": Taximeter,
+    "Home": Home,
 }
 
 export const pagesConfig = {
