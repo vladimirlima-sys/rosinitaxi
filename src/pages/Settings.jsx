@@ -185,7 +185,7 @@ export default function Settings() {
             <Field label="Endereço">
               <Input type="text" value={companySettings.company_address || ''}
                 onChange={e => setCompany('company_address', e.target.value)}
-                className="bg-white/5 border-white/10 text-white focus:border-[#C9A96E] h-12" />
+                className="bg-white/5 border-white/10 text-white focus:border-[#F5C300] h-12" />
             </Field>
             <div className="grid grid-cols-2 gap-4">
               <Field label="Número de Registro (CHE)">
