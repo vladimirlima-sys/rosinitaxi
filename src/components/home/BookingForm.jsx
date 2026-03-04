@@ -689,8 +689,9 @@ export default function BookingForm({ bookingRef }) {
                 { value: 'twint', label: t.twintLabel, desc: t.twintDesc },
                 { value: 'cash', label: t.cashLabel, desc: t.cashDesc },
               ].map((opt) => (
-                <label
+                <div
                   key={opt.value}
+                  onClick={() => setPaymentMethod(opt.value)}
                   className={`flex items-center gap-3 cursor-pointer p-3 rounded-lg border transition-all ${
                     paymentMethod === opt.value
                       ? 'border-[#F5C300] bg-white/10'
@@ -703,11 +704,12 @@ export default function BookingForm({ bookingRef }) {
                     value={opt.value}
                     checked={paymentMethod === opt.value}
                     onChange={(e) => setPaymentMethod(e.target.value)}
-                    className="w-4 h-4 accent-[#F5C300]"
+                    className="w-4 h-4 accent-[#F5C300] cursor-pointer"
+                    onClick={(e) => e.stopPropagation()}
                   />
                   <span className="text-white text-sm font-medium flex-1">{opt.label}</span>
                   <span className="text-white/50 text-xs">{opt.desc}</span>
-                </label>
+                </div>
               ))}
             </div>
 
