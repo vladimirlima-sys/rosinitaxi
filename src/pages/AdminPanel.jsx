@@ -23,45 +23,33 @@ const navPages = [
 ];
 
 export default function AdminPanel() {
-  const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [unlocked, setUnlocked] = useState(false);
   const [error, setError] = useState('');
-  const [loading, setLoading] = useState(false);
   const [tab, setTab] = useState('dashboard');
   const [showPassword, setShowPassword] = useState(false);
 
+  const ADMIN_PASSWORD = 'Rosini2025@';
+
   useEffect(() => {
-    base44.auth.me()
-      .then(user => {
-        if (user?.role === 'admin') setUnlocked(true);
-      })
-      .catch(() => {});
+    if (localStorage.getItem('admin_unlocked') === 'true') setUnlocked(true);
   }, []);
 
-  const handleSubmit = async (e) => {
+  const handleSubmit = (e) => {
     e.preventDefault();
-    setError('');
-    setLoading(true);
-    try {
-      await base44.auth.login(email, password);
-      const user = await base44.auth.me();
-      if (user?.role === 'admin') {
-        setUnlocked(true);
-      } else {
-        setError('Acesso negado. Apenas administradores.');
-        await base44.auth.logout();
-      }
-    } catch (err) {
-      setError('Email ou senha incorretos.');
+    if (password === ADMIN_PASSWORD) {
+      setUnlocked(true);
+      setError('');
+      localStorage.setItem('admin_unlocked', 'true');
+    } else {
+      setError('Senha incorreta.');
+      setPassword('');
     }
-    setLoading(false);
   };
 
-  const handleLogout = async () => {
-    await base44.auth.logout();
+  const handleLogout = () => {
     setUnlocked(false);
-    setEmail('');
+    localStorage.removeItem('admin_unlocked');
     setPassword('');
   };
 
