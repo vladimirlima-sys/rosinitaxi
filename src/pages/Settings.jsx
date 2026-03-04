@@ -301,10 +301,10 @@ export default function SettingsPage() {
                 </p>
               </div>
             )}
-          </Section>
+            </Section>
 
-          {/* Adicional noturno */}
-          <Section title="Adicional Noturno">
+            {/* Adicional noturno */}
+            <Section title="Adicional Noturno">
             <Field label="Percentual do adicional (%)" hint="Ex: 10 = +10% sobre o valor total">
               <Input type="number" step="0.1" min="0" value={priceSettings.night_surcharge_percentage}
                 onChange={e => set('night_surcharge_percentage', e.target.value)}
