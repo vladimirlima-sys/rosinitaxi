@@ -337,10 +337,10 @@ export default function SettingsPage() {
                 </p>
               </div>
             )}
-          </Section>
+            </Section>
 
-          {/* Configurações de Impostos */}
-          <Section title="Configurações de Impostos">
+            {/* Configurações de Impostos */}
+            <Section title="Configurações de Impostos">
             <div className="grid grid-cols-2 gap-4">
               <Field label="AVS (%)">
                 <Input type="number" step="0.01" min="0" value={taxSettings.avs_percentage}
