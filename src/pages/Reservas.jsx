@@ -14,22 +14,29 @@ export default function Reservas() {
     const checkAuth = async () => {
       try {
         const user = await base44.auth.me();
-        if (user?.role !== 'admin') {
+        if (!user || user?.role !== 'admin') {
+          console.warn('User is not admin or not authenticated');
           window.location.href = createPageUrl('AdminPanel');
           return;
         }
         
-        // Fetch stats
-        const bookings = await base44.asServiceRole.entities.Booking.list('-created_date', 500);
-        const stats = {
-          total: bookings.length,
-          pending: bookings.filter(b => b.payment_status === 'pending').length,
-          paid: bookings.filter(b => b.payment_status === 'paid').length,
-          cancelled: bookings.filter(b => b.payment_status === 'cancelled').length,
-          revenue: bookings.filter(b => b.payment_status === 'paid').reduce((sum, b) => sum + (b.total_price || 0), 0),
-        };
-        setStats(stats);
         setIsAuthorized(true);
+        
+        // Fetch stats (non-blocking)
+        try {
+          const bookings = await base44.asServiceRole.entities.Booking.list('-created_date', 500);
+          const stats = {
+            total: bookings.length,
+            pending: bookings.filter(b => b.payment_status === 'pending').length,
+            paid: bookings.filter(b => b.payment_status === 'paid').length,
+            cancelled: bookings.filter(b => b.payment_status === 'cancelled').length,
+            revenue: bookings.filter(b => b.payment_status === 'paid').reduce((sum, b) => sum + (b.total_price || 0), 0),
+          };
+          setStats(stats);
+        } catch (statsError) {
+          console.error('Stats error:', statsError);
+          setStats({ total: 0, pending: 0, paid: 0, cancelled: 0, revenue: 0 });
+        }
       } catch (error) {
         console.error('Auth error:', error);
         window.location.href = createPageUrl('AdminPanel');
