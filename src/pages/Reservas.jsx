@@ -10,6 +10,22 @@ export default function Reservas() {
   const [loading, setLoading] = useState(true);
   const [stats, setStats] = useState(null);
 
+  const recalculateStats = async () => {
+    try {
+      const bookings = await base44.asServiceRole.entities.Booking.list('-created_date', 500);
+      const newStats = {
+        total: bookings.length,
+        pending: bookings.filter(b => b.payment_status === 'pending').length,
+        paid: bookings.filter(b => b.payment_status === 'paid').length,
+        cancelled: bookings.filter(b => b.payment_status === 'cancelled').length,
+        revenue: bookings.filter(b => b.payment_status === 'paid').reduce((sum, b) => sum + (b.total_price || 0), 0),
+      };
+      setStats(newStats);
+    } catch (error) {
+      console.error('Error recalculating stats:', error);
+    }
+  };
+
   useEffect(() => {
     const checkAuth = async () => {
       try {
@@ -21,24 +37,7 @@ export default function Reservas() {
         }
         
         setIsAuthorized(true);
-        
-        // Fetch stats (non-blocking)
-        if (user?.role === 'admin') {
-          try {
-            const bookings = await base44.asServiceRole.entities.Booking.list('-created_date', 500);
-            const stats = {
-              total: bookings.length,
-              pending: bookings.filter(b => b.payment_status === 'pending').length,
-              paid: bookings.filter(b => b.payment_status === 'paid').length,
-              cancelled: bookings.filter(b => b.payment_status === 'cancelled').length,
-              revenue: bookings.filter(b => b.payment_status === 'paid').reduce((sum, b) => sum + (b.total_price || 0), 0),
-            };
-            setStats(stats);
-          } catch (statsError) {
-            console.error('Stats error:', statsError);
-            setStats({ total: 0, pending: 0, paid: 0, cancelled: 0, revenue: 0 });
-          }
-        }
+        await recalculateStats();
       } catch (error) {
         console.error('Auth error:', error);
         window.location.href = createPageUrl('AdminPanel');
@@ -50,23 +49,7 @@ export default function Reservas() {
     checkAuth();
     
     // Subscribe to real-time updates
-    const unsubscribe = base44.entities.Booking.subscribe((event) => {
-      // Trigger a refresh of the KPI stats
-      const recalculateStats = async () => {
-        try {
-          const bookings = await base44.asServiceRole.entities.Booking.list('-created_date', 500);
-          const newStats = {
-            total: bookings.length,
-            pending: bookings.filter(b => b.payment_status === 'pending').length,
-            paid: bookings.filter(b => b.payment_status === 'paid').length,
-            cancelled: bookings.filter(b => b.payment_status === 'cancelled').length,
-            revenue: bookings.filter(b => b.payment_status === 'paid').reduce((sum, b) => sum + (b.total_price || 0), 0),
-          };
-          setStats(newStats);
-        } catch (error) {
-          console.error('Error recalculating stats:', error);
-        }
-      };
+    const unsubscribe = base44.entities.Booking.subscribe(() => {
       recalculateStats();
     });
 
