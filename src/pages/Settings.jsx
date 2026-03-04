@@ -284,10 +284,10 @@ export default function SettingsPage() {
                 onChange={e => set('airport_fee', e.target.value)}
                 className="bg-white/5 border-white/10 text-white focus:border-[#C9A96E] h-12" />
             </Field>
-          </Section>
+            </Section>
 
-          {/* Adicional Valais & Fribourg */}
-          <Section title="Adicional Regional — Valais & Fribourg">
+            {/* Adicional Valais & Fribourg */}
+            <Section title="Adicional Regional — Valais & Fribourg">
             <Field label="Percentual do adicional (%)" hint="Aplicado automaticamente para corridas originadas nesses cantões">
               <Input type="number" step="0.1" min="0" value={priceSettings.valais_fribourg_surcharge_percentage}
                 onChange={e => set('valais_fribourg_surcharge_percentage', e.target.value)}
