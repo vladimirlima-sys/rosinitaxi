@@ -40,12 +40,16 @@ export default function Taximeter() {
 
   const getPricePerKm = () => {
     if (!priceSettings) return 2.30;
+    const standard = priceSettings.taximeter_standard_price_per_km || 2.30;
     return vehicleType === 'comfort' 
-      ? (priceSettings.taximeter_comfort_price_per_km || priceSettings.taximeter_standard_price_per_km * 1.3)
-      : priceSettings.taximeter_standard_price_per_km;
+      ? (priceSettings.taximeter_comfort_price_per_km || standard * 1.3)
+      : standard;
   };
 
-  const getBaseFare = () => priceSettings?.taximeter_base_fare || 10;
+  const getBaseFare = () => {
+    const fare = priceSettings?.taximeter_base_fare;
+    return typeof fare === 'number' && fare >= 0 ? fare : 10;
+  };
   
   const getWaitingPricePerMinute = () => priceSettings?.taximeter_waiting_price_per_minute || 0.30;
 
