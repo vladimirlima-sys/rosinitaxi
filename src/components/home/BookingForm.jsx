@@ -445,7 +445,7 @@ export default function BookingForm({ bookingRef }) {
             </div>
 
             {/* Passengers */}
-            <div className="bg-black border border-black/40 rounded-xl p-4">
+             <div className="bg-black border border-black/40 rounded-xl p-3 sm:p-4">
               <label className={labelClass}>{t.passengersLabel}</label>
               <div className="flex gap-2 mt-2">
                 {[1, 2, 3, 4].map((num) => (
