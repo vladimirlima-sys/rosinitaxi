@@ -140,8 +140,26 @@ export default function SettingsPage() {
 
 
 
-  const standardPreview = (settings.standard_price_per_km || 0);
-  const comfortPreview = (settings.comfort_price_per_km || standardPreview * 1.3);
+  const standardPreview = (priceSettings.standard_price_per_km || 0);
+  const comfortPreview = (priceSettings.comfort_price_per_km || standardPreview * 1.3);
+
+  // Simulador detalhado
+  const calculatePrice = (distanceKm, vehicleType = 'standard', isNight = false) => {
+    const pricePerKm = vehicleType === 'comfort' ? comfortPreview : standardPreview;
+    const baseKm = distanceKm * pricePerKm;
+    const baseFare = priceSettings.base_fare || 0;
+    const subtotal = baseKm + baseFare;
+    
+    let surcharges = 0;
+    if (isNight && priceSettings.night_surcharge_percentage > 0) {
+      surcharges += subtotal * (priceSettings.night_surcharge_percentage / 100);
+    }
+    if (priceSettings.valais_fribourg_surcharge_percentage > 0) {
+      surcharges += subtotal * (priceSettings.valais_fribourg_surcharge_percentage / 100);
+    }
+    
+    return { baseKm, baseFare, subtotal, surcharges, total: subtotal + surcharges };
+  };
 
   return (
     <div className="min-h-screen bg-[#0A0A0A] py-12 px-6">
