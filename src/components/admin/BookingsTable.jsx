@@ -1,6 +1,6 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState, useMemo } from 'react';
 import { base44 } from '@/api/base44Client';
-import { Loader2, Trash2 } from 'lucide-react';
+import { Loader2, Trash2, Search } from 'lucide-react';
 import { toast } from 'sonner';
 import BookingRow from './BookingRow';
 import BookingsFilters from './BookingsFilters';
@@ -9,6 +9,8 @@ export default function BookingsTable() {
   const [bookings, setBookings] = useState([]);
   const [drivers, setDrivers] = useState([]);
   const [loading, setLoading] = useState(true);
+  const [searchQuery, setSearchQuery] = useState('');
+  const [currentPage, setCurrentPage] = useState(1);
   const [filters, setFilters] = useState({
     date: '',
     status: 'all',
@@ -19,6 +21,8 @@ export default function BookingsTable() {
   const [seenIds, setSeenIds] = useState(() => {
     try { return new Set(JSON.parse(localStorage.getItem('seen_booking_ids') || '[]')); } catch { return new Set(); }
   });
+  
+  const ITEMS_PER_PAGE = 10;
 
   useEffect(() => {
     const fetchBookings = async () => {
