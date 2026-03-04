@@ -181,7 +181,7 @@ export default function Clients() {
         </div>
 
         {/* Stats */}
-        <div className="grid grid-cols-1 sm:grid-cols-3 gap-4 mb-8">
+        <div className="grid grid-cols-2 sm:grid-cols-4 gap-4 mb-8">
           <Card className="bg-zinc-900 border-zinc-800">
             <CardContent className="p-4">
               <div className="flex items-center gap-3">
