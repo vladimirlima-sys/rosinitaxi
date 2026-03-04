@@ -465,8 +465,8 @@ export default function BookingForm({ bookingRef }) {
             </div>
 
             {/* Price preview */}
-            {estimatedDistance > 0 && (
-              <div className="bg-black border border-black/40 rounded-xl p-4 flex items-center justify-between">
+             {estimatedDistance > 0 && (
+               <div className="bg-black border border-black/40 rounded-xl p-3 sm:p-4 flex items-center justify-between">
                 <div>
                   <p className="text-white/60 text-xs uppercase tracking-wider">{t.estimatedPrice}</p>
                   <p className="text-white text-sm mt-0.5">{estimatedDistance} km · {Math.floor(estimatedTime / 60)}h{estimatedTime % 60}min</p>
