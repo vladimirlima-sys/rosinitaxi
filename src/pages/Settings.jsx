@@ -70,6 +70,7 @@ export default function Settings() {
   const [isSaving, setIsSaving] = useState(false);
   const [companySaving, setCompanySaving] = useState(false);
   const [taximeterSaving, setTaximeterSaving] = useState(false);
+  const [pricingSaving, setPricingSaving] = useState(false);
 
   useEffect(() => {
     if (localStorage.getItem('admin_unlocked') !== 'true') {
@@ -164,6 +165,28 @@ export default function Settings() {
       toast.error('Erro ao salvar informações');
     } finally {
       setCompanySaving(false);
+    }
+  };
+
+  const handleSavePricing = async () => {
+    setPricingSaving(true);
+    try {
+      if (priceSettings.id) {
+        await base44.entities.PriceSettings.update(priceSettings.id, {
+          standard_price_per_km: priceSettings.standard_price_per_km,
+          comfort_price_per_km: priceSettings.comfort_price_per_km,
+        });
+      } else {
+        await base44.entities.PriceSettings.create({
+          standard_price_per_km: priceSettings.standard_price_per_km,
+          comfort_price_per_km: priceSettings.comfort_price_per_km,
+        });
+      }
+      toast.success('✓ Tarifas por quilômetro atualizadas');
+    } catch {
+      toast.error('Erro ao salvar tarifas');
+    } finally {
+      setPricingSaving(false);
     }
   };
 
@@ -335,6 +358,10 @@ export default function Settings() {
                 </div>
               </div>
             </div>
+            <Button onClick={handleSavePricing} disabled={pricingSaving}
+              className="w-full bg-[#F5C300] hover:bg-[#E6B800] text-black font-semibold h-12 text-sm mt-4">
+              {pricingSaving ? <><Loader2 className="w-4 h-4 mr-2 animate-spin" />Salvando...</> : 'Salvar Tarifas por Quilômetro'}
+            </Button>
             </Section>
 
             {/* Taxas fixas */}
