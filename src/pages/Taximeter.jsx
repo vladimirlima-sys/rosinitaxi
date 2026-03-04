@@ -27,6 +27,13 @@ export default function Taximeter() {
     base44.entities.PriceSettings.list().then(data => {
       if (data?.length > 0) setPriceSettings(data[0]);
     });
+
+    // Subscribe to price settings changes
+    const unsubscribe = base44.entities.PriceSettings.subscribe((event) => {
+      setPriceSettings(event.data);
+    });
+
+    return unsubscribe;
   }, []);
 
   const WAITING_PRICE_PER_MINUTE = 0.30;
