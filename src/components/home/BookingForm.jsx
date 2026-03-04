@@ -153,7 +153,21 @@ export default function BookingForm({ bookingRef }) {
     if (form.departure_date && form.departure_time && priceSettings.night_surcharge_percentage > 0) {
       const dt = new Date(`${form.departure_date}T${form.departure_time}:00`);
       const day = dt.getDay(), hour = dt.getHours();
-      if (day === priceSettings.night_surcharge_day && hour >= priceSettings.night_surcharge_start_hour && hour < priceSettings.night_surcharge_end_hour) {
+      const nightSurchargeDays = priceSettings.night_surcharge_days || [];
+      
+      // Check if day matches and hour is in range (considering midnight crossing)
+      let isNightTime = false;
+      if (nightSurchargeDays.includes(day)) {
+        if (priceSettings.night_surcharge_start_hour > priceSettings.night_surcharge_end_hour) {
+          // Crosses midnight
+          isNightTime = hour >= priceSettings.night_surcharge_start_hour || hour < priceSettings.night_surcharge_end_hour;
+        } else {
+          // Normal range
+          isNightTime = hour >= priceSettings.night_surcharge_start_hour && hour < priceSettings.night_surcharge_end_hour;
+        }
+      }
+      
+      if (isNightTime) {
         total *= 1 + priceSettings.night_surcharge_percentage / 100;
       }
     }

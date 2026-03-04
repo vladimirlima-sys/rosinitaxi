@@ -23,10 +23,17 @@ export default function PricingBreakdown({
   const hour = dateObj.getHours();
 
   // Check if night surcharge applies
-  const isNightSurcharge =
-  dayOfWeek === priceSettings.night_surcharge_day &&
-  hour >= priceSettings.night_surcharge_start_hour &&
-  hour < priceSettings.night_surcharge_end_hour;
+  const nightSurchargeDays = priceSettings.night_surcharge_days || [];
+  let isNightSurcharge = false;
+  if (nightSurchargeDays.includes(dayOfWeek)) {
+    if (priceSettings.night_surcharge_start_hour > priceSettings.night_surcharge_end_hour) {
+      // Crosses midnight
+      isNightSurcharge = hour >= priceSettings.night_surcharge_start_hour || hour < priceSettings.night_surcharge_end_hour;
+    } else {
+      // Normal range
+      isNightSurcharge = hour >= priceSettings.night_surcharge_start_hour && hour < priceSettings.night_surcharge_end_hour;
+    }
+  }
 
   // Check if airport fee applies
   const isAirportTransfer =
