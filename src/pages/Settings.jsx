@@ -281,12 +281,12 @@ export default function SettingsPage() {
           {/* Taxas fixas */}
           <Section title="Taxas Fixas">
             <Field label="Taxa Base (CHF)" hint="Adicionada em corridas até 30 km">
-              <Input type="number" step="0.01" value={settings.base_fare}
+              <Input type="number" step="0.01" min="0" value={priceSettings.base_fare}
                 onChange={e => set('base_fare', e.target.value)}
                 className="bg-white/5 border-white/10 text-white focus:border-[#C9A96E] h-12" />
             </Field>
             <Field label="Taxa Aeroporto (CHF)" hint="Adicionada quando origem ou destino é um aeroporto">
-              <Input type="number" step="0.01" value={settings.airport_fee}
+              <Input type="number" step="0.01" min="0" value={priceSettings.airport_fee}
                 onChange={e => set('airport_fee', e.target.value)}
                 className="bg-white/5 border-white/10 text-white focus:border-[#C9A96E] h-12" />
             </Field>
