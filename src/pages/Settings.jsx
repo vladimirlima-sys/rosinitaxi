@@ -261,25 +261,24 @@ export default function Settings() {
     }
   };
 
-  const handleSaveTaximeter = async () => {
+  const handleSaveTaximeter = async (field = null, value = null) => {
     setTaximeterSaving(true);
     try {
+      const updateData = field && value !== null 
+        ? { [field]: value }
+        : {
+            taximeter_standard_price_per_km: priceSettings.taximeter_standard_price_per_km,
+            taximeter_comfort_price_per_km: priceSettings.taximeter_comfort_price_per_km,
+            taximeter_base_fare: priceSettings.taximeter_base_fare,
+            taximeter_waiting_price_per_minute: priceSettings.taximeter_waiting_price_per_minute,
+          };
+
       if (priceSettings.id) {
-        await base44.entities.PriceSettings.update(priceSettings.id, {
-          taximeter_standard_price_per_km: priceSettings.taximeter_standard_price_per_km,
-          taximeter_comfort_price_per_km: priceSettings.taximeter_comfort_price_per_km,
-          taximeter_base_fare: priceSettings.taximeter_base_fare,
-          taximeter_waiting_price_per_minute: priceSettings.taximeter_waiting_price_per_minute,
-        });
+        await base44.entities.PriceSettings.update(priceSettings.id, updateData);
       } else {
-        await base44.entities.PriceSettings.create({
-          taximeter_standard_price_per_km: priceSettings.taximeter_standard_price_per_km,
-          taximeter_comfort_price_per_km: priceSettings.taximeter_comfort_price_per_km,
-          taximeter_base_fare: priceSettings.taximeter_base_fare,
-          taximeter_waiting_price_per_minute: priceSettings.taximeter_waiting_price_per_minute,
-        });
+        await base44.entities.PriceSettings.create(updateData);
       }
-      toast.success('✓ Configurações do taximètre atualizadas');
+      if (!field) toast.success('✓ Configurações do taximètre atualizadas');
     } catch {
       toast.error('Erro ao salvar configurações do taximètre');
     } finally {
