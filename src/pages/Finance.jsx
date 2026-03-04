@@ -6,11 +6,11 @@ import FinanceHeader from '@/components/finance/FinanceHeader';
 import FinanceFilters from '@/components/finance/FinanceFilters';
 import FinanceContent from '@/components/finance/FinanceContent';
 import TaxSettingsForm from '@/components/finance/TaxSettingsForm';
-import FinanceMetrics from '@/components/finance/FinanceMetrics';
-import TrendChart from '@/components/finance/TrendChart';
-import PaymentMethodsSummary from '@/components/finance/PaymentMethodsSummary';
-import DriverProfitability from '@/components/finance/DriverProfitability';
-import RecurringExpensesAlert from '@/components/finance/RecurringExpensesAlert';
+import FinanceMetrics from '@/components/finance/FinanceMetrics.jsx';
+import TrendChart from '@/components/finance/TrendChart.jsx';
+import PaymentMethodsSummary from '@/components/finance/PaymentMethodsSummary.jsx';
+import DriverProfitability from '@/components/finance/DriverProfitability.jsx';
+import RecurringExpensesAlert from '@/components/finance/RecurringExpensesAlert.jsx';
 
 export default function Finance() {
   const [bookings, setBookings] = useState([]);
