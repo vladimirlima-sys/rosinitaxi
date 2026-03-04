@@ -3,7 +3,7 @@ import { ArrowLeft, Loader2 } from 'lucide-react';
 import { createPageUrl } from '@/utils';
 import { base44 } from '@/api/base44Client';
 import BookingsTable from '@/components/admin/BookingsTable';
-import ReservasKPI from '@/components/admin/ReservasKPI';
+import ReservasKPI from '@/components/admin/ReservasKPI.jsx';
 
 export default function Reservas() {
   const [isAuthorized, setIsAuthorized] = useState(false);
