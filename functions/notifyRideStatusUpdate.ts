@@ -14,14 +14,13 @@ const messages = {
     es: { whatsapp: (name, dep) => `🚗 *Rosini Transfert*\n\nHola ${name}, su conductor esta cerca y llegara en unos 5 minutos a:\n📍 ${dep}\n\n¡Preparese!`, email_subject: 'Su conductor está en camino', email_body: (name, dep) => `Hola ${name},<br><br>Su conductor Rosini Transfert está cerca y llegará en unos 5 minutos a:<br><br><strong>📍 ${dep}</strong><br><br>¡Prepárese!` },
     nl: { whatsapp: (name, dep) => `🚗 *Rosini Transfert*\n\nHallo ${name}, uw chauffeur is in de buurt en arriveert over ongeveer 5 minuten bij:\n📍 ${dep}\n\nMaakt u zich klaar!`, email_subject: 'Uw chauffeur is onderweg', email_body: (name, dep) => `Hallo ${name},<br><br>Uw Rosini Transfert chauffeur is in de buurt en arriveert over ongeveer 5 minuten bij:<br><br><strong>📍 ${dep}</strong><br><br>Maakt u zich klaar!` },
   },
-  driver_arriving: {
+  arrived: {
     // Template: rosini_driver_arrived | ContentSid: HX57b573cd1d0f5875c54cc0b145c73281
     // Variables: {{1}} = client_name, {{2}} = departure_point
     use_template: true,
     template_sid: 'HX57b573cd1d0f5875c54cc0b145c73281',
-  },
-  arrived: {
-    fr: { whatsapp: (name, dep) => `📍 *Rosini Transfert*\n\nBonjour ${name}, votre chauffeur est arrive a votre point de depart :\n📍 ${dep}\n\nIl vous attend. Bonne route !`, email_subject: 'Votre chauffeur est arrivé', email_body: (name, dep) => `Bonjour ${name},<br><br>Votre chauffeur Rosini Transfert est arrivé à votre point de départ :<br><br><strong>📍 ${dep}</strong><br><br>Il vous attend. Bonne route !` },
+    fallback: {
+      fr: { whatsapp: (name, dep) => `📍 *Rosini Transfert*\n\nBonjour ${name}, votre chauffeur est arrive a votre point de depart :\n📍 ${dep}\n\nIl vous attend. Bonne route !`, email_subject: 'Votre chauffeur est arrivé', email_body: (name, dep) => `Bonjour ${name},<br><br>Votre chauffeur Rosini Transfert est arrivé à votre point de départ :<br><br><strong>📍 ${dep}</strong><br><br>Il vous attend. Bonne route !` },
     pt: { whatsapp: (name, dep) => `📍 *Rosini Transfert*\n\nOla ${name}, o seu motorista chegou ao ponto de partida :\n📍 ${dep}\n\nEle esta a sua espera. Boa viagem!`, email_subject: 'Seu motorista chegou', email_body: (name, dep) => `Olá ${name},<br><br>Seu motorista Rosini Transfert chegou ao ponto de partida :<br><br><strong>📍 ${dep}</strong><br><br>Ele está a sua espera. Boa viagem!` },
     en: { whatsapp: (name, dep) => `📍 *Rosini Transfert*\n\nHello ${name}, your driver has arrived at your pickup point:\n📍 ${dep}\n\nHe is waiting for you. Have a great trip!`, email_subject: 'Your driver has arrived', email_body: (name, dep) => `Hello ${name},<br><br>Your Rosini Transfert driver has arrived at your pickup point:<br><br><strong>📍 ${dep}</strong><br><br>He is waiting for you. Have a great trip!` },
     de: { whatsapp: (name, dep) => `📍 *Rosini Transfert*\n\nHallo ${name}, Ihr Fahrer ist angekommen bei:\n📍 ${dep}\n\nEr wartet auf Sie. Gute Fahrt!`, email_subject: 'Ihr Fahrer ist angekommen', email_body: (name, dep) => `Hallo ${name},<br><br>Ihr Rosini Transfert Fahrer ist angekommen bei:<br><br><strong>📍 ${dep}</strong><br><br>Er wartet auf Sie. Gute Fahrt!` },
@@ -123,6 +122,14 @@ Deno.serve(async (req) => {
           results.whatsapp_error = err.message;
         }
       }
+    } else if (messages[status].fallback) {
+      // Regular message flow with fallback
+      lang = (lang && messages[status].fallback[lang]) ? lang : 'fr';
+      const msgBody = messages[status].fallback[lang].whatsapp(name || 'Client', dep || '');
+      const emailSubject = messages[status].fallback[lang].email_subject;
+      const emailBody = messages[status].fallback[lang].email_body(name || 'Client', dep || '');
+
+      console.log(`Sending notifications | status=${status} | lang=${lang} | phone=${phone}`);
     } else {
       // Regular message flow
       lang = (lang && messages[status][lang]) ? lang : 'fr';
