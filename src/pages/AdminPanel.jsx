@@ -1,21 +1,27 @@
 import { useState, useEffect } from 'react';
 import { createPageUrl } from '@/utils';
-import { Lock, LayoutDashboard, Users, LogOut } from 'lucide-react';
+import { base44 } from '@/api/base44Client';
+import AdminKPIs from '@/components/admin/AdminKPIs';
+import {
+  Lock, LogOut, LayoutDashboard, List,
+  CalendarDays, Car, Users, Settings, BarChart2,
+  FileText, Map, Smartphone, HelpCircle, ChevronRight
+} from 'lucide-react';
 
 const PASSWORD = 'Sophia051009@';
 
-const pages = [
-  { name: 'CompletedTrips', label: 'Viagens Finalizadas' },
-  { name: 'Calendar', label: '📅 Calendário' },
-  { name: 'Drivers', label: 'Motoristas' },
-  { name: 'DriverPortal', label: 'Portal do Motorista' },
-  { name: 'FAQ', label: 'FAQ' },
-  { name: 'Finance', label: 'Financeiro' },
-  { name: 'Home', label: 'Início' },
-  { name: 'MyBookings', label: 'Minhas Reservas' },
-  { name: 'Reservas', label: 'Reservas' },
-  { name: 'Settings', label: 'Configurações' },
-  { name: 'Taximeter', label: 'Taxímetro' },
+const navPages = [
+  { name: 'Reservas', label: 'Réservations', icon: List },
+  { name: 'Calendar', label: 'Calendrier', icon: CalendarDays },
+  { name: 'Drivers', label: 'Chauffeurs', icon: Car },
+  { name: 'Clients', label: 'Clients', icon: Users },
+  { name: 'Finance', label: 'Finances', icon: BarChart2 },
+  { name: 'FinancialReports', label: 'Rapports', icon: FileText },
+  { name: 'Settings', label: 'Paramètres', icon: Settings },
+  { name: 'Taximeter', label: 'Taximètre', icon: Smartphone },
+  { name: 'DriverPortal', label: 'Portail Chauffeur', icon: Map },
+  { name: 'FAQ', label: 'FAQ', icon: HelpCircle },
+  { name: 'Home', label: 'Site public', icon: LayoutDashboard },
 ];
 
 export default function AdminPanel() {
@@ -23,16 +29,12 @@ export default function AdminPanel() {
   const [unlocked, setUnlocked] = useState(false);
   const [error, setError] = useState(false);
   const [rememberPassword, setRememberPassword] = useState(false);
+  const [tab, setTab] = useState('dashboard');
 
   useEffect(() => {
-    if (localStorage.getItem('admin_unlocked') === 'true') {
-      setUnlocked(true);
-    }
-    const savedPassword = localStorage.getItem('admin_password');
-    if (savedPassword) {
-      setInput(savedPassword);
-      setRememberPassword(true);
-    }
+    if (localStorage.getItem('admin_unlocked') === 'true') setUnlocked(true);
+    const saved = localStorage.getItem('admin_password');
+    if (saved) { setInput(saved); setRememberPassword(true); }
   }, []);
 
   const handleSubmit = (e) => {
@@ -41,15 +43,18 @@ export default function AdminPanel() {
       setUnlocked(true);
       setError(false);
       localStorage.setItem('admin_unlocked', 'true');
-      if (rememberPassword) {
-        localStorage.setItem('admin_password', input);
-      } else {
-        localStorage.removeItem('admin_password');
-      }
+      if (rememberPassword) localStorage.setItem('admin_password', input);
+      else localStorage.removeItem('admin_password');
     } else {
       setError(true);
       setInput('');
     }
+  };
+
+  const handleLogout = () => {
+    setUnlocked(false);
+    localStorage.removeItem('admin_unlocked');
+    setInput('');
   };
 
   if (!unlocked) {
@@ -61,9 +66,7 @@ export default function AdminPanel() {
             <p className="text-black/60 text-sm tracking-[0.2em] uppercase mt-2">PAINEL ADMINISTRATIVO</p>
           </div>
           <form onSubmit={handleSubmit} className="bg-black border border-black/40 rounded-xl p-6 space-y-4">
-            <a href={createPageUrl('Home')} className="text-white/60 hover:text-white text-sm transition-colors mb-2 block">
-              ← Voltar
-            </a>
+            <a href={createPageUrl('Home')} className="text-white/60 hover:text-white text-sm transition-colors mb-2 block">← Voltar</a>
             <div className="flex justify-center mb-4">
               <div className="w-12 h-12 rounded-full bg-white/10 border border-white/20 flex items-center justify-center">
                 <Lock className="w-5 h-5 text-white" />
@@ -79,19 +82,11 @@ export default function AdminPanel() {
               autoFocus
             />
             <label className="flex items-center gap-2 text-white/60 text-sm cursor-pointer hover:text-white/80">
-              <input
-                type="checkbox"
-                checked={rememberPassword}
-                onChange={(e) => setRememberPassword(e.target.checked)}
-                className="w-4 h-4 rounded bg-white/10 border border-white/20 cursor-pointer"
-              />
+              <input type="checkbox" checked={rememberPassword} onChange={(e) => setRememberPassword(e.target.checked)} className="w-4 h-4 rounded" />
               Lembrar senha
             </label>
             {error && <p className="text-red-400 text-xs text-center">Senha incorreta</p>}
-            <button
-              type="submit"
-              className="w-full bg-white text-black font-bold py-3 rounded-lg hover:bg-white/90 transition-colors"
-            >
+            <button type="submit" className="w-full bg-white text-black font-bold py-3 rounded-lg hover:bg-white/90 transition-colors">
               Entrar
             </button>
           </form>
@@ -101,32 +96,61 @@ export default function AdminPanel() {
   }
 
   return (
-    <div className="min-h-screen bg-[#F5C300] px-4 py-12">
+    <div className="min-h-screen bg-[#F5C300] px-4 py-8">
       <div className="max-w-2xl mx-auto">
-        <div className="text-center mb-12">
-          <h1 className="text-black text-6xl font-extralight tracking-[0.3em] uppercase">ROSINI</h1>
-          <p className="text-black/60 text-sm tracking-[0.2em] uppercase mt-2">PAINEL ADMINISTRATIVO</p>
-          <div className="w-8 h-[1px] bg-black/40 mx-auto mt-3" />
+
+        {/* Header */}
+        <div className="flex items-center justify-between mb-8">
+          <div>
+            <h1 className="text-black text-4xl font-extralight tracking-[0.3em] uppercase">ROSINI</h1>
+            <p className="text-black/50 text-xs tracking-[0.2em] uppercase mt-1">PAINEL ADMINISTRATIVO</p>
+          </div>
           <button
-            onClick={() => { setUnlocked(false); localStorage.removeItem('admin_unlocked'); setInput(''); }}
-            className="flex items-center gap-2 text-black/60 hover:text-black text-sm transition-colors mt-6 mx-auto"
+            onClick={handleLogout}
+            className="flex items-center gap-2 bg-black/10 hover:bg-black/20 text-black text-sm rounded-xl px-4 py-2 transition-colors"
           >
             <LogOut className="w-4 h-4" />
             Sair
           </button>
         </div>
 
-        <div className="grid grid-cols-3 gap-3">
-          {pages.map(({ name, label }) => (
-            <a
-              key={name}
-              href={createPageUrl(name)}
-              className="bg-black/50 border border-white/10 rounded-lg px-3 py-2.5 text-white/70 text-sm hover:bg-black hover:text-white hover:border-white/30 transition-all text-center"
-            >
-              {label}
-            </a>
-          ))}
+        {/* Tabs */}
+        <div className="flex gap-2 mb-6">
+          <button
+            onClick={() => setTab('dashboard')}
+            className={`flex items-center gap-2 px-4 py-2 rounded-xl text-sm font-medium transition-colors ${tab === 'dashboard' ? 'bg-black text-white' : 'bg-black/10 text-black hover:bg-black/20'}`}
+          >
+            <LayoutDashboard className="w-4 h-4" /> Dashboard
+          </button>
+          <button
+            onClick={() => setTab('pages')}
+            className={`flex items-center gap-2 px-4 py-2 rounded-xl text-sm font-medium transition-colors ${tab === 'pages' ? 'bg-black text-white' : 'bg-black/10 text-black hover:bg-black/20'}`}
+          >
+            <List className="w-4 h-4" /> Toutes les pages
+          </button>
         </div>
+
+        {/* Dashboard Tab */}
+        {tab === 'dashboard' && <AdminKPIs />}
+
+        {/* Pages Tab */}
+        {tab === 'pages' && (
+          <div className="space-y-2">
+            {navPages.map(({ name, label, icon: Icon }) => (
+              <a
+                key={name}
+                href={createPageUrl(name)}
+                className="flex items-center justify-between bg-black/10 hover:bg-black/20 rounded-xl px-4 py-3.5 transition-colors group"
+              >
+                <div className="flex items-center gap-3">
+                  <Icon className="w-5 h-5 text-black/60" />
+                  <span className="text-black font-medium text-sm">{label}</span>
+                </div>
+                <ChevronRight className="w-4 h-4 text-black/40 group-hover:text-black/70 transition-colors" />
+              </a>
+            ))}
+          </div>
+        )}
       </div>
     </div>
   );
