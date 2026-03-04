@@ -20,7 +20,7 @@ Deno.serve(async (req) => {
       if (driver) driverName = driver.name;
     }
 
-    const booking = await base44.entities.Booking.create({
+    const booking = await base44.asServiceRole.entities.Booking.create({
       client_name: 'Taximètre',
       client_email: clientEmail || 'taximeter@rosini.local',
       departure_point: departure || 'Taximètre',
