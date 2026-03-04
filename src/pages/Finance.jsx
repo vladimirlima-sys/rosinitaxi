@@ -6,6 +6,11 @@ import FinanceHeader from '@/components/finance/FinanceHeader';
 import FinanceFilters from '@/components/finance/FinanceFilters';
 import FinanceContent from '@/components/finance/FinanceContent';
 import TaxSettingsForm from '@/components/finance/TaxSettingsForm';
+import FinanceMetrics from '@/components/finance/FinanceMetrics';
+import TrendChart from '@/components/finance/TrendChart';
+import PaymentMethodsSummary from '@/components/finance/PaymentMethodsSummary';
+import DriverProfitability from '@/components/finance/DriverProfitability';
+import RecurringExpensesAlert from '@/components/finance/RecurringExpensesAlert';
 
 export default function Finance() {
   const [bookings, setBookings] = useState([]);
@@ -172,6 +177,31 @@ export default function Finance() {
           <div className="mb-8">
             <TaxSettingsForm onTaxesUpdated={fetchData} />
           </div>
+        )}
+
+        {!loading && (
+          <>
+            {/* Recurring Expenses Alert */}
+            <RecurringExpensesAlert expenses={expenses} selectedMonth={selectedMonth} />
+
+            {/* Metrics */}
+            <FinanceMetrics 
+              monthBookings={monthBookings} 
+              grandTotal={grandTotal} 
+              totalExpenses={totalExpenses}
+              netResult={netResult}
+              totalTaxes={totalTaxes}
+            />
+
+            {/* Trend Chart */}
+            <TrendChart bookings={bookings} expenses={expenses} />
+
+            {/* Payment Methods */}
+            <PaymentMethodsSummary paymentMethods={paymentMethods} grandTotal={grandTotal} />
+
+            {/* Driver Profitability */}
+            <DriverProfitability monthBookings={monthBookings} expenses={monthExpenses} taxSettings={taxSettings} />
+          </>
         )}
 
         <FinanceContent
