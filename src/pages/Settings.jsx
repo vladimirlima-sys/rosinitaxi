@@ -28,7 +28,7 @@ function Section({ title, children }) {
   );
 }
 
-export default function SettingsPage() {
+export default function Settings() {
   const [priceSettings, setPriceSettings] = useState({
     standard_price_per_km: 2.35,
     comfort_price_per_km: 3.05,
