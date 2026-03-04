@@ -265,10 +265,11 @@ export default function BookingForm({ bookingRef }) {
           passengers: form.passengers, notes: form.notes, payment_method: paymentMethod, language: lang,
           skip_client_email: isShortNotice,
           booking_id: createdBooking.id
-        }).catch(err => console.error('Email send error (non-critical):', err));
+        }).catch(err => console.error('Email send error (non-critical):', err)).finally(() => {
+          setIsSubmitting(false);
+        });
         
         setStep(5);
-        setIsSubmitting(false);
       }
     } catch (err) {
       console.error('Payment error:', err);
