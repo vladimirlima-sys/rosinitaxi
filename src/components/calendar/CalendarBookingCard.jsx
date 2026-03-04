@@ -11,8 +11,21 @@ const STATUS_STYLES = {
 
 export default function CalendarBookingCard({ booking, drivers, onAssignDriver, isDragging }) {
   const [showDriverMenu, setShowDriverMenu] = useState(false);
+  const menuRef = useRef(null);
   const style = STATUS_STYLES[booking.payment_status] || STATUS_STYLES.pending;
   const assignedDriver = drivers.find(d => d.id === booking.driver_id);
+
+  // Close dropdown on outside click
+  useEffect(() => {
+    if (!showDriverMenu) return;
+    const handler = (e) => {
+      if (menuRef.current && !menuRef.current.contains(e.target)) {
+        setShowDriverMenu(false);
+      }
+    };
+    document.addEventListener('mousedown', handler);
+    return () => document.removeEventListener('mousedown', handler);
+  }, [showDriverMenu]);
 
   const handleDriverSelect = async (driver) => {
     setShowDriverMenu(false);
@@ -23,14 +36,27 @@ export default function CalendarBookingCard({ booking, drivers, onAssignDriver, 
     <div
       className={`relative rounded-lg border-l-4 ${style.border} ${style.bg} p-2 text-xs cursor-grab select-none transition-shadow ${isDragging ? 'shadow-2xl opacity-90 rotate-1' : 'shadow-sm'}`}
     >
-      {/* Time + status */}
+      {/* Time + status + drag icon */}
       <div className="flex items-center justify-between mb-1">
-        <span className="text-white font-bold">{booking.departure_time || '—:——'}</span>
+        <div className="flex items-center gap-1">
+          <GripVertical className="w-3 h-3 text-white/20" />
+          <span className="text-white font-bold">{booking.departure_time || '—:——'}</span>
+        </div>
         <div className={`w-2 h-2 rounded-full ${style.dot}`} />
       </div>
 
-      {/* Client */}
-      <p className="text-white/90 font-medium truncate">{booking.client_name}</p>
+      {/* Client + link to details */}
+      <div className="flex items-center justify-between gap-1 mb-0.5">
+        <p className="text-white/90 font-medium truncate flex-1">{booking.client_name}</p>
+        <a
+          href={createPageUrl('Reservas')}
+          onClick={e => e.stopPropagation()}
+          className="text-white/30 hover:text-[#F5C300] transition-colors flex-shrink-0"
+          title="Voir les réservations"
+        >
+          <ExternalLink className="w-3 h-3" />
+        </a>
+      </div>
 
       {/* Route */}
       <p className="text-white/50 truncate">
@@ -38,7 +64,7 @@ export default function CalendarBookingCard({ booking, drivers, onAssignDriver, 
       </p>
 
       {/* Driver */}
-      <div className="mt-1.5 relative">
+      <div className="mt-1.5 relative" ref={menuRef}>
         <button
           onClick={(e) => { e.stopPropagation(); setShowDriverMenu(v => !v); }}
           className="flex items-center gap-1 text-white/50 hover:text-white/80 transition-colors w-full"
@@ -71,7 +97,7 @@ export default function CalendarBookingCard({ booking, drivers, onAssignDriver, 
 
       {/* CHF */}
       {booking.total_price && (
-        <p className="text-white/30 text-right mt-1">CHF {booking.total_price}</p>
+        <p className="text-white/30 text-right mt-1">CHF {Number(booking.total_price).toFixed(2)}</p>
       )}
     </div>
   );
