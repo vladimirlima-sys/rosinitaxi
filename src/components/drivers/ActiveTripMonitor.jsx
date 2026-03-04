@@ -4,10 +4,9 @@ import { base44 } from '@/api/base44Client';
 import { toast } from 'sonner';
 
 const TRIP_STATUSES = [
-  { key: 'en_route', label: '🚗 En route vers le client', color: 'text-blue-400', bg: 'bg-blue-400/10 border-blue-400/30' },
+  { key: 'en_route', label: '🚗 Route vers le client', color: 'text-blue-400', bg: 'bg-blue-400/10 border-blue-400/30' },
   { key: 'arrived', label: '📍 Arrivé au point de départ', color: 'text-yellow-400', bg: 'bg-yellow-400/10 border-yellow-400/30' },
-  { key: 'in_progress', label: '⚡ Course en cours', color: 'text-[#F5C300]', bg: 'bg-[#F5C300]/10 border-[#F5C300]/30' },
-  { key: 'completed', label: '✅ Course terminée', color: 'text-green-400', bg: 'bg-green-400/10 border-green-400/30' },
+  { key: 'completed', label: '✅ Finaliser la course', color: 'text-green-400', bg: 'bg-green-400/10 border-green-400/30' },
 ];
 
 function getMapsUrl(address) {
