@@ -224,16 +224,56 @@ export default function SettingsPage() {
                 onChange={e => set('comfort_price_per_km', e.target.value)}
                 className="bg-white/5 border-white/10 text-white focus:border-[#C9A96E] h-12" />
             </Field>
-            {/* Preview */}
-            <div className="bg-[#C9A96E]/10 border border-[#C9A96E]/20 rounded-xl p-4 mt-2">
-              <p className="text-[#C9A96E] text-xs font-semibold uppercase tracking-wider mb-3">Simulação — 50 km</p>
-              <div className="flex justify-between text-sm">
-                <span className="text-white/60">STANDARD (50 km + taxa base)</span>
-                <span className="text-white font-medium">CHF {(50 * standardPreview + (settings.base_fare || 0)).toFixed(2)}</span>
+            {/* Preview Detalhado */}
+            <div className="bg-[#C9A96E]/10 border border-[#C9A96E]/20 rounded-xl p-4 mt-2 space-y-4">
+              <p className="text-[#C9A96E] text-xs font-semibold uppercase tracking-wider">Simulação — 50 km</p>
+              
+              {/* STANDARD */}
+              <div className="space-y-1.5">
+                <div className="flex justify-between text-sm font-medium text-white">
+                  <span>STANDARD</span>
+                  <span>CHF {calculatePrice(50, 'standard').total.toFixed(2)}</span>
+                </div>
+                <div className="text-xs text-white/50 space-y-0.5">
+                  <div className="flex justify-between">
+                    <span>50 km × CHF {standardPreview}</span>
+                    <span>CHF {calculatePrice(50, 'standard').baseKm.toFixed(2)}</span>
+                  </div>
+                  <div className="flex justify-between">
+                    <span>Taxa base</span>
+                    <span>CHF {calculatePrice(50, 'standard').baseFare.toFixed(2)}</span>
+                  </div>
+                  {calculatePrice(50, 'standard').surcharges > 0 && (
+                    <div className="flex justify-between text-[#C9A96E]">
+                      <span>Adicionais</span>
+                      <span>CHF {calculatePrice(50, 'standard').surcharges.toFixed(2)}</span>
+                    </div>
+                  )}
+                </div>
               </div>
-              <div className="flex justify-between text-sm mt-1">
-                <span className="text-white/60">COMFORT (50 km + taxa base)</span>
-                <span className="text-white font-medium">CHF {(50 * comfortPreview + (settings.base_fare || 0)).toFixed(2)}</span>
+
+              {/* COMFORT */}
+              <div className="space-y-1.5 pt-2 border-t border-[#C9A96E]/20">
+                <div className="flex justify-between text-sm font-medium text-white">
+                  <span>COMFORT</span>
+                  <span>CHF {calculatePrice(50, 'comfort').total.toFixed(2)}</span>
+                </div>
+                <div className="text-xs text-white/50 space-y-0.5">
+                  <div className="flex justify-between">
+                    <span>50 km × CHF {comfortPreview}</span>
+                    <span>CHF {calculatePrice(50, 'comfort').baseKm.toFixed(2)}</span>
+                  </div>
+                  <div className="flex justify-between">
+                    <span>Taxa base</span>
+                    <span>CHF {calculatePrice(50, 'comfort').baseFare.toFixed(2)}</span>
+                  </div>
+                  {calculatePrice(50, 'comfort').surcharges > 0 && (
+                    <div className="flex justify-between text-[#C9A96E]">
+                      <span>Adicionais</span>
+                      <span>CHF {calculatePrice(50, 'comfort').surcharges.toFixed(2)}</span>
+                    </div>
+                  )}
+                </div>
               </div>
             </div>
           </Section>
