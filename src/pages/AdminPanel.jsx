@@ -29,7 +29,7 @@ export default function AdminPanel() {
   const [tab, setTab] = useState('dashboard');
   const [showPassword, setShowPassword] = useState(false);
 
-  const ADMIN_PASSWORD = 'Rosini2025@';
+  const ADMIN_PASSWORD = 'Sophia051009@';
 
   useEffect(() => {
     if (localStorage.getItem('admin_unlocked') === 'true') setUnlocked(true);
