@@ -54,12 +54,17 @@ Deno.serve(async (req) => {
     const ADMIN_EMAIL = 'admin@rosini.online';
     const ADMIN_PASSWORD_HASH = 'c7ad44cb7466d7460ebf74a4ec26e9cef0c41f267573c1347f0574d1d82596e9'; // SHA256 of "Sophia051009@"
 
+    console.log('Login attempt:', { email: email.toLowerCase(), hasPassword: !!password });
+
     if (email.toLowerCase() !== ADMIN_EMAIL) {
+      console.log('Email not found:', email.toLowerCase());
       return Response.json({ error: 'Email ou senha incorretos' }, { status: 401 });
     }
 
     // Verify password
     const passwordMatch = await verifyPassword(password, ADMIN_PASSWORD_HASH);
+    console.log('Password match:', passwordMatch);
+    
     if (!passwordMatch) {
       return Response.json({ error: 'Email ou senha incorretos' }, { status: 401 });
     }
