@@ -102,18 +102,34 @@ export default function SettingsPage() {
   const handleSave = async () => {
     setIsSaving(true);
     try {
-      if (settings.id) {
-        await base44.entities.PriceSettings.update(settings.id, settings);
+      if (priceSettings.id) {
+        await base44.entities.PriceSettings.update(priceSettings.id, priceSettings);
       } else {
-        const created = await base44.entities.PriceSettings.create(settings);
-        setSettings(created);
+        const created = await base44.entities.PriceSettings.create(priceSettings);
+        setPriceSettings(created);
       }
-      toast.success('Configurações salvas com sucesso');
+      if (companySettings.id) {
+        await base44.entities.CompanySettings.update(companySettings.id, companySettings);
+      } else if (companySettings.company_name) {
+        await base44.entities.CompanySettings.create(companySettings);
+      }
+      if (taxSettings.id) {
+        await base44.entities.TaxSettings.update(taxSettings.id, taxSettings);
+      } else {
+        await base44.entities.TaxSettings.create(taxSettings);
+      }
+      setLastSaved(new Date().toLocaleString('pt-BR'));
+      toast.success('✓ Configurações salvas com sucesso');
     } catch {
       toast.error('Erro ao salvar configurações');
     } finally {
       setIsSaving(false);
     }
+  };
+
+  const handleReset = () => {
+    setPriceSettings(originalPriceSettings);
+    toast.message('Valores resetados');
   };
 
   if (isLoading) return (
