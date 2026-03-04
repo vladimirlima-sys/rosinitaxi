@@ -271,12 +271,8 @@ export default function BookingForm({ bookingRef }) {
           booking_id: createdBooking.id
         });
         
-        console.log('Stripe checkout response:', response.data);
         if (response.data?.url) {
-          console.log('Redirecting to Stripe:', response.data.url);
-          // Usar window.top para sair do iframe se houver
-          const target = window.self !== window.top ? window.top : window;
-          target.location.href = response.data.url;
+          window.location.href = response.data.url;
           return;
         } else {
           throw new Error(response.data?.error || 'Erreur de paiement');
