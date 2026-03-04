@@ -105,7 +105,8 @@ export default function Taximeter() {
 
   useEffect(() => {
     if (running && priceSettings) {
-      const newWaitingPrice = (waitingSeconds / 60) * getWaitingPricePerMinute();
+      const waitingPricePerMin = getWaitingPricePerMinute();
+      const newWaitingPrice = (waitingSeconds / 60) * waitingPricePerMin;
       setWaitingPrice(newWaitingPrice);
       
       const km = distanceRef.current;
