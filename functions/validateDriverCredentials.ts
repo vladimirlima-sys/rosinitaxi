@@ -1,111 +1,58 @@
 import { createClientFromRequest } from 'npm:@base44/sdk@0.8.20';
-import { create as createJWT, verify as verifyJWT } from 'npm:djwt@3.0.2';
 
-const JWT_SECRET = Deno.env.get('JWT_SECRET') || 'rosini-default-secret-2026';
-const encoder = new TextEncoder();
-const key = await crypto.subtle.importKey(
-  'raw',
-  encoder.encode(JWT_SECRET),
-  { name: 'HMAC', hash: 'SHA-256' },
-  false,
-  ['sign', 'verify']
-);
-
-// Simple password verification using Deno's crypto
-async function verifyPassword(password, hash) {
-  const encoder = new TextEncoder();
-  const data = encoder.encode(password);
+async function hashPassword(password) {
+  const enc = new TextEncoder();
+  const data = enc.encode(password);
   const hashBuffer = await crypto.subtle.digest('SHA-256', data);
   const hashArray = Array.from(new Uint8Array(hashBuffer));
-  const computedHash = hashArray.map(b => b.toString(16).padStart(2, '0')).join('');
-  return computedHash === hash;
+  return hashArray.map(b => b.toString(16).padStart(2, '0')).join('');
 }
 
 Deno.serve(async (req) => {
   try {
     const base44 = createClientFromRequest(req);
     const body = await req.json();
-    const { email, password, token } = body;
+    const { email, password } = body;
 
-    // Verify existing token
-    if (token) {
-      try {
-        const payload = await verifyJWT(token, key);
-        
-        if (payload.exp && payload.exp < Math.floor(Date.now() / 1000)) {
-          return Response.json({ error: 'Token expirado' }, { status: 401 });
-        }
-
-        // Fetch full credential info
-        const creds = await base44.asServiceRole.entities.DriverCredential.filter({
-          driver_id: payload.driver_id,
-          status: 'active'
-        });
-
-        if (creds.length === 0) {
-          return Response.json({ error: 'Credencial não encontrada' }, { status: 404 });
-        }
-
-        const cred = creds[0];
-
-        return Response.json({ 
-          valid: true,
-          driver_id: payload.driver_id,
-          driver_name: payload.driver_name,
-          allowed_pages: cred.allowed_pages || [],
-          email: cred.email
-        });
-      } catch (error) {
-        console.error('Verify error:', error);
-        return Response.json({ error: 'Token inválido' }, { status: 401 });
-      }
-    }
-
-    // Login with email and password
     if (!email || !password) {
-      return Response.json({ error: 'Email e senha são obrigatórios' }, { status: 400 });
+      return Response.json({ success: false, error: 'Email e senha obrigatórios' }, { status: 400 });
     }
 
+    // Get all driver credentials
     const creds = await base44.asServiceRole.entities.DriverCredential.filter({
       email: email.toLowerCase(),
       status: 'active'
     });
 
     if (creds.length === 0) {
-      return Response.json({ error: 'Email ou senha incorretos' }, { status: 401 });
+      return Response.json({ success: false, error: 'Email ou senha incorretos' }, { status: 401 });
     }
 
     const cred = creds[0];
-
+    
     // Verify password
-    const passwordMatch = await verifyPassword(password, cred.password_hash);
-    if (!passwordMatch) {
-      return Response.json({ error: 'Email ou senha incorretos' }, { status: 401 });
+    const computedHash = await hashPassword(password);
+    if (computedHash !== cred.password_hash) {
+      return Response.json({ success: false, error: 'Email ou senha incorretos' }, { status: 401 });
     }
 
-    // Create JWT token
-    const jwt = await createJWT(
-      { alg: 'HS256', typ: 'JWT' },
-      { 
-        driver_id: cred.driver_id,
-        driver_name: cred.driver_name,
-        exp: Math.floor(Date.now() / 1000) + (30 * 24 * 60 * 60)
-      },
-      key
-    );
+    // Get driver info
+    const drivers = await base44.asServiceRole.entities.Driver.filter({ id: cred.driver_id });
+    const driver = drivers[0] || { id: cred.driver_id, name: cred.driver_name };
 
     return Response.json({ 
       success: true, 
-      token: jwt,
       driver: { 
-        id: cred.driver_id, 
-        name: cred.driver_name,
-        email: cred.email
+        id: driver.id || cred.driver_id, 
+        name: driver.name || cred.driver_name
       },
-      allowed_pages: cred.allowed_pages || []
+      allowed_pages: cred.allowed_pages || ['ActiveTrips', 'CompletedTrips', 'Earnings']
     });
   } catch (error) {
-    console.error('Auth error:', error);
-    return Response.json({ error: error.message }, { status: 500 });
+    console.error('Auth error:', error.message);
+    return Response.json({ 
+      success: false, 
+      error: 'Erro no servidor' 
+    }, { status: 500 });
   }
 });
