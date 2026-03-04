@@ -283,7 +283,8 @@ export default function BookingForm({ bookingRef }) {
       } else {
         // TWINT / Cash payment
         console.log('💵 Non-stripe payment - creating booking...');
-        const createdBooking = await base44.entities.Booking.create(bookingData);
+        const response = await base44.functions.invoke('createBooking', bookingData);
+        const createdBooking = response.data;
         console.log('✅ Booking created:', createdBooking.id);
         
         // Avança para confirmação
