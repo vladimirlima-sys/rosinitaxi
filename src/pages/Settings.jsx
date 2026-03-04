@@ -563,29 +563,39 @@ export default function Settings() {
             <Section title="Configurações do Taximètre">
             <p className="text-white/50 text-sm mb-4">Valores específicos para cálculo do taximètre (independentes das reservas)</p>
             <Field label="Preço por KM — STANDARD (CHF)">
-              <Input type="number" step="0.01" min="0" value={priceSettings.taximeter_standard_price_per_km}
-                onChange={e => set('taximeter_standard_price_per_km', e.target.value)}
-                className="bg-white/5 border-white/10 text-white focus:border-[#F5C300] h-12" />
+              <div className="relative">
+                <Input type="number" step="0.01" min="0" value={priceSettings.taximeter_standard_price_per_km}
+                  onChange={e => {
+                    set('taximeter_standard_price_per_km', e.target.value);
+                    handleSaveTaximeter('taximeter_standard_price_per_km', parseFloat(e.target.value) || 0);
+                  }}
+                  className="bg-white/5 border-white/10 text-white focus:border-[#F5C300] h-12" />
+              </div>
             </Field>
             <Field label="Preço por KM — COMFORT (CHF)">
               <Input type="number" step="0.01" min="0" value={priceSettings.taximeter_comfort_price_per_km}
-                onChange={e => set('taximeter_comfort_price_per_km', e.target.value)}
+                onChange={e => {
+                  set('taximeter_comfort_price_per_km', e.target.value);
+                  handleSaveTaximeter('taximeter_comfort_price_per_km', parseFloat(e.target.value) || 0);
+                }}
                 className="bg-white/5 border-white/10 text-white focus:border-[#F5C300] h-12" />
             </Field>
             <Field label="Taxa Base (CHF)">
               <Input type="number" step="0.01" min="0" value={priceSettings.taximeter_base_fare}
-                onChange={e => set('taximeter_base_fare', e.target.value)}
+                onChange={e => {
+                  set('taximeter_base_fare', e.target.value);
+                  handleSaveTaximeter('taximeter_base_fare', parseFloat(e.target.value) || 0);
+                }}
                 className="bg-white/5 border-white/10 text-white focus:border-[#F5C300] h-12" />
             </Field>
             <Field label="Preço por Minuto de Espera (CHF)" hint="Tempo parado (trânsito, espera de cliente, etc)">
               <Input type="number" step="0.01" min="0" value={priceSettings.taximeter_waiting_price_per_minute}
-                onChange={e => set('taximeter_waiting_price_per_minute', e.target.value)}
+                onChange={e => {
+                  set('taximeter_waiting_price_per_minute', e.target.value);
+                  handleSaveTaximeter('taximeter_waiting_price_per_minute', parseFloat(e.target.value) || 0);
+                }}
                 className="bg-white/5 border-white/10 text-white focus:border-[#F5C300] h-12" />
             </Field>
-            <Button onClick={handleSaveTaximeter} disabled={taximeterSaving}
-              className="w-full bg-[#F5C300] hover:bg-[#E6B800] text-black font-semibold h-12 text-sm mt-4">
-              {taximeterSaving ? <><Loader2 className="w-4 h-4 mr-2 animate-spin" />Salvando...</> : 'Salvar Configurações do Taximètre'}
-            </Button>
             </Section>
 
             {/* Configurações de Impostos */}
