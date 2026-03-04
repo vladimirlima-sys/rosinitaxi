@@ -109,10 +109,27 @@ export default function PricingBreakdown({
       {/* Divider */}
       <div className="w-full h-[1px] bg-white/10" />
 
+      {/* Base fare */}
+      {baseFareAmount > 0 &&
+      <div className="flex justify-between items-center text-sm">
+          <span className="text-white/40">{t.baseFare}</span>
+          <span className="text-white/60">CHF {baseFareAmount.toFixed(2)}</span>
+        </div>
+      }
+
+      {/* Distance */}
+      <div className="flex justify-between items-center text-sm">
+        <span className="text-white/40">{distance_km}km × CHF {pricePerKm}</span>
+        <span className="text-white/60">CHF {distancePrice}</span>
+      </div>
+
+      {/* Divider before total */}
+      <div className="w-full h-[1px] bg-white/10" />
+
       {/* Total price */}
       <div className="flex justify-between items-center mb-2">
         <span className="text-white font-medium">{t.total}</span>
-        <span className="text-[#C9A96E] text-2xl font-semibold">CHF {totalPrice}</span>
+        <span className="text-[#F5C300] text-2xl font-semibold">CHF {totalPrice}</span>
       </div>
 
       {/* Disclaimer */}
