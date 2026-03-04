@@ -275,7 +275,7 @@ export default function BookingForm({ bookingRef }) {
         console.log('📦 Checkout response received:', response);
         if (response?.data?.url) {
           console.log('✅ Redirecting to Stripe:', response.data.url);
-          window.location.href = response.data.url;
+          window.top.location.href = response.data.url;
         } else {
           console.error('❌ No URL in response:', response);
           throw new Error(response?.data?.error || 'Erro na sessão de pagamento');
