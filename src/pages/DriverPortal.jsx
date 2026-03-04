@@ -208,37 +208,100 @@ export default function DriverPortal() {
             <h1 className="text-4xl font-extralight tracking-[0.3em] text-white uppercase">ROSINI</h1>
             <p className="text-white/40 text-xs tracking-[0.2em] uppercase mt-1">Portail Chauffeur</p>
           </div>
-          <div className="bg-[#111] border border-white/10 rounded-2xl p-6 space-y-4">
-            <div>
-              <label className="text-white/50 text-xs uppercase tracking-wider block mb-2">Code / Nom du chauffeur</label>
-              <input
-                type="text"
-                value={driverCode}
-                onChange={e => setDriverCode(e.target.value)}
-                onKeyDown={e => e.key === 'Enter' && loginWithId(driverCode.trim())}
-                placeholder="Entrez votre code ou nom"
-                className="w-full bg-white/5 border border-white/10 rounded-xl text-white text-sm p-3 outline-none placeholder:text-white/20 focus:border-[#F5C300]/50"
-              />
-            </div>
-            <label className="flex items-center gap-3 cursor-pointer">
-              <input
-                type="checkbox"
-                checked={rememberPassword}
-                onChange={e => setRememberPassword(e.target.checked)}
-                className="w-4 h-4 rounded border-white/20 bg-white/5 accent-[#F5C300] cursor-pointer"
-              />
-              <span className="text-white/50 text-sm">Se souvenir de moi</span>
-            </label>
-            {error && <p className="text-red-400 text-sm">{error}</p>}
+
+          {/* Auth mode toggle */}
+          <div className="flex gap-2 bg-white/5 border border-white/10 rounded-xl p-1">
             <button
-              onClick={() => loginWithId(driverCode.trim())}
-              disabled={loading || !driverCode.trim()}
-              className="w-full h-12 rounded-xl bg-[#F5C300] text-black font-bold text-sm uppercase tracking-wider hover:bg-[#e6b800] transition-all disabled:opacity-50 flex items-center justify-center gap-2"
+              onClick={() => setAuthMode('code')}
+              className={`flex-1 py-2 rounded-lg text-sm font-semibold transition-all ${authMode === 'code' ? 'bg-[#F5C300] text-black' : 'text-white/50 hover:text-white'}`}
             >
-              {loading ? <Loader2 className="w-4 h-4 animate-spin" /> : 'Connexion'}
+              Code
+            </button>
+            <button
+              onClick={() => setAuthMode('email')}
+              className={`flex-1 py-2 rounded-lg text-sm font-semibold transition-all ${authMode === 'email' ? 'bg-[#F5C300] text-black' : 'text-white/50 hover:text-white'}`}
+            >
+              Email/Senha
             </button>
           </div>
-          <p className="text-white/20 text-xs text-center">Le code est fourni par l'administrateur de Rosini Transfert.</p>
+
+          <div className="bg-[#111] border border-white/10 rounded-2xl p-6 space-y-4">
+            {authMode === 'code' ? (
+              <>
+                <div>
+                  <label className="text-white/50 text-xs uppercase tracking-wider block mb-2">Code / Nom do chauffeur</label>
+                  <input
+                    type="text"
+                    value={driverCode}
+                    onChange={e => setDriverCode(e.target.value)}
+                    onKeyDown={e => e.key === 'Enter' && loginWithId(driverCode.trim())}
+                    placeholder="Entrez votre code ou nom"
+                    className="w-full bg-white/5 border border-white/10 rounded-xl text-white text-sm p-3 outline-none placeholder:text-white/20 focus:border-[#F5C300]/50"
+                  />
+                </div>
+                <label className="flex items-center gap-3 cursor-pointer">
+                  <input
+                    type="checkbox"
+                    checked={rememberPassword}
+                    onChange={e => setRememberPassword(e.target.checked)}
+                    className="w-4 h-4 rounded border-white/20 bg-white/5 accent-[#F5C300] cursor-pointer"
+                  />
+                  <span className="text-white/50 text-sm">Se souvenir de moi</span>
+                </label>
+                {error && <p className="text-red-400 text-sm">{error}</p>}
+                <button
+                  onClick={() => loginWithId(driverCode.trim())}
+                  disabled={loading || !driverCode.trim()}
+                  className="w-full h-12 rounded-xl bg-[#F5C300] text-black font-bold text-sm uppercase tracking-wider hover:bg-[#e6b800] transition-all disabled:opacity-50 flex items-center justify-center gap-2"
+                >
+                  {loading ? <Loader2 className="w-4 h-4 animate-spin" /> : 'Connexion'}
+                </button>
+              </>
+            ) : (
+              <>
+                <div>
+                  <label className="text-white/50 text-xs uppercase tracking-wider block mb-2">Email</label>
+                  <input
+                    type="email"
+                    value={email}
+                    onChange={e => setEmail(e.target.value)}
+                    onKeyDown={e => e.key === 'Enter' && loginWithEmail(email, password)}
+                    placeholder="votre@email.com"
+                    className="w-full bg-white/5 border border-white/10 rounded-xl text-white text-sm p-3 outline-none placeholder:text-white/20 focus:border-[#F5C300]/50"
+                  />
+                </div>
+                <div>
+                  <label className="text-white/50 text-xs uppercase tracking-wider block mb-2">Senha</label>
+                  <input
+                    type="password"
+                    value={password}
+                    onChange={e => setPassword(e.target.value)}
+                    onKeyDown={e => e.key === 'Enter' && loginWithEmail(email, password)}
+                    placeholder="••••••••"
+                    className="w-full bg-white/5 border border-white/10 rounded-xl text-white text-sm p-3 outline-none placeholder:text-white/20 focus:border-[#F5C300]/50"
+                  />
+                </div>
+                <label className="flex items-center gap-3 cursor-pointer">
+                  <input
+                    type="checkbox"
+                    checked={rememberPassword}
+                    onChange={e => setRememberPassword(e.target.checked)}
+                    className="w-4 h-4 rounded border-white/20 bg-white/5 accent-[#F5C300] cursor-pointer"
+                  />
+                  <span className="text-white/50 text-sm">Se souvenir de moi</span>
+                </label>
+                {error && <p className="text-red-400 text-sm">{error}</p>}
+                <button
+                  onClick={() => loginWithEmail(email, password)}
+                  disabled={loading || !email || !password}
+                  className="w-full h-12 rounded-xl bg-[#F5C300] text-black font-bold text-sm uppercase tracking-wider hover:bg-[#e6b800] transition-all disabled:opacity-50 flex items-center justify-center gap-2"
+                >
+                  {loading ? <Loader2 className="w-4 h-4 animate-spin" /> : 'Connexion'}
+                </button>
+              </>
+            )}
+          </div>
+          <p className="text-white/20 text-xs text-center">{authMode === 'code' ? 'Le code est fourni par l\'administrateur de Rosini Transfert.' : 'Utilisez les identifiants fournis par l\'administrateur.'}</p>
         </div>
       </div>
     );
