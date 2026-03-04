@@ -54,15 +54,7 @@ export default function CompletedTrips() {
 
   const loadTrips = async (driverId) => {
     try {
-      const drivers = await base44.entities.Driver.list();
-      const found = drivers.find(d => d.id === driverId);
-      if (!found) {
-        window.location.href = createPageUrl('DriverPortal');
-        return;
-      }
-      setDriver(found);
-
-      const all = await base44.entities.Booking.list('-departure_date', 500);
+      const all = await base44.asServiceRole.entities.Booking.list('-departure_date', 500);
       // Show all paid trips for this driver (no localStorage dependency)
       const completed = all.filter(b =>
         b.driver_id === driverId &&
@@ -70,6 +62,14 @@ export default function CompletedTrips() {
         new Date(b.departure_date) <= new Date()
       );
       setCompletedTrips(completed);
+      
+      // Get driver name from first trip or set generic
+      if (completed.length > 0) {
+        setDriver({ id: driverId, name: completed[0].driver_name || 'Motorista' });
+      }
+    } catch (err) {
+      console.error('Error loading trips:', err);
+      window.location.href = createPageUrl('DriverPortal');
     } finally {
       setLoading(false);
     }
