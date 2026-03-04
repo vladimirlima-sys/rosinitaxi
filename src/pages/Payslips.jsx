@@ -54,7 +54,7 @@ export default function Payslips() {
       {/* Header */}
       <div className="bg-black text-white px-6 py-4 flex items-center justify-between">
         <div className="flex items-center gap-4">
-          <a href={createPageUrl('CreatePayslip')} className="text-white/60 hover:text-white transition-colors">
+          <a href={createPageUrl('AdminPanel')} className="text-white/60 hover:text-white transition-colors">
             <ArrowLeft className="w-5 h-5" />
           </a>
           <div>

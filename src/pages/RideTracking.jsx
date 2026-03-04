@@ -59,7 +59,7 @@ export default function RideTracking() {
       // Subscribe to real-time updates
       if (!unsubscribeRef.current) {
         unsubscribeRef.current = base44.entities.Booking.subscribe((event) => {
-          if (event.id === bookingId && (event.type === 'update' || event.type === 'updated')) {
+          if (event.id === bookingId && event.type === 'update') {
             setBooking(event.data);
           }
         });

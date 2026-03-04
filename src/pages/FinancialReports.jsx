@@ -28,8 +28,8 @@ export default function FinancialReports() {
       document.body.removeChild(link);
       window.URL.revokeObjectURL(url);
     } catch (error) {
-      console.error('Erro ao baixar PDF:', error);
-      alert('Erro ao baixar o relatório');
+      console.error('Erreur téléchargement PDF:', error);
+      alert('Erreur lors du téléchargement du rapport');
     }
   };
 
@@ -39,8 +39,8 @@ export default function FinancialReports() {
         await base44.entities.FinancialReport.delete(reportId);
         refetch();
       } catch (error) {
-        console.error('Erro ao deletar:', error);
-        alert('Erro ao deletar o relatório');
+        console.error('Erreur suppression:', error);
+        alert('Erreur lors de la suppression du rapport');
       }
     }
   };
@@ -49,17 +49,17 @@ export default function FinancialReports() {
     <div className="min-h-screen bg-gray-50 p-6">
       <div className="max-w-4xl mx-auto">
         <div className="mb-8">
-          <h1 className="text-4xl font-bold text-gray-900 mb-2">Relatórios Financeiros</h1>
-          <p className="text-gray-600">Consulte e baixe todos os relatórios mensais guardados</p>
+          <h1 className="text-4xl font-bold text-gray-900 mb-2">Rapports Financiers</h1>
+          <p className="text-gray-600">Consultez et téléchargez tous les rapports mensuels enregistrés</p>
         </div>
 
         {isLoading ? (
           <div className="text-center py-12">
-            <p className="text-gray-500">Carregando relatórios...</p>
+            <p className="text-gray-500">Chargement des rapports...</p>
           </div>
         ) : reports.length === 0 ? (
           <div className="bg-white rounded-lg border border-gray-200 p-8 text-center">
-            <p className="text-gray-500">Nenhum relatório disponível ainda</p>
+            <p className="text-gray-500">Aucun rapport disponible pour le moment</p>
           </div>
         ) : (
           <div className="grid gap-4">
@@ -91,7 +91,7 @@ export default function FinancialReports() {
                         </p>
                       </div>
                     </div>
-                    <p className="text-xs text-gray-500 mt-3">{report.num_bookings} courses | Gerado em {new Date(report.created_date).toLocaleDateString('fr-FR')}</p>
+                    <p className="text-xs text-gray-500 mt-3">{report.num_bookings} courses | Généré le {new Date(report.created_date).toLocaleDateString('fr-FR')}</p>
                   </div>
                   <div className="flex gap-2">
                     <Button

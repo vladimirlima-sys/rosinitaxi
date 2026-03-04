@@ -382,7 +382,7 @@ export default function Taximeter() {
         {/* GPS error */}
         {gpsError && (
           <div className="bg-red-500/10 border border-red-500/20 rounded-xl p-3">
-            <p className="text-red-400 text-sm text-center">{gpsError.replace('GPS não disponível neste dispositivo.', 'GPS non disponible sur cet appareil.').replace('Erro de GPS: ', 'Erreur GPS : ')}</p>
+            <p className="text-red-400 text-sm text-center">{gpsError}</p>
           </div>
         )}
 
