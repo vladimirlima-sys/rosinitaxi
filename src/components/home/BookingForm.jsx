@@ -254,28 +254,37 @@ export default function BookingForm({ bookingRef }) {
           language: lang 
         }));
         
-        const response = await base44.functions.invoke('createCheckout', {
-          amount: parseFloat(totalPrice), 
-          currency: 'chf',
-          client_name: form.client_name, 
-          client_email: form.client_email, 
-          client_phone: form.client_phone,
-          departure: form.departure_point, 
-          arrival: form.arrival_point,
-          vehicle_type: form.vehicle_type, 
-          distance_km: estimatedDistance,
-          departure_date: form.departure_date, 
-          departure_time: form.departure_time,
-          origin: window.location.origin,
-          is_short_notice: isShortNotice,
-          booking_id: createdBooking.id
-        });
-        
-        if (response.data?.url) {
-          window.location.href = response.data.url;
-          return;
-        } else {
-          throw new Error(response.data?.error || 'Erreur de paiement');
+        try {
+          const response = await base44.functions.invoke('createCheckout', {
+            amount: parseFloat(totalPrice), 
+            currency: 'chf',
+            client_name: form.client_name, 
+            client_email: form.client_email, 
+            client_phone: form.client_phone,
+            departure: form.departure_point, 
+            arrival: form.arrival_point,
+            vehicle_type: form.vehicle_type, 
+            distance_km: estimatedDistance,
+            departure_date: form.departure_date, 
+            departure_time: form.departure_time,
+            origin: window.location.origin,
+            is_short_notice: isShortNotice,
+            booking_id: createdBooking.id
+          });
+          
+          console.log('createCheckout response:', response);
+          
+          if (response?.data?.url) {
+            console.log('Redirecting to:', response.data.url);
+            window.location.href = response.data.url;
+            return;
+          } else {
+            console.error('No URL in response:', response);
+            throw new Error(response?.data?.error || 'Nenhuma URL de checkout recebida');
+          }
+        } catch (stripeErr) {
+          console.error('Stripe error details:', stripeErr);
+          throw stripeErr;
         }
       } else {
         // TWINT / Cash payment
