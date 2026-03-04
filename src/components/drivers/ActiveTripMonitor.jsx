@@ -47,10 +47,45 @@ export default function ActiveTripMonitor({ booking, onCompleted }) {
     return v ? parseInt(v) : null;
   });
   const [savingPayment, setSavingPayment] = useState(false);
+  const gpsWatchRef = React.useRef(null);
 
   const currentIndex = TRIP_STATUSES.findIndex(s => s.key === tripStatus);
   const currentStatusObj = TRIP_STATUSES[currentIndex] || null;
   const isCompleted = tripStatus === 'completed';
+
+  // Start GPS tracking when trip begins
+  const startGPSTracking = () => {
+    if (!navigator.geolocation) {
+      console.error('Geolocation not available');
+      return;
+    }
+    gpsWatchRef.current = navigator.geolocation.watchPosition(
+      async (pos) => {
+        try {
+          await base44.entities.DriverLocation.create({
+            booking_id: booking.id,
+            driver_id: booking.driver_id,
+            latitude: pos.coords.latitude,
+            longitude: pos.coords.longitude,
+            accuracy: pos.coords.accuracy,
+            timestamp: Date.now()
+          });
+        } catch (err) {
+          console.error('Failed to save location:', err);
+        }
+      },
+      (err) => console.error('GPS error:', err),
+      { enableHighAccuracy: true, maximumAge: 5000, timeout: 15000 }
+    );
+  };
+
+  // Stop GPS tracking
+  const stopGPSTracking = () => {
+    if (gpsWatchRef.current !== null) {
+      navigator.geolocation.clearWatch(gpsWatchRef.current);
+      gpsWatchRef.current = null;
+    }
+  };
 
   const setStatus = async (key) => {
     localStorage.setItem(storageKey, key);
@@ -59,6 +94,7 @@ export default function ActiveTripMonitor({ booking, onCompleted }) {
       const now = Date.now();
       localStorage.setItem(startKey, String(now));
       setTripStartedAt(now);
+      startGPSTracking();
     }
     
     // Notify client of status update (pass booking data directly to avoid DB timeout)
@@ -79,6 +115,7 @@ export default function ActiveTripMonitor({ booking, onCompleted }) {
     if (key === 'completed') {
       localStorage.removeItem(startKey);
       setTripStartedAt(null);
+      stopGPSTracking();
       
       // Marquer comme payée et notifier le parent
       setSavingPayment(true);
@@ -117,6 +154,7 @@ export default function ActiveTripMonitor({ booking, onCompleted }) {
     localStorage.removeItem(startKey);
     setTripStatus(null);
     setTripStartedAt(null);
+    stopGPSTracking();
   };
 
   // Steps to show as next action buttons
