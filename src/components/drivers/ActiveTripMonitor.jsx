@@ -80,15 +80,16 @@ export default function ActiveTripMonitor({ booking, onCompleted }) {
       localStorage.removeItem(startKey);
       setTripStartedAt(null);
       
-      // Registrar pagamento automaticamente
+      // Marquer comme payée et notifier le parent
       setSavingPayment(true);
       try {
         await base44.entities.Booking.update(booking.id, {
           payment_status: 'paid'
         });
-        toast.success('Corrida registrada como paga ✓');
+        toast.success('Course terminée — transférée vers l\'historique ✓');
+        if (onCompleted) setTimeout(onCompleted, 1500);
       } catch (error) {
-        toast.error('Erro ao registrar pagamento');
+        toast.error('Erreur lors de l\'enregistrement');
         console.error('Payment registration error:', error);
       } finally {
         setSavingPayment(false);
