@@ -5,7 +5,7 @@ import AdminKPIs from '@/components/admin/AdminKPIs';
 import {
   Lock, LogOut, LayoutDashboard, List,
   CalendarDays, Car, Users, Settings, BarChart2,
-  FileText, Map, Smartphone, HelpCircle, ChevronRight, Eye, EyeOff,
+  FileText, Map, Smartphone, HelpCircle, ChevronRight, Eye, EyeOff, Loader2,
   Receipt, BookOpen, Star
 } from 'lucide-react';
 
@@ -27,33 +27,64 @@ const navPages = [
 ];
 
 export default function AdminPanel() {
+  const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [unlocked, setUnlocked] = useState(false);
   const [error, setError] = useState('');
   const [tab, setTab] = useState('dashboard');
   const [showPassword, setShowPassword] = useState(false);
-
-  const ADMIN_PASSWORD = 'Sophia051009@';
+  const [loading, setLoading] = useState(false);
 
   useEffect(() => {
-    if (localStorage.getItem('admin_unlocked') === 'true') setUnlocked(true);
+    const savedToken = localStorage.getItem('admin_auth_token');
+    if (savedToken) {
+      verifyToken(savedToken);
+    }
   }, []);
 
-  const handleSubmit = (e) => {
-   e.preventDefault();
-   if (password.trim() === ADMIN_PASSWORD) {
-     setUnlocked(true);
-     setError('');
-     localStorage.setItem('admin_unlocked', 'true');
-   } else {
-     setError('Mot de passe incorrect.');
-     setPassword('');
-   }
+  const verifyToken = async (token) => {
+    try {
+      const { data } = await base44.functions.invoke('validateAdminAccess', { token });
+      if (data.valid) {
+        setUnlocked(true);
+      } else {
+        localStorage.removeItem('admin_auth_token');
+      }
+    } catch (err) {
+      localStorage.removeItem('admin_auth_token');
+    }
+  };
+
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    setError('');
+    setLoading(true);
+    
+    try {
+      const { data } = await base44.functions.invoke('validateAdminAccess', {
+        email: email.toLowerCase(),
+        password
+      });
+
+      if (data.success) {
+        setUnlocked(true);
+        localStorage.setItem('admin_auth_token', data.token);
+        setEmail('');
+        setPassword('');
+      } else {
+        setError('Email ou senha incorretos.');
+      }
+    } catch (err) {
+      setError(err.response?.data?.error || 'Erro ao conectar.');
+    } finally {
+      setLoading(false);
+    }
   };
 
   const handleLogout = () => {
     setUnlocked(false);
-    localStorage.removeItem('admin_unlocked');
+    localStorage.removeItem('admin_auth_token');
+    setEmail('');
     setPassword('');
   };
 
@@ -72,7 +103,20 @@ export default function AdminPanel() {
                 <Lock className="w-5 h-5 text-white" />
               </div>
             </div>
-            <p className="text-white/60 text-sm text-center">Entrez le mot de passe pour accéder</p>
+            <p className="text-white/60 text-sm text-center">Connectez-vous pour accéder</p>
+            
+            <div>
+              <input
+                type="email"
+                value={email}
+                onChange={(e) => { setEmail(e.target.value); setError(''); }}
+                placeholder="Email"
+                className="w-full bg-white/10 border border-white/20 rounded-lg px-4 py-3 text-white text-sm placeholder-white/40 focus:outline-none focus:border-white/60"
+                required
+                disabled={loading}
+              />
+            </div>
+
             <div className="relative">
               <input
                 type={showPassword ? 'text' : 'password'}
@@ -81,6 +125,7 @@ export default function AdminPanel() {
                 placeholder="Mot de passe"
                 className="w-full bg-white/10 border border-white/20 rounded-lg px-4 py-3 pr-11 text-white text-sm placeholder-white/40 focus:outline-none focus:border-white/60"
                 required
+                disabled={loading}
               />
               <button
                 type="button"
@@ -90,8 +135,10 @@ export default function AdminPanel() {
                 {showPassword ? <EyeOff className="w-4 h-4" /> : <Eye className="w-4 h-4" />}
               </button>
             </div>
+
             {error && <p className="text-red-400 text-xs text-center">{error}</p>}
-            <button type="submit" className="w-full bg-white text-black font-bold py-3 rounded-lg hover:bg-white/90 transition-colors">
+            <button type="submit" disabled={loading} className="w-full bg-white text-black font-bold py-3 rounded-lg hover:bg-white/90 transition-colors disabled:opacity-50 flex items-center justify-center gap-2">
+              {loading ? <Loader2 className="w-4 h-4 animate-spin" /> : ''}
               Connexion
             </button>
           </form>
