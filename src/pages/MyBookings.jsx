@@ -345,8 +345,11 @@ export default function MyBookings() {
                 <p className="text-white/60 text-sm">{t.noBookings}</p>
               </div>
             ) : (
-              <div className="space-y-4">
-                {bookings.map(b => (
+              <>
+                {nextTrip && <NextTripHighlight booking={nextTrip} t={t} />}
+                <BookingFilters filters={filters} setFilters={setFilters} t={t} />
+                <div className="space-y-4">
+                  {filteredAndSorted.map(b => (
                   <div key={b.id} className="bg-black rounded-2xl p-5 space-y-4">
                     {/* Trip */}
                     <div className="flex items-start gap-3">
