@@ -26,6 +26,8 @@ Deno.serve(async (req) => {
     const body = await req.json();
     const { email, password, token } = body;
 
+    console.log('validateAdminAccess called');
+
     // Verify existing token
     if (token) {
       try {
