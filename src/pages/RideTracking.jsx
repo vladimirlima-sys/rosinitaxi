@@ -55,7 +55,17 @@ export default function RideTracking() {
       }
 
       setLoading(false);
+
+      // Subscribe to real-time updates
+      if (!unsubscribeRef.current) {
+        unsubscribeRef.current = base44.entities.Booking.subscribe((event) => {
+          if (event.id === bookingId && (event.type === 'update' || event.type === 'updated')) {
+            setBooking(event.data);
+          }
+        });
+      }
     } catch (err) {
+      console.error('Error loading booking:', err);
       setError('Erro ao carregar os dados');
       setLoading(false);
     }
