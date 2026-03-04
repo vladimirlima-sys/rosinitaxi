@@ -7,9 +7,10 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@
 import { Button } from "@/components/ui/button";
 import {
   Search, Users, TrendingUp, Phone, Mail, MapPin, Calendar,
-  ChevronDown, ChevronUp, Star, UserPlus, Download, ArrowUpDown
+  ChevronDown, ChevronUp, Star, UserPlus, Download, ArrowUpDown, ArrowLeft
 } from "lucide-react";
 import { BarChart, Bar, XAxis, YAxis, Tooltip, ResponsiveContainer } from "recharts";
+import { createPageUrl } from "@/utils";
 
 const LANG_LABELS = { fr: "🇫🇷 FR", pt: "🇧🇷 PT", en: "🇬🇧 EN", de: "🇩🇪 DE", it: "🇮🇹 IT", es: "🇪🇸 ES", nl: "🇳🇱 NL" };
 
