@@ -2,10 +2,11 @@ import React, { useEffect, useState } from 'react';
 import { base44 } from '@/api/base44Client';
 import { createPageUrl } from '@/utils';
 import { ArrowLeft, Loader2, CalendarDays } from 'lucide-react';
-import { startOfWeek } from 'date-fns';
+import { startOfWeek, startOfMonth } from 'date-fns';
 import { toast } from 'sonner';
 import CalendarFilters from '@/components/calendar/CalendarFilters';
 import WeekCalendar from '@/components/calendar/WeekCalendar';
+import MonthCalendar from '@/components/calendar/MonthCalendar';
 
 export default function Calendar() {
   const [bookings, setBookings] = useState([]);
