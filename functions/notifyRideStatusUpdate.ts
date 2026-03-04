@@ -88,7 +88,7 @@ Deno.serve(async (req) => {
                 'Authorization': 'Basic ' + btoa(`${accountSid}:${authToken}`),
                 'Content-Type': 'application/x-www-form-urlencoded',
               },
-              body: new URLSearchParams({ From: from, To: formattedTo, Body: msgBody }).toString(),
+              body: new URLSearchParams({ From: formattedFrom, To: formattedTo, Body: msgBody }).toString(),
             }
           );
 
