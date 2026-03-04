@@ -182,8 +182,23 @@ export default function BookingsTable() {
       <BookingsFilters
         filters={filters}
         onFilterChange={setFilters}
-        onReset={() => setFilters({ date: '', status: 'all', vehicle: 'all' })}
+        onReset={handleResetFilters}
       />
+
+      {/* Search Bar */}
+      <div className="mb-4 relative">
+        <Search className="absolute left-4 top-3.5 w-5 h-5 text-white/40" />
+        <input
+          type="text"
+          placeholder="Buscar por cliente, email, telefone ou ID..."
+          value={searchQuery}
+          onChange={(e) => {
+            setSearchQuery(e.target.value);
+            setCurrentPage(1);
+          }}
+          className="w-full pl-12 pr-4 py-3 bg-white/[0.03] border border-white/10 rounded-lg text-white placeholder-white/40 focus:outline-none focus:border-[#C9A96E]/50"
+        />
+      </div>
 
       {selectedIds.length > 0 && (
         <div className="flex items-center justify-between mb-3 px-4 py-3 bg-red-950/40 border border-red-500/30 rounded-xl">
@@ -204,7 +219,7 @@ export default function BookingsTable() {
           <div className="flex items-center gap-3">
             <input
               type="checkbox"
-              checked={filteredBookings.length > 0 && selectedIds.length === filteredBookings.length}
+              checked={paginatedBookings.length > 0 && selectedIds.length === paginatedBookings.length}
               onChange={toggleSelectAll}
               className="w-4 h-4 accent-[#C9A96E] cursor-pointer"
             />
@@ -221,7 +236,7 @@ export default function BookingsTable() {
             <p className="text-white/40">Nenhuma reserva encontrada</p>
           </div>
         ) : (
-          filteredBookings.map((booking) => (
+          paginatedBookings.map((booking) => (
             <BookingRow
             key={booking.id}
             booking={booking}
@@ -237,6 +252,46 @@ export default function BookingsTable() {
           ))
         )}
       </div>
+
+      {/* Pagination */}
+      {totalPages > 1 && (
+        <div className="flex items-center justify-between mt-6">
+          <div className="text-white/40 text-sm">
+            Mostrando {((currentPage - 1) * ITEMS_PER_PAGE) + 1} a {Math.min(currentPage * ITEMS_PER_PAGE, filteredBookings.length)} de {filteredBookings.length}
+          </div>
+          <div className="flex gap-2">
+            <button
+              onClick={() => setCurrentPage(prev => Math.max(prev - 1, 1))}
+              disabled={currentPage === 1}
+              className="px-3 py-2 bg-white/[0.03] border border-white/10 rounded-lg text-white text-sm hover:bg-white/[0.05] disabled:opacity-50 transition-colors"
+            >
+              Anterior
+            </button>
+            <div className="flex items-center gap-2">
+              {Array.from({ length: totalPages }, (_, i) => i + 1).map(page => (
+                <button
+                  key={page}
+                  onClick={() => setCurrentPage(page)}
+                  className={`px-3 py-2 rounded-lg text-sm transition-colors ${
+                    currentPage === page
+                      ? 'bg-[#C9A96E] text-black'
+                      : 'bg-white/[0.03] border border-white/10 text-white hover:bg-white/[0.05]'
+                  }`}
+                >
+                  {page}
+                </button>
+              ))}
+            </div>
+            <button
+              onClick={() => setCurrentPage(prev => Math.min(prev + 1, totalPages))}
+              disabled={currentPage === totalPages}
+              className="px-3 py-2 bg-white/[0.03] border border-white/10 rounded-lg text-white text-sm hover:bg-white/[0.05] disabled:opacity-50 transition-colors"
+            >
+              Próximo
+            </button>
+          </div>
+        </div>
+      )}
 
       <div className="mt-4 text-white/40 text-sm">
         Total: {filteredBookings.length} reserva{filteredBookings.length !== 1 ? 's' : ''}
