@@ -200,9 +200,13 @@ export default function Taximeter() {
         }
       },
       (err) => {
-        setGpsError('Erreur GPS : ' + err.message);
+        let message = err.message;
+        if (err.code === 1) message = 'Permission GPS refusée. Vérifiez les paramètres du navigateur.';
+        if (err.code === 2) message = 'Signal GPS indisponible. Essayez en plein air.';
+        if (err.code === 3) message = 'Timeout GPS. Augmentez le délai ou attendez.';
+        setGpsError('Erreur GPS : ' + message);
       },
-      { enableHighAccuracy: true, maximumAge: 1000, timeout: 10000 }
+      { enableHighAccuracy: true, maximumAge: 1000, timeout: 30000 }
     );
   };
 
