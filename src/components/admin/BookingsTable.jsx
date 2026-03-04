@@ -43,12 +43,32 @@ export default function BookingsTable() {
     fetchBookings();
   }, []);
 
-  const filteredBookings = bookings.filter((booking) => {
-    if (filters.date && booking.departure_date !== filters.date) return false;
-    if (filters.status !== 'all' && booking.payment_status !== filters.status) return false;
-    if (filters.vehicle !== 'all' && booking.vehicle_type !== filters.vehicle) return false;
-    return true;
-  });
+  const filteredBookings = useMemo(() => {
+    return bookings.filter((booking) => {
+      // Apply filters
+      if (filters.date && booking.departure_date !== filters.date) return false;
+      if (filters.status !== 'all' && booking.payment_status !== filters.status) return false;
+      if (filters.vehicle !== 'all' && booking.vehicle_type !== filters.vehicle) return false;
+      
+      // Apply search
+      if (searchQuery) {
+        const query = searchQuery.toLowerCase();
+        return (
+          booking.client_name?.toLowerCase().includes(query) ||
+          booking.client_email?.toLowerCase().includes(query) ||
+          booking.client_phone?.includes(query) ||
+          booking.id.toLowerCase().includes(query)
+        );
+      }
+      return true;
+    });
+  }, [bookings, filters, searchQuery]);
+
+  const totalPages = Math.ceil(filteredBookings.length / ITEMS_PER_PAGE);
+  const paginatedBookings = useMemo(() => {
+    const start = (currentPage - 1) * ITEMS_PER_PAGE;
+    return filteredBookings.slice(start, start + ITEMS_PER_PAGE);
+  }, [filteredBookings, currentPage]);
 
   const handleStatusChange = async (bookingId, newStatus) => {
     try {
