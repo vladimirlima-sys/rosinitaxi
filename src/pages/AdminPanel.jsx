@@ -68,16 +68,7 @@ export default function AdminPanel() {
                 <Lock className="w-5 h-5 text-white" />
               </div>
             </div>
-            <p className="text-white/60 text-sm text-center">Acesso restrito a administradores</p>
-            <input
-              type="email"
-              value={email}
-              onChange={(e) => { setEmail(e.target.value); setError(''); }}
-              placeholder="Email"
-              className="w-full bg-white/10 border border-white/20 rounded-lg px-4 py-3 text-white text-sm placeholder-white/40 focus:outline-none focus:border-white/60"
-              autoFocus
-              required
-            />
+            <p className="text-white/60 text-sm text-center">Introduza a senha para aceder</p>
             <div className="relative">
               <input
                 type={showPassword ? 'text' : 'password'}
