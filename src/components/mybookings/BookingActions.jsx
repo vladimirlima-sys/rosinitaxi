@@ -1,9 +1,42 @@
-import { Download, Share2, Star, MapPin } from 'lucide-react';
+import { Download, Share2, Star, MapPin, Loader2 } from 'lucide-react';
+import { base44 } from '@/api/base44Client';
+import { useState } from 'react';
 
 export default function BookingActions({ booking, t }) {
+  const [downloading, setDownloading] = useState(false);
+
   const handleDownloadReceipt = async () => {
-    // TODO: Chamar função backend para gerar PDF do recibo
-    console.log('Download recibo para:', booking.id);
+    try {
+      setDownloading(true);
+      const response = await base44.functions.invoke('generateBookingReceipt', {
+        bookingId: booking.id
+      });
+
+      if (response.data.success && response.data.pdf) {
+        // Decode base64 and create blob
+        const binaryString = atob(response.data.pdf);
+        const bytes = new Uint8Array(binaryString.length);
+        for (let i = 0; i < binaryString.length; i++) {
+          bytes[i] = binaryString.charCodeAt(i);
+        }
+        const blob = new Blob([bytes], { type: 'application/pdf' });
+
+        // Download
+        const url = window.URL.createObjectURL(blob);
+        const link = document.createElement('a');
+        link.href = url;
+        link.download = `ROSINI_Recibo_${booking.id.substring(0, 8)}.pdf`;
+        document.body.appendChild(link);
+        link.click();
+        document.body.removeChild(link);
+        window.URL.revokeObjectURL(url);
+      }
+    } catch (error) {
+      console.error('Erro ao descarregar recibo:', error);
+      alert('Erro ao descarregar o recibo');
+    } finally {
+      setDownloading(false);
+    }
   };
 
   const handleShare = async () => {
