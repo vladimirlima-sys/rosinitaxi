@@ -751,7 +751,7 @@ export default function BookingForm({ bookingRef }) {
         )}
 
         {/* Footer */}
-        <div className="mt-6 sm:mt-10 border-t border-black/20 pt-4 sm:pt-6 text-center space-y-1">
+         <div className="mt-4 sm:mt-8 border-t border-black/20 pt-3 sm:pt-4 text-center space-y-1">
           <a href={createPageUrl('AdminPanel')} className="text-black font-semibold text-xs sm:text-sm tracking-wide hover:opacity-70 cursor-pointer">Rosini Transports et Locations Sàrl</a>
            <p className="text-black/60 text-xs">La Tour-de-Peilz, Suisse</p>
            <div className="flex flex-col sm:flex-row justify-center gap-2 sm:gap-4 mt-2">
