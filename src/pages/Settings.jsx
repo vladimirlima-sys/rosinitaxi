@@ -4,7 +4,7 @@ import { createPageUrl } from '@/utils';
 import { Input } from '@/components/ui/input';
 import { Button } from '@/components/ui/button';
 import { Label } from '@/components/ui/label';
-import { Loader2, ArrowLeft } from 'lucide-react';
+import { Loader2, ArrowLeft, RotateCcw } from 'lucide-react';
 import { toast } from 'sonner';
 
 const DAYS = ['Domingo', 'Segunda-feira', 'Terça-feira', 'Quarta-feira', 'Quinta-feira', 'Sexta-feira', 'Sábado'];
@@ -442,8 +442,8 @@ export default function Settings() {
             {isSaving ? <><Loader2 className="w-4 h-4 mr-2 animate-spin" />Salvando...</> : 'Salvar Configurações'}
           </Button>
           <Button onClick={handleReset}
-            variant="outline"
-            className="flex-1 border-white/20 text-white hover:bg-white/5 font-semibold h-12 text-sm md:h-14 md:text-base">
+            className="flex-1 border border-white/20 bg-white/5 hover:bg-white/10 text-white font-semibold h-12 text-sm md:h-14 md:text-base flex items-center justify-center gap-2 transition-colors">
+            <RotateCcw className="w-4 h-4" />
             Resetar
           </Button>
         </div>
