@@ -26,7 +26,13 @@ function buildClientMap(bookings) {
         phone: b.client_phone,
         language: b.language,
         bookings: [],
+        first_booking_date: b.departure_date,
       };
+    } else {
+      // track earliest booking date as "first seen"
+      if (b.departure_date < map[key].first_booking_date) {
+        map[key].first_booking_date = b.departure_date;
+      }
     }
     map[key].bookings.push(b);
   }
@@ -36,6 +42,26 @@ function buildClientMap(bookings) {
     const last_booking = c.bookings.sort((a, b) => new Date(b.departure_date) - new Date(a.departure_date))[0];
     return { ...c, total_spent, num_bookings: c.bookings.length, num_paid: paid.length, last_booking_date: last_booking?.departure_date };
   }).sort((a, b) => b.total_spent - a.total_spent);
+}
+
+function buildMonthlyNewClients(clients) {
+  const map = {};
+  for (const c of clients) {
+    if (!c.first_booking_date) continue;
+    const d = new Date(c.first_booking_date);
+    const key = `${d.getFullYear()}-${String(d.getMonth() + 1).padStart(2, "0")}`;
+    map[key] = (map[key] || 0) + 1;
+  }
+  // last 12 months
+  const result = [];
+  const now = new Date();
+  for (let i = 11; i >= 0; i--) {
+    const d = new Date(now.getFullYear(), now.getMonth() - i, 1);
+    const key = `${d.getFullYear()}-${String(d.getMonth() + 1).padStart(2, "0")}`;
+    const label = d.toLocaleDateString("fr-CH", { month: "short", year: "2-digit" });
+    result.push({ month: label, nouveaux: map[key] || 0 });
+  }
+  return result;
 }
 
 function ClientRow({ client }) {
