@@ -79,22 +79,27 @@ export default function AdminPanel() {
                 <Lock className="w-5 h-5 text-white" />
               </div>
             </div>
-            <p className="text-white/60 text-sm text-center">Introduza a senha para aceder</p>
+            <p className="text-white/60 text-sm text-center">Acesso restrito a administradores</p>
             <input
-              type="password"
-              value={input}
-              onChange={(e) => { setInput(e.target.value); setError(false); }}
-              placeholder="Senha"
+              type="email"
+              value={email}
+              onChange={(e) => { setEmail(e.target.value); setError(''); }}
+              placeholder="Email"
               className="w-full bg-white/10 border border-white/20 rounded-lg px-4 py-3 text-white text-sm placeholder-white/40 focus:outline-none focus:border-white/60"
               autoFocus
+              required
             />
-            <label className="flex items-center gap-2 text-white/60 text-sm cursor-pointer hover:text-white/80">
-              <input type="checkbox" checked={rememberPassword} onChange={(e) => setRememberPassword(e.target.checked)} className="w-4 h-4 rounded" />
-              Lembrar senha
-            </label>
-            {error && <p className="text-red-400 text-xs text-center">Senha incorreta</p>}
-            <button type="submit" className="w-full bg-white text-black font-bold py-3 rounded-lg hover:bg-white/90 transition-colors">
-              Entrar
+            <input
+              type="password"
+              value={password}
+              onChange={(e) => { setPassword(e.target.value); setError(''); }}
+              placeholder="Senha"
+              className="w-full bg-white/10 border border-white/20 rounded-lg px-4 py-3 text-white text-sm placeholder-white/40 focus:outline-none focus:border-white/60"
+              required
+            />
+            {error && <p className="text-red-400 text-xs text-center">{error}</p>}
+            <button type="submit" disabled={loading} className="w-full bg-white text-black font-bold py-3 rounded-lg hover:bg-white/90 transition-colors disabled:opacity-60">
+              {loading ? 'A verificar...' : 'Entrar'}
             </button>
           </form>
         </div>
