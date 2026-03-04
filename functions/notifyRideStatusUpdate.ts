@@ -1,5 +1,9 @@
 import { createClientFromRequest } from 'npm:@base44/sdk@0.8.20';
 
+const TWILIO_ACCOUNT_SID = Deno.env.get("TWILIO_ACCOUNT_SID");
+const TWILIO_AUTH_TOKEN = Deno.env.get("TWILIO_AUTH_TOKEN");
+const TWILIO_FROM = Deno.env.get("TWILIO_WHATSAPP_FROM");
+
 const messages = {
   en_route: {
     fr: { whatsapp: (name, dep) => `🚗 *Rosini Transfert*\n\nBonjour ${name}, votre chauffeur est proche et arrivera dans environ 5 minutes a :\n📍 ${dep}\n\nTenez-vous pret(e) !`, email_subject: 'Votre chauffeur est en route', email_body: (name, dep) => `Bonjour ${name},<br><br>Votre chauffeur Rosini Transfert est proche et arrivera dans environ 5 minutes à :<br><br><strong>📍 ${dep}</strong><br><br>Tenez-vous prêt(e) !` },
@@ -9,6 +13,12 @@ const messages = {
     it: { whatsapp: (name, dep) => `🚗 *Rosini Transfert*\n\nSalve ${name}, il vostro autista e vicino e arrivera in circa 5 minuti a:\n📍 ${dep}\n\nPreparatevi!`, email_subject: 'Il vostro autista è in arrivo', email_body: (name, dep) => `Salve ${name},<br><br>Il vostro autista Rosini Transfert è vicino e arriverà in circa 5 minuti a:<br><br><strong>📍 ${dep}</strong><br><br>Preparatevi!` },
     es: { whatsapp: (name, dep) => `🚗 *Rosini Transfert*\n\nHola ${name}, su conductor esta cerca y llegara en unos 5 minutos a:\n📍 ${dep}\n\n¡Preparese!`, email_subject: 'Su conductor está en camino', email_body: (name, dep) => `Hola ${name},<br><br>Su conductor Rosini Transfert está cerca y llegará en unos 5 minutos a:<br><br><strong>📍 ${dep}</strong><br><br>¡Prepárese!` },
     nl: { whatsapp: (name, dep) => `🚗 *Rosini Transfert*\n\nHallo ${name}, uw chauffeur is in de buurt en arriveert over ongeveer 5 minuten bij:\n📍 ${dep}\n\nMaakt u zich klaar!`, email_subject: 'Uw chauffeur is onderweg', email_body: (name, dep) => `Hallo ${name},<br><br>Uw Rosini Transfert chauffeur is in de buurt en arriveert over ongeveer 5 minuten bij:<br><br><strong>📍 ${dep}</strong><br><br>Maakt u zich klaar!` },
+  },
+  driver_arriving: {
+    // Template: rosini_driver_arrived | ContentSid: HX57b573cd1d0f5875c54cc0b145c73281
+    // Variables: {{1}} = client_name, {{2}} = departure_point
+    use_template: true,
+    template_sid: 'HX57b573cd1d0f5875c54cc0b145c73281',
   },
   arrived: {
     fr: { whatsapp: (name, dep) => `📍 *Rosini Transfert*\n\nBonjour ${name}, votre chauffeur est arrive a votre point de depart :\n📍 ${dep}\n\nIl vous attend. Bonne route !`, email_subject: 'Votre chauffeur est arrivé', email_body: (name, dep) => `Bonjour ${name},<br><br>Votre chauffeur Rosini Transfert est arrivé à votre point de départ :<br><br><strong>📍 ${dep}</strong><br><br>Il vous attend. Bonne route !` },
@@ -36,6 +46,40 @@ Deno.serve(async (req) => {
       return Response.json({ success: true, skipped: true });
     }
 
+    // Helper: Send WhatsApp Template
+    async function sendWhatsAppTemplate(to, templateSid, variables) {
+      const toFormatted = to.startsWith('whatsapp:') ? to : `whatsapp:${to}`;
+      const credentials = btoa(`${TWILIO_ACCOUNT_SID}:${TWILIO_AUTH_TOKEN}`);
+
+      const params = new URLSearchParams({
+        From: TWILIO_FROM,
+        To: toFormatted,
+        ContentSid: templateSid,
+      });
+
+      if (variables && variables.length > 0) {
+        params.append('ContentVariables', JSON.stringify(variables));
+      }
+
+      const response = await fetch(
+        `https://api.twilio.com/2010-04-01/Accounts/${TWILIO_ACCOUNT_SID}/Messages.json`,
+        {
+          method: 'POST',
+          headers: {
+            'Authorization': `Basic ${credentials}`,
+            'Content-Type': 'application/x-www-form-urlencoded',
+          },
+          body: params.toString(),
+        }
+      );
+
+      const result = await response.json();
+      if (!response.ok) {
+        throw new Error(`Twilio error: ${result.message || JSON.stringify(result)}`);
+      }
+      return result;
+    }
+
     // Use booking data passed directly OR fetch from DB
     let phone = client_phone;
     let name = client_name;
@@ -58,59 +102,80 @@ Deno.serve(async (req) => {
       lang = lang || booking.language;
     }
 
-    lang = (lang && messages[status][lang]) ? lang : 'fr';
-    const msgBody = messages[status][lang].whatsapp(name || 'Client', dep || '');
-    const emailSubject = messages[status][lang].email_subject;
-    const emailBody = messages[status][lang].email_body(name || 'Client', dep || '');
-
-    console.log(`Sending notifications | status=${status} | lang=${lang} | phone=${phone}`);
-
     const results = { whatsapp: null, email: null };
 
-    // Send WhatsApp
-    if (phone) {
-      try {
-        const accountSid = Deno.env.get('TWILIO_ACCOUNT_SID');
-        const authToken = Deno.env.get('TWILIO_AUTH_TOKEN');
-        const from = Deno.env.get('TWILIO_WHATSAPP_FROM');
-
-        if (accountSid && authToken && from) {
+    // Check if using template
+    if (messages[status].use_template) {
+      console.log(`Sending template notification | status=${status} | phone=${phone}`);
+      
+      // Send WhatsApp Template
+      if (phone) {
+        try {
           const digits = phone.replace(/\D/g, '');
-          const formattedTo = `whatsapp:+${digits}`;
-          const formattedFrom = from.startsWith('whatsapp:') ? from : `whatsapp:${from}`;
-          console.log(`Formatted phone: ${formattedTo} | From: ${formattedFrom}`);
-
-          const twilioRes = await fetch(
-            `https://api.twilio.com/2010-04-01/Accounts/${accountSid}/Messages.json`,
-            {
-              method: 'POST',
-              headers: {
-                'Authorization': 'Basic ' + btoa(`${accountSid}:${authToken}`),
-                'Content-Type': 'application/x-www-form-urlencoded',
-              },
-              body: new URLSearchParams({ From: formattedFrom, To: formattedTo, Body: msgBody }).toString(),
-            }
-          );
-
-          const twilioData = await twilioRes.json();
-          if (twilioRes.ok) {
-            results.whatsapp = twilioData.sid;
-            console.log(`WhatsApp sent OK. SID: ${twilioData.sid}`);
-          } else {
-            const errMsg = twilioData?.message || JSON.stringify(twilioData);
-            console.error(`Twilio error ${twilioRes.status}: ${errMsg}`);
-            results.whatsapp_error = `${twilioRes.status}: ${errMsg}`;
-          }
-        } else {
-          console.warn('Twilio not configured');
+          const formattedTo = `+${digits}`;
+          const variables = [name || 'Client', dep || ''];
+          
+          const templateResult = await sendWhatsAppTemplate(formattedTo, messages[status].template_sid, variables);
+          results.whatsapp = templateResult.sid;
+          console.log(`WhatsApp template sent OK. SID: ${templateResult.sid}`);
+        } catch (err) {
+          console.error('WhatsApp template send error:', err.message);
+          results.whatsapp_error = err.message;
         }
-      } catch (err) {
-        console.error('WhatsApp send error:', err.message);
       }
-    }
+    } else {
+      // Regular message flow
+      lang = (lang && messages[status][lang]) ? lang : 'fr';
+      const msgBody = messages[status][lang].whatsapp(name || 'Client', dep || '');
+      const emailSubject = messages[status][lang].email_subject;
+      const emailBody = messages[status][lang].email_body(name || 'Client', dep || '');
 
-    // Send Email via Gmail (authorized connector)
-    if (email) {
+      console.log(`Sending notifications | status=${status} | lang=${lang} | phone=${phone}`);
+
+      // Send WhatsApp
+      if (phone) {
+        try {
+          const accountSid = Deno.env.get('TWILIO_ACCOUNT_SID');
+          const authToken = Deno.env.get('TWILIO_AUTH_TOKEN');
+          const from = Deno.env.get('TWILIO_WHATSAPP_FROM');
+
+          if (accountSid && authToken && from) {
+            const digits = phone.replace(/\D/g, '');
+            const formattedTo = `whatsapp:+${digits}`;
+            const formattedFrom = from.startsWith('whatsapp:') ? from : `whatsapp:${from}`;
+            console.log(`Formatted phone: ${formattedTo} | From: ${formattedFrom}`);
+
+            const twilioRes = await fetch(
+              `https://api.twilio.com/2010-04-01/Accounts/${accountSid}/Messages.json`,
+              {
+                method: 'POST',
+                headers: {
+                  'Authorization': 'Basic ' + btoa(`${accountSid}:${authToken}`),
+                  'Content-Type': 'application/x-www-form-urlencoded',
+                },
+                body: new URLSearchParams({ From: formattedFrom, To: formattedTo, Body: msgBody }).toString(),
+              }
+            );
+
+            const twilioData = await twilioRes.json();
+            if (twilioRes.ok) {
+              results.whatsapp = twilioData.sid;
+              console.log(`WhatsApp sent OK. SID: ${twilioData.sid}`);
+            } else {
+              const errMsg = twilioData?.message || JSON.stringify(twilioData);
+              console.error(`Twilio error ${twilioRes.status}: ${errMsg}`);
+              results.whatsapp_error = `${twilioRes.status}: ${errMsg}`;
+            }
+          } else {
+            console.warn('Twilio not configured');
+          }
+        } catch (err) {
+          console.error('WhatsApp send error:', err.message);
+        }
+      }
+
+      // Send Email via Gmail (authorized connector)
+      if (email) {
       try {
         console.log(`Attempting to send email via Gmail to ${email}`);
         const { accessToken } = await base44.asServiceRole.connectors.getConnection('gmail');
@@ -157,6 +222,8 @@ Deno.serve(async (req) => {
       }
     } else {
       console.warn('No client email to send notification');
+    }
+    }
     }
 
     return Response.json({ success: true, results });
