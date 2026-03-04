@@ -63,7 +63,7 @@ export default function AdminPanel() {
         <div className="w-full max-w-sm">
           <div className="text-center mb-8">
             <h1 className="text-black text-6xl font-extralight tracking-[0.3em] uppercase">ROSINI</h1>
-            <p className="text-black/60 text-sm tracking-[0.2em] uppercase mt-2">PAINEL ADMINISTRATIVO</p>
+            <p className="text-black/60 text-sm tracking-[0.2em] uppercase mt-2">PANNEAU ADMINISTRATIF</p>
           </div>
           <form onSubmit={handleSubmit} className="bg-black border border-black/40 rounded-xl p-6 space-y-4">
             <a href={createPageUrl('Home')} className="text-white/60 hover:text-white text-sm transition-colors mb-2 block">← Voltar</a>
