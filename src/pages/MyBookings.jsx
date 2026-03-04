@@ -218,9 +218,10 @@ export default function MyBookings() {
   const [email, setEmail] = useState(emailParam);
   const [bookings, setBookings] = useState(null);
   const [loading, setLoading] = useState(false);
-  const [cancelTarget, setCancelTarget] = useState(null); // booking being cancelled
+  const [cancelTarget, setCancelTarget] = useState(null);
   const [cancellingId, setCancellingId] = useState(null);
-  const [cancelResult, setCancelResult] = useState({}); // { [id]: 'success' | 'error' }
+  const [cancelResult, setCancelResult] = useState({});
+  const [filters, setFilters] = useState({ status: 'all', sort: 'date-desc' });
 
   const handleSearch = async (e) => {
     e.preventDefault();
