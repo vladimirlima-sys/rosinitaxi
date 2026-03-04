@@ -402,10 +402,19 @@ export default function MyBookings() {
                       </div>
                     )}
 
+                    {/* Countdown */}
+                    {canCancel(b) && !cancelResult[b.id] && <CancelCountdown departureDate={b.departure_date} departureTime={b.departure_time} />}
+
+                    {/* Details */}
+                    <BookingDetails booking={b} t={t} />
+
+                    {/* Actions */}
+                    <BookingActions booking={b} t={t} />
+
                     {/* Cancel button */}
                     {canCancel(b) && !cancelResult[b.id] && (
                       cancelTarget === b.id ? (
-                        <div className="bg-white/5 rounded-xl p-4 space-y-3">
+                        <div className="bg-white/5 rounded-xl p-4 space-y-3 mt-3">
                           <div className="flex items-start gap-2">
                             <AlertTriangle className="w-4 h-4 text-yellow-400 shrink-0 mt-0.5" />
                             <div>
