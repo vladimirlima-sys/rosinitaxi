@@ -1,6 +1,5 @@
 import { createClientFromRequest } from 'npm:@base44/sdk@0.8.20';
 import { create as createJWT, verify as verifyJWT } from 'npm:djwt@3.0.2';
-import * as bcrypt from 'npm:bcrypt@5.1.1';
 
 const JWT_SECRET = Deno.env.get('JWT_SECRET') || 'rosini-default-secret-2026';
 const encoder = new TextEncoder();
@@ -11,6 +10,16 @@ const key = await crypto.subtle.importKey(
   false,
   ['sign', 'verify']
 );
+
+// Simple password verification using Deno's crypto
+async function verifyPassword(password, hash) {
+  const encoder = new TextEncoder();
+  const data = encoder.encode(password);
+  const hashBuffer = await crypto.subtle.digest('SHA-256', data);
+  const hashArray = Array.from(new Uint8Array(hashBuffer));
+  const computedHash = hashArray.map(b => b.toString(16).padStart(2, '0')).join('');
+  return computedHash === hash;
+}
 
 Deno.serve(async (req) => {
   try {
@@ -69,7 +78,7 @@ Deno.serve(async (req) => {
     const cred = creds[0];
 
     // Verify password
-    const passwordMatch = await bcrypt.compare(password, cred.password_hash);
+    const passwordMatch = await verifyPassword(password, cred.password_hash);
     if (!passwordMatch) {
       return Response.json({ error: 'Email ou senha incorretos' }, { status: 401 });
     }

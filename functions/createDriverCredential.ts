@@ -1,5 +1,13 @@
 import { createClientFromRequest } from 'npm:@base44/sdk@0.8.20';
-import * as bcrypt from 'npm:bcrypt@5.1.1';
+
+// Simple password hashing using Deno's crypto
+async function hashPassword(password) {
+  const encoder = new TextEncoder();
+  const data = encoder.encode(password);
+  const hashBuffer = await crypto.subtle.digest('SHA-256', data);
+  const hashArray = Array.from(new Uint8Array(hashBuffer));
+  return hashArray.map(b => b.toString(16).padStart(2, '0')).join('');
+}
 
 Deno.serve(async (req) => {
   try {
@@ -31,8 +39,8 @@ Deno.serve(async (req) => {
       return Response.json({ error: 'Email já cadastrado' }, { status: 400 });
     }
 
-    // Hash password with bcrypt
-    const password_hash = await bcrypt.hash(password, 10);
+    // Hash password
+    const password_hash = await hashPassword(password);
 
     // Create credential
     const credential = await base44.asServiceRole.entities.DriverCredential.create({
