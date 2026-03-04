@@ -34,47 +34,47 @@ export default function DriverForm({ driver, onSave, onCancel }) {
 
         <form onSubmit={handleSubmit} className="p-6 space-y-4">
           <div>
-            <label className={labelClass}>Nome completo *</label>
-            <input type="text" value={form.name} onChange={e => update('name', e.target.value)} placeholder="Nome do motorista" className={inputClass} required />
+            <label className={labelClass}>Nom complet *</label>
+            <input type="text" value={form.name} onChange={e => update('name', e.target.value)} placeholder="Nom du chauffeur" className={inputClass} required />
           </div>
           <div className="grid grid-cols-2 gap-4">
             <div>
-              <label className={labelClass}>Telefone *</label>
+              <label className={labelClass}>Téléphone *</label>
               <input type="tel" value={form.phone} onChange={e => update('phone', e.target.value)} placeholder="+41 XX XXX XX XX" className={inputClass} required />
             </div>
             <div>
               <label className={labelClass}>Email</label>
-              <input type="email" value={form.email} onChange={e => update('email', e.target.value)} placeholder="email@exemplo.com" className={inputClass} />
+              <input type="email" value={form.email} onChange={e => update('email', e.target.value)} placeholder="email@exemple.com" className={inputClass} />
             </div>
           </div>
           <div>
-            <label className={labelClass}>Veículo</label>
+            <label className={labelClass}>Véhicule</label>
             <input type="text" value={form.vehicle} onChange={e => update('vehicle', e.target.value)} placeholder="Ex: Mercedes E-Class · VS 123 456" className={inputClass} />
           </div>
           <div className="grid grid-cols-2 gap-4">
             <div>
-              <label className={labelClass}>CNH</label>
-              <input type="text" value={form.license_number} onChange={e => update('license_number', e.target.value)} placeholder="Número da CNH" className={inputClass} />
+              <label className={labelClass}>Permis de conduire</label>
+              <input type="text" value={form.license_number} onChange={e => update('license_number', e.target.value)} placeholder="Numéro de permis" className={inputClass} />
             </div>
             <div>
-              <label className={labelClass}>Status</label>
+              <label className={labelClass}>Statut</label>
               <select value={form.status} onChange={e => update('status', e.target.value)} className={inputClass}>
-                <option value="active">Ativo</option>
-                <option value="inactive">Inativo</option>
+                <option value="active">Actif</option>
+                <option value="inactive">Inactif</option>
               </select>
             </div>
           </div>
           <div>
-            <label className={labelClass}>Observações</label>
-            <textarea value={form.notes} onChange={e => update('notes', e.target.value)} placeholder="Informações adicionais..." rows={3} className={`${inputClass} resize-none`} />
+            <label className={labelClass}>Notes</label>
+            <textarea value={form.notes} onChange={e => update('notes', e.target.value)} placeholder="Informations complémentaires..." rows={3} className={`${inputClass} resize-none`} />
           </div>
 
           <div className="flex gap-3 pt-2">
             <button type="button" onClick={onCancel} className="flex-1 h-11 rounded-xl border border-white/20 text-white/70 text-sm font-medium hover:bg-white/10 transition-all">
-              Cancelar
+              Annuler
             </button>
             <button type="submit" className="flex-[2] h-11 rounded-xl bg-[#F5C300] text-black text-sm font-bold hover:bg-[#e6b800] transition-all">
-              {driver ? 'Salvar alterações' : 'Adicionar motorista'}
+              {driver ? 'Enregistrer' : 'Ajouter le chauffeur'}
             </button>
           </div>
         </form>
