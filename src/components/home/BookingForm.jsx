@@ -683,7 +683,7 @@ export default function BookingForm({ bookingRef }) {
             </div>
 
             {/* Payment method */}
-            <div className="bg-black border border-black/40 rounded-xl p-4 space-y-2">
+            <div className="bg-black border border-black/40 rounded-xl p-3 sm:p-4 space-y-2">
               <h3 className="text-white/60 text-xs uppercase tracking-wider mb-3">{t.paymentMethod}</h3>
               {[
                 { value: 'stripe', label: t.stripeLabel, desc: t.stripeDesc },
