@@ -1,46 +1,34 @@
-import React, { useRef, Suspense, lazy } from 'react';
-import { LanguageProvider, useLang } from '@/components/LanguageContext';
+import React, { useRef } from 'react';
+import BookingForm from '@/components/home/BookingForm';
+import LanguageSwitcher from '@/components/home/LanguageSwitcher';
 import SeoHead from '@/components/SeoHead';
-import NavbarHeader from '@/components/home/NavbarHeader';
-import HeroHeader from '@/components/home/HeroHeader';
-import AdvantagesSection from '@/components/home/AdvantagesSection';
-import TestimonialsSection from '@/components/home/TestimonialsSection';
-import FooterSection from '@/components/home/FooterSection';
+import { LanguageProvider, useLang } from '@/components/LanguageContext';
 import { createPageUrl } from '@/utils';
-
-const BookingForm = lazy(() => import('@/components/home/BookingForm'));
+import { HelpCircle } from 'lucide-react';
 
 function HomeContent({ bookingRef }) {
   const { lang } = useLang();
-
   return (
     <>
       <SeoHead lang={lang} />
-      <div className="bg-black min-h-screen">
-        <NavbarHeader />
-        
-        <div className="relative bg-gradient-to-b from-black via-black/80 to-black">
-          <HeroHeader onBookClick={() => bookingRef.current?.scrollIntoView({ behavior: 'smooth' })} />
-          
-          <Suspense fallback={<div className="h-screen bg-black" />}>
-            <div ref={bookingRef}>
-              <BookingForm bookingRef={bookingRef} />
-            </div>
-          </Suspense>
+      <div className="min-h-screen bg-[#F5C300] relative">
+        <a
+          href={createPageUrl('FAQ')} className="fixed top-5 left-5 z-50 bg-black text-[#F5C300] p-2.5 opacity-40 rounded-full flex items-center gap-1.5 hover:bg-black/80 transition-all shadow">
+          <HelpCircle className="w-5 h-5" />
+        </a>
+        <div className="fixed top-5 right-5 z-50">
+          <LanguageSwitcher />
+        </div>
 
-          <AdvantagesSection />
-          <TestimonialsSection />
-          <FooterSection />
-
-          <div className="fixed bottom-4 right-4 z-40">
-            <a href={createPageUrl('DriverPortal')} title="Portal do Motorista" className="inline-block hover:opacity-80 transition-opacity">
-              <img src="https://flagcdn.com/ch.svg" alt="Suíça" className="w-12 h-8 rounded shadow-lg cursor-pointer" loading="lazy" />
-            </a>
-          </div>
+        <BookingForm bookingRef={bookingRef} />
+        <div className="absolute bottom-0 right-0 p-4">
+          <a href={createPageUrl('DriverPortal')} title="Portal do Motorista">
+            <img src="https://flagcdn.com/ch.svg" alt="Suíça" className="w-12 h-8 rounded shadow-lg cursor-pointer hover:opacity-80 transition-opacity" />
+          </a>
         </div>
       </div>
-    </>
-  );
+    </>);
+
 }
 
 export default function Home() {
@@ -48,6 +36,6 @@ export default function Home() {
   return (
     <LanguageProvider>
       <HomeContent bookingRef={bookingRef} />
-    </LanguageProvider>
-  );
+    </LanguageProvider>);
+
 }
