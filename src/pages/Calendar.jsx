@@ -109,21 +109,31 @@ export default function Calendar() {
         ) : (
           <>
             <CalendarFilters
+              viewMode={viewMode}
               weekStart={weekStart}
               setWeekStart={setWeekStart}
+              currentMonth={currentMonth}
+              setCurrentMonth={setCurrentMonth}
               filterStatus={filterStatus}
               setFilterStatus={setFilterStatus}
               filterDriver={filterDriver}
               setFilterDriver={setFilterDriver}
               drivers={drivers}
             />
-            <WeekCalendar
-              weekStart={weekStart}
-              bookings={filteredBookings}
-              drivers={drivers}
-              onAssignDriver={handleAssignDriver}
-              onReschedule={handleReschedule}
-            />
+            {viewMode === 'week' ? (
+              <WeekCalendar
+                weekStart={weekStart}
+                bookings={filteredBookings}
+                drivers={drivers}
+                onAssignDriver={handleAssignDriver}
+                onReschedule={handleReschedule}
+              />
+            ) : (
+              <MonthCalendar
+                currentMonth={currentMonth}
+                bookings={filteredBookings}
+              />
+            )}
             <div className="mt-4 text-white/30 text-xs">
               {filteredBookings.length} course{filteredBookings.length !== 1 ? 's' : ''} affichée{filteredBookings.length !== 1 ? 's' : ''}
             </div>
