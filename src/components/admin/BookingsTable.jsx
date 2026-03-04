@@ -156,11 +156,17 @@ export default function BookingsTable() {
   };
 
   const toggleSelectAll = () => {
-    if (selectedIds.length === filteredBookings.length) {
+    if (selectedIds.length === paginatedBookings.length) {
       setSelectedIds([]);
     } else {
-      setSelectedIds(filteredBookings.map((b) => b.id));
+      setSelectedIds(paginatedBookings.map((b) => b.id));
     }
+  };
+
+  const handleResetFilters = () => {
+    setFilters({ date: '', status: 'all', vehicle: 'all' });
+    setSearchQuery('');
+    setCurrentPage(1);
   };
 
   if (loading) {
