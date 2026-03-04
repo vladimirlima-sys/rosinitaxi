@@ -68,6 +68,7 @@ export default function Settings() {
   const [lastSaved, setLastSaved] = useState(null);
   const [isLoading, setIsLoading] = useState(true);
   const [isSaving, setIsSaving] = useState(false);
+  const [companySaving, setCompanySaving] = useState(false);
 
   useEffect(() => {
     if (localStorage.getItem('admin_unlocked') !== 'true') {
@@ -149,6 +150,22 @@ export default function Settings() {
     toast.message('Valores resetados');
   };
 
+  const handleSaveCompany = async () => {
+    setCompanySaving(true);
+    try {
+      if (companySettings.id) {
+        await base44.entities.CompanySettings.update(companySettings.id, companySettings);
+      } else if (companySettings.company_name) {
+        await base44.entities.CompanySettings.create(companySettings);
+      }
+      toast.success('✓ Informações da empresa salvas');
+    } catch {
+      toast.error('Erro ao salvar informações');
+    } finally {
+      setCompanySaving(false);
+    }
+  };
+
   if (isLoading) return (
     <div className="min-h-screen bg-[#0A0A0A] flex items-center justify-center text-white">
       <Loader2 className="w-6 h-6 animate-spin text-[#F5C300]" />
@@ -221,6 +238,10 @@ export default function Settings() {
                 onChange={e => setCompany('email', e.target.value)}
                 className="bg-white/5 border-white/10 text-white focus:border-[#F5C300] h-12" />
             </Field>
+            <Button onClick={handleSaveCompany} disabled={companySaving}
+              className="w-full bg-[#F5C300] hover:bg-[#E6B800] text-black font-semibold h-12 text-sm mt-4">
+              {companySaving ? <><Loader2 className="w-4 h-4 mr-2 animate-spin" />Salvando...</> : 'Salvar Informações da Empresa'}
+            </Button>
           </Section>
 
           {/* Tarifas por KM */}
