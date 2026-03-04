@@ -162,8 +162,8 @@ export default function Settings() {
   };
 
   return (
-    <div className="min-h-screen bg-[#0A0A0A] py-8 md:py-12 px-4 md:px-6">
-      <div className="max-w-3xl mx-auto">
+    <div className="min-h-screen bg-[#0A0A0A] py-12 px-6">
+      <div className="max-w-7xl mx-auto">
         <div className="flex items-center gap-3 mb-8">
           <a
             href={createPageUrl('AdminPanel')}
@@ -171,7 +171,7 @@ export default function Settings() {
           >
             <ArrowLeft className="w-5 h-5" />
           </a>
-          <h1 className="text-3xl md:text-4xl font-light text-white">Configurações de Preço</h1>
+          <h1 className="text-4xl font-light text-white">Configurações</h1>
         </div>
 
         <div className="space-y-6">
