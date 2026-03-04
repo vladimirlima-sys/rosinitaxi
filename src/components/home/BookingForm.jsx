@@ -221,55 +221,107 @@ export default function BookingForm({ bookingRef }) {
   const canProceedStep3 = form.client_name && form.client_email && isValidPhone(form.client_phone);
 
   const handlePayment = async () => {
-    if (!totalPrice) return;
+    console.log('handlePayment called', { paymentMethod, totalPrice, isSubmitting });
+    
+    if (!totalPrice || isSubmitting) {
+      console.log('Early return: totalPrice or isSubmitting check failed');
+      return;
+    }
     
     // Check if running from iframe - applies to all payment methods
     if (window.self !== window.top) {
+      console.log('Running from iframe, blocking checkout');
       toast.error(t.checkoutFromPublishedApp);
       return;
     }
     
     setIsSubmitting(true);
+    
     try {
       const driverFields = selectedDriver
         ? { driver_id: selectedDriver.id, driver_name: selectedDriver.name }
         : {};
 
       if (paymentMethod === 'stripe') {
-        const createdBookingForStripe = await base44.entities.Booking.create({ ...form, ...driverFields, total_price: parseFloat(totalPrice), payment_status: 'pending', payment_method: 'stripe', language: lang });
-        sessionStorage.setItem('pendingBooking', JSON.stringify({ ...form, total_price: parseFloat(totalPrice), distance_km: estimatedDistance, language: lang }));
+        console.log('Processing Stripe payment');
+        const createdBookingForStripe = await base44.entities.Booking.create({ 
+          ...form, 
+          ...driverFields, 
+          total_price: parseFloat(totalPrice), 
+          payment_status: 'pending', 
+          payment_method: 'stripe', 
+          language: lang 
+        });
+        
+        sessionStorage.setItem('pendingBooking', JSON.stringify({ 
+          ...form, 
+          total_price: parseFloat(totalPrice), 
+          distance_km: estimatedDistance, 
+          language: lang 
+        }));
+        
         const response = await base44.functions.invoke('createCheckout', {
-          amount: parseFloat(totalPrice), currency: 'chf',
-          client_name: form.client_name, client_email: form.client_email, client_phone: form.client_phone,
-          departure: form.departure_point, arrival: form.arrival_point,
-          vehicle_type: form.vehicle_type, distance_km: estimatedDistance,
-          departure_date: form.departure_date, departure_time: form.departure_time,
+          amount: parseFloat(totalPrice), 
+          currency: 'chf',
+          client_name: form.client_name, 
+          client_email: form.client_email, 
+          client_phone: form.client_phone,
+          departure: form.departure_point, 
+          arrival: form.arrival_point,
+          vehicle_type: form.vehicle_type, 
+          distance_km: estimatedDistance,
+          departure_date: form.departure_date, 
+          departure_time: form.departure_time,
           origin: window.location.origin,
           is_short_notice: isShortNotice,
           booking_id: createdBookingForStripe.id
         });
-        if (response.data?.url) window.location.href = response.data.url;
-        else throw new Error(response.data?.error || 'Erreur de paiement');
+        
+        console.log('Stripe response:', response);
+        
+        if (response.data?.url) {
+          window.location.href = response.data.url;
+        } else {
+          throw new Error(response.data?.error || 'Erreur de paiement');
+        }
       } else {
-        // TWINT or Cash payment
-        const bookingData = { ...form, ...driverFields, total_price: parseFloat(totalPrice), payment_status: 'pending', payment_method: paymentMethod, special_notes: form.notes, language: lang };
+        console.log('Processing TWINT/Cash payment');
+        const bookingData = { 
+          ...form, 
+          ...driverFields, 
+          total_price: parseFloat(totalPrice), 
+          payment_status: 'pending', 
+          payment_method: paymentMethod, 
+          special_notes: form.notes, 
+          language: lang 
+        };
+        
         const createdBooking = await base44.entities.Booking.create(bookingData);
+        console.log('Booking created:', createdBooking.id);
+        
+        setIsSubmitting(false);
+        setStep(5);
         
         // Send confirmation email (non-blocking)
         base44.functions.invoke('sendBookingConfirmation', {
-          client_name: form.client_name, client_email: form.client_email, client_phone: form.client_phone,
-          departure_point: form.departure_point, arrival_point: form.arrival_point,
-          departure_date: form.departure_date, departure_time: form.departure_time,
-          flight_number: form.flight_number, vehicle_type: form.vehicle_type,
-          distance_km: estimatedDistance, total_price: parseFloat(totalPrice),
-          passengers: form.passengers, notes: form.notes, payment_method: paymentMethod, language: lang,
+          client_name: form.client_name, 
+          client_email: form.client_email, 
+          client_phone: form.client_phone,
+          departure_point: form.departure_point, 
+          arrival_point: form.arrival_point,
+          departure_date: form.departure_date, 
+          departure_time: form.departure_time,
+          flight_number: form.flight_number, 
+          vehicle_type: form.vehicle_type,
+          distance_km: estimatedDistance, 
+          total_price: parseFloat(totalPrice),
+          passengers: form.passengers, 
+          notes: form.notes, 
+          payment_method: paymentMethod, 
+          language: lang,
           skip_client_email: isShortNotice,
           booking_id: createdBooking.id
-        }).catch(err => console.error('Email send error (non-critical):', err)).finally(() => {
-          setIsSubmitting(false);
-        });
-        
-        setStep(5);
+        }).catch(err => console.error('Email send error (non-critical):', err));
       }
     } catch (err) {
       console.error('Payment error:', err);
