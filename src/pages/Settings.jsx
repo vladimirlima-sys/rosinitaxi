@@ -313,7 +313,7 @@ export default function Settings() {
             <Field label="Dia da semana em que se aplica">
               <select value={priceSettings.night_surcharge_day}
                 onChange={e => set('night_surcharge_day', e.target.value)}
-                className="w-full bg-white/5 border border-white/10 text-white h-12 rounded-md px-3 focus:border-[#C9A96E] outline-none">
+                className="w-full bg-white/5 border border-white/10 text-white h-12 rounded-md px-3 focus:border-[#F5C300] outline-none">
                 {DAYS.map((d, i) => <option key={i} value={i}>{d}</option>)}
               </select>
             </Field>
