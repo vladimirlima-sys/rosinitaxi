@@ -12,10 +12,8 @@ const key = await crypto.subtle.importKey(
 );
 
 Deno.serve(async (req) => {
-  const url = new URL(req.url);
-  
-  // Login endpoint
-  if (url.pathname === '/login' && req.method === 'POST') {
+  // Login endpoint (default path)
+  if (req.method === 'POST') {
     try {
       const base44 = createClientFromRequest(req);
       const { code } = await req.json();
@@ -61,9 +59,10 @@ Deno.serve(async (req) => {
   }
 
   // Verify endpoint
-  if (url.pathname === '/verify' && req.method === 'POST') {
+  if (req.method === 'GET') {
     try {
-      const { token } = await req.json();
+      const url = new URL(req.url);
+      const token = url.searchParams.get('token');
       
       if (!token) {
         return Response.json({ error: 'Token missing' }, { status: 400 });

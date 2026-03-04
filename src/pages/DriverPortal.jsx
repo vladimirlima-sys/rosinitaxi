@@ -65,7 +65,8 @@ export default function DriverPortal() {
 
   const verifyAndRestoreSession = async (token) => {
     try {
-      const { data } = await base44.functions.invoke('driverAuth/verify', { token });
+      const response = await fetch(`https://rosinitransfertsapp-production.up.railway.app/functions/driverAuth?token=${token}`);
+      const data = await response.json();
       if (data.valid) {
         setDriver({ id: data.driver_id, name: data.driver_name });
         await loadBookings(data.driver_id);
@@ -84,7 +85,7 @@ export default function DriverPortal() {
     setLoading(true);
     setError('');
     try {
-      const { data } = await base44.functions.invoke('driverAuth/login', { code: code.trim() });
+      const { data } = await base44.functions.invoke('driverAuth', { code: code.trim() });
       
       if (data.success) {
         setDriver(data.driver);
