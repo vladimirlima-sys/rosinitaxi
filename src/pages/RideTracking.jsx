@@ -102,10 +102,10 @@ export default function RideTracking() {
   };
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-gray-900 to-black p-4">
-      <div className="max-w-2xl mx-auto">
+    <div className="min-h-screen bg-[#0A0A0A] p-4 md:p-6">
+      <div className="max-w-3xl mx-auto">
         {/* Header */}
-        <div className="mb-6">
+        <div className="mb-8">
           <a
             href={createPageUrl('Home')}
             className="flex items-center gap-1 text-white/40 hover:text-white/70 transition-colors text-sm mb-4"
@@ -113,83 +113,86 @@ export default function RideTracking() {
             <ArrowLeft className="w-4 h-4" />
             Voltar
           </a>
-          <h1 className="text-3xl font-light text-white">Rastreamento de Corrida</h1>
+          <h1 className="text-3xl md:text-4xl font-light text-white">Rastreamento de Corrida</h1>
         </div>
 
-        {/* Booking Card */}
-        <div className="bg-[#111] border border-white/10 rounded-2xl p-6 mb-6">
+        {/* Map */}
+        <div className="mb-8">
+          <TrackingMap booking={booking} loading={loading} error={error} />
+        </div>
+
+        {/* Timeline */}
+        {booking && !error && (
+          <div className="mb-8">
+            <RideTimeline booking={booking} />
+          </div>
+        )}
+
+        {/* Main Info Card */}
+        <div className="bg-white/[0.03] border border-white/10 rounded-2xl p-6 mb-8">
           {/* Status */}
           <div className="flex items-center justify-between mb-6">
             <div>
               <p className="text-white/50 text-xs uppercase tracking-wider mb-1">Cliente</p>
-              <p className="text-white text-lg font-medium">{booking.client_name}</p>
+              <p className="text-white text-lg font-medium">{booking?.client_name}</p>
             </div>
-            <div className={`text-xs px-3 py-1.5 rounded-full font-medium ${statusColors[booking.payment_status] || 'text-white/40'}`}>
-              {booking.payment_status === 'paid' ? 'Confirmada' : 'Pendente'}
+            <div className={`text-xs px-3 py-1.5 rounded-full font-medium ${statusColors[booking?.payment_status] || 'text-white/40'}`}>
+              {booking?.payment_status === 'paid' ? 'Confirmada' : 'Pendente'}
             </div>
           </div>
 
-          {/* Driver Info */}
-          {driver && (
-            <div className="bg-white/5 rounded-xl p-4 mb-6">
-              <p className="text-white/50 text-xs uppercase tracking-wider mb-2">Motorista</p>
-              <p className="text-white font-medium mb-3">{driver.name}</p>
-              <div className="flex gap-3">
-                {driver.phone && (
-                  <a
-                    href={`tel:${driver.phone}`}
-                    className="flex items-center gap-2 bg-[#F5C300]/10 border border-[#F5C300]/20 text-[#F5C300] text-sm px-3 py-2 rounded-lg hover:bg-[#F5C300]/20 transition-all"
-                  >
-                    <Phone className="w-4 h-4" />
-                    Ligar
-                  </a>
-                )}
-              </div>
-            </div>
-          )}
-
           {/* Route Info */}
-          <div className="space-y-3">
+          <div className="space-y-3 mb-6">
             <div className="flex items-start gap-3">
-              <MapPin className="w-4 h-4 text-[#F5C300] mt-1 shrink-0" />
+              <MapPin className="w-4 h-4 text-[#C9A96E] mt-1 shrink-0" />
               <div>
                 <p className="text-white/50 text-xs uppercase tracking-wider">Partida</p>
-                <p className="text-white">{booking.departure_point}</p>
+                <p className="text-white">{booking?.departure_point}</p>
               </div>
             </div>
             <div className="flex items-start gap-3">
               <MapPin className="w-4 h-4 text-white/60 mt-1 shrink-0" />
               <div>
                 <p className="text-white/50 text-xs uppercase tracking-wider">Destino</p>
-                <p className="text-white">{booking.arrival_point}</p>
+                <p className="text-white">{booking?.arrival_point}</p>
               </div>
             </div>
           </div>
 
           {/* Trip Details */}
-          <div className="grid grid-cols-3 gap-3 mt-6 pt-6 border-t border-white/10">
+          <div className="grid grid-cols-2 md:grid-cols-4 gap-4 pt-6 border-t border-white/10">
             <div>
               <p className="text-white/50 text-xs mb-1">Data</p>
-              <p className="text-white text-sm font-medium">{booking.departure_date}</p>
+              <p className="text-white text-sm font-medium">{booking?.departure_date}</p>
             </div>
             <div>
               <p className="text-white/50 text-xs mb-1">Hora</p>
-              <p className="text-white text-sm font-medium">{booking.departure_time}</p>
+              <p className="text-white text-sm font-medium">{booking?.departure_time}</p>
             </div>
             <div>
               <p className="text-white/50 text-xs mb-1">Distância</p>
-              <p className="text-white text-sm font-medium">{booking.distance_km} km</p>
+              <p className="text-white text-sm font-medium">{booking?.distance_km} km</p>
             </div>
-          </div>
-
-          {/* Price */}
-          <div className="mt-6 pt-6 border-t border-white/10">
-            <p className="text-white/50 text-xs uppercase tracking-wider mb-1">Total</p>
-            <p className="text-[#F5C300] text-2xl font-bold">CHF {booking.total_price?.toFixed(2)}</p>
+            <div>
+              <p className="text-white/50 text-xs mb-1">Total</p>
+              <p className="text-[#C9A96E] text-sm font-bold">CHF {booking?.total_price?.toFixed(2)}</p>
+            </div>
           </div>
         </div>
 
-        {/* Info */}
+        {/* Driver Card */}
+        {driver && (
+          <div className="mb-8">
+            <DriverCard driver={driver} booking={booking} />
+          </div>
+        )}
+
+        {/* Support Contact */}
+        <div className="mb-8">
+          <SupportContact />
+        </div>
+
+        {/* Info Footer */}
         <div className="bg-white/5 border border-white/10 rounded-xl p-4 text-center">
           <p className="text-white/50 text-sm">Rastreamento em tempo real · Rosini Transfert</p>
         </div>
