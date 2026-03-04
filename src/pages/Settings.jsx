@@ -379,7 +379,7 @@ export default function Settings() {
 
         <div className="flex gap-3 mt-8">
           <Button onClick={handleSave} disabled={isSaving}
-            className="flex-1 bg-[#C9A96E] hover:bg-[#B8955D] text-[#0A0A0A] font-semibold h-12 text-sm md:h-14 md:text-base">
+            className="flex-1 bg-[#F5C300] hover:bg-[#E6B800] text-black font-semibold h-12 text-sm md:h-14 md:text-base">
             {isSaving ? <><Loader2 className="w-4 h-4 mr-2 animate-spin" />Salvando...</> : 'Salvar Configurações'}
           </Button>
           <Button onClick={handleReset}
@@ -389,8 +389,8 @@ export default function Settings() {
           </Button>
         </div>
 
-        {lastSaved && <p className="text-[#C9A96E] text-xs text-center mt-4">✓ Salvo em {lastSaved}</p>}
-        <p className="text-white/20 text-xs text-center mt-2 mb-4">Alterações aplicadas imediatamente em novas reservas.</p>
+        {lastSaved && <p className="text-[#F5C300] text-xs text-center mt-4">✓ Salvo em {lastSaved}</p>}
+        <p className="text-white/40 text-xs text-center mt-2 mb-4">Alterações aplicadas imediatamente em novas reservas.</p>
       </div>
     </div>
   );
