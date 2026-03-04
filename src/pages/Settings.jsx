@@ -345,32 +345,32 @@ export default function Settings() {
               <Field label="AVS (%)">
                 <Input type="number" step="0.01" min="0" value={taxSettings.avs_percentage}
                   onChange={e => setTax('avs_percentage', e.target.value)}
-                  className="bg-white/5 border-white/10 text-white focus:border-[#C9A96E] h-12" />
+                  className="bg-white/5 border-white/10 text-white focus:border-[#F5C300] h-12" />
               </Field>
               <Field label="AI (%)">
                 <Input type="number" step="0.01" min="0" value={taxSettings.ai_percentage}
                   onChange={e => setTax('ai_percentage', e.target.value)}
-                  className="bg-white/5 border-white/10 text-white focus:border-[#C9A96E] h-12" />
+                  className="bg-white/5 border-white/10 text-white focus:border-[#F5C300] h-12" />
               </Field>
               <Field label="AC (%)">
                 <Input type="number" step="0.01" min="0" value={taxSettings.ac_percentage}
                   onChange={e => setTax('ac_percentage', e.target.value)}
-                  className="bg-white/5 border-white/10 text-white focus:border-[#C9A96E] h-12" />
+                  className="bg-white/5 border-white/10 text-white focus:border-[#F5C300] h-12" />
               </Field>
               <Field label="Impôt Cantonal (%)">
                 <Input type="number" step="0.01" min="0" value={taxSettings.impot_cantonal_percentage}
                   onChange={e => setTax('impot_cantonal_percentage', e.target.value)}
-                  className="bg-white/5 border-white/10 text-white focus:border-[#C9A96E] h-12" />
+                  className="bg-white/5 border-white/10 text-white focus:border-[#F5C300] h-12" />
               </Field>
               <Field label="Impôt Comunal (%)">
                 <Input type="number" step="0.01" min="0" value={taxSettings.impot_communal_percentage}
                   onChange={e => setTax('impot_communal_percentage', e.target.value)}
-                  className="bg-white/5 border-white/10 text-white focus:border-[#C9A96E] h-12" />
+                  className="bg-white/5 border-white/10 text-white focus:border-[#F5C300] h-12" />
               </Field>
               <Field label="Outras Deduções (%)">
                 <Input type="number" step="0.01" min="0" value={taxSettings.other_deductions_percentage}
                   onChange={e => setTax('other_deductions_percentage', e.target.value)}
-                  className="bg-white/5 border-white/10 text-white focus:border-[#C9A96E] h-12" />
+                  className="bg-white/5 border-white/10 text-white focus:border-[#F5C300] h-12" />
               </Field>
             </div>
           </Section>
