@@ -191,12 +191,12 @@ export default function Settings() {
               <Field label="Número de Registro (CHE)">
                 <Input type="text" value={companySettings.registration_number || ''}
                   onChange={e => setCompany('registration_number', e.target.value)}
-                  className="bg-white/5 border-white/10 text-white focus:border-[#C9A96E] h-12" />
+                  className="bg-white/5 border-white/10 text-white focus:border-[#F5C300] h-12" />
               </Field>
               <Field label="Telefone">
                 <Input type="text" value={companySettings.phone || ''}
                   onChange={e => setCompany('phone', e.target.value)}
-                  className="bg-white/5 border-white/10 text-white focus:border-[#C9A96E] h-12" />
+                  className="bg-white/5 border-white/10 text-white focus:border-[#F5C300] h-12" />
               </Field>
             </div>
             <Field label="Email">
