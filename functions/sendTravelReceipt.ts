@@ -142,182 +142,18 @@ Deno.serve(async (req) => {
 </html>
     `;
 
-    // Generate PDF with modern black & white design
-    const doc = new jsPDF('p', 'mm', 'a4');
-    const w = doc.internal.pageSize.getWidth();
-    const h = doc.internal.pageSize.getHeight();
-    
-    // Background
-    doc.setFillColor(255, 255, 255);
-    doc.rect(0, 0, w, h, 'F');
-    
-    // Top accent bar
-    doc.setFillColor(0, 0, 0);
-    doc.rect(0, 0, w, 3, 'F');
-    
-    // Header
-    doc.setTextColor(0, 0, 0);
-    doc.setFontSize(20);
-    doc.setFont('Arial', 'bold');
-    doc.text('ROSINI', w / 2, 15, { align: 'center' });
-    
-    doc.setFontSize(9);
-    doc.setFont('Arial', 'normal');
-    doc.setTextColor(100, 100, 100);
-    doc.text('TRANSPORTS DE PERSONNES', w / 2, 20, { align: 'center' });
-    
-    // Divider
-    doc.setDrawColor(220, 220, 220);
-    doc.setLineWidth(0.3);
-    doc.line(15, 24, w - 15, 24);
-    
-    // Receipt header
-    let yPos = 32;
-    doc.setFontSize(11);
-    doc.setFont('Arial', 'bold');
-    doc.setTextColor(0, 0, 0);
-    doc.text('REÇU DE COURSE', 15, yPos);
-    
-    doc.setFontSize(8);
-    doc.setFont('Arial', 'normal');
-    doc.setTextColor(150, 150, 150);
-    doc.text(`Émis le ${dateStr} à ${timeStr}`, w - 15, yPos, { align: 'right' });
-    
-    // Section 1: Trip details
-    yPos = 42;
-    doc.setDrawColor(200, 200, 200);
-    doc.setLineWidth(0.5);
-    doc.line(15, yPos - 2, w - 15, yPos - 2);
-    
-    doc.setFontSize(9);
-    doc.setFont('Arial', 'bold');
-    doc.setTextColor(80, 80, 80);
-    doc.text('DÉTAILS DE LA COURSE', 15, yPos);
-    
-    yPos += 8;
-    doc.setFont('Arial', 'normal');
-    doc.setFontSize(10);
-    doc.setTextColor(100, 100, 100);
-    
-    if (departure) {
-      doc.text('Départ:', 15, yPos);
-      doc.setTextColor(0, 0, 0);
-      doc.text(departure, 45, yPos);
-      yPos += 7;
-      doc.setTextColor(100, 100, 100);
-    }
-    
-    if (arrival) {
-      doc.text('Arrivée:', 15, yPos);
-      doc.setTextColor(0, 0, 0);
-      doc.text(arrival, 45, yPos);
-      yPos += 7;
-      doc.setTextColor(100, 100, 100);
-    }
-    
-    if (distance) {
-      doc.text('Distance:', 15, yPos);
-      doc.setTextColor(0, 0, 0);
-      doc.text(`${distance.toFixed(2)} km`, 45, yPos);
-      yPos += 7;
-      doc.setTextColor(100, 100, 100);
-    }
-    
-    // Section 2: Payment Details
-    yPos += 5;
-    doc.setLineWidth(0.5);
-    doc.line(15, yPos, w - 15, yPos);
-    
-    yPos += 8;
-    doc.setFont('Arial', 'bold');
-    doc.setTextColor(80, 80, 80);
-    doc.setFontSize(9);
-    doc.text('DÉTAILS DE PAIEMENT', 15, yPos);
-    
-    yPos += 8;
-    doc.setFont('Arial', 'normal');
-    doc.setFontSize(10);
-    doc.setTextColor(100, 100, 100);
-    doc.text('Méthode:', 15, yPos);
-    doc.setTextColor(0, 0, 0);
-    doc.text(methodLabel, 45, yPos);
-    yPos += 7;
-    
-    doc.setTextColor(100, 100, 100);
-    doc.text('Distance:', 15, yPos);
-    doc.setTextColor(0, 0, 0);
-    doc.text(distance ? `${distance.toFixed(2)} km` : 'N/A', 45, yPos);
-    yPos += 7;
-    
-    // Amount box
-    yPos += 3;
-    doc.setFillColor(245, 245, 245);
-    doc.rect(15, yPos, w - 30, 18, 'F');
-    
-    doc.setFontSize(9);
-    doc.setTextColor(100, 100, 100);
-    doc.setFont('Arial', 'normal');
-    doc.text('MONTANT TOTAL', 20, yPos + 5);
-    
-    doc.setFontSize(22);
-    doc.setFont('Arial', 'bold');
-    doc.setTextColor(0, 0, 0);
-    doc.text(`CHF ${amount.toFixed(2)}`, w - 20, yPos + 12, { align: 'right' });
-    
-    // Footer with complete company info
-    yPos = h - 28;
-    doc.setDrawColor(200, 200, 200);
-    doc.setLineWidth(0.3);
-    doc.line(15, yPos, w - 15, yPos);
-    
-    yPos += 5;
-    doc.setFontSize(8);
-    doc.setTextColor(150, 150, 150);
-    doc.setFont('Arial', 'normal');
-    doc.text('✓ Paiement confirmé', w / 2, yPos, { align: 'center' });
-    
-    yPos += 5;
-    doc.setFontSize(7);
-    doc.setFont('Arial', 'bold');
-    doc.setTextColor(0, 0, 0);
-    doc.text('ROSINI TRANSPORTS DE PERSONNES SARL', w / 2, yPos, { align: 'center' });
-    
-    yPos += 4;
-    doc.setFont('Arial', 'normal');
-    doc.setTextColor(100, 100, 100);
-    doc.text('CHE-264.039.709', w / 2, yPos, { align: 'center' });
-    
-    yPos += 3;
-    doc.text('Chemin des Bulesses 16 | 1814 La Tour-de-Peilz | Suisse', w / 2, yPos, { align: 'center' });
-    
-    yPos += 3;
-    doc.text('Tél: +41 77 249 22 45 | info@rosini.online', w / 2, yPos, { align: 'center' });
-    
-    const pdfBytes = doc.output('arraybuffer');
-    const pdfBase64 = btoa(String.fromCharCode(...new Uint8Array(pdfBytes)));
-    
-    // Send email with PDF attachment
+    // Send email HTML only (no PDF)
     const { accessToken } = await base44.asServiceRole.connectors.getConnection('gmail');
     
     const boundary = 'boundary_' + Date.now();
     const emailRaw = `From: no-reply@rosini.online\r\n` +
       `To: ${clientEmail}\r\n` +
-      `Subject: ROSINI TRANSPORTS\r\n` +
+      `Subject: ROSINI TRANSPORTS - Reçu de Course\r\n` +
       `MIME-Version: 1.0\r\n` +
-      `Content-Type: multipart/mixed; boundary="${boundary}"\r\n` +
-      `\r\n` +
-      `--${boundary}\r\n` +
       `Content-Type: text/html; charset=UTF-8\r\n` +
       `Content-Transfer-Encoding: 8bit\r\n` +
       `\r\n` +
-      `${emailBody}\r\n` +
-      `--${boundary}\r\n` +
-      `Content-Type: application/pdf; name="recu.pdf"\r\n` +
-      `Content-Disposition: attachment; filename="recu.pdf"\r\n` +
-      `Content-Transfer-Encoding: base64\r\n` +
-      `\r\n` +
-      `${pdfBase64}\r\n` +
-      `--${boundary}--`;
+      `${emailBody}`;
     
     // Use TextEncoder to handle Unicode characters properly
     const encoder = new TextEncoder();
