@@ -1,12 +1,18 @@
-import React, { useState } from 'react';
-import { ChevronDown, ChevronUp } from 'lucide-react';
+import React, { useState, useMemo } from 'react';
+import { ChevronDown, Search, X } from 'lucide-react';
 import { LanguageProvider, useLang } from '@/components/LanguageContext';
 import LanguageSwitcher from '@/components/home/LanguageSwitcher';
+import SeoHead from '@/components/SeoHead';
+import { createPageUrl } from '@/utils';
 
 const faqData = {
   fr: {
     title: 'Questions Fréquentes',
     subtitle: 'Tout ce que vous devez savoir sur nos services',
+    searchPlaceholder: 'Rechercher une question...',
+    noResults: 'Aucune question trouvée pour',
+    backLink: '← Retour à l\'accueil',
+    bookBtn: 'Réserver maintenant',
     sections: [
       {
         title: 'Le Service',
@@ -50,6 +56,10 @@ const faqData = {
   en: {
     title: 'Frequently Asked Questions',
     subtitle: 'Everything you need to know about our services',
+    searchPlaceholder: 'Search a question...',
+    noResults: 'No questions found for',
+    backLink: '← Back to home',
+    bookBtn: 'Book now',
     sections: [
       {
         title: 'The Service',
@@ -93,6 +103,10 @@ const faqData = {
   pt: {
     title: 'Perguntas Frequentes',
     subtitle: 'Tudo o que precisa saber sobre os nossos serviços',
+    searchPlaceholder: 'Pesquisar uma pergunta...',
+    noResults: 'Nenhuma pergunta encontrada para',
+    backLink: '← Voltar ao início',
+    bookBtn: 'Reservar agora',
     sections: [
       {
         title: 'O Serviço',
@@ -136,6 +150,10 @@ const faqData = {
   de: {
     title: 'Häufig gestellte Fragen',
     subtitle: 'Alles, was Sie über unsere Dienste wissen müssen',
+    searchPlaceholder: 'Frage suchen...',
+    noResults: 'Keine Fragen gefunden für',
+    backLink: '← Zurück zur Startseite',
+    bookBtn: 'Jetzt buchen',
     sections: [
       {
         title: 'Der Service',
@@ -179,6 +197,10 @@ const faqData = {
   it: {
     title: 'Domande Frequenti',
     subtitle: 'Tutto quello che dovete sapere sui nostri servizi',
+    searchPlaceholder: 'Cerca una domanda...',
+    noResults: 'Nessuna domanda trovata per',
+    backLink: '← Torna alla home',
+    bookBtn: 'Prenota ora',
     sections: [
       {
         title: 'Il Servizio',
@@ -224,24 +246,21 @@ const faqData = {
 function FAQItem({ question, answer }) {
   const [open, setOpen] = useState(false);
   return (
-    <div
-      className={`border border-black/10 rounded-xl overflow-hidden transition-all ${open ? 'bg-black text-white' : 'bg-white/80 hover:bg-white'}`}
-    >
+    <div className={`border rounded-xl overflow-hidden transition-all duration-200 ${open ? 'bg-black border-black' : 'bg-white/80 border-black/10 hover:bg-white'}`}>
       <button
         onClick={() => setOpen(o => !o)}
         className="w-full flex items-center justify-between p-4 text-left gap-3"
       >
         <span className={`font-medium text-sm ${open ? 'text-white' : 'text-black'}`}>{question}</span>
-        {open
-          ? <ChevronUp className="w-4 h-4 text-[#F5C300] shrink-0" />
-          : <ChevronDown className="w-4 h-4 text-black/40 shrink-0" />
-        }
+        <ChevronDown className={`w-4 h-4 shrink-0 transition-transform duration-200 ${open ? 'rotate-180 text-[#F5C300]' : 'text-black/40'}`} />
       </button>
-      {open && (
-        <div className="px-4 pb-4">
-          <p className="text-white/70 text-sm leading-relaxed">{answer}</p>
+      <div className={`grid transition-all duration-200 ${open ? 'grid-rows-[1fr]' : 'grid-rows-[0fr]'}`}>
+        <div className="overflow-hidden">
+          <div className="px-4 pb-4">
+            <p className="text-white/70 text-sm leading-relaxed">{answer}</p>
+          </div>
         </div>
-      )}
+      </div>
     </div>
   );
 }
@@ -249,9 +268,25 @@ function FAQItem({ question, answer }) {
 function FAQContent() {
   const { lang } = useLang();
   const data = faqData[lang] || faqData['fr'];
+  const [search, setSearch] = useState('');
+
+  const filteredSections = useMemo(() => {
+    if (!search.trim()) return data.sections;
+    const q = search.toLowerCase();
+    return data.sections
+      .map(section => ({
+        ...section,
+        items: section.items.filter(item =>
+          item.q.toLowerCase().includes(q) || item.a.toLowerCase().includes(q)
+        ),
+      }))
+      .filter(section => section.items.length > 0);
+  }, [search, data]);
 
   return (
     <div className="min-h-screen bg-[#F5C300]">
+      <SeoHead lang={lang} />
+
       {/* Header */}
       <div className="w-full max-w-2xl mx-auto pt-12 pb-8 px-4 text-center">
         <h1 className="text-black text-6xl font-extralight tracking-[0.3em] uppercase">ROSINI</h1>
@@ -262,44 +297,71 @@ function FAQContent() {
         </div>
         <h2 className="text-black text-2xl font-bold mt-4">{data.title}</h2>
         <p className="text-black/60 text-sm mt-1">{data.subtitle}</p>
+
+        {/* Search bar */}
+        <div className="relative mt-6">
+          <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-black/40" />
+          <input
+            type="text"
+            value={search}
+            onChange={e => setSearch(e.target.value)}
+            placeholder={data.searchPlaceholder}
+            className="w-full bg-black/10 border border-black/10 rounded-xl py-3 pl-10 pr-10 text-sm text-black placeholder:text-black/40 outline-none focus:bg-black/15 transition-all"
+          />
+          {search && (
+            <button onClick={() => setSearch('')} className="absolute right-3 top-1/2 -translate-y-1/2 text-black/40 hover:text-black transition-colors">
+              <X className="w-4 h-4" />
+            </button>
+          )}
+        </div>
       </div>
 
       {/* Sections */}
       <div className="w-full max-w-2xl mx-auto px-4 pb-12 space-y-6">
-        {data.sections.map((section, si) => (
-          <div key={si}>
-            <h3 className="text-black font-semibold text-xs uppercase tracking-widest mb-3 pl-1">{section.title}</h3>
-            <div className="space-y-2">
-              {section.items.map((item, ii) => (
-                <FAQItem key={ii} question={item.q} answer={item.a} />
-              ))}
-            </div>
+        {filteredSections.length === 0 ? (
+          <div className="text-center py-12">
+            <p className="text-black/50 text-sm">{data.noResults} "<span className="font-semibold">{search}</span>"</p>
           </div>
-        ))}
+        ) : (
+          filteredSections.map((section, si) => (
+            <div key={si}>
+              <h3 className="text-black font-semibold text-xs uppercase tracking-widest mb-3 pl-1">{section.title}</h3>
+              <div className="space-y-2">
+                {section.items.map((item, ii) => (
+                  <FAQItem key={ii} question={item.q} answer={item.a} />
+                ))}
+              </div>
+            </div>
+          ))
+        )}
 
         {/* Contact CTA */}
-        <div className="bg-black rounded-xl p-6 text-center">
-          <p className="text-white/60 text-sm mb-2">{data.contact}</p>
+        <div className="bg-black rounded-xl p-6 text-center space-y-3">
+          <p className="text-white/60 text-sm">{data.contact}</p>
           <a
             href="mailto:info@rosini.online"
-            className="text-[#F5C300] font-semibold text-sm hover:underline"
+            className="text-[#F5C300] font-semibold text-sm hover:underline block"
           >
             {data.contactLink}
           </a>
-          <div className="mt-3">
-            <a
-              href="tel:+41772492245"
-              className="text-white/50 text-xs hover:text-white transition-colors"
-            >
-              +41 77 249 22 45
-            </a>
-          </div>
+          <a
+            href="tel:+41772492245"
+            className="text-white/50 text-xs hover:text-white transition-colors block"
+          >
+            +41 77 249 22 45
+          </a>
+          <a
+            href={createPageUrl('Home')}
+            className="inline-block mt-2 bg-[#F5C300] text-black text-sm font-bold px-6 py-2.5 rounded-xl hover:bg-[#e6b800] transition-all"
+          >
+            {data.bookBtn}
+          </a>
         </div>
 
         {/* Back link */}
         <div className="text-center">
-          <a href="/" className="text-black/50 text-xs hover:text-black transition-colors underline">
-            ← Retour à l'accueil
+          <a href={createPageUrl('Home')} className="text-black/50 text-xs hover:text-black transition-colors underline">
+            {data.backLink}
           </a>
         </div>
       </div>
