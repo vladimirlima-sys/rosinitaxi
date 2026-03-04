@@ -29,10 +29,43 @@ export default function Taximeter() {
     });
   }, []);
 
-  const TAXIMETER_PRICE_PER_KM = 2.30;
-  const TAXIMETER_BASE_FARE = 10;
+  const WAITING_PRICE_PER_MINUTE = 0.30;
 
-  const getPricePerKm = () => TAXIMETER_PRICE_PER_KM;
+  const getPricePerKm = () => {
+    if (!priceSettings) return 2.30;
+    return vehicleType === 'comfort' 
+      ? (priceSettings.comfort_price_per_km || priceSettings.standard_price_per_km * 1.3)
+      : priceSettings.standard_price_per_km;
+  };
+
+  const getBaseFare = () => priceSettings?.base_fare || 10;
+
+  const isNightSurchargeApplied = () => {
+    if (!priceSettings?.night_surcharge_percentage) return false;
+    if (!priceSettings.night_surcharge_days?.length) return false;
+
+    const now = new Date();
+    const dayOfWeek = now.getDay();
+    const hour = now.getHours();
+    const startHour = priceSettings.night_surcharge_start_hour;
+    const endHour = priceSettings.night_surcharge_end_hour;
+
+    // Check if current day is in surcharge days
+    if (!priceSettings.night_surcharge_days.includes(dayOfWeek)) return false;
+
+    // Check if current time is in surcharge period
+    if (startHour <= endHour) {
+      // Normal period (doesn't cross midnight)
+      return hour >= startHour && hour < endHour;
+    } else {
+      // Period crosses midnight
+      return hour >= startHour || hour < endHour;
+    }
+  };
+
+  const getNightSurchargePercentage = () => {
+    return isNightSurchargeApplied() ? (priceSettings?.night_surcharge_percentage || 0) : 0;
+  };
 
   const haversineKm = (lat1, lon1, lat2, lon2) => {
     const R = 6371;
@@ -62,15 +95,22 @@ export default function Taximeter() {
   }, [waitingEnabled, running]);
 
   useEffect(() => {
-    const newWaitingPrice = (waitingSeconds / 60) * 0.30;
-    setWaitingPrice(newWaitingPrice);
-    
-    if (running) {
+    if (running && priceSettings) {
+      const newWaitingPrice = (waitingSeconds / 60) * WAITING_PRICE_PER_MINUTE;
+      setWaitingPrice(newWaitingPrice);
+      
       const km = distanceRef.current;
-      const price = TAXIMETER_BASE_FARE + km * TAXIMETER_PRICE_PER_KM + newWaitingPrice;
-      setTotalPrice(parseFloat(price.toFixed(2)));
+      const baseFare = getBaseFare();
+      const pricePerKm = getPricePerKm();
+      const nightSurchargePercent = getNightSurchargePercentage();
+      
+      const basePrice = baseFare + km * pricePerKm;
+      const nightSurcharge = basePrice * (nightSurchargePercent / 100);
+      const total = basePrice + nightSurcharge + newWaitingPrice;
+      
+      setTotalPrice(parseFloat(total.toFixed(2)));
     }
-  }, [waitingSeconds]);
+  }, [waitingSeconds, running, priceSettings, vehicleType]);
 
   const startRide = () => {
     if (!navigator.geolocation) {
@@ -85,7 +125,9 @@ export default function Taximeter() {
     setStatus('running');
 
     // Start with base fare immediately
-    setTotalPrice(parseFloat(TAXIMETER_BASE_FARE.toFixed(2)));
+    if (priceSettings) {
+      setTotalPrice(parseFloat(getBaseFare().toFixed(2)));
+    }
 
     watchIdRef.current = navigator.geolocation.watchPosition(
       (pos) => {
@@ -102,7 +144,14 @@ export default function Taximeter() {
           if (delta > 0 && delta < 0.5 && acc < 50) {
             distanceRef.current += delta;
             const km = distanceRef.current;
-            const price = TAXIMETER_BASE_FARE + km * TAXIMETER_PRICE_PER_KM + waitingPrice;
+            const baseFare = getBaseFare();
+            const pricePerKm = getPricePerKm();
+            const nightSurchargePercent = getNightSurchargePercentage();
+            
+            const basePrice = baseFare + km * pricePerKm;
+            const nightSurcharge = basePrice * (nightSurchargePercent / 100);
+            const price = basePrice + nightSurcharge + waitingPrice;
+            
             setDistanceKm(parseFloat(km.toFixed(3)));
             setTotalPrice(parseFloat(price.toFixed(2)));
           }
@@ -178,16 +227,23 @@ export default function Taximeter() {
         </div>
 
         {/* Tarif info */}
-        <div className="bg-[#111] border border-white/10 rounded-2xl p-4 flex items-center justify-between">
-          <div>
-            <p className="text-white/40 text-xs uppercase tracking-wider">Prise en charge</p>
-            <p className="text-white font-semibold">CHF 10.00</p>
+        <div className="bg-[#111] border border-white/10 rounded-2xl p-4">
+          <div className="flex items-center justify-between mb-2">
+            <div>
+              <p className="text-white/40 text-xs uppercase tracking-wider">Prise en charge</p>
+              <p className="text-white font-semibold">CHF {priceSettings ? getBaseFare().toFixed(2) : '10.00'}</p>
+            </div>
+            <div className="w-[1px] h-8 bg-white/10" />
+            <div>
+              <p className="text-white/40 text-xs uppercase tracking-wider">Prix au km</p>
+              <p className="text-white font-semibold">CHF {getPricePerKm().toFixed(2)}</p>
+            </div>
           </div>
-          <div className="w-[1px] h-8 bg-white/10" />
-          <div>
-            <p className="text-white/40 text-xs uppercase tracking-wider">Prix au km</p>
-            <p className="text-white font-semibold">CHF 2.30</p>
-          </div>
+          {getNightSurchargePercentage() > 0 && (
+            <div className="pt-2 border-t border-white/10 text-xs text-[#F5C300]">
+              +{getNightSurchargePercentage()}% adicional noturno appliqué
+            </div>
+          )}
         </div>
 
         {/* Main display */}
@@ -214,8 +270,10 @@ export default function Taximeter() {
           {/* GPS accuracy */}
           {running && accuracy !== null && (
             <div className="flex items-center justify-center gap-1">
-              <Navigation className="w-3 h-3 text-green-400" />
-              <p className="text-green-400 text-xs">GPS ±{accuracy}m</p>
+              <Navigation className={`w-3 h-3 ${accuracy > 50 ? 'text-yellow-400' : 'text-green-400'}`} />
+              <p className={`text-xs ${accuracy > 50 ? 'text-yellow-400' : 'text-green-400'}`}>
+                GPS ±{accuracy}m {accuracy > 50 && '(précision faible)'}
+              </p>
             </div>
           )}
 
@@ -311,13 +369,19 @@ export default function Taximeter() {
           <div className="bg-[#111] border border-white/10 rounded-2xl p-4 space-y-2">
             <p className="text-white/30 text-xs uppercase tracking-wider mb-2">Détails</p>
             <div className="flex justify-between text-sm">
-              <span className="text-white/50">{distanceKm.toFixed(3)} km × CHF 2.30</span>
-              <span className="text-white">CHF {(distanceKm * TAXIMETER_PRICE_PER_KM).toFixed(2)}</span>
+              <span className="text-white/50">{distanceKm.toFixed(3)} km × CHF {getPricePerKm().toFixed(2)}</span>
+              <span className="text-white">CHF {(distanceKm * getPricePerKm()).toFixed(2)}</span>
             </div>
             <div className="flex justify-between text-sm">
               <span className="text-white/50">Prise en charge</span>
-              <span className="text-white">CHF 10.00</span>
+              <span className="text-white">CHF {getBaseFare().toFixed(2)}</span>
             </div>
+            {getNightSurchargePercentage() > 0 && (
+              <div className="flex justify-between text-sm">
+                <span className="text-white/50">Supplément nocturne ({getNightSurchargePercentage()}%)</span>
+                <span className="text-[#F5C300]">CHF {((distanceKm * getPricePerKm() + getBaseFare()) * (getNightSurchargePercentage() / 100)).toFixed(2)}</span>
+              </div>
+            )}
             {waitingPrice > 0 && (
               <div className="flex justify-between text-sm">
                 <span className="text-white/50">Temps d'attente</span>
