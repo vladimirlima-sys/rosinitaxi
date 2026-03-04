@@ -308,7 +308,7 @@ export default function Settings() {
             <Field label="Percentual do adicional (%)" hint="Ex: 10 = +10% sobre o valor total">
               <Input type="number" step="0.1" min="0" value={priceSettings.night_surcharge_percentage}
                 onChange={e => set('night_surcharge_percentage', e.target.value)}
-                className="bg-white/5 border-white/10 text-white focus:border-[#C9A96E] h-12" />
+                className="bg-white/5 border-white/10 text-white focus:border-[#F5C300] h-12" />
             </Field>
             <Field label="Dia da semana em que se aplica">
               <select value={priceSettings.night_surcharge_day}
