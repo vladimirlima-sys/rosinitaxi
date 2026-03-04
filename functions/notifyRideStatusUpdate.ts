@@ -77,7 +77,8 @@ Deno.serve(async (req) => {
         if (accountSid && authToken && from) {
           const digits = phone.replace(/\D/g, '');
           const formattedTo = `whatsapp:+${digits}`;
-          console.log(`Formatted phone: ${formattedTo} | From: ${from}`);
+          const formattedFrom = from.startsWith('whatsapp:') ? from : `whatsapp:${from}`;
+          console.log(`Formatted phone: ${formattedTo} | From: ${formattedFrom}`);
 
           const twilioRes = await fetch(
             `https://api.twilio.com/2010-04-01/Accounts/${accountSid}/Messages.json`,
