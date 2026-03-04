@@ -450,17 +450,21 @@ export default function MyBookings() {
                       )
                     )}
                   </div>
-                ))}
-              </div>
-            )}
-          </>
-        )}
+                  ))}
+                  </div>
+                  </>
+                  )}
+                  </>
+                  )}
 
-        {/* Footer */}
-        <div className="text-center mt-8 space-y-1">
-          <p className="text-black/60 text-xs">{t.contact}</p>
-        </div>
-      </div>
-    </div>
-  );
-}
+                  {/* Footer */}
+                  <div className="text-center mt-8 space-y-1">
+                  <p className="text-black/60 text-xs">{t.contact}</p>
+                  </div>
+                  </div>
+
+                  {/* Support Chat */}
+                  <SupportChat t={t} />
+                  </div>
+                  );
+                  }
