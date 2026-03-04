@@ -69,6 +69,7 @@ export default function Settings() {
   const [isLoading, setIsLoading] = useState(true);
   const [isSaving, setIsSaving] = useState(false);
   const [companySaving, setCompanySaving] = useState(false);
+  const [taximeterSaving, setTaximeterSaving] = useState(false);
 
   useEffect(() => {
     if (localStorage.getItem('admin_unlocked') !== 'true') {
@@ -163,6 +164,32 @@ export default function Settings() {
       toast.error('Erro ao salvar informações');
     } finally {
       setCompanySaving(false);
+    }
+  };
+
+  const handleSaveTaximeter = async () => {
+    setTaximeterSaving(true);
+    try {
+      if (priceSettings.id) {
+        await base44.entities.PriceSettings.update(priceSettings.id, {
+          taximeter_standard_price_per_km: priceSettings.taximeter_standard_price_per_km,
+          taximeter_comfort_price_per_km: priceSettings.taximeter_comfort_price_per_km,
+          taximeter_base_fare: priceSettings.taximeter_base_fare,
+          taximeter_waiting_price_per_minute: priceSettings.taximeter_waiting_price_per_minute,
+        });
+      } else {
+        await base44.entities.PriceSettings.create({
+          taximeter_standard_price_per_km: priceSettings.taximeter_standard_price_per_km,
+          taximeter_comfort_price_per_km: priceSettings.taximeter_comfort_price_per_km,
+          taximeter_base_fare: priceSettings.taximeter_base_fare,
+          taximeter_waiting_price_per_minute: priceSettings.taximeter_waiting_price_per_minute,
+        });
+      }
+      toast.success('✓ Configurações do taximètre atualizadas');
+    } catch {
+      toast.error('Erro ao salvar configurações do taximètre');
+    } finally {
+      setTaximeterSaving(false);
     }
   };
 
@@ -446,6 +473,10 @@ export default function Settings() {
                 onChange={e => set('taximeter_waiting_price_per_minute', e.target.value)}
                 className="bg-white/5 border-white/10 text-white focus:border-[#F5C300] h-12" />
             </Field>
+            <Button onClick={handleSaveTaximeter} disabled={taximeterSaving}
+              className="w-full bg-[#F5C300] hover:bg-[#E6B800] text-black font-semibold h-12 text-sm mt-4">
+              {taximeterSaving ? <><Loader2 className="w-4 h-4 mr-2 animate-spin" />Salvando...</> : 'Salvar Configurações do Taximètre'}
+            </Button>
             </Section>
 
             {/* Configurações de Impostos */}
