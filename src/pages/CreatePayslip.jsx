@@ -1,9 +1,9 @@
 import { useState, useEffect } from 'react';
 import { base44 } from '@/api/base44Client';
 import { createPageUrl } from '@/utils';
-import { ArrowLeft, Save, Eye, Calculator } from 'lucide-react';
+import { ArrowLeft, Save, Download, Calculator } from 'lucide-react';
 
-const FormInput = ({ label, value, onChange, type = 'text', placeholder = '' }) => (
+const FormInput = ({ label, value, onChange, type = 'text', placeholder = '', error }) => (
   <div>
     <label className="block text-xs font-semibold text-gray-500 uppercase tracking-wide mb-1">{label}</label>
     <input
@@ -11,8 +11,9 @@ const FormInput = ({ label, value, onChange, type = 'text', placeholder = '' }) 
       value={value}
       onChange={e => onChange(e.target.value)}
       placeholder={placeholder}
-      className="w-full border border-gray-200 rounded-lg px-3 py-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-black"
+      className={`w-full border rounded-lg px-3 py-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-black ${error ? 'border-red-400 bg-red-50' : 'border-gray-200'}`}
     />
+    {error && <p className="text-red-500 text-xs mt-1">{error}</p>}
   </div>
 );
 
@@ -33,8 +34,10 @@ export default function CreatePayslip() {
   const [saving, setSaving] = useState(false);
   const [downloading, setDownloading] = useState(false);
   const [savedId, setSavedId] = useState(null);
+  const [errors, setErrors] = useState({});
 
   const [form, setForm] = useState({
+    driver_id: '',
     driver_name: '',
     driver_address: '',
     driver_avs: '',
@@ -51,12 +54,36 @@ export default function CreatePayslip() {
     base44.entities.Driver.filter({ status: 'active' }).then(setDrivers);
   }, []);
 
-  const set = (k, v) => setForm(f => ({ ...f, [k]: v }));
+  const set = (k, v) => {
+    setForm(f => ({ ...f, [k]: v }));
+    if (errors[k]) setErrors(e => ({ ...e, [k]: null }));
+  };
 
-  const salaire_brut = parseFloat(form.salary_brut) || 0;
+  // Auto-fill from driver
+  const handleDriverSelect = (driverId) => {
+    const d = drivers.find(x => x.id === driverId);
+    if (d) {
+      setForm(f => ({
+        ...f,
+        driver_id: driverId,
+        driver_name: d.name || '',
+        driver_address: d.address || '',
+        driver_avs: d.avs || '',
+      }));
+    } else {
+      set('driver_id', '');
+    }
+  };
+
+  // Auto-calc salaire brut from heures * taux
+  const heures = parseFloat(form.heures_travaillees) || 0;
+  const taux = parseFloat(form.taux_horaire) || 0;
+  const salaire_brut = form.salary_brut !== ''
+    ? parseFloat(form.salary_brut) || 0
+    : heures > 0 && taux > 0 ? heures * taux : 0;
+
   const tx = taxSettings || {};
 
-  // Taux fixes pour la fiche de salaire (part employé)
   const RATES = {
     avs: 4.35,
     ai: 0.70,
@@ -80,6 +107,14 @@ export default function CreatePayslip() {
   const monthLabel = `${MONTHS.find(m => m.value === form.month)?.label || ''} ${form.year}`;
   const monthKey = `${form.year}-${form.month}`;
 
+  const validate = () => {
+    const e = {};
+    if (!form.driver_name.trim()) e.driver_name = 'Nom requis';
+    if (!salaire_brut) e.salary_brut = 'Salaire brut requis';
+    setErrors(e);
+    return Object.keys(e).length === 0;
+  };
+
   const buildPayslip = () => ({
     driver_name: form.driver_name,
     driver_address: form.driver_address,
@@ -89,20 +124,13 @@ export default function CreatePayslip() {
     salary_brut: salaire_brut,
     heures_travaillees: parseFloat(form.heures_travaillees) || null,
     taux_horaire: parseFloat(form.taux_horaire) || null,
-    avs_percentage: RATES.avs,
-    avs_amount,
-    ai_percentage: RATES.ai,
-    ai_amount,
-    apg_percentage: RATES.apg,
-    apg_amount,
-    ac_percentage: RATES.ac,
-    ac_amount,
-    af_percentage: 0,
-    af_amount: 0,
-    pc_percentage: RATES.pc,
-    pc_amount,
-    cont_frais_admin_percentage: 0,
-    cont_frais_admin_amount: 0,
+    avs_percentage: RATES.avs, avs_amount,
+    ai_percentage: RATES.ai, ai_amount,
+    apg_percentage: RATES.apg, apg_amount,
+    ac_percentage: RATES.ac, ac_amount,
+    af_percentage: 0, af_amount: 0,
+    pc_percentage: RATES.pc, pc_amount,
+    cont_frais_admin_percentage: 0, cont_frais_admin_amount: 0,
     impot_source_percentage: parseFloat(tx.impot_source_percentage) || 0,
     impot_source_amount,
     other_deductions_percentage: parseFloat(tx.other_deductions_percentage) || 0,
@@ -113,7 +141,7 @@ export default function CreatePayslip() {
   });
 
   const handleSave = async () => {
-    if (!form.driver_name || !salaire_brut) return alert('Nom et salaire brut requis.');
+    if (!validate()) return null;
     setSaving(true);
     let id = savedId;
     if (!id) {
@@ -128,12 +156,11 @@ export default function CreatePayslip() {
   };
 
   const handleDownload = async () => {
-    if (!form.driver_name || !salaire_brut) return alert('Nom et salaire brut requis.');
+    if (!validate()) return;
     setDownloading(true);
     let id = savedId;
-    if (!id) {
-      id = await handleSave();
-    }
+    if (!id) id = await handleSave();
+    if (!id) { setDownloading(false); return; }
     const res = await base44.functions.invoke('generatePayslipPDF', { payslip_id: id });
     const blob = new Blob([res.data], { type: 'application/pdf' });
     const url = URL.createObjectURL(blob);
@@ -144,8 +171,6 @@ export default function CreatePayslip() {
     URL.revokeObjectURL(url);
     setDownloading(false);
   };
-
-
 
   const DeductRow = ({ label, pct, amount }) => {
     if (!pct && !amount) return null;
@@ -158,19 +183,20 @@ export default function CreatePayslip() {
   };
 
   return (
-    <div className="min-h-screen bg-gray-50">
+    <div className="min-h-screen bg-gray-50 pb-24 lg:pb-0">
       {/* Header */}
-      <div className="bg-black text-white px-6 py-4 flex items-center justify-between">
+      <div className="bg-black text-white px-4 lg:px-6 py-4 flex items-center justify-between">
         <div className="flex items-center gap-4">
           <a href={createPageUrl('Payslips')} className="text-white/60 hover:text-white transition-colors">
             <ArrowLeft className="w-5 h-5" />
           </a>
           <div>
-            <h1 className="text-lg font-bold tracking-wide">NOUVELLE FICHE DE SALAIRE</h1>
-            <p className="text-white/50 text-xs">Rosini Transports et locations SArl</p>
+            <h1 className="text-sm lg:text-lg font-bold tracking-wide">NOUVELLE FICHE DE SALAIRE</h1>
+            <p className="text-white/50 text-xs hidden lg:block">Rosini Transports et locations SArl</p>
           </div>
         </div>
-        <div className="flex gap-2">
+        {/* Desktop buttons */}
+        <div className="hidden lg:flex gap-2">
           <button
             onClick={handleSave}
             disabled={saving}
@@ -184,13 +210,13 @@ export default function CreatePayslip() {
             disabled={downloading || saving}
             className="flex items-center gap-2 bg-white text-black px-4 py-2 rounded-lg text-sm font-bold hover:bg-gray-100 transition-colors disabled:opacity-50"
           >
-            <Eye className="w-4 h-4" />
+            <Download className="w-4 h-4" />
             {downloading ? 'Génération...' : 'Télécharger PDF'}
           </button>
         </div>
       </div>
 
-      <div className="max-w-5xl mx-auto p-6 grid grid-cols-1 lg:grid-cols-2 gap-6">
+      <div className="max-w-5xl mx-auto p-4 lg:p-6 grid grid-cols-1 lg:grid-cols-2 gap-6">
 
         {/* Left: Form */}
         <div className="space-y-5">
@@ -225,27 +251,26 @@ export default function CreatePayslip() {
           <div className="bg-white border border-gray-200 rounded-xl p-5 shadow-sm">
             <h2 className="font-bold text-gray-900 mb-4 text-sm uppercase tracking-wide">Informations Employé</h2>
             <div className="space-y-3">
-              <div>
-                <label className="block text-xs font-semibold text-gray-500 uppercase tracking-wide mb-1">Nom (ou choisir)</label>
-                <div className="flex gap-2">
-                  <input
-                    type="text"
-                    value={form.driver_name}
-                    onChange={e => set('driver_name', e.target.value)}
-                    placeholder="Nom complet"
-                    className="flex-1 border border-gray-200 rounded-lg px-3 py-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-black"
-                  />
-                  {drivers.length > 0 && (
-                    <select
-                      onChange={e => { const d = drivers.find(x => x.id === e.target.value); if (d) set('driver_name', d.name); }}
-                      className="border border-gray-200 rounded-lg px-2 py-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-black"
-                    >
-                      <option value="">Choisir</option>
-                      {drivers.map(d => <option key={d.id} value={d.id}>{d.name}</option>)}
-                    </select>
-                  )}
+              {drivers.length > 0 && (
+                <div>
+                  <label className="block text-xs font-semibold text-gray-500 uppercase tracking-wide mb-1">Choisir un chauffeur</label>
+                  <select
+                    value={form.driver_id}
+                    onChange={e => handleDriverSelect(e.target.value)}
+                    className="w-full border border-gray-200 rounded-lg px-3 py-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-black"
+                  >
+                    <option value="">— Sélectionner —</option>
+                    {drivers.map(d => <option key={d.id} value={d.id}>{d.name}</option>)}
+                  </select>
                 </div>
-              </div>
+              )}
+              <FormInput
+                label="Nom complet"
+                value={form.driver_name}
+                onChange={v => set('driver_name', v)}
+                placeholder="Nom complet"
+                error={errors.driver_name}
+              />
               <FormInput label="Adresse" value={form.driver_address} onChange={v => set('driver_address', v)} placeholder="Rue, NPA Ville" />
               <FormInput label="N° AVS" value={form.driver_avs} onChange={v => set('driver_avs', v)} placeholder="756.XXXX.XXXX.XX" />
             </div>
@@ -255,11 +280,23 @@ export default function CreatePayslip() {
           <div className="bg-white border border-gray-200 rounded-xl p-5 shadow-sm">
             <h2 className="font-bold text-gray-900 mb-4 text-sm uppercase tracking-wide">Salaire</h2>
             <div className="space-y-3">
-              <FormInput label="Salaire brut (CHF)" value={form.salary_brut} onChange={v => set('salary_brut', v)} type="number" placeholder="0.00" />
               <div className="grid grid-cols-2 gap-3">
                 <FormInput label="Heures travaillées" value={form.heures_travaillees} onChange={v => set('heures_travaillees', v)} type="number" placeholder="0" />
                 <FormInput label="Taux horaire (CHF)" value={form.taux_horaire} onChange={v => set('taux_horaire', v)} type="number" placeholder="0.00" />
               </div>
+              {heures > 0 && taux > 0 && !form.salary_brut && (
+                <p className="text-xs text-blue-600 bg-blue-50 rounded-lg px-3 py-2">
+                  Salaire calculé automatiquement: <strong>CHF {(heures * taux).toFixed(2)}</strong>
+                </p>
+              )}
+              <FormInput
+                label="Salaire brut (CHF) — remplace le calcul auto"
+                value={form.salary_brut}
+                onChange={v => set('salary_brut', v)}
+                type="number"
+                placeholder={heures > 0 && taux > 0 ? `Auto: ${(heures * taux).toFixed(2)}` : '0.00'}
+                error={errors.salary_brut}
+              />
               <FormInput label="Notes" value={form.notes} onChange={v => set('notes', v)} placeholder="Remarques éventuelles..." />
             </div>
           </div>
@@ -279,7 +316,6 @@ export default function CreatePayslip() {
               </p>
             )}
 
-            {/* Brut */}
             <div className="flex justify-between items-center py-2 border-b-2 border-black mb-2">
               <span className="font-bold text-gray-900">Salaire brut</span>
               <span className="font-bold text-gray-900">CHF {salaire_brut.toFixed(2)}</span>
@@ -323,6 +359,26 @@ export default function CreatePayslip() {
             </div>
           )}
         </div>
+      </div>
+
+      {/* Mobile sticky buttons */}
+      <div className="fixed bottom-0 left-0 right-0 bg-white border-t border-gray-200 p-4 flex gap-3 lg:hidden">
+        <button
+          onClick={handleSave}
+          disabled={saving}
+          className="flex-1 flex items-center justify-center gap-2 bg-gray-900 text-white py-3 rounded-xl text-sm font-semibold disabled:opacity-50"
+        >
+          <Save className="w-4 h-4" />
+          {saving ? 'Enregistrement...' : 'Enregistrer'}
+        </button>
+        <button
+          onClick={handleDownload}
+          disabled={downloading || saving}
+          className="flex-1 flex items-center justify-center gap-2 bg-black text-white py-3 rounded-xl text-sm font-bold disabled:opacity-50"
+        >
+          <Download className="w-4 h-4" />
+          {downloading ? 'PDF...' : 'Télécharger PDF'}
+        </button>
       </div>
     </div>
   );
