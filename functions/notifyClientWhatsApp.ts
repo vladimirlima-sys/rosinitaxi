@@ -2,7 +2,7 @@ import { createClientFromRequest } from 'npm:@base44/sdk@0.8.20';
 
 Deno.serve(async (req) => {
   try {
-    const { booking_id, client_phone, client_name, departure_point, tracking_link, status } = await req.json();
+    const { booking_id, client_phone, client_name, departure_point, tracking_link, status, language = 'fr' } = await req.json();
 
     if (!booking_id || !client_phone || !status) {
       return Response.json(
@@ -33,19 +33,27 @@ Deno.serve(async (req) => {
       formattedPhone = '+' + formattedPhone;
     }
 
-    // Template configuration
+    // Template configuration by language and status
     const templates = {
-      'en_route': {
-        sid: 'HX905b87dda9be5608efd829b75d588118',
-        variables: [client_name || '', departure_point || '', tracking_link || '']
-      },
-      'arrived': {
-        sid: 'HX57b573cd1d0f5875c54cc0b145c73281',
-        variables: [client_name || '', departure_point || '']
+      'fr': {
+        'en_route': {
+          sid: 'HX905b87dda9be5608efd829b75d588118',
+          variables: [client_name || '', departure_point || '', tracking_link || '']
+        },
+        'arrived': {
+          sid: 'HX57b573cd1d0f5875c54cc0b145c73281',
+          variables: [client_name || '', departure_point || '']
+        }
       }
     };
 
-    const template = templates[status];
+    const languageTemplates = templates[language];
+    if (!languageTemplates) {
+      console.error(`Language '${language}' not supported for WhatsApp templates`);
+      return Response.json({ success: true, skipped: true });
+    }
+
+    const template = languageTemplates[status];
     if (!template) {
       return Response.json({ success: true, skipped: true });
     }
@@ -59,9 +67,9 @@ Deno.serve(async (req) => {
       'ContentSid': template.sid
     });
 
-    // Add template variables
+    // Add template variables in correct format
     template.variables.forEach((variable, index) => {
-      bodyParams.append(`ContentVariables`, JSON.stringify({ [index + 1]: variable }));
+      bodyParams.append(`ContentVariables`, JSON.stringify(variable));
     });
 
     const response = await fetch(url, {
