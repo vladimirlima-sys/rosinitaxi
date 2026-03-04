@@ -215,7 +215,36 @@ export default function Clients() {
               </div>
             </CardContent>
           </Card>
+          <Card className="bg-zinc-900 border-zinc-800">
+            <CardContent className="p-4">
+              <div className="flex items-center gap-3">
+                <UserPlus className="w-8 h-8 text-yellow-400" />
+                <div>
+                  <p className="text-zinc-400 text-xs uppercase">Nouveaux ce mois</p>
+                  <p className="text-2xl font-bold text-white">{thisMonth}</p>
+                </div>
+              </div>
+            </CardContent>
+          </Card>
         </div>
+
+        {/* Monthly new clients chart */}
+        <Card className="bg-zinc-900 border-zinc-800 mb-6">
+          <CardContent className="p-4">
+            <p className="text-xs text-zinc-400 uppercase font-semibold mb-4">Nouveaux clients par mois (12 derniers mois)</p>
+            <ResponsiveContainer width="100%" height={140}>
+              <BarChart data={monthlyData} margin={{ top: 0, right: 0, left: -20, bottom: 0 }}>
+                <XAxis dataKey="month" tick={{ fill: "#71717a", fontSize: 10 }} axisLine={false} tickLine={false} />
+                <YAxis tick={{ fill: "#71717a", fontSize: 10 }} axisLine={false} tickLine={false} allowDecimals={false} />
+                <Tooltip
+                  contentStyle={{ background: "#18181b", border: "1px solid #3f3f46", borderRadius: 8, color: "#fff", fontSize: 12 }}
+                  formatter={(v) => [v, "Nouveaux clients"]}
+                />
+                <Bar dataKey="nouveaux" fill="#F5C300" radius={[4, 4, 0, 0]} />
+              </BarChart>
+            </ResponsiveContainer>
+          </CardContent>
+        </Card>
 
         {/* Top client highlight */}
         {topClient && (
