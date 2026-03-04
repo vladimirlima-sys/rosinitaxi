@@ -433,7 +433,7 @@ export default function BookingForm({ bookingRef }) {
             )}
 
             {/* Flight (optional) */}
-            <div className="bg-black border border-black/40 rounded-xl p-4">
+             <div className="bg-black border border-black/40 rounded-xl p-3 sm:p-4">
               <label className={labelClass}><Plane className="inline w-3 h-3 mr-1" />{t.flightLabel}</label>
               <input
                 type="text"
