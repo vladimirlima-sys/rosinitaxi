@@ -72,7 +72,7 @@ export default function AdminPanel() {
                 <Lock className="w-5 h-5 text-white" />
               </div>
             </div>
-            <p className="text-white/60 text-sm text-center">Introduza a senha para aceder</p>
+            <p className="text-white/60 text-sm text-center">Entrez le mot de passe pour accéder</p>
             <div className="relative">
               <input
                 type={showPassword ? 'text' : 'password'}
