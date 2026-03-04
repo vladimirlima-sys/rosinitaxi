@@ -37,6 +37,10 @@ export default function PricingBreakdown({
   arrival_point.toLowerCase().includes('aéroport') ||
   arrival_point.toLowerCase().includes('airport');
 
+  // Check if Valais/Fribourg surcharge applies
+  const isValaisFribourg = ['valais', 'fribourg', 'wallis', 'freiburg'].some(canton =>
+    departure_point.toLowerCase().includes(canton)
+  );
 
   // Calculate price breakdown
   const pricePerKm = priceSettings.standard_price_per_km;
@@ -54,11 +58,17 @@ export default function PricingBreakdown({
     airportFeeAmount = priceSettings.airport_fee;
   }
 
+  let valaisFribourgAmount = 0;
+  if (isValaisFribourg && priceSettings.valais_fribourg_surcharge_percentage > 0) {
+    valaisFribourgAmount = ((parseFloat(distancePrice) + baseFareAmount) * priceSettings.valais_fribourg_surcharge_percentage / 100).toFixed(2);
+  }
+
   const totalPrice = (
   parseFloat(distancePrice) +
   baseFareAmount +
   parseFloat(nightSurchargeAmount) +
-  airportFeeAmount).
+  airportFeeAmount +
+  parseFloat(valaisFribourgAmount)).
   toFixed(2);
 
   return (
