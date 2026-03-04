@@ -1,9 +1,9 @@
-
 import React, { useState, useEffect } from 'react';
 import { base44 } from '@/api/base44Client';
-import { Plus, Pencil, Trash2, Phone, Mail, Car, User, CheckCircle, XCircle, ExternalLink, ArrowLeft, Copy, Check, Search, Eye, EyeOff } from 'lucide-react';
+import { Plus, Pencil, Trash2, Phone, Mail, Car, User, CheckCircle, XCircle, ExternalLink, ArrowLeft, Copy, Check, Search, Eye, EyeOff, Lock } from 'lucide-react';
 import DriverForm from '@/components/drivers/DriverForm';
 import DeleteDriverModal from '@/components/drivers/DeleteDriverModal';
+import CredentialManager from '@/components/drivers/CredentialManager';
 import { createPageUrl } from '@/utils';
 
 export default function Drivers() {
@@ -16,6 +16,7 @@ export default function Drivers() {
   const [copiedId, setCopiedId] = useState(null);
   const [searchQuery, setSearchQuery] = useState('');
   const [showRevenue, setShowRevenue] = useState(false);
+  const [selectedDriverForCredential, setSelectedDriverForCredential] = useState(null);
 
   useEffect(() => {
     if (localStorage.getItem('admin_unlocked') !== 'true') {
@@ -199,25 +200,32 @@ export default function Drivers() {
                   </div>
 
                   <div className="flex gap-1 md:gap-2 shrink-0">
-                    <button
-                      onClick={() => copyDriverId(driver)}
-                      title="Copier l'ID du chauffeur"
-                      className="w-8 h-8 md:w-9 md:h-9 rounded-lg border border-white/20 flex items-center justify-center text-white/40 hover:text-[#F5C300] hover:border-[#F5C300]/40 transition-all"
-                    >
-                      {copiedId === driver.id ? <Check className="w-3 h-3 md:w-4 md:h-4 text-green-400" /> : <Copy className="w-3 h-3 md:w-4 md:h-4" />}
-                    </button>
-                    <button
-                      onClick={() => handleEdit(driver)}
-                      className="w-8 h-8 md:w-9 md:h-9 rounded-lg border border-white/20 flex items-center justify-center text-white/40 hover:text-white hover:border-white/40 transition-all"
-                    >
-                      <Pencil className="w-3 h-3 md:w-4 md:h-4" />
-                    </button>
-                    <button
-                      onClick={() => setDeleteTarget(driver)}
-                      className="w-8 h-8 md:w-9 md:h-9 rounded-lg border border-white/20 flex items-center justify-center text-white/40 hover:text-red-400 hover:border-red-400/40 transition-all"
-                    >
-                      <Trash2 className="w-3 h-3 md:w-4 md:h-4" />
-                    </button>
+                   <button
+                     onClick={() => copyDriverId(driver)}
+                     title="Copier l'ID du chauffeur"
+                     className="w-8 h-8 md:w-9 md:h-9 rounded-lg border border-white/20 flex items-center justify-center text-white/40 hover:text-[#F5C300] hover:border-[#F5C300]/40 transition-all"
+                   >
+                     {copiedId === driver.id ? <Check className="w-3 h-3 md:w-4 md:h-4 text-green-400" /> : <Copy className="w-3 h-3 md:w-4 md:h-4" />}
+                   </button>
+                   <button
+                     onClick={() => setSelectedDriverForCredential(driver)}
+                     title="Gérer accès sécurisé"
+                     className="w-8 h-8 md:w-9 md:h-9 rounded-lg border border-white/20 flex items-center justify-center text-white/40 hover:text-blue-400 hover:border-blue-400/40 transition-all"
+                   >
+                     <Lock className="w-3 h-3 md:w-4 md:h-4" />
+                   </button>
+                   <button
+                     onClick={() => handleEdit(driver)}
+                     className="w-8 h-8 md:w-9 md:h-9 rounded-lg border border-white/20 flex items-center justify-center text-white/40 hover:text-white hover:border-white/40 transition-all"
+                   >
+                     <Pencil className="w-3 h-3 md:w-4 md:h-4" />
+                   </button>
+                   <button
+                     onClick={() => setDeleteTarget(driver)}
+                     className="w-8 h-8 md:w-9 md:h-9 rounded-lg border border-white/20 flex items-center justify-center text-white/40 hover:text-red-400 hover:border-red-400/40 transition-all"
+                   >
+                     <Trash2 className="w-3 h-3 md:w-4 md:h-4" />
+                   </button>
                   </div>
                 </div>
               ))}
@@ -240,6 +248,27 @@ export default function Drivers() {
           onConfirm={handleDelete}
           onCancel={() => setDeleteTarget(null)}
         />
+      )}
+
+      {selectedDriverForCredential && (
+        <div className="fixed inset-0 bg-black/50 flex items-center justify-center z-50 p-4">
+          <div className="bg-white rounded-xl max-w-md w-full max-h-[90vh] overflow-y-auto p-6">
+            <div className="flex items-center justify-between mb-4">
+              <h2 className="text-lg font-bold text-black flex items-center gap-2">
+                <Lock className="w-5 h-5" />
+                Accès Sécurisé
+              </h2>
+              <button
+                onClick={() => setSelectedDriverForCredential(null)}
+                className="text-black/40 hover:text-black/60 text-2xl leading-none"
+              >
+                ×
+              </button>
+            </div>
+            <p className="text-sm text-black/60 mb-4">{selectedDriverForCredential.name}</p>
+            <CredentialManager driver={selectedDriverForCredential} />
+          </div>
+        </div>
       )}
     </div>
   );
