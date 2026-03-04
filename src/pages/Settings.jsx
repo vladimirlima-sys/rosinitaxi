@@ -88,7 +88,16 @@ export default function SettingsPage() {
     init();
   }, []);
 
-  const set = (field, value) => setSettings(prev => ({ ...prev, [field]: parseFloat(value) || 0 }));
+  const set = (field, value) => {
+    const num = parseFloat(value) || 0;
+    setPriceSettings(prev => ({ ...prev, [field]: Math.max(0, num) }));
+  };
+  
+  const setCompany = (field, value) => setCompanySettings(prev => ({ ...prev, [field]: value }));
+  const setTax = (field, value) => {
+    const num = parseFloat(value) || 0;
+    setTaxSettings(prev => ({ ...prev, [field]: Math.max(0, num) }));
+  };
 
   const handleSave = async () => {
     setIsSaving(true);
