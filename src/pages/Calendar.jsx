@@ -83,7 +83,24 @@ export default function Calendar() {
             <h1 className="text-4xl font-light text-white">Calendrier</h1>
           </div>
         </div>
-        <p className="text-white/40 text-sm mb-8">Glissez-déposez pour changer la date · Cliquez sur le chauffeur pour le réattribuer</p>
+        {/* View mode toggle */}
+        <div className="flex items-center gap-2 mb-6">
+          <button
+            onClick={() => setViewMode('week')}
+            className={`px-4 py-2 rounded-xl text-sm font-medium transition-colors ${viewMode === 'week' ? 'bg-[#F5C300] text-black' : 'bg-white/10 text-white/60 hover:bg-white/20'}`}
+          >
+            Semaine
+          </button>
+          <button
+            onClick={() => setViewMode('month')}
+            className={`px-4 py-2 rounded-xl text-sm font-medium transition-colors ${viewMode === 'month' ? 'bg-[#F5C300] text-black' : 'bg-white/10 text-white/60 hover:bg-white/20'}`}
+          >
+            Mois
+          </button>
+        </div>
+        <p className="text-white/40 text-sm mb-6">
+          {viewMode === 'week' ? 'Glissez-déposez pour changer la date · Cliquez sur le chauffeur pour le réattribuer' : 'Vue mensuelle · Cliquez sur une course pour voir les réservations'}
+        </p>
 
         {loading ? (
           <div className="flex items-center justify-center py-24">
