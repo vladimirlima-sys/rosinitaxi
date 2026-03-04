@@ -48,6 +48,29 @@ export default function Reservas() {
     };
 
     checkAuth();
+    
+    // Subscribe to real-time updates
+    const unsubscribe = base44.entities.Booking.subscribe((event) => {
+      // Trigger a refresh of the KPI stats
+      const recalculateStats = async () => {
+        try {
+          const bookings = await base44.asServiceRole.entities.Booking.list('-created_date', 500);
+          const newStats = {
+            total: bookings.length,
+            pending: bookings.filter(b => b.payment_status === 'pending').length,
+            paid: bookings.filter(b => b.payment_status === 'paid').length,
+            cancelled: bookings.filter(b => b.payment_status === 'cancelled').length,
+            revenue: bookings.filter(b => b.payment_status === 'paid').reduce((sum, b) => sum + (b.total_price || 0), 0),
+          };
+          setStats(newStats);
+        } catch (error) {
+          console.error('Error recalculating stats:', error);
+        }
+      };
+      recalculateStats();
+    });
+
+    return unsubscribe;
   }, []);
 
   if (loading) {
