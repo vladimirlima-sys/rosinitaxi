@@ -304,11 +304,20 @@ export default function MyBookings() {
   return (
     <div className="min-h-screen bg-[#F5C300] px-4 py-12">
       <div className="max-w-2xl mx-auto">
-        {/* Header */}
-        <div className="text-center mb-10">
-          <h1 className="text-black text-5xl font-extralight tracking-[0.3em] uppercase">ROSINI</h1>
-          <p className="text-black/60 text-xs tracking-[0.2em] uppercase mt-1">TRANSPORTS DE PERSONNES</p>
-        </div>
+         {/* Back button */}
+         <a
+           href={createPageUrl('Home')}
+           className="inline-flex items-center gap-2 text-black/60 hover:text-black transition-colors mb-6"
+         >
+           <ArrowLeft className="w-4 h-4" />
+           <span className="text-sm">{['Retour', 'Voltar', 'Back', 'Zurück', 'Indietro', 'Volver', 'Terug'][['fr', 'pt', 'en', 'de', 'it', 'es', 'nl'].indexOf(langParam)] || 'Retour'}</span>
+         </a>
+
+         {/* Header */}
+         <div className="text-center mb-10">
+           <h1 className="text-black text-5xl font-extralight tracking-[0.3em] uppercase">ROSINI</h1>
+           <p className="text-black/60 text-xs tracking-[0.2em] uppercase mt-1">TRANSPORTS DE PERSONNES</p>
+         </div>
 
         {/* Email form */}
         <div className="bg-black rounded-2xl p-6 mb-6">
