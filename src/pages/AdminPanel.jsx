@@ -46,7 +46,7 @@ export default function AdminPanel() {
       setError('');
       localStorage.setItem('admin_unlocked', 'true');
     } else {
-      setError('Senha incorreta.');
+      setError('Mot de passe incorrect.');
       setPassword('');
     }
   };
