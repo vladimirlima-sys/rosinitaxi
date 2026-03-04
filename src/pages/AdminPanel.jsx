@@ -115,7 +115,7 @@ export default function AdminPanel() {
             className="flex items-center gap-2 bg-black/10 hover:bg-black/20 text-black text-sm rounded-xl px-4 py-2 transition-colors"
           >
             <LogOut className="w-4 h-4" />
-            Sair
+            Déconnexion
           </button>
         </div>
 
