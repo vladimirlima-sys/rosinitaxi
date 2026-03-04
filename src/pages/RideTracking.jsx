@@ -1,7 +1,11 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import { base44 } from '@/api/base44Client';
 import { MapPin, Phone, Clock, AlertCircle, Loader2, ArrowLeft } from 'lucide-react';
 import { createPageUrl } from '@/utils';
+import TrackingMap from '@/components/ridetracking/TrackingMap';
+import RideTimeline from '@/components/ridetracking/RideTimeline';
+import DriverCard from '@/components/ridetracking/DriverCard';
+import SupportContact from '@/components/ridetracking/SupportContact';
 
 export default function RideTracking() {
   const [booking, setBooking] = useState(null);
