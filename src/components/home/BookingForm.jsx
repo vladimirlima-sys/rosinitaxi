@@ -336,12 +336,12 @@ export default function BookingForm({ bookingRef }) {
   const darkLabelClass = "text-white/60 text-xs uppercase tracking-wider mb-1 block";
 
   return (
-    <div ref={bookingRef} className="w-full min-h-screen bg-[#F5C300] flex flex-col items-center justify-start py-4 sm:py-8 px-3 sm:px-4">
+    <div ref={bookingRef} className="w-full min-h-screen bg-[#F5C300] flex flex-col items-center justify-start py-3 sm:py-6 px-3 sm:px-4">
       {/* Header */}
-      <div className="w-full max-w-md mb-4 sm:mb-6 text-center">
-        <h1 className="text-black text-4xl sm:text-5xl md:text-6xl font-extralight tracking-[0.2em] sm:tracking-[0.3em] uppercase">ROSINI</h1>
-        <p className="text-black/60 text-xs sm:text-sm tracking-[0.15em] sm:tracking-[0.2em] uppercase mt-1 sm:mt-2">TRANSPORTS DE PERSONNES</p>
-        <div className="w-6 sm:w-8 h-[1px] bg-black/40 mx-auto mt-2 sm:mt-3" />
+      <div className="w-full max-w-md mb-3 sm:mb-4 text-center">
+        <h1 className="text-black text-3xl sm:text-5xl md:text-6xl font-extralight tracking-[0.2em] sm:tracking-[0.3em] uppercase">ROSINI</h1>
+        <p className="text-black/60 text-xs sm:text-sm tracking-[0.15em] sm:tracking-[0.2em] uppercase mt-0.5 sm:mt-2">TRANSPORTS DE PERSONNES</p>
+        <div className="w-6 sm:w-8 h-[1px] bg-black/40 mx-auto mt-1.5 sm:mt-3" />
       </div>
 
       <div className="w-full max-w-md px-0">
