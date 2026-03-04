@@ -89,6 +89,18 @@ export default function ActiveTripMonitor({ booking, onCompleted }) {
   const setStatus = async (key) => {
    localStorage.setItem(storageKey, key);
    setTripStatus(key);
+
+   // Notify client via WhatsApp
+   try {
+     await base44.functions.invoke('notifyClientWhatsApp', {
+       booking_id: booking.id,
+       client_phone: booking.client_phone,
+       status: key
+     });
+   } catch (err) {
+     console.error('WhatsApp notification error:', err);
+   }
+
    if (key === 'arrived' && !tripStartedAt) {
      const now = Date.now();
      localStorage.setItem(startKey, String(now));
