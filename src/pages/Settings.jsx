@@ -312,12 +312,12 @@ export default function SettingsPage() {
           {/* Adicional noturno */}
           <Section title="Adicional Noturno">
             <Field label="Percentual do adicional (%)" hint="Ex: 10 = +10% sobre o valor total">
-              <Input type="number" step="0.1" value={settings.night_surcharge_percentage}
+              <Input type="number" step="0.1" min="0" value={priceSettings.night_surcharge_percentage}
                 onChange={e => set('night_surcharge_percentage', e.target.value)}
                 className="bg-white/5 border-white/10 text-white focus:border-[#C9A96E] h-12" />
             </Field>
             <Field label="Dia da semana em que se aplica">
-              <select value={settings.night_surcharge_day}
+              <select value={priceSettings.night_surcharge_day}
                 onChange={e => set('night_surcharge_day', e.target.value)}
                 className="w-full bg-white/5 border border-white/10 text-white h-12 rounded-md px-3 focus:border-[#C9A96E] outline-none">
                 {DAYS.map((d, i) => <option key={i} value={i}>{d}</option>)}
@@ -325,24 +325,60 @@ export default function SettingsPage() {
             </Field>
             <div className="grid grid-cols-2 gap-4">
               <Field label="Hora início (0–23)">
-                <Input type="number" min="0" max="23" value={settings.night_surcharge_start_hour}
+                <Input type="number" min="0" max="23" value={priceSettings.night_surcharge_start_hour}
                   onChange={e => set('night_surcharge_start_hour', e.target.value)}
                   className="bg-white/5 border-white/10 text-white focus:border-[#C9A96E] h-12" />
               </Field>
               <Field label="Hora fim (0–23)">
-                <Input type="number" min="0" max="23" value={settings.night_surcharge_end_hour}
+                <Input type="number" min="0" max="23" value={priceSettings.night_surcharge_end_hour}
                   onChange={e => set('night_surcharge_end_hour', e.target.value)}
                   className="bg-white/5 border-white/10 text-white focus:border-[#C9A96E] h-12" />
               </Field>
             </div>
-            {settings.night_surcharge_percentage > 0 && (
+            {priceSettings.night_surcharge_percentage > 0 && (
               <div className="bg-[#C9A96E]/10 border border-[#C9A96E]/20 rounded-xl p-4">
                 <p className="text-[#C9A96E] text-xs font-semibold uppercase tracking-wider mb-1">Adicional ativo</p>
                 <p className="text-white/60 text-sm">
-                  +{settings.night_surcharge_percentage}% toda <strong className="text-white">{DAYS[settings.night_surcharge_day]}</strong> das <strong className="text-white">{settings.night_surcharge_start_hour}h</strong> às <strong className="text-white">{settings.night_surcharge_end_hour}h</strong>
+                  +{priceSettings.night_surcharge_percentage}% toda <strong className="text-white">{DAYS[priceSettings.night_surcharge_day]}</strong> das <strong className="text-white">{priceSettings.night_surcharge_start_hour}h</strong> às <strong className="text-white">{priceSettings.night_surcharge_end_hour}h</strong>
                 </p>
               </div>
             )}
+          </Section>
+
+          {/* Configurações de Impostos */}
+          <Section title="Configurações de Impostos">
+            <div className="grid grid-cols-2 gap-4">
+              <Field label="AVS (%)">
+                <Input type="number" step="0.01" min="0" value={taxSettings.avs_percentage}
+                  onChange={e => setTax('avs_percentage', e.target.value)}
+                  className="bg-white/5 border-white/10 text-white focus:border-[#C9A96E] h-12" />
+              </Field>
+              <Field label="AI (%)">
+                <Input type="number" step="0.01" min="0" value={taxSettings.ai_percentage}
+                  onChange={e => setTax('ai_percentage', e.target.value)}
+                  className="bg-white/5 border-white/10 text-white focus:border-[#C9A96E] h-12" />
+              </Field>
+              <Field label="AC (%)">
+                <Input type="number" step="0.01" min="0" value={taxSettings.ac_percentage}
+                  onChange={e => setTax('ac_percentage', e.target.value)}
+                  className="bg-white/5 border-white/10 text-white focus:border-[#C9A96E] h-12" />
+              </Field>
+              <Field label="Impôt Cantonal (%)">
+                <Input type="number" step="0.01" min="0" value={taxSettings.impot_cantonal_percentage}
+                  onChange={e => setTax('impot_cantonal_percentage', e.target.value)}
+                  className="bg-white/5 border-white/10 text-white focus:border-[#C9A96E] h-12" />
+              </Field>
+              <Field label="Impôt Comunal (%)">
+                <Input type="number" step="0.01" min="0" value={taxSettings.impot_communal_percentage}
+                  onChange={e => setTax('impot_communal_percentage', e.target.value)}
+                  className="bg-white/5 border-white/10 text-white focus:border-[#C9A96E] h-12" />
+              </Field>
+              <Field label="Outras Deduções (%)">
+                <Input type="number" step="0.01" min="0" value={taxSettings.other_deductions_percentage}
+                  onChange={e => setTax('other_deductions_percentage', e.target.value)}
+                  className="bg-white/5 border-white/10 text-white focus:border-[#C9A96E] h-12" />
+              </Field>
+            </div>
           </Section>
 
         </div>
