@@ -39,6 +39,10 @@ export default function Settings() {
     night_surcharge_start_hour: 22,
     night_surcharge_end_hour: 6,
     valais_fribourg_surcharge_percentage: 15,
+    taximeter_standard_price_per_km: 2.35,
+    taximeter_comfort_price_per_km: 3.05,
+    taximeter_base_fare: 10,
+    taximeter_waiting_price_per_minute: 0.5,
   });
   const [originalPriceSettings, setOriginalPriceSettings] = useState(priceSettings);
   const [companySettings, setCompanySettings] = useState({
@@ -396,6 +400,31 @@ export default function Settings() {
                 </div>
               </div>
             )}
+            </Section>
+
+            {/* Configurações do Taximètre */}
+            <Section title="Configurações do Taximètre">
+            <p className="text-white/50 text-sm mb-4">Valores específicos para cálculo do taximètre (independentes das reservas)</p>
+            <Field label="Preço por KM — STANDARD (CHF)">
+              <Input type="number" step="0.01" min="0" value={priceSettings.taximeter_standard_price_per_km}
+                onChange={e => set('taximeter_standard_price_per_km', e.target.value)}
+                className="bg-white/5 border-white/10 text-white focus:border-[#F5C300] h-12" />
+            </Field>
+            <Field label="Preço por KM — COMFORT (CHF)">
+              <Input type="number" step="0.01" min="0" value={priceSettings.taximeter_comfort_price_per_km}
+                onChange={e => set('taximeter_comfort_price_per_km', e.target.value)}
+                className="bg-white/5 border-white/10 text-white focus:border-[#F5C300] h-12" />
+            </Field>
+            <Field label="Taxa Base (CHF)">
+              <Input type="number" step="0.01" min="0" value={priceSettings.taximeter_base_fare}
+                onChange={e => set('taximeter_base_fare', e.target.value)}
+                className="bg-white/5 border-white/10 text-white focus:border-[#F5C300] h-12" />
+            </Field>
+            <Field label="Preço por Minuto de Espera (CHF)" hint="Tempo parado (trânsito, espera de cliente, etc)">
+              <Input type="number" step="0.01" min="0" value={priceSettings.taximeter_waiting_price_per_minute}
+                onChange={e => set('taximeter_waiting_price_per_minute', e.target.value)}
+                className="bg-white/5 border-white/10 text-white focus:border-[#F5C300] h-12" />
+            </Field>
             </Section>
 
             {/* Configurações de Impostos */}
