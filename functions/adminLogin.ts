@@ -1,22 +1,9 @@
-import { create as createJWT, verify as verifyJWT } from 'npm:djwt@3.0.2';
-
-const JWT_SECRET = Deno.env.get('JWT_SECRET') || 'rosini-secret-admin-key';
-const ADMIN_EMAIL = 'vladimir@rosini.online';
-const ADMIN_PASSWORD_HASH = 'c7ad44cb7466d7460ebf74a4ec26e9cef0c41f267573c1347f0574d1d82596e9';
-
-async function hashPassword(password) {
-  const enc = new TextEncoder();
-  const data = enc.encode(password);
-  const hashBuffer = await crypto.subtle.digest('SHA-256', data);
-  const hashArray = Array.from(new Uint8Array(hashBuffer));
-  return hashArray.map(b => b.toString(16).padStart(2, '0')).join('');
-}
-
 Deno.serve(async (req) => {
   try {
     const body = await req.json();
     const { email, password, token } = body;
 
+    const JWT_SECRET = Deno.env.get('JWT_SECRET') || 'rosini-secret-key';
     const encoder = new TextEncoder();
     const key = await crypto.subtle.importKey(
       'raw',
@@ -26,50 +13,83 @@ Deno.serve(async (req) => {
       ['sign', 'verify']
     );
 
+    // Verify token if provided
     if (token) {
       try {
-        const payload = await verifyJWT(token, key);
-        if (payload.exp && payload.exp < Math.floor(Date.now() / 1000)) {
-          return Response.json({ valid: false });
-        }
-        return Response.json({ valid: true, admin_email: payload.admin_email });
+        const payload = await verifyToken(token, key);
+        return Response.json({ valid: true });
       } catch {
         return Response.json({ valid: false });
       }
     }
 
+    // Login with email/password
     if (!email || !password) {
       return Response.json({ success: false, error: 'Email e senha obrigatórios' }, { status: 400 });
     }
 
-    if (email.toLowerCase() !== ADMIN_EMAIL) {
-      return Response.json({ success: false, error: 'Credenciais inválidas' }, { status: 401 });
+    // Simple comparison
+    const ADMIN_EMAIL = 'vladimir@rosini.online';
+    const ADMIN_PASSWORD = 'Sophia051009@';
+
+    if (email.toLowerCase() === ADMIN_EMAIL && password === ADMIN_PASSWORD) {
+      // Create JWT token
+      const expiryTime = Math.floor(Date.now() / 1000) + (30 * 24 * 60 * 60);
+      const jwt = await createToken(
+        { admin_email: ADMIN_EMAIL, exp: expiryTime },
+        key
+      );
+
+      return Response.json({ 
+        success: true, 
+        token: jwt, 
+        admin_email: ADMIN_EMAIL 
+      });
     }
 
-    const computedHash = await hashPassword(password);
-    if (computedHash !== ADMIN_PASSWORD_HASH) {
-      return Response.json({ success: false, error: 'Credenciais inválidas' }, { status: 401 });
-    }
+    return Response.json({ success: false, error: 'Credenciais inválidas' }, { status: 401 });
 
-    const jwt = await createJWT(
-      { alg: 'HS256', typ: 'JWT' },
-      { 
-        admin_email: ADMIN_EMAIL, 
-        exp: Math.floor(Date.now() / 1000) + (30 * 24 * 60 * 60) 
-      },
-      key
-    );
-
-    return Response.json({ 
-      success: true, 
-      token: jwt, 
-      admin_email: ADMIN_EMAIL 
-    });
   } catch (error) {
     console.error('Auth error:', error.message);
     return Response.json({ 
       success: false, 
-      error: 'Erro no servidor' 
+      error: 'Erro no servidor: ' + error.message 
     }, { status: 500 });
   }
 });
+
+async function createToken(payload, key) {
+  const header = { alg: 'HS256', typ: 'JWT' };
+  const headerEncoded = btoa(JSON.stringify(header));
+  const payloadEncoded = btoa(JSON.stringify(payload));
+  const message = `${headerEncoded}.${payloadEncoded}`;
+  
+  const msgBuffer = new TextEncoder().encode(message);
+  const signatureBuffer = await crypto.subtle.sign('HMAC', key, msgBuffer);
+  const signatureArray = Array.from(new Uint8Array(signatureBuffer));
+  const signatureEncoded = btoa(String.fromCharCode.apply(null, signatureArray))
+    .replace(/\+/g, '-')
+    .replace(/\//g, '_')
+    .replace(/=/g, '');
+  
+  return `${message}.${signatureEncoded}`;
+}
+
+async function verifyToken(token, key) {
+  const parts = token.split('.');
+  if (parts.length !== 3) throw new Error('Invalid token');
+  
+  const message = `${parts[0]}.${parts[1]}`;
+  const msgBuffer = new TextEncoder().encode(message);
+  const signatureBuffer = Uint8Array.from(atob(parts[2].replace(/-/g, '+').replace(/_/g, '/')), c => c.charCodeAt(0));
+  
+  const isValid = await crypto.subtle.verify('HMAC', key, signatureBuffer, msgBuffer);
+  if (!isValid) throw new Error('Invalid signature');
+  
+  const payload = JSON.parse(atob(parts[1]));
+  if (payload.exp && payload.exp < Math.floor(Date.now() / 1000)) {
+    throw new Error('Token expired');
+  }
+  
+  return payload;
+}
