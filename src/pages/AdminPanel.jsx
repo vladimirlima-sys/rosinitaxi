@@ -78,7 +78,7 @@ export default function AdminPanel() {
                 type={showPassword ? 'text' : 'password'}
                 value={password}
                 onChange={(e) => { setPassword(e.target.value); setError(''); }}
-                placeholder="Senha"
+                placeholder="Mot de passe"
                 className="w-full bg-white/10 border border-white/20 rounded-lg px-4 py-3 pr-11 text-white text-sm placeholder-white/40 focus:outline-none focus:border-white/60"
                 required
               />
