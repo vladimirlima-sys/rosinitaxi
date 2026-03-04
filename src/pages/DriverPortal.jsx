@@ -18,13 +18,20 @@ export default function DriverPortal() {
   const [newBookingIds, setNewBookingIds] = useState(new Set());
   const prevBookingIds = useRef(new Set());
   const loadingRef = useRef(false);
+  const tokenRef = useRef(null);
 
   useEffect(() => {
-    const saved = sessionStorage.getItem('driver_portal_id') || localStorage.getItem('driver_portal_code');
+    const saved = localStorage.getItem('driver_portal_code');
     if (saved) {
       setDriverCode(saved);
-      setRememberPassword(!!localStorage.getItem('driver_portal_code'));
-      loginWithId(saved);
+      setRememberPassword(true);
+    }
+    
+    // Try to restore session with token
+    const savedToken = localStorage.getItem('driver_auth_token');
+    if (savedToken) {
+      tokenRef.current = savedToken;
+      verifyAndRestoreSession(savedToken);
     }
   }, []);
 
@@ -56,27 +63,41 @@ export default function DriverPortal() {
     } catch (e) {}
   };
 
-  const loginWithId = async (id) => {
+  const verifyAndRestoreSession = async (token) => {
+    try {
+      const { data } = await base44.functions.invoke('driverAuth/verify', { token });
+      if (data.valid) {
+        setDriver({ id: data.driver_id, name: data.driver_name });
+        await loadBookings(data.driver_id);
+      } else {
+        localStorage.removeItem('driver_auth_token');
+        tokenRef.current = null;
+      }
+    } catch (err) {
+      localStorage.removeItem('driver_auth_token');
+      tokenRef.current = null;
+    }
+  };
+
+  const loginWithId = async (code) => {
+    if (!code || !code.trim()) return;
     setLoading(true);
     setError('');
     try {
-      const drivers = await base44.entities.Driver.list();
-      const found = drivers.find(d => d.id === id || d.id.startsWith(id) || (d.name && d.name.toLowerCase() === id.toLowerCase()));
-      if (!found) {
-        setError('Chauffeur introuvable. Vérifiez le code.');
-        setLoading(false);
-        return;
-      }
-      setDriver(found);
-      sessionStorage.setItem('driver_portal_id', found.id);
-      if (rememberPassword) {
-        localStorage.setItem('driver_portal_code', id);
+      const { data } = await base44.functions.invoke('driverAuth/login', { code: code.trim() });
+      
+      if (data.success) {
+        setDriver(data.driver);
+        tokenRef.current = data.token;
+        localStorage.setItem('driver_auth_token', data.token);
+        if (rememberPassword) localStorage.setItem('driver_portal_code', code);
+        await loadBookings(data.driver.id);
       } else {
-        localStorage.removeItem('driver_portal_code');
+        setError('Chauffeur non trouvé. Vérifiez votre code ou nom.');
       }
-      await loadBookings(found.id);
-    } catch (e) {
-      setError('Erreur d\'authentification. Réessayez.');
+    } catch (err) {
+      setError('Erreur de connexion. Réessayez.');
+      console.error('Login error:', err);
     } finally {
       setLoading(false);
     }
