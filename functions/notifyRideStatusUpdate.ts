@@ -7,7 +7,7 @@ const TWILIO_FROM = Deno.env.get("TWILIO_WHATSAPP_FROM");
 const messages = {
   on_the_way: {
     // Template: rosini_driver_on_the_way | ContentSid: HXbefcfbc6ac36dc0db0566e7a1fe3fec4
-    // Variables: {{1}} = client_name, {{2}} = departure_point
+    // Variables: {{1}} = client_name, {{2}} = departure_point, {{3}} = tracking_link
     use_template: true,
     template_sid: 'HXbefcfbc6ac36dc0db0566e7a1fe3fec4',
   },
