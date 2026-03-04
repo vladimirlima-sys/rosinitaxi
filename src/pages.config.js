@@ -60,9 +60,10 @@ import Home from './pages/Home';
 import MyBookings from './pages/MyBookings';
 import Payslips from './pages/Payslips';
 import Reservas from './pages/Reservas';
+import RideTracking from './pages/RideTracking';
 import Settings from './pages/Settings';
 import Taximeter from './pages/Taximeter';
-import RideTracking from './pages/RideTracking';
+import Clients from './pages/Clients';
 import __Layout from './Layout.jsx';
 
 
@@ -80,9 +81,10 @@ export const PAGES = {
     "MyBookings": MyBookings,
     "Payslips": Payslips,
     "Reservas": Reservas,
+    "RideTracking": RideTracking,
     "Settings": Settings,
     "Taximeter": Taximeter,
-    "RideTracking": RideTracking,
+    "Clients": Clients,
 }
 
 export const pagesConfig = {
