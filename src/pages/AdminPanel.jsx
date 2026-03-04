@@ -92,7 +92,7 @@ export default function AdminPanel() {
             </div>
             {error && <p className="text-red-400 text-xs text-center">{error}</p>}
             <button type="submit" className="w-full bg-white text-black font-bold py-3 rounded-lg hover:bg-white/90 transition-colors">
-              Entrar
+              Connexion
             </button>
           </form>
         </div>
