@@ -41,6 +41,22 @@ export default function BookingsTable() {
       }
     };
     fetchBookings();
+
+    // Subscribe to real-time updates
+    const unsubscribe = base44.entities.Booking.subscribe((event) => {
+      setBookings(prev => {
+        if (event.type === 'create') {
+          return [event.data, ...prev].slice(0, 100);
+        } else if (event.type === 'update') {
+          return prev.map(b => b.id === event.id ? event.data : b);
+        } else if (event.type === 'delete') {
+          return prev.filter(b => b.id !== event.id);
+        }
+        return prev;
+      });
+    });
+
+    return unsubscribe;
   }, []);
 
   const filteredBookings = useMemo(() => {
