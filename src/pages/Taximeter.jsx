@@ -36,16 +36,18 @@ export default function Taximeter() {
     return unsubscribe;
   }, []);
 
-  const WAITING_PRICE_PER_MINUTE = 0.30;
+
 
   const getPricePerKm = () => {
     if (!priceSettings) return 2.30;
     return vehicleType === 'comfort' 
-      ? (priceSettings.comfort_price_per_km || priceSettings.standard_price_per_km * 1.3)
-      : priceSettings.standard_price_per_km;
+      ? (priceSettings.taximeter_comfort_price_per_km || priceSettings.taximeter_standard_price_per_km * 1.3)
+      : priceSettings.taximeter_standard_price_per_km;
   };
 
-  const getBaseFare = () => priceSettings?.base_fare || 10;
+  const getBaseFare = () => priceSettings?.taximeter_base_fare || 10;
+  
+  const getWaitingPricePerMinute = () => priceSettings?.taximeter_waiting_price_per_minute || 0.30;
 
   const isNightSurchargeApplied = () => {
     if (!priceSettings?.night_surcharge_percentage) return false;
