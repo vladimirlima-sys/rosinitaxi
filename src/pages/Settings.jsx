@@ -29,7 +29,7 @@ function Section({ title, children }) {
 }
 
 export default function SettingsPage() {
-  const [settings, setSettings] = useState({
+  const [priceSettings, setPriceSettings] = useState({
     standard_price_per_km: 2.35,
     comfort_price_per_km: 3.05,
     base_fare: 10,
@@ -40,6 +40,28 @@ export default function SettingsPage() {
     night_surcharge_end_hour: 6,
     valais_fribourg_surcharge_percentage: 15,
   });
+  const [originalPriceSettings, setOriginalPriceSettings] = useState(priceSettings);
+  const [companySettings, setCompanySettings] = useState({
+    company_name: '',
+    company_address: '',
+    registration_number: '',
+    phone: '',
+    email: '',
+  });
+  const [taxSettings, setTaxSettings] = useState({
+    avs_percentage: 5.15,
+    ai_percentage: 0.8,
+    apg_percentage: 0,
+    ac_percentage: 1.1,
+    af_percentage: 0,
+    pc_percentage: 0,
+    cont_frais_admin_percentage: 0,
+    impot_source_percentage: 0,
+    impot_cantonal_percentage: 8.5,
+    impot_communal_percentage: 8,
+    other_deductions_percentage: 0,
+  });
+  const [lastSaved, setLastSaved] = useState(null);
   const [isLoading, setIsLoading] = useState(true);
   const [isSaving, setIsSaving] = useState(false);
 
