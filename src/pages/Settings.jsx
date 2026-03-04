@@ -206,8 +206,8 @@ export default function SettingsPage() {
             </Field>
           </Section>
 
-        {/* Tarifas por KM */}
-        <Section title="Tarifas por Quilômetro">
+          {/* Tarifas por KM */}
+          <Section title="Tarifas por Quilômetro">
             <Field label="Preço por KM — STANDARD (CHF)" hint="Aplicado ao veículo econômico">
               <Input type="number" step="0.01" min="0" value={priceSettings.standard_price_per_km}
                 onChange={e => set('standard_price_per_km', e.target.value)}
