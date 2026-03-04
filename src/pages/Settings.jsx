@@ -35,7 +35,7 @@ export default function Settings() {
     base_fare: 10,
     airport_fee: 0,
     night_surcharge_percentage: 10,
-    night_surcharge_day: 6,
+    night_surcharge_days: [6],
     night_surcharge_start_hour: 22,
     night_surcharge_end_hour: 6,
     valais_fribourg_surcharge_percentage: 15,
@@ -91,6 +91,15 @@ export default function Settings() {
   const set = (field, value) => {
     const num = parseFloat(value) || 0;
     setPriceSettings(prev => ({ ...prev, [field]: Math.max(0, num) }));
+  };
+  
+  const toggleNightSurchargeDay = (day) => {
+    setPriceSettings(prev => ({
+      ...prev,
+      night_surcharge_days: prev.night_surcharge_days.includes(day)
+        ? prev.night_surcharge_days.filter(d => d !== day)
+        : [...prev.night_surcharge_days, day].sort()
+    }));
   };
   
   const setCompany = (field, value) => setCompanySettings(prev => ({ ...prev, [field]: value }));
@@ -310,31 +319,77 @@ export default function Settings() {
                 onChange={e => set('night_surcharge_percentage', e.target.value)}
                 className="bg-white/5 border-white/10 text-white focus:border-[#F5C300] h-12" />
             </Field>
-            <Field label="Dia da semana em que se aplica">
-              <select value={priceSettings.night_surcharge_day}
-                onChange={e => set('night_surcharge_day', e.target.value)}
-                className="w-full bg-white/5 border border-white/10 text-white h-12 rounded-md px-3 focus:border-[#F5C300] outline-none">
-                {DAYS.map((d, i) => <option key={i} value={i}>{d}</option>)}
-              </select>
+            
+            <Field label="Dias da semana em que se aplica">
+              <div className="grid grid-cols-4 gap-2">
+                {DAYS.map((day, i) => (
+                  <button
+                    key={i}
+                    onClick={() => toggleNightSurchargeDay(i)}
+                    className={`py-2 px-3 rounded-lg text-xs font-semibold transition-all ${
+                      priceSettings.night_surcharge_days.includes(i)
+                        ? 'bg-[#F5C300] text-black'
+                        : 'bg-white/5 border border-white/10 text-white/60 hover:bg-white/10'
+                    }`}
+                  >
+                    {day.slice(0, 3)}
+                  </button>
+                ))}
+              </div>
             </Field>
+
             <div className="grid grid-cols-2 gap-4">
               <Field label="Hora início (0–23)">
                 <Input type="number" min="0" max="23" value={priceSettings.night_surcharge_start_hour}
                   onChange={e => set('night_surcharge_start_hour', e.target.value)}
-                  className="bg-white/5 border-white/10 text-white focus:border-[#F5C300] h-12" />
+                  className={`bg-white/5 border text-white focus:border-[#F5C300] h-12 ${
+                    priceSettings.night_surcharge_start_hour > priceSettings.night_surcharge_end_hour
+                      ? 'border-red-500/50'
+                      : 'border-white/10'
+                  }`} />
               </Field>
               <Field label="Hora fim (0–23)">
                 <Input type="number" min="0" max="23" value={priceSettings.night_surcharge_end_hour}
                   onChange={e => set('night_surcharge_end_hour', e.target.value)}
-                  className="bg-white/5 border-white/10 text-white focus:border-[#F5C300] h-12" />
+                  className={`bg-white/5 border text-white focus:border-[#F5C300] h-12 ${
+                    priceSettings.night_surcharge_start_hour > priceSettings.night_surcharge_end_hour
+                      ? 'border-red-500/50'
+                      : 'border-white/10'
+                  }`} />
               </Field>
             </div>
-            {priceSettings.night_surcharge_percentage > 0 && (
-              <div className="bg-[#F5C300]/10 border border-[#F5C300]/20 rounded-xl p-4">
-                <p className="text-[#F5C300] text-xs font-semibold uppercase tracking-wider mb-1">Adicional ativo</p>
+
+            {priceSettings.night_surcharge_start_hour > priceSettings.night_surcharge_end_hour && (
+              <div className="bg-blue-500/10 border border-blue-500/30 rounded-xl p-4">
+                <p className="text-blue-300 text-xs font-semibold uppercase tracking-wider mb-1">ℹ️ Período cruza meia-noite</p>
                 <p className="text-white/60 text-sm">
-                  +{priceSettings.night_surcharge_percentage}% toda <strong className="text-white">{DAYS[priceSettings.night_surcharge_day]}</strong> das <strong className="text-white">{priceSettings.night_surcharge_start_hour}h</strong> às <strong className="text-white">{priceSettings.night_surcharge_end_hour}h</strong>
+                  Este horário se estende do <strong className="text-white">{priceSettings.night_surcharge_start_hour}h</strong> até as <strong className="text-white">{priceSettings.night_surcharge_end_hour}h</strong> do dia seguinte.
                 </p>
+              </div>
+            )}
+
+            {priceSettings.night_surcharge_percentage > 0 && priceSettings.night_surcharge_days.length > 0 && (
+              <div className="bg-[#F5C300]/10 border border-[#F5C300]/20 rounded-xl p-4 space-y-3">
+                <div>
+                  <p className="text-[#F5C300] text-xs font-semibold uppercase tracking-wider mb-2">✓ Adicional ativo</p>
+                  <p className="text-white/60 text-sm">
+                    +{priceSettings.night_surcharge_percentage}% às <strong className="text-white">{DAYS.filter((_, i) => priceSettings.night_surcharge_days.includes(i)).join(', ')}</strong> das <strong className="text-white">{priceSettings.night_surcharge_start_hour}h{priceSettings.night_surcharge_start_hour > priceSettings.night_surcharge_end_hour ? ' (→ ' + priceSettings.night_surcharge_end_hour + 'h do dia seguinte)' : ' às ' + priceSettings.night_surcharge_end_hour + 'h'}</strong>
+                  </p>
+                </div>
+
+                <div className="border-t border-[#F5C300]/20 pt-3">
+                  <p className="text-white/60 text-xs uppercase tracking-wider mb-2">Exemplo prático:</p>
+                  <div className="space-y-1 text-white/50 text-xs">
+                    <div className="flex justify-between">
+                      <span>Viagem 50km (STANDARD) às {priceSettings.night_surcharge_start_hour}:00</span>
+                      <span>CHF {(50 * 2.35 * (1 + priceSettings.night_surcharge_percentage / 100)).toFixed(2)}</span>
+                    </div>
+                    <div className="flex justify-between">
+                      <span>(Base: CHF {(50 * 2.35).toFixed(2)} + {priceSettings.night_surcharge_percentage}%)</span>
+                      <span></span>
+                    </div>
+                  </div>
+                </div>
               </div>
             )}
             </Section>
