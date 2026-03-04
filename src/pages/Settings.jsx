@@ -247,7 +247,7 @@ export default function Settings() {
               </div>
 
               {/* COMFORT */}
-              <div className="space-y-1.5 pt-2 border-t border-[#C9A96E]/20">
+              <div className="space-y-1.5 pt-2 border-t border-[#F5C300]/20">
                 <div className="flex justify-between text-sm font-medium text-white">
                   <span>COMFORT</span>
                   <span>CHF {calculatePrice(50, 'comfort').total.toFixed(2)}</span>
