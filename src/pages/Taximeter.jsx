@@ -263,7 +263,7 @@ export default function Taximeter() {
     setStatus('stopped');
   };
 
-  const pricePerKm = getPricePerKm(priceSettings, vehicleType);
+  const pricePerKm = getPricePerKm();
 
   return (
     <div className="min-h-screen bg-[#0A0A0A] flex flex-col items-center justify-start px-4 py-10">
