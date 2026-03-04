@@ -124,6 +124,7 @@ export default function DriverPortal() {
         setAllowedPages(data.allowed_pages || []);
         tokenRef.current = data.token;
         localStorage.setItem('driver_auth_token', data.token);
+        sessionStorage.setItem('driver_portal_id', data.driver.id);
         if (rememberPassword) localStorage.setItem('driver_portal_email', emailInput);
         await loadBookings(data.driver.id);
       } else {
