@@ -5,6 +5,12 @@ const TWILIO_AUTH_TOKEN = Deno.env.get("TWILIO_AUTH_TOKEN");
 const TWILIO_FROM = Deno.env.get("TWILIO_WHATSAPP_FROM");
 
 const messages = {
+  on_the_way: {
+    // Template: rosini_driver_on_the_way | ContentSid: HXbefcfbc6ac36dc0db0566e7a1fe3fec4
+    // Variables: {{1}} = client_name, {{2}} = departure_point
+    use_template: true,
+    template_sid: 'HXbefcfbc6ac36dc0db0566e7a1fe3fec4',
+  },
   en_route: {
     fr: { whatsapp: (name, dep) => `🚗 *Rosini Transfert*\n\nBonjour ${name}, votre chauffeur est proche et arrivera dans environ 5 minutes a :\n📍 ${dep}\n\nTenez-vous pret(e) !`, email_subject: 'Votre chauffeur est en route', email_body: (name, dep) => `Bonjour ${name},<br><br>Votre chauffeur Rosini Transfert est proche et arrivera dans environ 5 minutes à :<br><br><strong>📍 ${dep}</strong><br><br>Tenez-vous prêt(e) !` },
     pt: { whatsapp: (name, dep) => `🚗 *Rosini Transfert*\n\nOla ${name}, o seu motorista esta proximo e chegara em aproximadamente 5 minutos em :\n📍 ${dep}\n\nPor favor, prepare-se!`, email_subject: 'Seu motorista está a caminho', email_body: (name, dep) => `Olá ${name},<br><br>Seu motorista Rosini Transfert está próximo e chegará em aproximadamente 5 minutos em :<br><br><strong>📍 ${dep}</strong><br><br>Por favor, prepare-se!` },
