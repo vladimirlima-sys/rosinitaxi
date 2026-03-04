@@ -83,11 +83,13 @@ export default function DriverPortal() {
   };
 
   const loadBookings = async (driverId) => {
-    if (loadingRef.current) return;
-    loadingRef.current = true;
-    try {
-      const all = await base44.entities.Booking.list('-departure_date', 200);
-      const mine = all.filter(b => b.driver_id === driverId && b.payment_status !== 'cancelled' && b.payment_status !== 'refunded');
+   if (loadingRef.current) return;
+   loadingRef.current = true;
+   try {
+     const mine = await base44.entities.Booking.filter({
+       driver_id: driverId,
+       payment_status: { $nin: ['cancelled', 'refunded'] }
+     }, '-departure_date', 100);
       const currentIds = new Set(mine.map(b => b.id));
       if (prevBookingIds.current.size > 0) {
         const newIds = new Set([...currentIds].filter(id => !prevBookingIds.current.has(id)));

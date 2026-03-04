@@ -6,6 +6,11 @@ Deno.serve(async (req) => {
   try {
     const { amount, currency, client_name, client_email, client_phone, departure, arrival, vehicle_type, distance_km, departure_date, departure_time, origin, is_short_notice, booking_id } = await req.json();
 
+    // Validate inputs
+    if (!amount || amount <= 0) throw new Error('Invalid amount');
+    if (!client_email || !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(client_email)) throw new Error('Invalid email');
+    if (!client_name || client_name.trim().length < 2) throw new Error('Invalid name');
+
     // Validate currency
     const validCurrencies = ['usd', 'eur', 'chf', 'gbp'];
     const normalizedCurrency = (currency || 'chf').toLowerCase();
