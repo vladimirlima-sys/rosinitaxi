@@ -260,14 +260,23 @@ export default function Clients() {
             <h1 className="text-3xl font-light tracking-widest text-white mb-1">CLIENTS</h1>
             <p className="text-zinc-500 text-sm tracking-wider">ROSINI TRANSFERT — BASE DE DONNÉES</p>
           </div>
-          <Button
-            variant="outline"
-            className="border-zinc-700 text-zinc-300 hover:text-white hover:bg-zinc-800 gap-2"
-            onClick={() => exportCSV(clients)}
-          >
-            <Download className="w-4 h-4" />
-            Exporter CSV
-          </Button>
+          <div className="flex items-center gap-2">
+            <Button
+              variant="outline"
+              className="border-zinc-700 text-zinc-300 hover:text-white hover:bg-zinc-800 gap-2"
+              onClick={() => exportCSV(clients)}
+            >
+              <Download className="w-4 h-4" />
+              Exporter CSV
+            </Button>
+            <a
+              href={createPageUrl('AdminPanel')}
+              className="flex items-center gap-2 px-4 py-2 border border-zinc-700 text-zinc-300 hover:text-white hover:bg-zinc-800 rounded-md transition-colors"
+            >
+              <ArrowLeft className="w-4 h-4" />
+              Retour
+            </a>
+          </div>
         </div>
 
         {/* Stats */}
