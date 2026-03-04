@@ -23,36 +23,45 @@ const navPages = [
 ];
 
 export default function AdminPanel() {
-  const [input, setInput] = useState('');
+  const [email, setEmail] = useState('');
+  const [password, setPassword] = useState('');
   const [unlocked, setUnlocked] = useState(false);
-  const [error, setError] = useState(false);
-  const [rememberPassword, setRememberPassword] = useState(false);
+  const [error, setError] = useState('');
+  const [loading, setLoading] = useState(false);
   const [tab, setTab] = useState('dashboard');
 
   useEffect(() => {
-    if (localStorage.getItem('admin_unlocked') === 'true') setUnlocked(true);
-    const saved = localStorage.getItem('admin_password');
-    if (saved) { setInput(saved); setRememberPassword(true); }
+    base44.auth.me()
+      .then(user => {
+        if (user?.role === 'admin') setUnlocked(true);
+      })
+      .catch(() => {});
   }, []);
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
-    if (input === PASSWORD) {
-      setUnlocked(true);
-      setError(false);
-      localStorage.setItem('admin_unlocked', 'true');
-      if (rememberPassword) localStorage.setItem('admin_password', input);
-      else localStorage.removeItem('admin_password');
-    } else {
-      setError(true);
-      setInput('');
+    setError('');
+    setLoading(true);
+    try {
+      await base44.auth.login(email, password);
+      const user = await base44.auth.me();
+      if (user?.role === 'admin') {
+        setUnlocked(true);
+      } else {
+        setError('Acesso negado. Apenas administradores.');
+        await base44.auth.logout();
+      }
+    } catch (err) {
+      setError('Email ou senha incorretos.');
     }
+    setLoading(false);
   };
 
-  const handleLogout = () => {
+  const handleLogout = async () => {
+    await base44.auth.logout();
     setUnlocked(false);
-    localStorage.removeItem('admin_unlocked');
-    setInput('');
+    setEmail('');
+    setPassword('');
   };
 
   if (!unlocked) {
