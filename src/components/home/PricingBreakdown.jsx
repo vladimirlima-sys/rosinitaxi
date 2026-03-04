@@ -95,6 +95,17 @@ export default function PricingBreakdown({
         </div>
       }
 
+      {/* Valais/Fribourg surcharge */}
+      {isValaisFribourg && parseFloat(valaisFribourgAmount) > 0 &&
+      <div className="flex justify-between items-center text-sm">
+          <span className="flex items-center gap-2 text-white/40">
+            <AlertCircle className="w-3.5 h-3.5 text-purple-400" />
+            {t.regionSurcharge} ({priceSettings.valais_fribourg_surcharge_percentage}%)
+          </span>
+          <span className="text-purple-400">+CHF {valaisFribourgAmount}</span>
+        </div>
+      }
+
       {/* Divider */}
       <div className="w-full h-[1px] bg-white/10" />
 
