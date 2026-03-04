@@ -8,8 +8,6 @@ import {
   FileText, Map, Smartphone, HelpCircle, ChevronRight
 } from 'lucide-react';
 
-const PASSWORD = 'Sophia051009@';
-
 const navPages = [
   { name: 'Reservas', label: 'Réservations', icon: List },
   { name: 'Calendar', label: 'Calendrier', icon: CalendarDays },
