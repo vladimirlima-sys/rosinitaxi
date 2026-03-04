@@ -321,12 +321,12 @@ export default function Settings() {
               <Field label="Hora início (0–23)">
                 <Input type="number" min="0" max="23" value={priceSettings.night_surcharge_start_hour}
                   onChange={e => set('night_surcharge_start_hour', e.target.value)}
-                  className="bg-white/5 border-white/10 text-white focus:border-[#C9A96E] h-12" />
+                  className="bg-white/5 border-white/10 text-white focus:border-[#F5C300] h-12" />
               </Field>
               <Field label="Hora fim (0–23)">
                 <Input type="number" min="0" max="23" value={priceSettings.night_surcharge_end_hour}
                   onChange={e => set('night_surcharge_end_hour', e.target.value)}
-                  className="bg-white/5 border-white/10 text-white focus:border-[#C9A96E] h-12" />
+                  className="bg-white/5 border-white/10 text-white focus:border-[#F5C300] h-12" />
               </Field>
             </div>
             {priceSettings.night_surcharge_percentage > 0 && (
