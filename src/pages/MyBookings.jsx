@@ -267,6 +267,40 @@ export default function MyBookings() {
   const canCancel = (b) =>
     b.payment_status !== 'cancelled' && b.payment_status !== 'refunded';
 
+  const filteredAndSorted = useMemo(() => {
+    if (!bookings) return [];
+    
+    let result = bookings;
+    
+    // Filtrar por status
+    if (filters.status !== 'all') {
+      result = result.filter(b => b.payment_status === filters.status);
+    }
+    
+    // Ordenar
+    if (filters.sort === 'date-desc') {
+      result.sort((a, b) => new Date(b.departure_date) - new Date(a.departure_date));
+    } else if (filters.sort === 'date-asc') {
+      result.sort((a, b) => new Date(a.departure_date) - new Date(b.departure_date));
+    } else if (filters.sort === 'price-desc') {
+      result.sort((a, b) => b.total_price - a.total_price);
+    } else if (filters.sort === 'price-asc') {
+      result.sort((a, b) => a.total_price - b.total_price);
+    }
+    
+    return result;
+  }, [bookings, filters]);
+
+  const nextTrip = useMemo(() => {
+    if (!bookings) return null;
+    const now = new Date();
+    const upcoming = bookings
+      .filter(b => b.payment_status !== 'cancelled' && b.payment_status !== 'refunded')
+      .filter(b => new Date(`${b.departure_date}T${b.departure_time}`) > now)
+      .sort((a, b) => new Date(a.departure_date) - new Date(b.departure_date));
+    return upcoming[0] || null;
+  }, [bookings]);
+
   return (
     <div className="min-h-screen bg-[#F5C300] px-4 py-12">
       <div className="max-w-2xl mx-auto">
