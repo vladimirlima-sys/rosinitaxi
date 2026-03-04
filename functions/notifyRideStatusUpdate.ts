@@ -96,7 +96,9 @@ Deno.serve(async (req) => {
             results.whatsapp = twilioData.sid;
             console.log(`WhatsApp sent OK. SID: ${twilioData.sid}`);
           } else {
-            console.error(`Twilio error ${twilioRes.status}:`, JSON.stringify(twilioData));
+            const errMsg = twilioData?.message || JSON.stringify(twilioData);
+            console.error(`Twilio error ${twilioRes.status}: ${errMsg}`);
+            results.whatsapp_error = `${twilioRes.status}: ${errMsg}`;
           }
         } else {
           console.warn('Twilio not configured');
