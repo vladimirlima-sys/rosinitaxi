@@ -87,8 +87,8 @@ export default function AdminPanel() {
               </button>
             </div>
             {error && <p className="text-red-400 text-xs text-center">{error}</p>}
-            <button type="submit" disabled={loading} className="w-full bg-white text-black font-bold py-3 rounded-lg hover:bg-white/90 transition-colors disabled:opacity-60">
-              {loading ? 'A verificar...' : 'Entrar'}
+            <button type="submit" className="w-full bg-white text-black font-bold py-3 rounded-lg hover:bg-white/90 transition-colors">
+              Entrar
             </button>
           </form>
         </div>
