@@ -12,8 +12,8 @@ const DAYS = ['Domingo', 'Segunda-feira', 'Terça-feira', 'Quarta-feira', 'Quint
 function Field({ label, hint, children }) {
   return (
     <div className="space-y-1.5">
-      <Label className="text-white/70 text-sm">{label}</Label>
-      {hint && <p className="text-white/30 text-xs">{hint}</p>}
+      <Label className="text-white/60 text-xs uppercase tracking-wider">{label}</Label>
+      {hint && <p className="text-white/40 text-xs">{hint}</p>}
       {children}
     </div>
   );
@@ -21,8 +21,8 @@ function Field({ label, hint, children }) {
 
 function Section({ title, children }) {
   return (
-    <div className="bg-white/[0.03] border border-white/10 rounded-2xl p-6 space-y-5">
-      <h2 className="text-[#C9A96E] text-sm font-semibold uppercase tracking-widest">{title}</h2>
+    <div className="border-b border-white/10 pb-6 space-y-4">
+      <h2 className="text-[#F5C300] text-sm font-semibold uppercase tracking-widest">{title}</h2>
       {children}
     </div>
   );
