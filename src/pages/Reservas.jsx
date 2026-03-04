@@ -29,9 +29,8 @@ export default function Reservas() {
   useEffect(() => {
     const checkAuth = async () => {
       try {
-        const user = await base44.auth.me();
-        if (!user || user?.role !== 'admin') {
-          console.warn('User is not admin or not authenticated');
+        // Check if admin is logged in via localStorage (more reliable than auth.me() on mobile)
+        if (localStorage.getItem('admin_unlocked') !== 'true') {
           window.location.href = createPageUrl('AdminPanel');
           return;
         }
