@@ -391,7 +391,7 @@ export default function SettingsPage() {
         </div>
 
         {lastSaved && <p className="text-[#C9A96E] text-xs text-center mt-4">✓ Salvo em {lastSaved}</p>}
-        <p className="text-white/20 text-xs text-center mt-2">Alterações aplicadas imediatamente em novas reservas.</p>
+        <p className="text-white/20 text-xs text-center mt-2 mb-4">Alterações aplicadas imediatamente em novas reservas.</p>
       </div>
     </div>
   );
