@@ -180,7 +180,7 @@ export default function Settings() {
             <Field label="Nome da Empresa">
               <Input type="text" value={companySettings.company_name || ''}
                 onChange={e => setCompany('company_name', e.target.value)}
-                className="bg-white/5 border-white/10 text-white focus:border-[#C9A96E] h-12" />
+                className="bg-white/5 border-white/10 text-white focus:border-[#F5C300] h-12" />
             </Field>
             <Field label="Endereço">
               <Input type="text" value={companySettings.company_address || ''}
