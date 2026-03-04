@@ -169,7 +169,7 @@ Deno.serve(async (req) => {
       doc.setTextColor(100, 100, 100);
     }
     
-    // Section 2: Payment
+    // Section 2: Payment Details
     yPos += 5;
     doc.setLineWidth(0.5);
     doc.line(15, yPos, w - 15, yPos);
@@ -178,7 +178,7 @@ Deno.serve(async (req) => {
     doc.setFont('Arial', 'bold');
     doc.setTextColor(80, 80, 80);
     doc.setFontSize(9);
-    doc.text('PAIEMENT', 15, yPos);
+    doc.text('DÉTAILS DE PAIEMENT', 15, yPos);
     
     yPos += 8;
     doc.setFont('Arial', 'normal');
@@ -187,6 +187,12 @@ Deno.serve(async (req) => {
     doc.text('Méthode:', 15, yPos);
     doc.setTextColor(0, 0, 0);
     doc.text(methodLabel, 45, yPos);
+    yPos += 7;
+    
+    doc.setTextColor(100, 100, 100);
+    doc.text('Distance:', 15, yPos);
+    doc.setTextColor(0, 0, 0);
+    doc.text(distance ? `${distance.toFixed(2)} km` : 'N/A', 45, yPos);
     yPos += 7;
     
     // Amount box
@@ -204,8 +210,8 @@ Deno.serve(async (req) => {
     doc.setTextColor(0, 0, 0);
     doc.text(`CHF ${amount.toFixed(2)}`, w - 20, yPos + 12, { align: 'right' });
     
-    // Footer
-    yPos = h - 20;
+    // Footer with complete company info
+    yPos = h - 28;
     doc.setDrawColor(200, 200, 200);
     doc.setLineWidth(0.3);
     doc.line(15, yPos, w - 15, yPos);
@@ -218,10 +224,20 @@ Deno.serve(async (req) => {
     
     yPos += 5;
     doc.setFontSize(7);
-    doc.text('Rosini Transports de Personnes | CHE-264.039.709', w / 2, yPos, { align: 'center' });
+    doc.setFont('Arial', 'bold');
+    doc.setTextColor(0, 0, 0);
+    doc.text('ROSINI TRANSPORTS DE PERSONNES SARL', w / 2, yPos, { align: 'center' });
     
     yPos += 4;
+    doc.setFont('Arial', 'normal');
+    doc.setTextColor(100, 100, 100);
+    doc.text('CHE-264.039.709', w / 2, yPos, { align: 'center' });
+    
+    yPos += 3;
     doc.text('Chemin des Bulesses 16 | 1814 La Tour-de-Peilz | Suisse', w / 2, yPos, { align: 'center' });
+    
+    yPos += 3;
+    doc.text('Tél: +41 77 249 22 45 | info@rosini.online', w / 2, yPos, { align: 'center' });
     
     const pdfBytes = doc.output('arraybuffer');
     const pdfBase64 = btoa(String.fromCharCode(...new Uint8Array(pdfBytes)));
