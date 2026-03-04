@@ -383,12 +383,20 @@ export default function SettingsPage() {
 
         </div>
 
-        <Button onClick={handleSave} disabled={isSaving}
-          className="w-full mt-8 bg-[#C9A96E] hover:bg-[#B8955D] text-[#0A0A0A] font-semibold h-14 text-base">
-          {isSaving ? <><Loader2 className="w-4 h-4 mr-2 animate-spin" />Salvando...</> : 'Salvar Configurações'}
-        </Button>
+        <div className="flex gap-3 mt-8">
+          <Button onClick={handleSave} disabled={isSaving}
+            className="flex-1 bg-[#C9A96E] hover:bg-[#B8955D] text-[#0A0A0A] font-semibold h-14 text-base">
+            {isSaving ? <><Loader2 className="w-4 h-4 mr-2 animate-spin" />Salvando...</> : 'Salvar Configurações'}
+          </Button>
+          <Button onClick={handleReset}
+            variant="outline"
+            className="flex-1 border-white/20 text-white hover:bg-white/5 font-semibold h-14 text-base">
+            Resetar
+          </Button>
+        </div>
 
-        <p className="text-white/20 text-xs text-center mt-4">Alterações aplicadas imediatamente em novas reservas.</p>
+        {lastSaved && <p className="text-[#C9A96E] text-xs text-center mt-4">✓ Salvo em {lastSaved}</p>}
+        <p className="text-white/20 text-xs text-center mt-2">Alterações aplicadas imediatamente em novas reservas.</p>
       </div>
     </div>
   );
