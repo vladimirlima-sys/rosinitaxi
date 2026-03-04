@@ -295,15 +295,15 @@ export default function SettingsPage() {
           {/* Adicional Valais & Fribourg */}
           <Section title="Adicional Regional — Valais & Fribourg">
             <Field label="Percentual do adicional (%)" hint="Aplicado automaticamente para corridas originadas nesses cantões">
-              <Input type="number" step="0.1" value={settings.valais_fribourg_surcharge_percentage}
+              <Input type="number" step="0.1" min="0" value={priceSettings.valais_fribourg_surcharge_percentage}
                 onChange={e => set('valais_fribourg_surcharge_percentage', e.target.value)}
                 className="bg-white/5 border-white/10 text-white focus:border-[#C9A96E] h-12" />
             </Field>
-            {settings.valais_fribourg_surcharge_percentage > 0 && (
+            {priceSettings.valais_fribourg_surcharge_percentage > 0 && (
               <div className="bg-[#C9A96E]/10 border border-[#C9A96E]/20 rounded-xl p-4">
                 <p className="text-[#C9A96E] text-xs font-semibold uppercase tracking-wider mb-1">Adicional ativo</p>
                 <p className="text-white/60 text-sm">
-                  +{settings.valais_fribourg_surcharge_percentage}% em todas as corridas originadas de Valais ou Fribourg — <strong className="text-white">não visível ao cliente</strong>
+                  +{priceSettings.valais_fribourg_surcharge_percentage}% em todas as corridas originadas de Valais ou Fribourg — <strong className="text-white">não visível ao cliente</strong>
                 </p>
               </div>
             )}
