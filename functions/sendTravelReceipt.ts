@@ -145,9 +145,9 @@ Deno.serve(async (req) => {
     const { accessToken } = await base44.asServiceRole.connectors.getConnection('gmail');
     
     const boundary = 'boundary_' + Date.now();
-    const emailRaw = `From: no-reply@rosini.online\r\n` +
+    const emailRaw = `From: Rosini Transferts <no-reply@rosini.online>\r\n` +
       `To: ${clientEmail}\r\n` +
-      `Subject: ROSINI TRANSPORTS - Reçu de Course\r\n` +
+      `Subject: =?UTF-8?B?${btoa('ROSINI TRANSPORTS - Reçu de Course')}?=\r\n` +
       `MIME-Version: 1.0\r\n` +
       `Content-Type: text/html; charset=UTF-8\r\n` +
       `Content-Transfer-Encoding: 8bit\r\n` +
