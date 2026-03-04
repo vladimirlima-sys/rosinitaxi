@@ -223,7 +223,10 @@ export default function BookingForm({ bookingRef }) {
   const handlePayment = async () => {
     if (!totalPrice || isSubmitting) return;
     
+    console.log('🚀 handlePayment started, paymentMethod:', paymentMethod);
+    
     if (window.self !== window.top) {
+      console.error('❌ Running in iframe');
       toast.error(t.checkoutFromPublishedApp);
       return;
     }
@@ -231,6 +234,7 @@ export default function BookingForm({ bookingRef }) {
     setIsSubmitting(true);
     
     try {
+      console.log('📝 Creating booking...');
       const driverFields = selectedDriver
         ? { driver_id: selectedDriver.id, driver_name: selectedDriver.name }
         : {};
@@ -245,7 +249,9 @@ export default function BookingForm({ bookingRef }) {
       };
 
       if (paymentMethod === 'stripe') {
+        console.log('💳 Stripe payment - creating booking...');
         const createdBooking = await base44.entities.Booking.create(bookingData);
+        console.log('✅ Booking created:', createdBooking.id);
         
         sessionStorage.setItem('pendingBooking', JSON.stringify({ 
           ...form, 
@@ -254,6 +260,7 @@ export default function BookingForm({ bookingRef }) {
           language: lang 
         }));
         
+        console.log('🔗 Calling createCheckout function...');
         const response = await base44.functions.invoke('createCheckout', {
           amount: parseFloat(totalPrice), 
           currency: 'chf',
@@ -271,15 +278,19 @@ export default function BookingForm({ bookingRef }) {
           booking_id: createdBooking.id
         });
         
-        console.log('Checkout response:', response);
+        console.log('📦 Checkout response received:', response);
         if (response?.data?.url) {
+          console.log('✅ Redirecting to Stripe:', response.data.url);
           window.location.href = response.data.url;
         } else {
+          console.error('❌ No URL in response:', response);
           throw new Error(response?.data?.error || 'Erro na sessão de pagamento');
         }
       } else {
         // TWINT / Cash payment
+        console.log('💵 Non-stripe payment - creating booking...');
         const createdBooking = await base44.entities.Booking.create(bookingData);
+        console.log('✅ Booking created:', createdBooking.id);
         
         // Avança para confirmação
         setStep(5);
@@ -307,7 +318,7 @@ export default function BookingForm({ bookingRef }) {
         }).catch(err => console.error('Email error:', err));
       }
     } catch (err) {
-      console.error('Payment error:', err);
+      console.error('❌ Payment error:', err);
       toast.error(err.message || t.paymentError);
       setIsSubmitting(false);
     }
