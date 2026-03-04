@@ -71,6 +71,9 @@ export default function Settings() {
   const [companySaving, setCompanySaving] = useState(false);
   const [taximeterSaving, setTaximeterSaving] = useState(false);
   const [pricingSaving, setPricingSaving] = useState(false);
+  const [nightSurchargeS, setNightSurchargeS] = useState(false);
+  const [regionalSurchargeS, setRegionalSurchargeS] = useState(false);
+  const [fixedTaxesS, setFixedTaxesS] = useState(false);
 
   useEffect(() => {
     if (localStorage.getItem('admin_unlocked') !== 'true') {
@@ -187,6 +190,74 @@ export default function Settings() {
       toast.error('Erro ao salvar tarifas');
     } finally {
       setPricingSaving(false);
+    }
+  };
+
+  const handleSaveFixedTaxes = async () => {
+    setFixedTaxesS(true);
+    try {
+      if (priceSettings.id) {
+        await base44.entities.PriceSettings.update(priceSettings.id, {
+          base_fare: priceSettings.base_fare,
+          airport_fee: priceSettings.airport_fee,
+        });
+      } else {
+        await base44.entities.PriceSettings.create({
+          base_fare: priceSettings.base_fare,
+          airport_fee: priceSettings.airport_fee,
+        });
+      }
+      toast.success('✓ Taxas fixas atualizadas');
+    } catch {
+      toast.error('Erro ao salvar taxas');
+    } finally {
+      setFixedTaxesS(false);
+    }
+  };
+
+  const handleSaveRegionalSurcharge = async () => {
+    setRegionalSurchargeS(true);
+    try {
+      if (priceSettings.id) {
+        await base44.entities.PriceSettings.update(priceSettings.id, {
+          valais_fribourg_surcharge_percentage: priceSettings.valais_fribourg_surcharge_percentage,
+        });
+      } else {
+        await base44.entities.PriceSettings.create({
+          valais_fribourg_surcharge_percentage: priceSettings.valais_fribourg_surcharge_percentage,
+        });
+      }
+      toast.success('✓ Adicional regional atualizado');
+    } catch {
+      toast.error('Erro ao salvar adicional regional');
+    } finally {
+      setRegionalSurchargeS(false);
+    }
+  };
+
+  const handleSaveNightSurcharge = async () => {
+    setNightSurchargeS(true);
+    try {
+      if (priceSettings.id) {
+        await base44.entities.PriceSettings.update(priceSettings.id, {
+          night_surcharge_percentage: priceSettings.night_surcharge_percentage,
+          night_surcharge_days: priceSettings.night_surcharge_days,
+          night_surcharge_start_hour: priceSettings.night_surcharge_start_hour,
+          night_surcharge_end_hour: priceSettings.night_surcharge_end_hour,
+        });
+      } else {
+        await base44.entities.PriceSettings.create({
+          night_surcharge_percentage: priceSettings.night_surcharge_percentage,
+          night_surcharge_days: priceSettings.night_surcharge_days,
+          night_surcharge_start_hour: priceSettings.night_surcharge_start_hour,
+          night_surcharge_end_hour: priceSettings.night_surcharge_end_hour,
+        });
+      }
+      toast.success('✓ Adicional noturno atualizado');
+    } catch {
+      toast.error('Erro ao salvar adicional noturno');
+    } finally {
+      setNightSurchargeS(false);
     }
   };
 
@@ -376,6 +447,10 @@ export default function Settings() {
                 onChange={e => set('airport_fee', e.target.value)}
                 className="bg-white/5 border-white/10 text-white focus:border-[#F5C300] h-12" />
             </Field>
+            <Button onClick={handleSaveFixedTaxes} disabled={fixedTaxesS}
+              className="w-full bg-[#F5C300] hover:bg-[#E6B800] text-black font-semibold h-12 text-sm mt-4">
+              {fixedTaxesS ? <><Loader2 className="w-4 h-4 mr-2 animate-spin" />Salvando...</> : 'Salvar Taxas Fixas'}
+            </Button>
             </Section>
 
             {/* Adicional Valais & Fribourg */}
@@ -393,6 +468,10 @@ export default function Settings() {
                 </p>
               </div>
             )}
+            <Button onClick={handleSaveRegionalSurcharge} disabled={regionalSurchargeS}
+              className="w-full bg-[#F5C300] hover:bg-[#E6B800] text-black font-semibold h-12 text-sm mt-4">
+              {regionalSurchargeS ? <><Loader2 className="w-4 h-4 mr-2 animate-spin" />Salvando...</> : 'Salvar Adicional Regional'}
+            </Button>
             </Section>
 
             {/* Adicional noturno */}
@@ -475,6 +554,10 @@ export default function Settings() {
                 </div>
               </div>
             )}
+            <Button onClick={handleSaveNightSurcharge} disabled={nightSurchargeS}
+              className="w-full bg-[#F5C300] hover:bg-[#E6B800] text-black font-semibold h-12 text-sm mt-4">
+              {nightSurchargeS ? <><Loader2 className="w-4 h-4 mr-2 animate-spin" />Salvando...</> : 'Salvar Adicional Noturno'}
+            </Button>
             </Section>
 
             {/* Configurações do Taximètre */}
