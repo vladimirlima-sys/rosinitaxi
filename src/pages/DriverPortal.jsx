@@ -305,8 +305,7 @@ export default function DriverPortal() {
 
   const upcoming = bookings.filter(b => {
     const dep = new Date(`${b.departure_date}T${b.departure_time || '00:00'}:00`);
-    const isCompleted = localStorage.getItem(`trip_status_${b.id}`) === 'completed';
-    return dep >= new Date() && !isCompleted;
+    return dep >= new Date();
   }).sort((a, b) => new Date(`${a.departure_date}T${a.departure_time || '00:00'}`) - new Date(`${b.departure_date}T${b.departure_time || '00:00'}`));
 
   const past = bookings.filter(b => {
