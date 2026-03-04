@@ -1,7 +1,13 @@
-import React, { useState } from 'react';
+import React, { useState, useMemo } from 'react';
 import { base44 } from '@/api/base44Client';
-import { Loader2, Mail, ArrowRight, CalendarDays, MapPin, Car, CreditCard, XCircle, CheckCircle, AlertTriangle, ChevronLeft } from 'lucide-react';
+import { Loader2, Mail, ArrowRight, CalendarDays, MapPin, Car, CreditCard, XCircle, CheckCircle, AlertTriangle } from 'lucide-react';
 import { createPageUrl } from '@/utils';
+import BookingFilters from '@/components/mybookings/BookingFilters';
+import CancelCountdown from '@/components/mybookings/CancelCountdown';
+import BookingDetails from '@/components/mybookings/BookingDetails';
+import BookingActions from '@/components/mybookings/BookingActions';
+import NextTripHighlight from '@/components/mybookings/NextTripHighlight';
+import SupportChat from '@/components/mybookings/SupportChat';
 
 const T = {
   fr: {
