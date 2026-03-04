@@ -37,7 +37,7 @@ function ElapsedTimer({ startedAt }) {
   );
 }
 
-export default function ActiveTripMonitor({ booking }) {
+export default function ActiveTripMonitor({ booking, onCompleted }) {
   const storageKey = `trip_status_${booking.id}`;
   const startKey = `trip_start_${booking.id}`;
 

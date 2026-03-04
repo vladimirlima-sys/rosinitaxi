@@ -259,7 +259,7 @@ export default function DriverPortal() {
           <div className="space-y-3 mb-8">
             <h2 className="text-white/50 text-xs uppercase tracking-wider px-1 mb-3">Suivi en temps réel</h2>
             {upcoming.map(b => (
-              <ActiveTripMonitor key={b.id} booking={b} />
+              <ActiveTripMonitor key={b.id} booking={b} onCompleted={() => loadBookings(driver.id)} />
             ))}
           </div>
         ) : (
