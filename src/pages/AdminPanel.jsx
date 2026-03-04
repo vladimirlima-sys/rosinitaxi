@@ -40,15 +40,15 @@ export default function AdminPanel() {
   }, []);
 
   const handleSubmit = (e) => {
-    e.preventDefault();
-    if (password === ADMIN_PASSWORD) {
-      setUnlocked(true);
-      setError('');
-      localStorage.setItem('admin_unlocked', 'true');
-    } else {
-      setError('Mot de passe incorrect.');
-      setPassword('');
-    }
+   e.preventDefault();
+   if (password.trim() === ADMIN_PASSWORD) {
+     setUnlocked(true);
+     setError('');
+     localStorage.setItem('admin_unlocked', 'true');
+   } else {
+     setError('Mot de passe incorrect.');
+     setPassword('');
+   }
   };
 
   const handleLogout = () => {
