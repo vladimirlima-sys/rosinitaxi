@@ -479,8 +479,8 @@ export default function DriverPortal() {
             <Car className="w-6 h-6 text-black" />
           </div>
           <div>
-            <p className="text-white font-semibold text-sm">Corridas Finalizadas</p>
-            <p className="text-white/40 text-xs mt-0.5">Ver histórico de corridas completadas</p>
+            <p className="text-white font-semibold text-sm">Courses terminées</p>
+            <p className="text-white/40 text-xs mt-0.5">Voir l'historique des courses complétées</p>
           </div>
           <div className="ml-auto text-green-500/60 group-hover:text-green-500 transition-all">›</div>
         </a>
