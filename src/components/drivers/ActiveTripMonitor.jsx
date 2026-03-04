@@ -123,26 +123,16 @@ export default function ActiveTripMonitor({ booking, onCompleted }) {
           payment_status: 'paid'
         });
         
-        // Envoyer le reçu et demander avis
+        // Envoyer le reçu
         try {
-          await Promise.all([
-            base44.functions.invoke('sendTravelReceipt', {
-              clientEmail: booking.client_email,
-              amount: booking.total_price,
-              paymentMethod: booking.payment_method || 'card',
-              distance: booking.distance_km,
-              departure: booking.departure_point,
-              arrival: booking.arrival_point
-            }),
-            base44.functions.invoke('sendReviewRequest', {
-              booking_id: booking.id,
-              client_name: booking.client_name,
-              client_email: booking.client_email,
-              departure_point: booking.departure_point,
-              arrival_point: booking.arrival_point,
-              language: booking.language || 'fr'
-            })
-          ]);
+          await base44.functions.invoke('sendTravelReceipt', {
+            clientEmail: booking.client_email,
+            amount: booking.total_price,
+            paymentMethod: booking.payment_method || 'card',
+            distance: booking.distance_km,
+            departure: booking.departure_point,
+            arrival: booking.arrival_point
+          });
         } catch (followupErr) {
           console.error('Followup error:', followupErr);
         }
