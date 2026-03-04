@@ -88,67 +88,140 @@ Deno.serve(async (req) => {
 </html>
     `;
 
-    // Generate PDF
-    const doc = new jsPDF();
-    doc.setFont('Arial');
+    // Generate PDF with modern black & white design
+    const doc = new jsPDF('p', 'mm', 'a4');
+    const w = doc.internal.pageSize.getWidth();
+    const h = doc.internal.pageSize.getHeight();
+    
+    // Background
+    doc.setFillColor(255, 255, 255);
+    doc.rect(0, 0, w, h, 'F');
+    
+    // Top accent bar
+    doc.setFillColor(0, 0, 0);
+    doc.rect(0, 0, w, 3, 'F');
     
     // Header
-    doc.setFillColor(245, 195, 0);
-    doc.rect(0, 0, 210, 40, 'F');
     doc.setTextColor(0, 0, 0);
-    doc.setFontSize(24);
-    doc.text('ROSINI TRANSPORTS DE PERSONNES', 105, 20, { align: 'center' });
-    doc.setFontSize(10);
-    doc.text('Reçu de Course', 105, 30, { align: 'center' });
-    
-    // Content
-    doc.setTextColor(100, 100, 100);
-    doc.setFontSize(11);
-    let yPos = 50;
-    
-    doc.text('DÉTAILS DE LA COURSE', 20, yPos);
-    yPos += 10;
-    
-    doc.setTextColor(51, 51, 51);
-    doc.setFontSize(10);
-    if (distance) {
-      doc.text(`Distance: ${distance.toFixed(2)} km`, 20, yPos);
-      yPos += 8;
-    }
-    doc.text(`Date: ${dateStr}`, 20, yPos);
-    yPos += 8;
-    doc.text(`Heure: ${timeStr}`, 20, yPos);
-    yPos += 15;
-    
-    // Amount
-    doc.setFillColor(245, 245, 245);
-    doc.rect(20, yPos, 170, 20, 'F');
-    doc.setTextColor(245, 195, 0);
     doc.setFontSize(20);
     doc.setFont('Arial', 'bold');
-    doc.text(`CHF ${amount.toFixed(2)}`, 105, yPos + 13, { align: 'center' });
-    yPos += 25;
+    doc.text('ROSINI', w / 2, 15, { align: 'center' });
     
-    // Status
-    doc.setTextColor(51, 51, 51);
-    doc.setFontSize(11);
-    doc.setFont('Arial', 'bold');
-    doc.text('Paiement effectué', 105, yPos, { align: 'center' });
-    yPos += 15;
-    
-    // Footer message
-    doc.setTextColor(150, 150, 150);
     doc.setFontSize(9);
     doc.setFont('Arial', 'normal');
-    doc.text('Merci d\'avoir utilisé ROSINI TRANSPORTS DE PERSONNES.', 105, yPos, { align: 'center' });
-    doc.text('Ce reçu constitue la preuve de votre paiement.', 105, yPos + 5, { align: 'center' });
+    doc.setTextColor(100, 100, 100);
+    doc.text('TRANSPORTS DE PERSONNES', w / 2, 20, { align: 'center' });
     
-    // Bottom footer
-    doc.setTextColor(200, 200, 200);
+    // Divider
+    doc.setDrawColor(220, 220, 220);
+    doc.setLineWidth(0.3);
+    doc.line(15, 24, w - 15, 24);
+    
+    // Receipt header
+    let yPos = 32;
+    doc.setFontSize(11);
+    doc.setFont('Arial', 'bold');
+    doc.setTextColor(0, 0, 0);
+    doc.text('REÇU DE COURSE', 15, yPos);
+    
     doc.setFontSize(8);
-    doc.text('ROSINI TRANSPORTS DE PERSONNES | Reçu Numérique', 105, 275, { align: 'center' });
-    doc.text('Numéro d\'enregistrement: CHE-264.039.709', 105, 280, { align: 'center' });
-    doc.text('Chemin des Bulesses 16, 1814 La Tour-de-Peilz, Suisse', 105, 285, { align: 'center' });
+    doc.setFont('Arial', 'normal');
+    doc.setTextColor(150, 150, 150);
+    doc.text(`Émis le ${dateStr} à ${timeStr}`, w - 15, yPos, { align: 'right' });
+    
+    // Section 1: Trip details
+    yPos = 42;
+    doc.setDrawColor(200, 200, 200);
+    doc.setLineWidth(0.5);
+    doc.line(15, yPos - 2, w - 15, yPos - 2);
+    
+    doc.setFontSize(9);
+    doc.setFont('Arial', 'bold');
+    doc.setTextColor(80, 80, 80);
+    doc.text('DÉTAILS DE LA COURSE', 15, yPos);
+    
+    yPos += 8;
+    doc.setFont('Arial', 'normal');
+    doc.setFontSize(10);
+    doc.setTextColor(100, 100, 100);
+    
+    if (departure) {
+      doc.text('Départ:', 15, yPos);
+      doc.setTextColor(0, 0, 0);
+      doc.text(departure, 45, yPos);
+      yPos += 7;
+      doc.setTextColor(100, 100, 100);
+    }
+    
+    if (arrival) {
+      doc.text('Arrivée:', 15, yPos);
+      doc.setTextColor(0, 0, 0);
+      doc.text(arrival, 45, yPos);
+      yPos += 7;
+      doc.setTextColor(100, 100, 100);
+    }
+    
+    if (distance) {
+      doc.text('Distance:', 15, yPos);
+      doc.setTextColor(0, 0, 0);
+      doc.text(`${distance.toFixed(2)} km`, 45, yPos);
+      yPos += 7;
+      doc.setTextColor(100, 100, 100);
+    }
+    
+    // Section 2: Payment
+    yPos += 5;
+    doc.setLineWidth(0.5);
+    doc.line(15, yPos, w - 15, yPos);
+    
+    yPos += 8;
+    doc.setFont('Arial', 'bold');
+    doc.setTextColor(80, 80, 80);
+    doc.setFontSize(9);
+    doc.text('PAIEMENT', 15, yPos);
+    
+    yPos += 8;
+    doc.setFont('Arial', 'normal');
+    doc.setFontSize(10);
+    doc.setTextColor(100, 100, 100);
+    doc.text('Méthode:', 15, yPos);
+    doc.setTextColor(0, 0, 0);
+    doc.text(methodLabel, 45, yPos);
+    yPos += 7;
+    
+    // Amount box
+    yPos += 3;
+    doc.setFillColor(245, 245, 245);
+    doc.rect(15, yPos, w - 30, 18, 'F');
+    
+    doc.setFontSize(9);
+    doc.setTextColor(100, 100, 100);
+    doc.setFont('Arial', 'normal');
+    doc.text('MONTANT TOTAL', 20, yPos + 5);
+    
+    doc.setFontSize(22);
+    doc.setFont('Arial', 'bold');
+    doc.setTextColor(0, 0, 0);
+    doc.text(`CHF ${amount.toFixed(2)}`, w - 20, yPos + 12, { align: 'right' });
+    
+    // Footer
+    yPos = h - 20;
+    doc.setDrawColor(200, 200, 200);
+    doc.setLineWidth(0.3);
+    doc.line(15, yPos, w - 15, yPos);
+    
+    yPos += 5;
+    doc.setFontSize(8);
+    doc.setTextColor(150, 150, 150);
+    doc.setFont('Arial', 'normal');
+    doc.text('✓ Paiement confirmé', w / 2, yPos, { align: 'center' });
+    
+    yPos += 5;
+    doc.setFontSize(7);
+    doc.text('Rosini Transports de Personnes | CHE-264.039.709', w / 2, yPos, { align: 'center' });
+    
+    yPos += 4;
+    doc.text('Chemin des Bulesses 16 | 1814 La Tour-de-Peilz | Suisse', w / 2, yPos, { align: 'center' });
     
     const pdfBytes = doc.output('arraybuffer');
     const pdfBase64 = btoa(String.fromCharCode(...new Uint8Array(pdfBytes)));
