@@ -112,14 +112,15 @@ Deno.serve(async (req) => {
     // Check if using template
     if (messages[status].use_template) {
       console.log(`Sending template notification | status=${status} | phone=${phone}`);
-      
+
       // Send WhatsApp Template
       if (phone) {
         try {
           const digits = phone.replace(/\D/g, '');
           const formattedTo = `+${digits}`;
-          const variables = [name || 'Client', dep || ''];
-          
+          const trackingLink = `https://rosini.online/ridetracking?id=${booking_id}`;
+          const variables = [name || 'Client', dep || '', trackingLink];
+
           const templateResult = await sendWhatsAppTemplate(formattedTo, messages[status].template_sid, variables);
           results.whatsapp = templateResult.sid;
           console.log(`WhatsApp template sent OK. SID: ${templateResult.sid}`);
