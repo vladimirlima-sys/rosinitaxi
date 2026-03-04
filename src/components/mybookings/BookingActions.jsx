@@ -63,10 +63,11 @@ export default function BookingActions({ booking, t }) {
     <div className="flex gap-2 flex-wrap pt-3 border-t border-white/10">
       <button
         onClick={handleDownloadReceipt}
-        className="flex-1 h-9 rounded-lg bg-white/10 hover:bg-white/20 text-white/70 text-xs font-medium flex items-center justify-center gap-1.5 transition-colors"
+        disabled={downloading}
+        className="flex-1 h-9 rounded-lg bg-white/10 hover:bg-white/20 text-white/70 text-xs font-medium flex items-center justify-center gap-1.5 transition-colors disabled:opacity-60"
       >
-        <Download className="w-3.5 h-3.5" />
-        <span className="hidden sm:inline">Recibo</span>
+        {downloading ? <Loader2 className="w-3.5 h-3.5 animate-spin" /> : <Download className="w-3.5 h-3.5" />}
+        <span className="hidden sm:inline">{downloading ? 'A descarregar...' : 'Recibo'}</span>
       </button>
 
       <button
