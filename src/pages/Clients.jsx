@@ -3,7 +3,8 @@ import { base44 } from "@/api/base44Client";
 import { Input } from "@/components/ui/input";
 import { Badge } from "@/components/ui/badge";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
-import { Search, Users, TrendingUp, Phone, Mail, MapPin, Calendar, ChevronDown, ChevronUp, Star } from "lucide-react";
+import { Search, Users, TrendingUp, Phone, Mail, MapPin, Calendar, ChevronDown, ChevronUp, Star, UserPlus } from "lucide-react";
+import { BarChart, Bar, XAxis, YAxis, Tooltip, ResponsiveContainer } from "recharts";
 
 function formatDate(d) {
   if (!d) return "-";
