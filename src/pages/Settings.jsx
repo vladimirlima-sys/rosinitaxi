@@ -202,7 +202,7 @@ export default function Settings() {
             <Field label="Email">
               <Input type="email" value={companySettings.email || ''}
                 onChange={e => setCompany('email', e.target.value)}
-                className="bg-white/5 border-white/10 text-white focus:border-[#C9A96E] h-12" />
+                className="bg-white/5 border-white/10 text-white focus:border-[#F5C300] h-12" />
             </Field>
           </Section>
 
