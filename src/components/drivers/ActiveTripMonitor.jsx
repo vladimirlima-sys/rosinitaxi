@@ -236,7 +236,7 @@ export default function ActiveTripMonitor({ booking, onCompleted }) {
         <div className="p-3 text-center">
           <p className="text-white/30 text-xs mb-1">Durée</p>
           <p className="text-white text-sm font-semibold">
-            {tripStatus === 'in_progress' && tripStartedAt ? (
+            {(tripStatus === 'arrived' || tripStatus === 'completed') && tripStartedAt ? (
               <ElapsedTimer startedAt={tripStartedAt} />
             ) : '—'}
           </p>
