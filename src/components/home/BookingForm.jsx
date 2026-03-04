@@ -225,12 +225,6 @@ export default function BookingForm({ bookingRef }) {
     
     console.log('🚀 handlePayment started, paymentMethod:', paymentMethod);
     
-    if (window.self !== window.top) {
-      console.error('❌ Running in iframe');
-      toast.error(t.checkoutFromPublishedApp);
-      return;
-    }
-    
     setIsSubmitting(true);
     
     try {
