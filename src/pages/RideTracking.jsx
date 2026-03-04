@@ -25,6 +25,14 @@ export default function RideTracking() {
     }
 
     loadBooking(bookingId);
+
+    // Auto-refresh every 5 seconds
+    const interval = setInterval(() => loadBooking(bookingId), 5000);
+    
+    return () => {
+      clearInterval(interval);
+      if (unsubscribeRef.current) unsubscribeRef.current();
+    };
   }, []);
 
   const loadBooking = async (bookingId) => {
