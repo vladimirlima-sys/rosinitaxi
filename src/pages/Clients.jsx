@@ -168,6 +168,8 @@ export default function Clients() {
   const totalRevenue = clients.reduce((s, c) => s + c.total_spent, 0);
   const totalBookings = clients.reduce((s, c) => s + c.num_bookings, 0);
   const topClient = clients[0];
+  const monthlyData = buildMonthlyNewClients(clients);
+  const thisMonth = monthlyData[monthlyData.length - 1]?.nouveaux || 0;
 
   return (
     <div className="min-h-screen bg-black text-white p-4 md:p-8">
