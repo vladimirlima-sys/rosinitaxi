@@ -142,9 +142,14 @@ export default function BookingForm({ bookingRef }) {
 
   const calculateTotalPrice = () => {
     if (!priceSettings || estimatedDistance === 0 || !form.vehicle_type) return null;
+    
+    // Base distance price
     let total = estimatedDistance * getPricePerKm();
+    
+    // Add base fare for short trips (≤ 30 km)
     if (estimatedDistance <= 30) total += priceSettings.base_fare || 0;
 
+    // Apply night surcharge if conditions match (applied AFTER base + distance)
     if (form.departure_date && form.departure_time && priceSettings.night_surcharge_percentage > 0) {
       const dt = new Date(`${form.departure_date}T${form.departure_time}:00`);
       const day = dt.getDay(), hour = dt.getHours();
@@ -153,18 +158,20 @@ export default function BookingForm({ bookingRef }) {
       }
     }
 
+    // Apply Valais/Fribourg surcharge if conditions match (applied AFTER base + distance)
     const isValaisFribourg = ['valais', 'fribourg', 'wallis', 'freiburg'].some(canton =>
       form.departure_point.toLowerCase().includes(canton)
     );
-    const valaisFribourgSurcharge = priceSettings?.valais_fribourg_surcharge_percentage ?? 15;
-    if (isValaisFribourg && valaisFribourgSurcharge > 0) {
-      total *= 1 + valaisFribourgSurcharge / 100;
+    if (isValaisFribourg && priceSettings.valais_fribourg_surcharge_percentage > 0) {
+      total *= 1 + priceSettings.valais_fribourg_surcharge_percentage / 100;
     }
 
+    // Add airport fee if applicable (fixed amount, NOT percentage)
     const isAirport = ['aeroporto', 'aéroport', 'airport'].some(k =>
       form.departure_point.toLowerCase().includes(k) || form.arrival_point.toLowerCase().includes(k)
     );
     if (isAirport && priceSettings.airport_fee) total += priceSettings.airport_fee;
+    
     return total.toFixed(2);
   };
 
