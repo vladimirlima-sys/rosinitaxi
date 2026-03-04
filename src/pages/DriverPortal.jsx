@@ -6,11 +6,13 @@ import ActiveTripMonitor from '@/components/drivers/ActiveTripMonitor';
 // DriverPortal - clean version
 
 export default function DriverPortal() {
-  const [authMode, setAuthMode] = useState('code'); // 'code' ou 'email'
-  const [driverCode, setDriverCode] = useState('');
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [rememberPassword, setRememberPassword] = useState(false);
+  const [showForgotPassword, setShowForgotPassword] = useState(false);
+  const [resetEmail, setResetEmail] = useState('');
+  const [resetLoading, setResetLoading] = useState(false);
+  const [resetMessage, setResetMessage] = useState('');
   const [driver, setDriver] = useState(null);
   const [bookings, setBookings] = useState([]);
   const [loading, setLoading] = useState(false);
@@ -25,9 +27,9 @@ export default function DriverPortal() {
   const tokenRef = useRef(null);
 
   useEffect(() => {
-    const saved = localStorage.getItem('driver_portal_code');
+    const saved = localStorage.getItem('driver_portal_email');
     if (saved) {
-      setDriverCode(saved);
+      setEmail(saved);
       setRememberPassword(true);
     }
     
@@ -84,27 +86,26 @@ export default function DriverPortal() {
     }
   };
 
-  const loginWithId = async (code) => {
-    if (!code || !code.trim()) return;
-    setLoading(true);
-    setError('');
+  const handleForgotPassword = async (e) => {
+    e.preventDefault();
+    if (!resetEmail) return;
+    setResetLoading(true);
+    setResetMessage('');
     try {
-      const { data } = await base44.functions.invoke('driverAuth', { code: code.trim() });
-      
+      const { data } = await base44.functions.invoke('sendPasswordReset', { 
+        email: resetEmail.toLowerCase()
+      });
       if (data.success) {
-        setDriver(data.driver);
-        tokenRef.current = data.token;
-        localStorage.setItem('driver_auth_token', data.token);
-        if (rememberPassword) localStorage.setItem('driver_portal_code', code);
-        await loadBookings(data.driver.id);
+        setResetMessage('Email de récupération envoyé! Vérifiez votre boîte de réception.');
+        setResetEmail('');
+        setTimeout(() => setShowForgotPassword(false), 3000);
       } else {
-        setError('Chauffeur non trouvé. Vérifiez votre code ou nom.');
+        setResetMessage(data.error || 'Email non trouvé.');
       }
     } catch (err) {
-      setError('Erreur de connexion. Réessayez.');
-      console.error('Login error:', err);
+      setResetMessage('Erreur lors de l\'envoi de l\'email.');
     } finally {
-      setLoading(false);
+      setResetLoading(false);
     }
   };
 
@@ -209,62 +210,15 @@ export default function DriverPortal() {
             <p className="text-white/40 text-xs tracking-[0.2em] uppercase mt-1">Portail Chauffeur</p>
           </div>
 
-          {/* Auth mode toggle */}
-          <div className="flex gap-2 bg-white/5 border border-white/10 rounded-xl p-1">
-            <button
-              onClick={() => setAuthMode('code')}
-              className={`flex-1 py-2 rounded-lg text-sm font-semibold transition-all ${authMode === 'code' ? 'bg-[#F5C300] text-black' : 'text-white/50 hover:text-white'}`}
-            >
-              Code
-            </button>
-            <button
-              onClick={() => setAuthMode('email')}
-              className={`flex-1 py-2 rounded-lg text-sm font-semibold transition-all ${authMode === 'email' ? 'bg-[#F5C300] text-black' : 'text-white/50 hover:text-white'}`}
-            >
-              Email/Senha
-            </button>
-          </div>
-
           <div className="bg-[#111] border border-white/10 rounded-2xl p-6 space-y-4">
-            {authMode === 'code' ? (
-              <>
-                <div>
-                  <label className="text-white/50 text-xs uppercase tracking-wider block mb-2">Code / Nom do chauffeur</label>
-                  <input
-                    type="text"
-                    value={driverCode}
-                    onChange={e => setDriverCode(e.target.value)}
-                    onKeyDown={e => e.key === 'Enter' && loginWithId(driverCode.trim())}
-                    placeholder="Entrez votre code ou nom"
-                    className="w-full bg-white/5 border border-white/10 rounded-xl text-white text-sm p-3 outline-none placeholder:text-white/20 focus:border-[#F5C300]/50"
-                  />
-                </div>
-                <label className="flex items-center gap-3 cursor-pointer">
-                  <input
-                    type="checkbox"
-                    checked={rememberPassword}
-                    onChange={e => setRememberPassword(e.target.checked)}
-                    className="w-4 h-4 rounded border-white/20 bg-white/5 accent-[#F5C300] cursor-pointer"
-                  />
-                  <span className="text-white/50 text-sm">Se souvenir de moi</span>
-                </label>
-                {error && <p className="text-red-400 text-sm">{error}</p>}
-                <button
-                  onClick={() => loginWithId(driverCode.trim())}
-                  disabled={loading || !driverCode.trim()}
-                  className="w-full h-12 rounded-xl bg-[#F5C300] text-black font-bold text-sm uppercase tracking-wider hover:bg-[#e6b800] transition-all disabled:opacity-50 flex items-center justify-center gap-2"
-                >
-                  {loading ? <Loader2 className="w-4 h-4 animate-spin" /> : 'Connexion'}
-                </button>
-              </>
-            ) : (
+            {!showForgotPassword ? (
               <>
                 <div>
                   <label className="text-white/50 text-xs uppercase tracking-wider block mb-2">Email</label>
                   <input
                     type="email"
                     value={email}
-                    onChange={e => setEmail(e.target.value)}
+                    onChange={e => { setEmail(e.target.value); setError(''); }}
                     onKeyDown={e => e.key === 'Enter' && loginWithEmail(email, password)}
                     placeholder="votre@email.com"
                     className="w-full bg-white/5 border border-white/10 rounded-xl text-white text-sm p-3 outline-none placeholder:text-white/20 focus:border-[#F5C300]/50"
@@ -275,7 +229,7 @@ export default function DriverPortal() {
                   <input
                     type="password"
                     value={password}
-                    onChange={e => setPassword(e.target.value)}
+                    onChange={e => { setPassword(e.target.value); setError(''); }}
                     onKeyDown={e => e.key === 'Enter' && loginWithEmail(email, password)}
                     placeholder="••••••••"
                     className="w-full bg-white/5 border border-white/10 rounded-xl text-white text-sm p-3 outline-none placeholder:text-white/20 focus:border-[#F5C300]/50"
@@ -298,10 +252,48 @@ export default function DriverPortal() {
                 >
                   {loading ? <Loader2 className="w-4 h-4 animate-spin" /> : 'Connexion'}
                 </button>
+                <button
+                  onClick={() => setShowForgotPassword(true)}
+                  className="w-full text-[#F5C300] text-sm hover:text-[#e6b800] transition-colors"
+                >
+                  Mot de passe oublié?
+                </button>
+              </>
+            ) : (
+              <>
+                <div>
+                  <label className="text-white/50 text-xs uppercase tracking-wider block mb-2">Email</label>
+                  <input
+                    type="email"
+                    value={resetEmail}
+                    onChange={e => { setResetEmail(e.target.value); setResetMessage(''); }}
+                    onKeyDown={e => e.key === 'Enter' && handleForgotPassword(e)}
+                    placeholder="votre@email.com"
+                    className="w-full bg-white/5 border border-white/10 rounded-xl text-white text-sm p-3 outline-none placeholder:text-white/20 focus:border-[#F5C300]/50"
+                  />
+                </div>
+                {resetMessage && (
+                  <p className={`text-sm ${resetMessage.includes('envoyé') ? 'text-green-400' : 'text-red-400'}`}>
+                    {resetMessage}
+                  </p>
+                )}
+                <button
+                  onClick={handleForgotPassword}
+                  disabled={resetLoading || !resetEmail}
+                  className="w-full h-12 rounded-xl bg-[#F5C300] text-black font-bold text-sm uppercase tracking-wider hover:bg-[#e6b800] transition-all disabled:opacity-50 flex items-center justify-center gap-2"
+                >
+                  {resetLoading ? <Loader2 className="w-4 h-4 animate-spin" /> : 'Envoyer lien de réinitialisation'}
+                </button>
+                <button
+                  onClick={() => setShowForgotPassword(false)}
+                  className="w-full text-[#F5C300] text-sm hover:text-[#e6b800] transition-colors"
+                >
+                  Retour à la connexion
+                </button>
               </>
             )}
           </div>
-          <p className="text-white/20 text-xs text-center">{authMode === 'code' ? 'Le code est fourni par l\'administrateur de Rosini Transfert.' : 'Utilisez les identifiants fournis par l\'administrateur.'}</p>
+          <p className="text-white/20 text-xs text-center">Utilisez les identifiants fournis par l'administrateur de Rosini Transfert.</p>
         </div>
       </div>
     );
