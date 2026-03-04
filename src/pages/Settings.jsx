@@ -181,6 +181,37 @@ export default function SettingsPage() {
 
         <div className="space-y-6">
 
+          {/* Informações da Empresa */}
+          <Section title="Informações da Empresa">
+            <Field label="Nome da Empresa">
+              <Input type="text" value={companySettings.company_name || ''}
+                onChange={e => setCompany('company_name', e.target.value)}
+                className="bg-white/5 border-white/10 text-white focus:border-[#C9A96E] h-12" />
+            </Field>
+            <Field label="Endereço">
+              <Input type="text" value={companySettings.company_address || ''}
+                onChange={e => setCompany('company_address', e.target.value)}
+                className="bg-white/5 border-white/10 text-white focus:border-[#C9A96E] h-12" />
+            </Field>
+            <div className="grid grid-cols-2 gap-4">
+              <Field label="Número de Registro (CHE)">
+                <Input type="text" value={companySettings.registration_number || ''}
+                  onChange={e => setCompany('registration_number', e.target.value)}
+                  className="bg-white/5 border-white/10 text-white focus:border-[#C9A96E] h-12" />
+              </Field>
+              <Field label="Telefone">
+                <Input type="text" value={companySettings.phone || ''}
+                  onChange={e => setCompany('phone', e.target.value)}
+                  className="bg-white/5 border-white/10 text-white focus:border-[#C9A96E] h-12" />
+              </Field>
+            </div>
+            <Field label="Email">
+              <Input type="email" value={companySettings.email || ''}
+                onChange={e => setCompany('email', e.target.value)}
+                className="bg-white/5 border-white/10 text-white focus:border-[#C9A96E] h-12" />
+            </Field>
+          </Section>
+
           {/* Tarifas por KM */}
           <Section title="Tarifas por Quilômetro">
             <Field label="Preço por KM — STANDARD (CHF)" hint="Aplicado ao veículo econômico">
