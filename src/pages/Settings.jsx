@@ -72,8 +72,15 @@ export default function SettingsPage() {
     }
     const init = async () => {
       try {
-        const result = await base44.entities.PriceSettings.list();
-        if (result.length > 0) setSettings(result[0]);
+        const priceResult = await base44.entities.PriceSettings.list();
+        if (priceResult.length > 0) {
+          setPriceSettings(priceResult[0]);
+          setOriginalPriceSettings(priceResult[0]);
+        }
+        const companyResult = await base44.entities.CompanySettings.list();
+        if (companyResult.length > 0) setCompanySettings(companyResult[0]);
+        const taxResult = await base44.entities.TaxSettings.list();
+        if (taxResult.length > 0) setTaxSettings(taxResult[0]);
       } finally {
         setIsLoading(false);
       }
