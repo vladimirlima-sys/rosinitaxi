@@ -663,7 +663,7 @@ export default function BookingForm({ bookingRef }) {
 
         {/* STEP 4 — Payment */}
         {step === 4 && (
-          <div className="space-y-3">
+          <div className="space-y-2 sm:space-y-3">
             {/* Summary */}
             <div className="bg-black border border-black/40 rounded-xl p-4 space-y-2">
               <h3 className="text-white/60 text-xs uppercase tracking-wider mb-3">{t.summaryLabel}</h3>
