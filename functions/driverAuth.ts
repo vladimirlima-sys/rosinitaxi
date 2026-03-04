@@ -12,79 +12,66 @@ const key = await crypto.subtle.importKey(
 );
 
 Deno.serve(async (req) => {
-  // Login endpoint (default path)
-  if (req.method === 'POST') {
-    try {
-      const base44 = createClientFromRequest(req);
-      const { code } = await req.json();
+  try {
+    const base44 = createClientFromRequest(req);
+    const body = await req.json();
+    const { code, token } = body;
 
-      if (!code || code.trim().length < 2) {
-        return Response.json({ error: 'Code invalide' }, { status: 400 });
+    // Verify token
+    if (token) {
+      try {
+        const payload = await verifyJWT(token, key);
+        
+        if (payload.exp && payload.exp < Math.floor(Date.now() / 1000)) {
+          return Response.json({ error: 'Token expired' }, { status: 401 });
+        }
+
+        return Response.json({ 
+          valid: true,
+          driver_id: payload.driver_id,
+          driver_name: payload.driver_name
+        });
+      } catch (error) {
+        console.error('Verify error:', error);
+        return Response.json({ error: 'Invalid token' }, { status: 401 });
       }
-
-      // Find driver by ID or name
-      const drivers = await base44.asServiceRole.entities.Driver.filter({
-        status: 'active'
-      });
-      
-      const driver = drivers.find(d => 
-        d.id === code.trim() || 
-        d.name.toLowerCase().includes(code.trim().toLowerCase())
-      );
-
-      if (!driver) {
-        return Response.json({ error: 'Chauffeur non trouvé' }, { status: 404 });
-      }
-
-      // Create JWT token (expires in 30 days)
-      const jwt = await createJWT(
-        { alg: 'HS256', typ: 'JWT' },
-        { 
-          driver_id: driver.id,
-          driver_name: driver.name,
-          exp: Math.floor(Date.now() / 1000) + (30 * 24 * 60 * 60)
-        },
-        key
-      );
-
-      return Response.json({ 
-        success: true, 
-        token: jwt,
-        driver: { id: driver.id, name: driver.name }
-      });
-    } catch (error) {
-      console.error('Login error:', error);
-      return Response.json({ error: error.message }, { status: 500 });
     }
-  }
 
-  // Verify endpoint
-  if (req.method === 'GET') {
-    try {
-      const url = new URL(req.url);
-      const token = url.searchParams.get('token');
-      
-      if (!token) {
-        return Response.json({ error: 'Token missing' }, { status: 400 });
-      }
-
-      const payload = await verifyJWT(token, key);
-      
-      // Check expiration
-      if (payload.exp && payload.exp < Math.floor(Date.now() / 1000)) {
-        return Response.json({ error: 'Token expired' }, { status: 401 });
-      }
-
-      return Response.json({ 
-        valid: true,
-        driver_id: payload.driver_id,
-        driver_name: payload.driver_name
-      });
-    } catch (error) {
-      console.error('Verify error:', error);
-      return Response.json({ error: 'Invalid token' }, { status: 401 });
+    // Login with code
+    if (!code || code.trim().length < 2) {
+      return Response.json({ error: 'Code invalide' }, { status: 400 });
     }
-  }
 
-  return Response.json({ error: 'Invalid endpoint' }, { status: 404 });
+    const drivers = await base44.asServiceRole.entities.Driver.filter({
+      status: 'active'
+    });
+    
+    const driver = drivers.find(d => 
+      d.id === code.trim() || 
+      d.name.toLowerCase().includes(code.trim().toLowerCase())
+    );
+
+    if (!driver) {
+      return Response.json({ error: 'Chauffeur non trouvé' }, { status: 404 });
+    }
+
+    const jwt = await createJWT(
+      { alg: 'HS256', typ: 'JWT' },
+      { 
+        driver_id: driver.id,
+        driver_name: driver.name,
+        exp: Math.floor(Date.now() / 1000) + (30 * 24 * 60 * 60)
+      },
+      key
+    );
+
+    return Response.json({ 
+      success: true, 
+      token: jwt,
+      driver: { id: driver.id, name: driver.name }
+    });
+  } catch (error) {
+    console.error('Auth error:', error);
+    return Response.json({ error: error.message }, { status: 500 });
+  }
 });
