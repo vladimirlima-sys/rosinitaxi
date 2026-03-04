@@ -5,7 +5,7 @@ import AdminKPIs from '@/components/admin/AdminKPIs';
 import {
   Lock, LogOut, LayoutDashboard, List,
   CalendarDays, Car, Users, Settings, BarChart2,
-  FileText, Map, Smartphone, HelpCircle, ChevronRight
+  FileText, Map, Smartphone, HelpCircle, ChevronRight, Eye, EyeOff
 } from 'lucide-react';
 
 const navPages = [
