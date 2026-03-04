@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import { Navigation, MapPin, Clock, DollarSign, CheckCircle, Car, ChevronRight, Loader2, Phone, Mail } from 'lucide-react';
 import { base44 } from '@/api/base44Client';
 import { toast } from 'sonner';
@@ -47,7 +47,7 @@ export default function ActiveTripMonitor({ booking, onCompleted }) {
     return v ? parseInt(v) : null;
   });
   const [savingPayment, setSavingPayment] = useState(false);
-  const gpsWatchRef = React.useRef(null);
+  const gpsWatchRef = useRef(null);
 
   const currentIndex = TRIP_STATUSES.findIndex(s => s.key === tripStatus);
   const currentStatusObj = TRIP_STATUSES[currentIndex] || null;
