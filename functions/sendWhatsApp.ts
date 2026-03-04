@@ -31,6 +31,41 @@ async function sendWhatsAppMessage(to, body) {
   return result;
 }
 
+async function sendWhatsAppTemplate(to, templateSid, templateVariables) {
+  const toFormatted = to.startsWith('whatsapp:') ? to : `whatsapp:${to}`;
+  const credentials = btoa(`${TWILIO_ACCOUNT_SID}:${TWILIO_AUTH_TOKEN}`);
+
+  const params = new URLSearchParams({
+    From: TWILIO_FROM,
+    To: toFormatted,
+    ContentSid: templateSid,
+  });
+
+  if (templateVariables && templateVariables.length > 0) {
+    templateVariables.forEach((variable, index) => {
+      params.append(`ContentVariables`, JSON.stringify(variable));
+    });
+  }
+
+  const response = await fetch(
+    `https://api.twilio.com/2010-04-01/Accounts/${TWILIO_ACCOUNT_SID}/Messages.json`,
+    {
+      method: 'POST',
+      headers: {
+        'Authorization': `Basic ${credentials}`,
+        'Content-Type': 'application/x-www-form-urlencoded',
+      },
+      body: params.toString(),
+    }
+  );
+
+  const result = await response.json();
+  if (!response.ok) {
+    throw new Error(`Twilio error: ${result.message || JSON.stringify(result)}`);
+  }
+  return result;
+}
+
 Deno.serve(async (req) => {
   try {
     const body = await req.json();
