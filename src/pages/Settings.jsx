@@ -215,12 +215,12 @@ export default function SettingsPage() {
           {/* Tarifas por KM */}
           <Section title="Tarifas por Quilômetro">
             <Field label="Preço por KM — STANDARD (CHF)" hint="Aplicado ao veículo econômico">
-              <Input type="number" step="0.01" value={settings.standard_price_per_km}
+              <Input type="number" step="0.01" min="0" value={priceSettings.standard_price_per_km}
                 onChange={e => set('standard_price_per_km', e.target.value)}
                 className="bg-white/5 border-white/10 text-white focus:border-[#C9A96E] h-12" />
             </Field>
             <Field label="Preço por KM — COMFORT (CHF)" hint="Deixe em 0 para usar 1.3× o preço STANDARD automaticamente">
-              <Input type="number" step="0.01" value={settings.comfort_price_per_km}
+              <Input type="number" step="0.01" min="0" value={priceSettings.comfort_price_per_km}
                 onChange={e => set('comfort_price_per_km', e.target.value)}
                 className="bg-white/5 border-white/10 text-white focus:border-[#C9A96E] h-12" />
             </Field>
