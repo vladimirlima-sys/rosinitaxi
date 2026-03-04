@@ -90,15 +90,20 @@ export default function ActiveTripMonitor({ booking, onCompleted }) {
    localStorage.setItem(storageKey, key);
    setTripStatus(key);
 
-   // Notify client via WhatsApp
-   try {
-     await base44.functions.invoke('notifyClientWhatsApp', {
-       booking_id: booking.id,
-       client_phone: booking.client_phone,
-       status: key
-     });
-   } catch (err) {
-     console.error('WhatsApp notification error:', err);
+   // Notify client via WhatsApp (en_route and arrived only)
+   if (['en_route', 'arrived'].includes(key)) {
+     try {
+       await base44.functions.invoke('notifyClientWhatsApp', {
+         booking_id: booking.id,
+         client_phone: booking.client_phone,
+         client_name: booking.client_name,
+         departure_point: booking.departure_point,
+         tracking_link: window.location.href,
+         status: key
+       });
+     } catch (err) {
+       console.error('WhatsApp notification error:', err);
+     }
    }
 
    if (key === 'arrived' && !tripStartedAt) {
