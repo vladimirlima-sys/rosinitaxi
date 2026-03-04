@@ -216,7 +216,7 @@ export default function Settings() {
             <Field label="Preço por KM — COMFORT (CHF)" hint="Deixe em 0 para usar 1.3× o preço STANDARD automaticamente">
               <Input type="number" step="0.01" min="0" value={priceSettings.comfort_price_per_km}
                 onChange={e => set('comfort_price_per_km', e.target.value)}
-                className="bg-white/5 border-white/10 text-white focus:border-[#C9A96E] h-12" />
+                className="bg-white/5 border-white/10 text-white focus:border-[#F5C300] h-12" />
             </Field>
             {/* Preview Detalhado */}
             <div className="bg-[#C9A96E]/10 border border-[#C9A96E]/20 rounded-xl p-4 mt-2 space-y-4">
