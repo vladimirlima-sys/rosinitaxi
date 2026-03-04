@@ -87,7 +87,7 @@ export default function ActiveTripMonitor({ booking, onCompleted }) {
           payment_status: 'paid'
         });
         toast.success('Course terminée — transférée vers l\'historique ✓');
-        if (onCompleted) setTimeout(onCompleted, 1500);
+        if (onCompleted) onCompleted();
       } catch (error) {
         toast.error('Erreur lors de l\'enregistrement');
         console.error('Payment registration error:', error);
