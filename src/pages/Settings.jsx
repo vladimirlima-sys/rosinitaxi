@@ -270,10 +270,10 @@ export default function SettingsPage() {
                 </div>
               </div>
             </div>
-          </Section>
+            </Section>
 
-          {/* Taxas fixas */}
-          <Section title="Taxas Fixas">
+            {/* Taxas fixas */}
+            <Section title="Taxas Fixas">
             <Field label="Taxa Base (CHF)" hint="Adicionada em corridas até 30 km">
               <Input type="number" step="0.01" min="0" value={priceSettings.base_fare}
                 onChange={e => set('base_fare', e.target.value)}
