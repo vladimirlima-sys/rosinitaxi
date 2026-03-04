@@ -5,24 +5,7 @@ import { createPageUrl } from '@/utils';
 import { toast } from 'sonner';
 import ActiveTripMonitor from '@/components/drivers/ActiveTripMonitor';
 
-const statusLabels = {
-  pending: { label: 'En attente', color: 'text-yellow-400 bg-yellow-400/10' },
-  paid: { label: 'Payé', color: 'text-green-400 bg-green-400/10' },
-  cancelled: { label: 'Annulé', color: 'text-red-400 bg-red-400/10' },
-  refunded: { label: 'Remboursé', color: 'text-blue-400 bg-blue-400/10' },
-};
 
-function formatDate(dateStr, timeStr) {
-  if (!dateStr) return '';
-  const [y, m, d] = dateStr.split('-');
-  return `${d}/${m}/${y}${timeStr ? ' à ' + timeStr : ''}`;
-}
-
-function getMapsUrl(address) {
-  return `https://www.google.com/maps/dir/?api=1&destination=${encodeURIComponent(address)}&travelmode=driving`;
-}
-
-function BookingCard({ booking, isNew }) {
   const [notifying, setNotifying] = useState(null); // 'on_the_way' | 'arrived' | null
   const [notified, setNotified] = useState({ on_the_way: false, arrived: false });
 
