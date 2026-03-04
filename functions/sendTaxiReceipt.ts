@@ -76,12 +76,24 @@ Deno.serve(async (req) => {
         <span class="detail-value">${vehicleType === 'comfort' ? 'COMFORT' : 'STANDARD'}</span>
       </div>
       <div class="detail-row">
-        <span class="detail-label">Distance</span>
+        <span class="detail-label">Distance parcourue</span>
         <span class="detail-value">${distance} km</span>
       </div>
       <div class="detail-row">
-        <span class="detail-label">Durée</span>
+        <span class="detail-label">Durée du trajet</span>
         <span class="detail-value">${duration}</span>
+      </div>
+    </div>
+    
+    <div class="section">
+      <div class="section-title">Tarification</div>
+      <div class="detail-row">
+        <span class="detail-label">Tarif par km</span>
+        <span class="detail-value">Selon tarif</span>
+      </div>
+      <div class="detail-row">
+        <span class="detail-label">Total</span>
+        <span class="detail-value">CHF ${totalPrice}</span>
       </div>
     </div>
     
@@ -95,9 +107,10 @@ Deno.serve(async (req) => {
     </div>
     
     <div class="footer">
-      <div class="footer-company">Rosini Transports de Personnes</div>
-      <div>Chemin des Bulesses 16 · 1814 La Tour-de-Peilz · Suisse</div>
-      <div>CHE-264.039.709</div>
+      <div class="footer-company">ROSINI TRANSPORTS DE PERSONNES SARL</div>
+      <div>CHE-264.039.709 | Suisse</div>
+      <div style="margin: 5px 0;">Chemin des Bulesses 16 · 1814 La Tour-de-Peilz</div>
+      <div>Tél: +41 77 249 22 45 · info@rosini.online</div>
       <div style="margin-top: 10px; font-size: 7px;">Ce reçu a été généré automatiquement après le paiement de votre course.</div>
     </div>
   </div>
