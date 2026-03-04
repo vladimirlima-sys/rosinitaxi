@@ -108,7 +108,7 @@ export default function AdminPanel() {
         <div className="flex items-center justify-between mb-8">
           <div>
             <h1 className="text-black text-4xl font-extralight tracking-[0.3em] uppercase">ROSINI</h1>
-            <p className="text-black/50 text-xs tracking-[0.2em] uppercase mt-1">PAINEL ADMINISTRATIVO</p>
+            <p className="text-black/50 text-xs tracking-[0.2em] uppercase mt-1">PANNEAU ADMINISTRATIF</p>
           </div>
           <button
             onClick={handleLogout}
