@@ -29,6 +29,7 @@ export default function AdminPanel() {
   const [error, setError] = useState('');
   const [loading, setLoading] = useState(false);
   const [tab, setTab] = useState('dashboard');
+  const [showPassword, setShowPassword] = useState(false);
 
   useEffect(() => {
     base44.auth.me()
