@@ -175,9 +175,8 @@ export default function SettingsPage() {
         </div>
 
         <div className="space-y-6">
-
-        {/* Informações da Empresa */}
-        <Section title="Informações da Empresa">
+          {/* Informações da Empresa */}
+          <Section title="Informações da Empresa">
             <Field label="Nome da Empresa">
               <Input type="text" value={companySettings.company_name || ''}
                 onChange={e => setCompany('company_name', e.target.value)}
