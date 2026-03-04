@@ -12,7 +12,9 @@ export default function Calendar() {
   const [bookings, setBookings] = useState([]);
   const [drivers, setDrivers] = useState([]);
   const [loading, setLoading] = useState(true);
+  const [viewMode, setViewMode] = useState('week'); // 'week' | 'month'
   const [weekStart, setWeekStart] = useState(startOfWeek(new Date(), { weekStartsOn: 1 }));
+  const [currentMonth, setCurrentMonth] = useState(startOfMonth(new Date()));
   const [filterStatus, setFilterStatus] = useState('all');
   const [filterDriver, setFilterDriver] = useState('all');
 
