@@ -238,7 +238,7 @@ export default function Settings() {
                     <span>CHF {calculatePrice(50, 'standard').baseFare.toFixed(2)}</span>
                   </div>
                   {calculatePrice(50, 'standard').surcharges > 0 && (
-                    <div className="flex justify-between text-[#C9A96E]">
+                    <div className="flex justify-between text-[#F5C300]">
                       <span>Adicionais</span>
                       <span>CHF {calculatePrice(50, 'standard').surcharges.toFixed(2)}</span>
                     </div>
