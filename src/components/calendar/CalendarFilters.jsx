@@ -1,6 +1,6 @@
 import React from 'react';
 import { ChevronLeft, ChevronRight } from 'lucide-react';
-import { format, addWeeks, subWeeks, addDays, startOfWeek } from 'date-fns';
+import { format, addWeeks, subWeeks, addDays, startOfWeek, addMonths, subMonths, startOfMonth } from 'date-fns';
 import { fr } from 'date-fns/locale';
 
 const STATUS_OPTIONS = [
@@ -10,27 +10,56 @@ const STATUS_OPTIONS = [
   { value: 'cancelled', label: 'Annulé' },
 ];
 
-export default function CalendarFilters({ weekStart, setWeekStart, filterStatus, setFilterStatus, filterDriver, setFilterDriver, drivers }) {
-  const goBack = () => setWeekStart(subWeeks(weekStart, 1));
-  const goNext = () => setWeekStart(addWeeks(weekStart, 1));
-  const goToday = () => setWeekStart(startOfWeek(new Date(), { weekStartsOn: 1 }));
-
+export default function CalendarFilters({
+  viewMode,
+  weekStart, setWeekStart,
+  currentMonth, setCurrentMonth,
+  filterStatus, setFilterStatus,
+  filterDriver, setFilterDriver,
+  drivers
+}) {
+  // Week navigation
+  const goWeekBack = () => setWeekStart(subWeeks(weekStart, 1));
+  const goWeekNext = () => setWeekStart(addWeeks(weekStart, 1));
+  const goToday = () => {
+    setWeekStart(startOfWeek(new Date(), { weekStartsOn: 1 }));
+    setCurrentMonth(startOfMonth(new Date()));
+  };
   const weekEnd = addDays(weekStart, 6);
+
+  // Month navigation
+  const goMonthBack = () => setCurrentMonth(subMonths(currentMonth, 1));
+  const goMonthNext = () => setCurrentMonth(addMonths(currentMonth, 1));
 
   return (
     <div className="flex flex-wrap items-center gap-3 mb-6">
-      {/* Week navigation */}
+      {/* Navigation */}
       <div className="flex items-center gap-2">
-        <button onClick={goBack} className="p-2 rounded-lg bg-white/10 text-white/70 hover:bg-white/20 hover:text-white transition-colors">
+        <button
+          onClick={viewMode === 'week' ? goWeekBack : goMonthBack}
+          className="p-2 rounded-lg bg-white/10 text-white/70 hover:bg-white/20 hover:text-white transition-colors"
+        >
           <ChevronLeft className="w-4 h-4" />
         </button>
+
         <span className="text-white/90 text-sm font-medium min-w-[180px] text-center">
-          {format(weekStart, 'd MMM', { locale: fr })} – {format(weekEnd, 'd MMM yyyy', { locale: fr })}
+          {viewMode === 'week'
+            ? `${format(weekStart, 'd MMM', { locale: fr })} – ${format(weekEnd, 'd MMM yyyy', { locale: fr })}`
+            : format(currentMonth, 'MMMM yyyy', { locale: fr })
+          }
         </span>
-        <button onClick={goNext} className="p-2 rounded-lg bg-white/10 text-white/70 hover:bg-white/20 hover:text-white transition-colors">
+
+        <button
+          onClick={viewMode === 'week' ? goWeekNext : goMonthNext}
+          className="p-2 rounded-lg bg-white/10 text-white/70 hover:bg-white/20 hover:text-white transition-colors"
+        >
           <ChevronRight className="w-4 h-4" />
         </button>
-        <button onClick={goToday} className="px-3 py-2 rounded-lg bg-white/10 text-white/70 hover:bg-white/20 hover:text-white transition-colors text-xs font-medium">
+
+        <button
+          onClick={goToday}
+          className="px-3 py-2 rounded-lg bg-white/10 text-white/70 hover:bg-white/20 hover:text-white transition-colors text-xs font-medium"
+        >
           Aujourd'hui
         </button>
       </div>
