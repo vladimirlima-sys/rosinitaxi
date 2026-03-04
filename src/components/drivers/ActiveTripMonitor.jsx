@@ -87,14 +87,14 @@ export default function ActiveTripMonitor({ booking, onCompleted }) {
   };
 
   const setStatus = async (key) => {
-    localStorage.setItem(storageKey, key);
-    setTripStatus(key);
-    if (key === 'in_progress' && !tripStartedAt) {
-      const now = Date.now();
-      localStorage.setItem(startKey, String(now));
-      setTripStartedAt(now);
-      startGPSTracking();
-    }
+   localStorage.setItem(storageKey, key);
+   setTripStatus(key);
+   if (key === 'arrived' && !tripStartedAt) {
+     const now = Date.now();
+     localStorage.setItem(startKey, String(now));
+     setTripStartedAt(now);
+     startGPSTracking();
+   }
     
     // Notify client of status update (pass booking data directly to avoid DB timeout)
     try {
