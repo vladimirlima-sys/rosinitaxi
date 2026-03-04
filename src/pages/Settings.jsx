@@ -294,8 +294,8 @@ export default function Settings() {
                 className="bg-white/5 border-white/10 text-white focus:border-[#F5C300] h-12" />
             </Field>
             {priceSettings.valais_fribourg_surcharge_percentage > 0 && (
-              <div className="bg-[#C9A96E]/10 border border-[#C9A96E]/20 rounded-xl p-4">
-                <p className="text-[#C9A96E] text-xs font-semibold uppercase tracking-wider mb-1">Adicional ativo</p>
+              <div className="bg-[#F5C300]/10 border border-[#F5C300]/20 rounded-xl p-4">
+                <p className="text-[#F5C300] text-xs font-semibold uppercase tracking-wider mb-1">Adicional ativo</p>
                 <p className="text-white/60 text-sm">
                   +{priceSettings.valais_fribourg_surcharge_percentage}% em todas as corridas originadas de Valais ou Fribourg — <strong className="text-white">não visível ao cliente</strong>
                 </p>
