@@ -1,4 +1,4 @@
-import { createClientFromRequest } from 'npm:@base44/sdk@0.8.6';
+import { createClientFromRequest } from 'npm:@base44/sdk@0.8.20';
 import { jsPDF } from 'npm:jspdf@4.0.0';
 
 Deno.serve(async (req) => {
@@ -615,7 +615,7 @@ Deno.serve(async (req) => {
 
     // ─── Gmail sender with optional PDF attachment ──────────────────────────────
     const sendGmailEmail = async (to, subject, htmlBody, pdfBuffer = null) => {
-      const accessToken = await base44.asServiceRole.connectors.getAccessToken("gmail");
+      const { accessToken } = await base44.asServiceRole.connectors.getConnection("gmail");
       const encodedName = `=?UTF-8?B?${btoa(unescape(encodeURIComponent('Rosini Transports')))}?=`;
       const encodedSubject = `=?UTF-8?B?${btoa(unescape(encodeURIComponent(subject)))}?=`;
       const boundary = 'RosiniEmailBoundary_' + Date.now();
