@@ -12,6 +12,7 @@ export default function RideTracking() {
   const [driver, setDriver] = useState(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState('');
+  const unsubscribeRef = useRef(null);
 
   useEffect(() => {
     const params = new URLSearchParams(window.location.search);
