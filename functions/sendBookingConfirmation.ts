@@ -615,7 +615,7 @@ Deno.serve(async (req) => {
 
     // ─── Gmail sender with optional PDF attachment ──────────────────────────────
     const sendGmailEmail = async (to, subject, htmlBody, pdfBuffer = null) => {
-      const { accessToken } = await base44.connectors.getConnection("gmail");
+      const { accessToken } = await base44.asServiceRole.connectors.getConnection("gmail");
       const encodedName = `=?UTF-8?B?${btoa(unescape(encodeURIComponent('Rosini Transports')))}?=`;
       const encodedSubject = `=?UTF-8?B?${btoa(unescape(encodeURIComponent(subject)))}?=`;
       const boundary = 'RosiniEmailBoundary_' + Date.now();
