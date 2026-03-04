@@ -86,6 +86,21 @@ export default function ActiveTripMonitor({ booking, onCompleted }) {
         await base44.entities.Booking.update(booking.id, {
           payment_status: 'paid'
         });
+        
+        // Envoyer le reçu au client
+        try {
+          await base44.functions.invoke('sendTravelReceipt', {
+            clientEmail: booking.client_email,
+            amount: booking.total_price,
+            paymentMethod: booking.payment_method || 'card',
+            distance: booking.distance_km,
+            departure: booking.departure_point,
+            arrival: booking.arrival_point
+          });
+        } catch (receiptErr) {
+          console.error('Receipt sending error:', receiptErr);
+        }
+        
         toast.success('Course terminée — transférée vers l\'historique ✓');
         if (onCompleted) onCompleted();
       } catch (error) {
