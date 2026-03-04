@@ -74,8 +74,12 @@ export default function Settings() {
       try {
         const priceResult = await base44.entities.PriceSettings.list();
         if (priceResult.length > 0) {
-          setPriceSettings(priceResult[0]);
-          setOriginalPriceSettings(priceResult[0]);
+          const settings = {
+            ...priceResult[0],
+            night_surcharge_days: priceResult[0].night_surcharge_days || []
+          };
+          setPriceSettings(settings);
+          setOriginalPriceSettings(settings);
         }
         const companyResult = await base44.entities.CompanySettings.list();
         if (companyResult.length > 0) setCompanySettings(companyResult[0]);
