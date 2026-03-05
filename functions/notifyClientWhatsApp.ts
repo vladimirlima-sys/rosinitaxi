@@ -66,10 +66,12 @@ Deno.serve(async (req) => {
     bodyData.append('To', formattedPhone);
     bodyData.append('ContentSid', template.sid);
     
-    // Add each variable with index-based parameter name
+    // ContentVariables must be a JSON object with 1-based string keys
+    const contentVariables = {};
     template.variables.forEach((variable, index) => {
-      bodyData.append(`ContentVariables.${index}`, variable);
+      contentVariables[String(index + 1)] = variable;
     });
+    bodyData.append('ContentVariables', JSON.stringify(contentVariables));
 
     const response = await fetch(url, {
       method: 'POST',
