@@ -177,19 +177,49 @@ export default function BookingForm({ bookingRef }) {
 
   const checkValaisFribourg = () => {
     if (!priceSettings || !priceSettings.valais_fribourg_surcharge_percentage) return false;
-    const valaisFribourgKeywords = [
-      'valais', 'wallis', 'vs',
-      'fribourg', 'freiburg', 'fr',
+    // Only cities clearly in Valais or Fribourg cantons (NOT Vaud)
+    const valaisKeywords = [
+      'valais', 'wallis',
       'sion', 'sierre', 'martigny', 'monthey', 'visp', 'brig', 'zermatt',
       'verbier', 'crans-montana', 'crans montana', 'saas-fee', 'saas fee',
-      'leukerbad', 'nendaz', 'verbier', 'leysin', 'champery', 'champéry',
+      'leukerbad', 'nendaz', 'champery', 'champéry', 'saillon', 'fully',
+      'bagnes', 'evolène', 'evolene', 'hérémence', 'heremence', 'anniviers',
+      'grimentz', 'zinal', 'vercorin', 'lens', 'icogne', 'ayent',
+      'conthey', 'ardon', 'chamoson', 'saint-pierre-de-clages', 'riddes',
+      'isérables', 'iserables', 'saxon', 'bovernier', 'sembrancher',
+      'orsières', 'orsieres', 'liddes', 'bourg-saint-pierre', 'val de bagnes',
+      'fiesch', 'bellwald', 'ernen', 'lax', 'mörel', 'riederalp', 'bettmeralp',
+      'aletsch', 'goms', 'ulrichen', 'münster', 'reckingen', 'blitzingen',
+      'stalden', 'saas-grund', 'saas-almagell', 'täsch', 'randa',
+      'herbriggen', 'st. niklaus', 'grächen', 'embd', 'törbel', 'zeneggen',
+      'lalden', 'naters', 'mund', 'birgisch', 'ried-brig', 'termen',
+      'simplon', 'gondo', 'baltschieder', 'eggerberg', 'steg', 'hohtenn',
+      'niedergesteln', 'raron', 'turtig', 'gampel', 'bratsch', 'ferden',
+      'kippel', 'wiler', 'blatten', 'belalp', 'susten', 'inden', 'albinen',
+      'guttet', 'feschel', 'erschmatt', 'varen', 'salgesch', 'miège',
+      'venthône', 'veyras', 'montana', 'randogne', 'mollens', 'chermignon',
+      'lens', 'saint-léonard', 'grimisuat', 'arbaz', 'savièse', 'conthey',
+    ];
+    const fribourgKeywords = [
+      'fribourg', 'freiburg',
       'bulle', 'romont', 'murten', 'morat', 'estavayer', 'chatel-saint-denis',
       'gruyères', 'gruyeres', 'gruyere', 'charmey', 'schwarzsee', 'tafers',
-      'payerne', 'avenches', 'domdidier', 'gletscherdorf', 'saanen', 'gstaad'
+      'châtel-saint-denis', 'attalens', 'cheyres', 'vully', 'bas-vully',
+      'haut-vully', 'domdidier', 'avenches', 'cudrefin', 'courtepin',
+      'cressier', 'grolley', 'givisiez', 'villars-sur-glâne', 'marly',
+      'granges-paccot', 'corminboeuf', 'matran', 'autigny', 'ependes',
+      'ponthaux', 'grangettes', 'belfaux', 'rosé', 'ecuvillens', 'posieux',
+      'hauterive', 'villaz-saint-pierre', 'vuisternens', 'ursy', 'rue',
+      'billens', 'hennens', 'palézieux', 'vauderens', 'siviriez', 'mézières',
+      'promasens', 'bossonnens', 'remaufens', 'semsales', 'saint-martin',
+      'corbières', 'jaun', 'charmey', 'bellegarde', 'riaz', 'marsens',
+      'broc', 'gruyères', 'epagny', 'echarlens', 'vuippens', 'morlon',
+      'enney', 'botterens', 'villargiroud', 'avry-sur-matran',
     ];
     const dep = form.departure_point.toLowerCase();
     const arr = form.arrival_point.toLowerCase();
-    return valaisFribourgKeywords.some(k => dep.includes(k) || arr.includes(k));
+    const allKeywords = [...valaisKeywords, ...fribourgKeywords];
+    return allKeywords.some(k => dep.includes(k) || arr.includes(k));
   };
 
   const calculateTotalPrice = () => {
