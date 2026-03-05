@@ -25,10 +25,6 @@ export default function Finance() {
   const [taxSettings, setTaxSettings] = useState(null);
 
   useEffect(() => {
-    if (localStorage.getItem('admin_unlocked') !== 'true') {
-      window.location.href = createPageUrl('AdminPanel');
-      return;
-    }
     fetchData();
   }, []);
 
