@@ -46,9 +46,10 @@ export default function TrackingMap({ booking, loading, error }) {
     document.head.appendChild(link);
   }, []);
 
-  // Init Leaflet map
+  // Init Leaflet map only once
   useEffect(() => {
     if (!mapRef.current || loading || error || !booking) return;
+    if (mapInstanceRef.current) return; // already initialized
 
     const initMap = async () => {
       try {
@@ -62,11 +63,6 @@ export default function TrackingMap({ booking, loading, error }) {
             document.head.appendChild(script);
           });
           L = window.L;
-        }
-
-        if (mapInstanceRef.current) {
-          mapInstanceRef.current.remove();
-          mapInstanceRef.current = null;
         }
 
         const map = L.map(mapRef.current).setView([46.95, 6.87], 12);
@@ -87,32 +83,36 @@ export default function TrackingMap({ booking, loading, error }) {
       if (mapInstanceRef.current) {
         mapInstanceRef.current.remove();
         mapInstanceRef.current = null;
+        setMapLoaded(false);
       }
     };
-  }, [booking, loading, error]);
+  }, [booking?.id]); // only re-init if booking ID changes
 
-  // Update driver marker when location changes
+  // Update driver marker when location changes - move marker instead of recreating
   useEffect(() => {
     if (!mapLoaded || !mapInstanceRef.current || !driverLocation || !window.L) return;
 
     const L = window.L;
+    const lat = driverLocation.latitude;
+    const lng = driverLocation.longitude;
+
     if (driverMarkerRef.current) {
-      mapInstanceRef.current.removeLayer(driverMarkerRef.current);
+      // Just move the existing marker - no flicker, no map reset
+      driverMarkerRef.current.setLatLng([lat, lng]);
+    } else {
+      const icon = L.divIcon({
+        html: `<div style="background:#F5C300;width:18px;height:18px;border-radius:50%;border:3px solid white;box-shadow:0 2px 6px rgba(0,0,0,0.5)"></div>`,
+        className: '',
+        iconSize: [18, 18],
+        iconAnchor: [9, 9]
+      });
+      driverMarkerRef.current = L.marker([lat, lng], { icon })
+        .addTo(mapInstanceRef.current)
+        .bindPopup('🚗 Chauffeur');
     }
 
-    const icon = L.divIcon({
-      html: `<div style="background:#F5C300;width:18px;height:18px;border-radius:50%;border:3px solid white;box-shadow:0 2px 6px rgba(0,0,0,0.5)"></div>`,
-      className: '',
-      iconSize: [18, 18],
-      iconAnchor: [9, 9]
-    });
-
-    driverMarkerRef.current = L.marker(
-      [driverLocation.latitude, driverLocation.longitude],
-      { icon }
-    ).addTo(mapInstanceRef.current).bindPopup('🚗 Chauffeur');
-
-    mapInstanceRef.current.setView([driverLocation.latitude, driverLocation.longitude], 14);
+    // Pan map smoothly to follow driver
+    mapInstanceRef.current.panTo([lat, lng]);
   }, [driverLocation, mapLoaded]);
 
   if (loading) {
