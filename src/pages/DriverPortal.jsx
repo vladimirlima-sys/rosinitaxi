@@ -251,16 +251,25 @@ export default function DriverPortal() {
                   />
                 </div>
                 <div>
-                  <label className="text-white/50 text-xs uppercase tracking-wider block mb-2">Senha</label>
-                  <input
-                    type="password"
-                    value={password}
-                    onChange={e => { setPassword(e.target.value); setError(''); }}
-                    onKeyDown={e => e.key === 'Enter' && loginWithEmail(email, password)}
-                    placeholder="••••••••"
-                    className="w-full bg-white/5 border border-white/10 rounded-xl text-white text-sm p-3 outline-none placeholder:text-white/20 focus:border-[#F5C300]/50"
-                  />
-                </div>
+                   <label className="text-white/50 text-xs uppercase tracking-wider block mb-2">Senha</label>
+                   <div className="relative">
+                     <input
+                       type={showPassword ? 'text' : 'password'}
+                       value={password}
+                       onChange={e => { setPassword(e.target.value); setError(''); }}
+                       onKeyDown={e => e.key === 'Enter' && loginWithEmail(email, password)}
+                       placeholder="••••••••"
+                       className="w-full bg-white/5 border border-white/10 rounded-xl text-white text-sm p-3 pr-10 outline-none placeholder:text-white/20 focus:border-[#F5C300]/50"
+                     />
+                     <button
+                       type="button"
+                       onClick={() => setShowPassword(v => !v)}
+                       className="absolute right-3 top-1/2 -translate-y-1/2 text-white/30 hover:text-white/60 transition-colors"
+                     >
+                       {showPassword ? <EyeOff className="w-4 h-4" /> : <Eye className="w-4 h-4" />}
+                     </button>
+                   </div>
+                 </div>
                 <label className="flex items-center gap-3 cursor-pointer">
                   <input
                     type="checkbox"
