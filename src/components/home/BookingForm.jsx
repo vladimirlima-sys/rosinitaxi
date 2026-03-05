@@ -392,7 +392,9 @@ export default function BookingForm({ bookingRef }) {
                 onChange={(val) => update('arrival_point', val)}
                 placeholder={t.arrivalPlaceholder}
                 label={t.arrival}
-                showLocateButton={false}
+                showLocateButton={true}
+                isLocating={isLocatingArrival}
+                onLocate={locateUserArrival}
                 t={t}
                 darkMode={false}
               />
