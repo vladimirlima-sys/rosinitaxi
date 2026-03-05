@@ -449,11 +449,11 @@ export default function BookingForm({ bookingRef }) {
             </div>
 
             {/* Arrow connector */}
-            <div className="flex justify-center">
-              <div className="flex flex-col items-center gap-1">
-                <div className="w-[1px] h-3 bg-black/30" />
-                <div className="w-3 h-3 rounded-full border-2 border-black bg-[#F5C300]" />
-                <div className="w-[1px] h-3 bg-black/30" />
+            <div className="flex justify-center py-0.5">
+              <div className="flex flex-col items-center gap-0.5">
+                <div className="w-[1px] h-2 bg-black/30" />
+                <div className="w-2 h-2 rounded-full border border-black bg-[#F5C300]" />
+                <div className="w-[1px] h-2 bg-black/30" />
               </div>
             </div>
 
