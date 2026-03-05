@@ -74,6 +74,9 @@ export default function RideTracking() {
     }
   };
 
+  const lang = booking?.language || 'fr';
+  const t = translations[lang] || translations['fr'];
+
   if (loading) {
     return (
       <div className="min-h-screen bg-gradient-to-br from-gray-900 to-black flex items-center justify-center">
@@ -92,7 +95,7 @@ export default function RideTracking() {
           className="flex items-center gap-2 text-[#F5C300] hover:text-[#e6b800] transition-colors"
         >
           <ArrowLeft className="w-4 h-4" />
-          Voltar para Home
+          {(translations['fr']).back}
         </a>
       </div>
     );
