@@ -6,6 +6,7 @@ import TrackingMap from '@/components/ridetracking/TrackingMap';
 import RideTimeline from '@/components/ridetracking/RideTimeline';
 import DriverCard from '@/components/ridetracking/DriverCard';
 import SupportContact from '@/components/ridetracking/SupportContact';
+import { translations } from '@/components/translations';
 
 export default function RideTracking() {
   const [booking, setBooking] = useState(null);
