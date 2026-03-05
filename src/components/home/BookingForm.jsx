@@ -823,7 +823,7 @@ export default function BookingForm({ bookingRef }) {
 
         {/* STEP 5 — Confirmation */}
         {step === 5 && (
-          <div className="text-center py-12 space-y-4">
+          <div className="text-center py-8 space-y-3">
             <div className="w-20 h-20 rounded-full bg-transparent border border-transparent flex items-center justify-center mx-auto">
               <CheckCircle className="w-10 h-10 text-[#F5C300]" />
             </div>
