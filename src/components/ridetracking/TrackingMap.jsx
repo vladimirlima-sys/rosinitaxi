@@ -74,7 +74,7 @@ export default function TrackingMap({ booking, loading, error }) {
           L = window.L;
         }
 
-        const map = L.map(mapRef.current).setView([46.95, 6.87], 15);
+        const map = L.map(mapRef.current).setView([46.95, 6.87], 16);
         L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
           attribution: '© OpenStreetMap contributors'
         }).addTo(map);
