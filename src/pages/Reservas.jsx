@@ -28,21 +28,9 @@ export default function Reservas() {
 
   useEffect(() => {
     const checkAuth = async () => {
-      try {
-        // Check if admin is logged in via localStorage (more reliable than auth.me() on mobile)
-        if (localStorage.getItem('admin_unlocked') !== 'true') {
-          window.location.href = createPageUrl('AdminPanel');
-          return;
-        }
-        
-        setIsAuthorized(true);
-        await recalculateStats();
-      } catch (error) {
-        console.error('Auth error:', error);
-        window.location.href = createPageUrl('AdminPanel');
-      } finally {
-        setLoading(false);
-      }
+      setIsAuthorized(true);
+      await recalculateStats();
+      setLoading(false);
     };
 
     checkAuth();
