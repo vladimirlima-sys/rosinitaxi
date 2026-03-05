@@ -62,8 +62,13 @@ export default function RideTracking() {
       // Subscribe to real-time updates
       if (!unsubscribeRef.current) {
         unsubscribeRef.current = base44.entities.Booking.subscribe((event) => {
-          if (event.id === bookingId && event.type === 'update') {
-            setBooking(event.data);
+          if (event.id === bookingId) {
+            if (event.data) {
+              setBooking(event.data);
+            } else {
+              // If data not in event, force reload
+              loadBooking(bookingId);
+            }
           }
         });
       }
