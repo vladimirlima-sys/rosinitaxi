@@ -124,13 +124,13 @@ export default function RideTracking() {
 
         {/* Map */}
         <div className="mb-8">
-          <TrackingMap booking={booking} loading={loading} error={error} />
+          <TrackingMap booking={booking} loading={loading} error={error} lang={lang} t={t} />
         </div>
 
         {/* Timeline */}
         {booking && !error && (
           <div className="mb-8">
-            <RideTimeline booking={booking} />
+            <RideTimeline booking={booking} t={t} />
           </div>
         )}
 
