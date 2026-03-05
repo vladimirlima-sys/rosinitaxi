@@ -42,6 +42,25 @@ export default function DriverPortal() {
     }
   }, []);
 
+  const requestGeolocation = () => {
+    if (!navigator.geolocation) return;
+    navigator.geolocation.getCurrentPosition(
+      () => setGeoEnabled(true),
+      () => setGeoEnabled(false),
+      { enableHighAccuracy: true }
+    );
+  };
+
+  useEffect(() => {
+    if (!driver) return;
+    // Check if geolocation permission already granted
+    if (navigator.permissions) {
+      navigator.permissions.query({ name: 'geolocation' }).then(result => {
+        setGeoEnabled(result.state === 'granted');
+      });
+    }
+  }, [driver]);
+
   const requestNotifications = async () => {
     if (!('Notification' in window)) return;
     const perm = await Notification.requestPermission();
