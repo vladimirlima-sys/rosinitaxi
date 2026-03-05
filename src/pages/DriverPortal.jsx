@@ -45,21 +45,27 @@ export default function DriverPortal() {
     }
   }, []);
 
-  const requestGeolocation = () => {
+  const autoGeo = () => {
     if (!navigator.geolocation) return;
     navigator.geolocation.getCurrentPosition(
-      () => setGeoEnabled(true),
+      () => { setGeoEnabled(true); localStorage.setItem('driver_geo_granted', '1'); },
       () => setGeoEnabled(false),
       { enableHighAccuracy: true }
     );
   };
 
+  const requestGeolocation = () => {
+    autoGeo();
+  };
+
   useEffect(() => {
     if (!driver) return;
-    // Check if geolocation permission already granted
-    if (navigator.permissions) {
+    // Auto-activate if previously granted
+    if (localStorage.getItem('driver_geo_granted') === '1') {
+      autoGeo();
+    } else if (navigator.permissions) {
       navigator.permissions.query({ name: 'geolocation' }).then(result => {
-        setGeoEnabled(result.state === 'granted');
+        if (result.state === 'granted') autoGeo();
       });
     }
   }, [driver]);
