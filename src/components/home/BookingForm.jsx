@@ -760,6 +760,12 @@ export default function BookingForm({ bookingRef }) {
               <div className="flex justify-between text-sm"><span className="text-white/50">{t.summaryDistance}</span><span className="text-white">{estimatedDistance} km</span></div>
 
               <div className="w-full h-[1px] bg-white/20 my-2" />
+              {hasValaisFribourgSurcharge && (
+                <div className="flex justify-between text-sm">
+                  <span className="text-white/50">Additif prise en charge autre canton</span>
+                  <span className="text-orange-400">+{priceSettings?.valais_fribourg_surcharge_percentage || 20}%</span>
+                </div>
+              )}
               <div className="flex justify-between items-center">
                 <span className="text-white font-semibold text-sm">{t.summaryTotal}</span>
                 <span className="text-[#F5C300] text-2xl font-bold">CHF {totalPrice}</span>
