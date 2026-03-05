@@ -121,7 +121,7 @@ export default function TrackingMap({ booking, loading, error }) {
     }
 
     // Pan map smoothly to follow driver, keep zoom level at 15
-    mapInstanceRef.current.setView([lat, lng], 15, { animate: true });
+    mapInstanceRef.current.setView([lat, lng], 16, { animate: true });
   }, [driverLocation, mapLoaded]);
 
   if (loading) {
