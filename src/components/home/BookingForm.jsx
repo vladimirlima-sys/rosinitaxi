@@ -824,11 +824,11 @@ export default function BookingForm({ bookingRef }) {
         {/* STEP 5 — Confirmation */}
         {step === 5 && (
           <div className="text-center py-8 space-y-3">
-            <div className="w-20 h-20 rounded-full bg-transparent border border-transparent flex items-center justify-center mx-auto">
-              <CheckCircle className="w-10 h-10 text-[#F5C300]" />
+            <div className="w-16 h-16 rounded-full bg-transparent border border-transparent flex items-center justify-center mx-auto">
+              <CheckCircle className="w-8 h-8 text-[#F5C300]" />
             </div>
-            <h3 className="text-black text-xl font-bold">{isShortNotice ? t.shortNoticeConfirmTitle : t.confirmTitle}</h3>
-            <p className="text-black/60 text-sm max-w-xs mx-auto">{isShortNotice ? t.shortNoticeConfirmMsg(form.client_name) : t.confirmMsg(form.client_name, form.departure_point, form.arrival_point)}</p>
+            <h3 className="text-black text-lg font-bold">{isShortNotice ? t.shortNoticeConfirmTitle : t.confirmTitle}</h3>
+            <p className="text-black/60 text-xs max-w-xs mx-auto leading-relaxed">{isShortNotice ? t.shortNoticeConfirmMsg(form.client_name) : t.confirmMsg(form.client_name, form.departure_point, form.arrival_point)}</p>
             {!isShortNotice && <p className="text-black/40 text-xs">{t.confirmEmail(form.client_email)}</p>}
             <button
               onClick={resetForm}
