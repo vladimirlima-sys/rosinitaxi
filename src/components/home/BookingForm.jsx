@@ -839,23 +839,9 @@ export default function BookingForm({ bookingRef }) {
           </div>
         )}
 
-        {/* Footer */}
-         <div className="mt-4 sm:mt-8 border-t border-black/20 pt-3 sm:pt-4 text-center space-y-1">
-          <a href={createPageUrl('AdminPanel')} className="text-black font-semibold text-xs sm:text-sm tracking-wide hover:opacity-70 cursor-pointer">Rosini Transports et Locations Sàrl</a>
-           <p className="text-black/60 text-xs">La Tour-de-Peilz, Suisse</p>
-           <div className="flex flex-col sm:flex-row justify-center gap-2 sm:gap-4 mt-2">
-             <a href="tel:+41772492245" className="text-black/70 text-xs hover:text-black transition-colors">
-               +41 77 249 22 45
-             </a>
-             <span className="text-black/30 hidden sm:block">|</span>
-             <a href="mailto:info@rosini.online" className="text-black/70 text-xs hover:text-black transition-colors">
-               info@rosini.online
-             </a>
-           </div>
-          <div className="flex justify-center mt-3">
-            <AddToHomeScreen />
-          </div>
-          <div className="flex justify-center mt-3">
+        {/* Footer - Minimalista */}
+         <div className="mt-3 border-t border-black/20 pt-2 text-center space-y-1">
+          <div className="flex justify-center gap-2">
             <a
               href="https://wa.me/41772492245"
               target="_blank"
