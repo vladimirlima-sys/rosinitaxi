@@ -27,25 +27,31 @@ export default function RideTimeline({ booking, t }) {
           const isActive = idx === currentIndex;
 
           return (
-            <div key={step.status} className="flex gap-4">
+            <div key={step.key} className="flex gap-4">
               <div className="flex flex-col items-center">
                 <div
                   className={`w-10 h-10 rounded-full flex items-center justify-center transition-all ${
-                    isCompleted
+                    isActive
+                      ? 'bg-[#F5C300]/20 border-2 border-[#F5C300] animate-pulse'
+                      : isCompleted
                       ? 'bg-[#C9A96E]/20 border border-[#C9A96E]'
                       : 'bg-white/5 border border-white/10'
                   }`}
                 >
                   <Icon
                     className={`w-5 h-5 ${
-                      isCompleted ? 'text-[#C9A96E]' : 'text-white/40'
+                      isActive
+                        ? 'text-[#F5C300]'
+                        : isCompleted
+                        ? 'text-[#C9A96E]'
+                        : 'text-white/40'
                     }`}
                   />
                 </div>
                 {idx < statusSteps.length - 1 && (
                   <div
-                    className={`w-0.5 h-8 mt-2 ${
-                      isCompleted ? 'bg-[#C9A96E]/20' : 'bg-white/10'
+                    className={`w-0.5 h-8 mt-2 transition-all ${
+                      idx < currentIndex ? 'bg-[#C9A96E]/40' : 'bg-white/10'
                     }`}
                   />
                 )}
@@ -54,7 +60,7 @@ export default function RideTimeline({ booking, t }) {
                 <p
                   className={`text-sm font-medium ${
                     isActive
-                      ? 'text-[#C9A96E]'
+                      ? 'text-[#F5C300] font-semibold'
                       : isCompleted
                       ? 'text-white/70'
                       : 'text-white/40'
@@ -62,6 +68,9 @@ export default function RideTimeline({ booking, t }) {
                 >
                   {step.label}
                 </p>
+                {isActive && (
+                  <p className="text-[#F5C300]/60 text-xs mt-0.5">● En cours...</p>
+                )}
               </div>
             </div>
           );
