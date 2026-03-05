@@ -1,14 +1,12 @@
 import { CheckCircle2, Clock, Navigation2, MapPin, Flag } from 'lucide-react';
 
-// These statuses match exactly what ActiveTripMonitor sets via localStorage
-const statusSteps = [
-  { key: 'booked',    label: 'Réservation confirmée',        icon: CheckCircle2 },
-  { key: 'en_route',  label: 'Chauffeur en route vers vous', icon: Navigation2  },
-  { key: 'arrived',   label: 'Chauffeur arrivé',             icon: MapPin       },
-  { key: 'completed', label: 'Course terminée',              icon: Flag         },
-];
-
-export default function RideTimeline({ booking }) {
+export default function RideTimeline({ booking, t }) {
+  const statusSteps = [
+    { key: 'booked',    label: t.statusBooked,    icon: CheckCircle2 },
+    { key: 'en_route',  label: t.statusEnRoute,   icon: Navigation2  },
+    { key: 'arrived',   label: t.statusArrived,   icon: MapPin       },
+    { key: 'completed', label: t.statusCompleted, icon: Flag         },
+  ];
   const getStatusIndex = () => {
     const rs = booking.ride_status;
     if (rs === 'completed') return 3;
