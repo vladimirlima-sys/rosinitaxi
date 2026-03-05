@@ -422,19 +422,21 @@ export default function BookingForm({ bookingRef }) {
   const darkLabelClass = "text-white/60 text-xs uppercase tracking-wider mb-1 block";
 
   return (
-    <div ref={bookingRef} className="w-full min-h-screen bg-[#F5C300] flex flex-col items-center justify-start py-2 px-3">
-      {/* Header - Minimalista */}
-      <div className="w-full max-w-md mb-2 text-center pt-1">
-        <h1 className="text-black text-2xl font-bold tracking-tight">ROSINI</h1>
+    <div ref={bookingRef} className="w-full min-h-screen bg-[#F5C300] flex flex-col items-center justify-start py-3 sm:py-6 px-3 sm:px-4">
+      {/* Header */}
+      <div className="w-full max-w-md mb-3 sm:mb-4 text-center">
+        <h1 className="text-black text-3xl sm:text-5xl md:text-6xl font-extralight tracking-[0.2em] sm:tracking-[0.3em] uppercase">ROSINI</h1>
+        <p className="text-black/60 text-xs sm:text-sm tracking-[0.15em] sm:tracking-[0.2em] uppercase mt-0.5 sm:mt-2">TRANSPORTS DE PERSONNES</p>
+        <div className="w-6 sm:w-8 h-[1px] bg-black/40 mx-auto mt-1.5 sm:mt-3" />
       </div>
 
-      <div className="w-full max-w-sm px-0">
+      <div className="w-full max-w-md px-0">
 
       {/* STEP 1 — Booking form */}
         {step === 1 && (
-          <div className="space-y-1.5">
+          <div className="space-y-2 sm:space-y-3">
             {/* Departure */}
-             <div className="bg-black border border-black/40 rounded-xl p-2.5 sm:p-3">
+             <div className="bg-black border border-black/40 rounded-xl p-3 sm:p-4">
               <PlacesAutocomplete
                 value={form.departure_point}
                 onChange={(val) => update('departure_point', val)}
@@ -449,16 +451,16 @@ export default function BookingForm({ bookingRef }) {
             </div>
 
             {/* Arrow connector */}
-            <div className="flex justify-center py-0.5">
-              <div className="flex flex-col items-center gap-0.5">
-                <div className="w-[1px] h-2 bg-black/30" />
-                <div className="w-2 h-2 rounded-full border border-black bg-[#F5C300]" />
-                <div className="w-[1px] h-2 bg-black/30" />
+            <div className="flex justify-center">
+              <div className="flex flex-col items-center gap-1">
+                <div className="w-[1px] h-3 bg-black/30" />
+                <div className="w-3 h-3 rounded-full border-2 border-black bg-[#F5C300]" />
+                <div className="w-[1px] h-3 bg-black/30" />
               </div>
             </div>
 
             {/* Arrival */}
-             <div className="bg-black border border-black/40 rounded-xl p-2.5 sm:p-3">
+             <div className="bg-black border border-black/40 rounded-xl p-3 sm:p-4">
               <PlacesAutocomplete
                 value={form.arrival_point}
                 onChange={(val) => update('arrival_point', val)}
@@ -489,15 +491,15 @@ export default function BookingForm({ bookingRef }) {
             )}
 
             {/* Date & Time */}
-             <div className="grid grid-cols-2 gap-1.5">
-               <div className="bg-black border border-black/40 rounded-xl p-2.5 sm:p-3">
+             <div className="grid grid-cols-2 gap-2 sm:gap-3">
+               <div className="bg-black border border-black/40 rounded-xl p-3 sm:p-4">
                 <label className={labelClass}>{t.dateLabel}</label>
                 <DatePicker
                   value={form.departure_date}
                   onChange={(date) => update('departure_date', date)}
                 />
               </div>
-              <div className="bg-black border border-black/40 rounded-xl p-2.5 sm:p-3">
+              <div className="bg-black border border-black/40 rounded-xl p-3 sm:p-4">
                 <label className={labelClass}><Clock className="inline w-3 h-3 mr-1" />{t.timeLabel}</label>
                 <input
                   type="time"
@@ -512,14 +514,14 @@ export default function BookingForm({ bookingRef }) {
 
             {/* Short notice warning - below date/time */}
              {isShortNotice && (
-               <div className="bg-black border-2 border-red-500 rounded-xl p-2 flex gap-2 items-start">
+               <div className="bg-black border-2 border-red-500 rounded-xl p-3 sm:p-4 flex gap-2 sm:gap-3 items-start">
                 <span className="text-red-400 text-lg mt-0.5">⚠️</span>
                 <p className="text-white text-sm leading-relaxed font-medium">{t.shortNoticeWarning}</p>
               </div>
             )}
 
             {/* Flight (optional) */}
-             <div className="bg-black border border-black/40 rounded-xl p-2.5 sm:p-3">
+             <div className="bg-black border border-black/40 rounded-xl p-3 sm:p-4">
               <label className={labelClass}><Plane className="inline w-3 h-3 mr-1" />{t.flightLabel}</label>
               <input
                 type="text"
@@ -531,7 +533,7 @@ export default function BookingForm({ bookingRef }) {
             </div>
 
             {/* Passengers */}
-             <div className="bg-black border border-black/40 rounded-xl p-2.5 sm:p-3">
+             <div className="bg-black border border-black/40 rounded-xl p-3 sm:p-4">
               <label className={labelClass}>{t.passengersLabel}</label>
               <div className="flex gap-2 mt-2">
                 {[1, 2, 3, 4].map((num) => (
@@ -552,7 +554,7 @@ export default function BookingForm({ bookingRef }) {
 
             {/* Price preview */}
              {estimatedDistance > 0 && (
-               <div className="bg-black border border-black/40 rounded-xl p-2.5 sm:p-3 flex items-center justify-between">
+               <div className="bg-black border border-black/40 rounded-xl p-3 sm:p-4 flex items-center justify-between">
                 <div>
                   <p className="text-white/60 text-xs uppercase tracking-wider">{t.estimatedPrice}</p>
                   <p className="text-white text-sm mt-0.5">{estimatedDistance} km · {Math.floor(estimatedTime / 60)}h{estimatedTime % 60}min</p>
@@ -570,7 +572,7 @@ export default function BookingForm({ bookingRef }) {
             <button
               onClick={() => setStep(2)}
               disabled={!canProceedStep1 || isCalculatingRoute}
-              className={`w-full h-11 rounded-lg font-bold text-sm tracking-wider uppercase transition-all ${
+              className={`w-full h-14 rounded-xl font-bold text-base tracking-wider uppercase transition-all ${
                 canProceedStep1 && !isCalculatingRoute
                   ? 'bg-black text-white hover:bg-black/80'
                   : 'bg-white/10 text-white/40 cursor-not-allowed'
@@ -578,12 +580,16 @@ export default function BookingForm({ bookingRef }) {
             >
               {isCalculatingRoute ? t.calculatingRoute || 'Calcul en cours...' : t.continueBtn}
             </button>
+
+            <PriceExamplesCards priceSettings={priceSettings} />
+            <RideCounter />
+            <MyBookingCard />
           </div>
         )}
 
         {/* STEP 2 — Vehicle Selection */}
         {step === 2 && (
-          <div className="space-y-1.5">
+          <div className="space-y-2 sm:space-y-3">
             <h3 className="text-black font-semibold text-sm uppercase tracking-wider mb-2">{t.step2Title}</h3>
 
             {/* Standard */}
@@ -647,7 +653,7 @@ export default function BookingForm({ bookingRef }) {
             </div>
 
             {/* Preferred driver selection */}
-            <div className="bg-black border border-black/40 rounded-xl p-3">
+            <div className="bg-black border border-black/40 rounded-xl p-4">
               <PreferredDriverSelector
                 lang={lang}
                 selectedDriverId={selectedDriver?.id || null}
@@ -657,12 +663,12 @@ export default function BookingForm({ bookingRef }) {
               />
             </div>
 
-            <div className="flex gap-1.5">
-              <button onClick={() => setStep(1)} className="flex-1 h-10 rounded-lg border border-white/50 bg-[#F5C300]/95 text-black font-bold text-xs uppercase tracking-wider hover:bg-black hover:text-white hover:border-black transition-all">{t.backBtn}</button>
+            <div className="flex gap-2 sm:gap-3">
+              <button onClick={() => setStep(1)} className="flex-1 h-10 sm:h-12 rounded-xl border border-white/50 bg-[#F5C300]/95 text-black font-bold text-xs sm:text-sm uppercase tracking-wider hover:bg-black hover:text-white hover:border-black transition-all">{t.backBtn}</button>
               <button
                 onClick={() => setStep(3)}
                 disabled={!canProceedStep2}
-                className={`flex-[2] h-10 rounded-lg font-bold text-xs uppercase tracking-wider transition-all ${canProceedStep2 ? 'bg-black text-white hover:bg-black/80' : 'bg-white/10 text-white/40 cursor-not-allowed'}`}
+                className={`flex-[2] h-10 sm:h-12 rounded-xl font-bold text-xs sm:text-sm uppercase tracking-wider transition-all ${canProceedStep2 ? 'bg-black text-white hover:bg-black/80' : 'bg-white/10 text-white/40 cursor-not-allowed'}`}
               >
                 {t.continueBtn}
               </button>
@@ -672,8 +678,8 @@ export default function BookingForm({ bookingRef }) {
 
         {/* STEP 3 — Personal Info */}
         {step === 3 && (
-          <div className="space-y-1.5">
-            <div className="bg-black border border-black/40 rounded-xl p-3 space-y-3">
+          <div className="space-y-2 sm:space-y-3">
+            <div className="bg-black border border-black/40 rounded-xl p-3 sm:p-4 space-y-3 sm:space-y-4">
               <h3 className="text-white font-semibold text-xs sm:text-sm uppercase tracking-wider">{t.step3Title}</h3>
 
               <div>
@@ -726,10 +732,10 @@ export default function BookingForm({ bookingRef }) {
               </div>
             </div>
 
-            <div className="flex gap-1.5">
+            <div className="flex gap-2 sm:gap-3">
               <button
                 onClick={() => setStep(2)}
-                className="flex-1 h-10 rounded-lg border border-white/50 bg-[#F5C300]/95 text-black font-bold text-xs uppercase tracking-wider hover:bg-black hover:text-white hover:border-black transition-all"
+                className="flex-1 h-10 sm:h-12 rounded-xl border border-white/50 bg-[#F5C300]/95 text-black font-bold text-xs sm:text-sm uppercase tracking-wider hover:bg-black hover:text-white hover:border-black transition-all"
               >
                 {t.backBtn}
               </button>
@@ -737,7 +743,7 @@ export default function BookingForm({ bookingRef }) {
                 onClick={() => setStep(4)}
                 disabled={!canProceedStep3}
                 style={canProceedStep3 ? { backgroundColor: '#000000', color: '#ffffff' } : {}}
-                className={`flex-[2] h-10 rounded-lg border font-bold text-xs uppercase tracking-wider transition-all ${
+                className={`flex-[2] h-10 sm:h-12 rounded-xl border font-bold text-xs sm:text-sm uppercase tracking-wider transition-all ${
                   canProceedStep3
                     ? 'border-black hover:opacity-80'
                     : 'bg-white/10 text-white/40 border-white/50 cursor-not-allowed'
@@ -751,9 +757,9 @@ export default function BookingForm({ bookingRef }) {
 
         {/* STEP 4 — Payment */}
         {step === 4 && (
-          <div className="space-y-1.5">
+          <div className="space-y-2 sm:space-y-3">
             {/* Summary */}
-            <div className="bg-black border border-black/40 rounded-xl p-3 space-y-2">
+            <div className="bg-black border border-black/40 rounded-xl p-3 sm:p-4 space-y-2">
               <h3 className="text-white/60 text-xs uppercase tracking-wider mb-3">{t.summaryLabel}</h3>
               <div className="space-y-2">
                 <div className="flex justify-between text-sm"><span className="text-white/50">{t.departure}</span><span className="text-white text-right max-w-[60%] truncate">{form.departure_point}</span></div>
@@ -772,7 +778,7 @@ export default function BookingForm({ bookingRef }) {
             </div>
 
             {/* Payment method */}
-            <div className="bg-black border border-black/40 rounded-xl p-3 space-y-2">
+            <div className="bg-black border border-black/40 rounded-xl p-3 sm:p-4 space-y-2">
               <h3 className="text-white/60 text-xs uppercase tracking-wider mb-3">{t.paymentMethod}</h3>
               {[
                 { value: 'stripe', label: t.stripeLabel, desc: t.stripeDesc },
@@ -803,17 +809,17 @@ export default function BookingForm({ bookingRef }) {
               ))}
             </div>
 
-            <div className="flex gap-1.5">
+            <div className="flex gap-2 sm:gap-3">
               <button
                 onClick={() => setStep(3)}
-                className="flex-1 h-10 rounded-lg border border-white/50 bg-[#F5C300]/95 text-black font-bold text-xs uppercase tracking-wider hover:bg-black hover:text-white hover:border-black transition-all"
+                className="flex-1 h-10 sm:h-12 rounded-xl border border-white/50 bg-[#F5C300]/95 text-black font-bold text-xs sm:text-sm uppercase tracking-wider hover:bg-black hover:text-white hover:border-black transition-all"
               >
                 {t.backBtn}
               </button>
               <button
                 onClick={handlePayment}
                 disabled={isSubmitting}
-                className="flex-[2] h-10 rounded-lg bg-black text-white font-bold text-xs uppercase tracking-wider hover:bg-black/80 transition-all disabled:opacity-60 disabled:cursor-not-allowed flex items-center justify-center gap-2"
+                className="flex-[2] h-10 sm:h-12 rounded-xl bg-black text-white font-bold text-xs sm:text-sm uppercase tracking-wider hover:bg-black/80 transition-all disabled:opacity-60 disabled:cursor-not-allowed flex items-center justify-center gap-2"
               >
                 {isSubmitting ? <><Loader2 className="w-4 h-4 animate-spin" />{t.redirecting}</> : (paymentMethod === 'stripe' ? t.payBtn(totalPrice) : t.confirmBooking)}
               </button>
@@ -823,35 +829,51 @@ export default function BookingForm({ bookingRef }) {
 
         {/* STEP 5 — Confirmation */}
         {step === 5 && (
-          <div className="text-center py-8 space-y-3">
-            <div className="w-16 h-16 rounded-full bg-transparent border border-transparent flex items-center justify-center mx-auto">
-              <CheckCircle className="w-8 h-8 text-[#F5C300]" />
+          <div className="text-center py-12 space-y-4">
+            <div className="w-20 h-20 rounded-full bg-transparent border border-transparent flex items-center justify-center mx-auto">
+              <CheckCircle className="w-10 h-10 text-[#F5C300]" />
             </div>
-            <h3 className="text-black text-lg font-bold">{isShortNotice ? t.shortNoticeConfirmTitle : t.confirmTitle}</h3>
-            <p className="text-black/60 text-xs max-w-xs mx-auto leading-relaxed">{isShortNotice ? t.shortNoticeConfirmMsg(form.client_name) : t.confirmMsg(form.client_name, form.departure_point, form.arrival_point)}</p>
+            <h3 className="text-black text-xl font-bold">{isShortNotice ? t.shortNoticeConfirmTitle : t.confirmTitle}</h3>
+            <p className="text-black/60 text-sm max-w-xs mx-auto">{isShortNotice ? t.shortNoticeConfirmMsg(form.client_name) : t.confirmMsg(form.client_name, form.departure_point, form.arrival_point)}</p>
             {!isShortNotice && <p className="text-black/40 text-xs">{t.confirmEmail(form.client_email)}</p>}
             <button
               onClick={resetForm}
-              className="mt-2 px-6 h-10 rounded-lg bg-[#F5C300] text-black font-bold text-xs uppercase tracking-wider hover:bg-[#e6b800] transition-all"
+              className="mt-4 px-8 h-12 rounded-xl bg-[#F5C300] text-black font-bold text-sm uppercase tracking-wider hover:bg-[#e6b800] transition-all"
             >
               {t.newBooking}
             </button>
           </div>
         )}
 
-        {/* Footer - Minimalista */}
-         <div className="mt-2 text-center space-y-1">
-          <a
-            href="https://wa.me/41772492245"
-            target="_blank"
-            rel="noopener noreferrer"
-            className="inline-flex items-center gap-1.5 bg-[#25D366] text-white text-xs font-semibold px-3 py-1.5 rounded-full hover:bg-[#1ebe5d] transition-colors"
-          >
-            <svg width="12" height="12" viewBox="0 0 24 24" fill="currentColor">
-              <path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/>
-            </svg>
-            WhatsApp
-          </a>
+        {/* Footer */}
+         <div className="mt-4 sm:mt-8 border-t border-black/20 pt-3 sm:pt-4 text-center space-y-1">
+          <a href={createPageUrl('AdminPanel')} className="text-black font-semibold text-xs sm:text-sm tracking-wide hover:opacity-70 cursor-pointer">Rosini Transports et Locations Sàrl</a>
+           <p className="text-black/60 text-xs">La Tour-de-Peilz, Suisse</p>
+           <div className="flex flex-col sm:flex-row justify-center gap-2 sm:gap-4 mt-2">
+             <a href="tel:+41772492245" className="text-black/70 text-xs hover:text-black transition-colors">
+               +41 77 249 22 45
+             </a>
+             <span className="text-black/30 hidden sm:block">|</span>
+             <a href="mailto:info@rosini.online" className="text-black/70 text-xs hover:text-black transition-colors">
+               info@rosini.online
+             </a>
+           </div>
+          <div className="flex justify-center mt-3">
+            <AddToHomeScreen />
+          </div>
+          <div className="flex justify-center mt-3">
+            <a
+              href="https://wa.me/41772492245"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="flex items-center gap-2 bg-[#25D366] text-white text-xs font-semibold px-4 py-2 rounded-full hover:bg-[#1ebe5d] transition-colors"
+            >
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor">
+                <path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/>
+              </svg>
+              WhatsApp
+            </a>
+          </div>
         </div>
       </div>
     </div>
