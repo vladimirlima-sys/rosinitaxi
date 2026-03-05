@@ -25,6 +25,7 @@ export default function BookingForm({ bookingRef }) {
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [paymentMethod, setPaymentMethod] = useState('stripe');
   const [isLocating, setIsLocating] = useState(false);
+  const [isLocatingArrival, setIsLocatingArrival] = useState(false);
   const [estimatedDistance, setEstimatedDistance] = useState(0);
   const [estimatedTime, setEstimatedTime] = useState(0);
   const [priceSettings, setPriceSettings] = useState(null);
