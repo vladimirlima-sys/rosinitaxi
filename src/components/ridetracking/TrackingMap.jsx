@@ -1,28 +1,26 @@
 import React, { useEffect, useRef, useState } from 'react';
-import { AlertCircle, Loader2 } from 'lucide-react';
+import { AlertCircle, Loader2, MapPin } from 'lucide-react';
 import { base44 } from '@/api/base44Client';
 
 export default function TrackingMap({ booking, loading, error }) {
   const mapRef = useRef(null);
   const mapInstanceRef = useRef(null);
-  const [driverLocation, setDriverLocation] = useState(null);
   const driverMarkerRef = useRef(null);
+  const [driverLocation, setDriverLocation] = useState(null);
+  const [mapLoaded, setMapLoaded] = useState(false);
   const unsubscribeRef = useRef(null);
 
   useEffect(() => {
     if (!booking?.id) return;
 
-    // Subscribe to driver location updates
-    const subscribeToLocation = async () => {
+    const loadLocation = async () => {
       try {
         const locations = await base44.entities.DriverLocation.filter(
           { booking_id: booking.id },
           '-timestamp',
           1
         );
-        if (locations?.length > 0) {
-          setDriverLocation(locations[0]);
-        }
+        if (locations?.length > 0) setDriverLocation(locations[0]);
 
         unsubscribeRef.current = base44.entities.DriverLocation.subscribe((event) => {
           if (event.data?.booking_id === booking.id && event.type === 'create') {
@@ -30,99 +28,97 @@ export default function TrackingMap({ booking, loading, error }) {
           }
         });
       } catch (err) {
-        console.error('Failed to subscribe to locations:', err);
+        console.error('Failed to load driver location:', err);
       }
     };
 
-    subscribeToLocation();
-
-    return () => {
-      if (unsubscribeRef.current) unsubscribeRef.current();
-    };
+    loadLocation();
+    return () => { if (unsubscribeRef.current) unsubscribeRef.current(); };
   }, [booking?.id]);
 
+  // Load Leaflet CSS
   useEffect(() => {
-    if (!mapRef.current || !booking) return;
+    if (document.getElementById('leaflet-css')) return;
+    const link = document.createElement('link');
+    link.id = 'leaflet-css';
+    link.rel = 'stylesheet';
+    link.href = 'https://unpkg.com/leaflet@1.9.4/dist/leaflet.css';
+    document.head.appendChild(link);
+  }, []);
 
-    // Dynamically load HERE Maps
-    const script = document.createElement('script');
-    script.src = `https://js.api.here.com/v3/3.1/mapsjs-core.js`;
-    script.async = true;
-    script.onload = () => {
-      const styleScript = document.createElement('script');
-      styleScript.src = `https://js.api.here.com/v3/3.1/mapsjs-service.js`;
-      styleScript.async = true;
-      styleScript.onload = () => {
-        const platformScript = document.createElement('script');
-        platformScript.src = `https://js.api.here.com/v3/3.1/mapsjs-mapevents.js`;
-        platformScript.async = true;
-        platformScript.onload = initMap;
-        document.head.appendChild(platformScript);
-      };
-      document.head.appendChild(styleScript);
-    };
-    document.head.appendChild(script);
+  // Init Leaflet map
+  useEffect(() => {
+    if (!mapRef.current || loading || error || !booking) return;
 
     const initMap = async () => {
       try {
-        const platform = new window.H.service.Platform({
-          apikey: import.meta.env.VITE_HERE_API_KEY || Deno.env.get('HERE_API_KEY')
-        });
+        let L = window.L;
+        if (!L) {
+          await new Promise((resolve, reject) => {
+            const script = document.createElement('script');
+            script.src = 'https://unpkg.com/leaflet@1.9.4/dist/leaflet.js';
+            script.onload = resolve;
+            script.onerror = reject;
+            document.head.appendChild(script);
+          });
+          L = window.L;
+        }
 
-        const defaultLayers = platform.createDefaultLayers();
-        const map = new window.H.Map(
-          mapRef.current,
-          defaultLayers.vector.normal.map,
-          {
-            zoom: 12,
-            center: { lat: 46.95, lng: 6.87 }
-          }
-        );
+        if (mapInstanceRef.current) {
+          mapInstanceRef.current.remove();
+          mapInstanceRef.current = null;
+        }
+
+        const map = L.map(mapRef.current).setView([46.95, 6.87], 12);
+        L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+          attribution: '© OpenStreetMap contributors'
+        }).addTo(map);
 
         mapInstanceRef.current = map;
-        window.addEventListener('resize', () => map.getViewPort().resize());
-
-        // Add marker for departure point
-        const marker = new window.H.map.Marker(
-          { lat: 46.95, lng: 6.87 },
-          { icon: new window.H.map.Icon('https://map.platform.here.com/mapsjs/demos/img/blue-pin.svg') }
-        );
-        map.addObject(marker);
-
-        map.setCenter({ lat: 46.95, lng: 6.87 });
+        setMapLoaded(true);
       } catch (err) {
         console.error('Map init error:', err);
       }
     };
 
+    initMap();
+
     return () => {
       if (mapInstanceRef.current) {
-        mapInstanceRef.current.dispose();
+        mapInstanceRef.current.remove();
+        mapInstanceRef.current = null;
       }
     };
-  }, [booking]);
+  }, [booking, loading, error]);
 
-  // Update driver location marker
+  // Update driver marker when location changes
   useEffect(() => {
-    if (!mapInstanceRef.current || !driverLocation) return;
+    if (!mapLoaded || !mapInstanceRef.current || !driverLocation || !window.L) return;
 
+    const L = window.L;
     if (driverMarkerRef.current) {
-      mapInstanceRef.current.removeObject(driverMarkerRef.current);
+      mapInstanceRef.current.removeLayer(driverMarkerRef.current);
     }
 
-    const driverMarker = new window.H.map.Marker(
-      { lat: driverLocation.latitude, lng: driverLocation.longitude },
-      { icon: new window.H.map.Icon('https://map.platform.here.com/mapsjs/demos/img/red-pin.svg') }
-    );
-    mapInstanceRef.current.addObject(driverMarker);
-    driverMarkerRef.current = driverMarker;
-    mapInstanceRef.current.setCenter({ lat: driverLocation.latitude, lng: driverLocation.longitude });
-  }, [driverLocation]);
+    const icon = L.divIcon({
+      html: `<div style="background:#F5C300;width:18px;height:18px;border-radius:50%;border:3px solid white;box-shadow:0 2px 6px rgba(0,0,0,0.5)"></div>`,
+      className: '',
+      iconSize: [18, 18],
+      iconAnchor: [9, 9]
+    });
+
+    driverMarkerRef.current = L.marker(
+      [driverLocation.latitude, driverLocation.longitude],
+      { icon }
+    ).addTo(mapInstanceRef.current).bindPopup('🚗 Chauffeur');
+
+    mapInstanceRef.current.setView([driverLocation.latitude, driverLocation.longitude], 14);
+  }, [driverLocation, mapLoaded]);
 
   if (loading) {
     return (
       <div className="w-full h-64 md:h-80 bg-white/5 rounded-2xl flex items-center justify-center border border-white/10">
-        <Loader2 className="w-6 h-6 text-[#C9A96E] animate-spin" />
+        <Loader2 className="w-6 h-6 text-[#F5C300] animate-spin" />
       </div>
     );
   }
@@ -137,9 +133,21 @@ export default function TrackingMap({ booking, loading, error }) {
   }
 
   return (
-    <div
-      ref={mapRef}
-      className="w-full h-64 md:h-80 bg-white/5 rounded-2xl border border-white/10 overflow-hidden"
-    />
+    <div className="relative">
+      <div
+        ref={mapRef}
+        className="w-full h-64 md:h-80 rounded-2xl border border-white/10 overflow-hidden"
+        style={{ zIndex: 0 }}
+      />
+      {!driverLocation && (
+        <div className="absolute inset-0 flex flex-col items-center justify-center pointer-events-none">
+          <div className="bg-black/60 backdrop-blur-sm rounded-xl px-4 py-2">
+            <p className="text-white/60 text-xs flex items-center gap-1">
+              <MapPin className="w-3 h-3" /> Position du chauffeur non disponible
+            </p>
+          </div>
+        </div>
+      )}
+    </div>
   );
 }

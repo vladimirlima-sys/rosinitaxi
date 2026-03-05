@@ -1,31 +1,27 @@
-import { CheckCircle2, Clock, AlertCircle, Navigation2 } from 'lucide-react';
+import { CheckCircle2, Clock, Navigation2, MapPin, Flag } from 'lucide-react';
 
+// These statuses match exactly what ActiveTripMonitor sets via localStorage
 const statusSteps = [
-  { status: 'pending', label: 'Pagamento Pendente', icon: Clock },
-  { status: 'confirmed', label: 'Reserva Confirmada', icon: CheckCircle2 },
-  { status: 'on_the_way', label: 'Motorista a Caminho', icon: Navigation2 },
-  { status: 'arrived', label: 'Motorista Chegou', icon: CheckCircle2 },
-  { status: 'in_progress', label: 'Corrida em Andamento', icon: Navigation2 },
-  { status: 'completed', label: 'Corrida Finalizada', icon: CheckCircle2 },
+  { key: 'booked',    label: 'Réservation confirmée',        icon: CheckCircle2 },
+  { key: 'en_route',  label: 'Chauffeur en route vers vous', icon: Navigation2  },
+  { key: 'arrived',   label: 'Chauffeur arrivé',             icon: MapPin       },
+  { key: 'completed', label: 'Course terminée',              icon: Flag         },
 ];
 
 export default function RideTimeline({ booking }) {
   const getStatusIndex = () => {
-    if (booking.payment_status === 'paid') {
-      if (booking.ride_status === 'completed') return 5;
-      if (booking.ride_status === 'in_progress') return 4;
-      if (booking.ride_status === 'arrived') return 3;
-      if (booking.ride_status === 'on_the_way') return 2;
-      return 1;
-    }
-    return 0;
+    const rs = booking.ride_status;
+    if (rs === 'completed') return 3;
+    if (rs === 'arrived')   return 2;
+    if (rs === 'en_route')  return 1;
+    return 0; // booked / paid but not yet started
   };
 
   const currentIndex = getStatusIndex();
 
   return (
     <div className="bg-white/[0.03] border border-white/10 rounded-2xl p-6">
-      <h3 className="text-white text-sm font-semibold mb-6">Andamento da Corrida</h3>
+      <h3 className="text-white text-sm font-semibold mb-6">Suivi de la course</h3>
       <div className="space-y-4">
         {statusSteps.map((step, idx) => {
           const Icon = step.icon;
