@@ -139,11 +139,11 @@ export default function RideTracking() {
           {/* Status */}
           <div className="flex items-center justify-between mb-6">
             <div>
-              <p className="text-white/50 text-xs uppercase tracking-wider mb-1">Client</p>
+              <p className="text-white/50 text-xs uppercase tracking-wider mb-1">{t.client}</p>
               <p className="text-white text-lg font-medium">{booking?.client_name}</p>
             </div>
             <div className={`text-xs px-3 py-1.5 rounded-full font-medium ${statusColors[booking?.payment_status] || 'text-white/40'}`}>
-              {booking?.payment_status === 'paid' ? 'Confirmée' : 'En attente'}
+              {booking?.payment_status === 'paid' ? t.confirmed : t.pending}
             </div>
           </div>
 
@@ -152,14 +152,14 @@ export default function RideTracking() {
             <div className="flex items-start gap-3">
               <MapPin className="w-4 h-4 text-[#C9A96E] mt-1 shrink-0" />
               <div>
-                <p className="text-white/50 text-xs uppercase tracking-wider">Départ</p>
+                <p className="text-white/50 text-xs uppercase tracking-wider">{t.departure}</p>
                 <p className="text-white">{booking?.departure_point}</p>
               </div>
             </div>
             <div className="flex items-start gap-3">
               <MapPin className="w-4 h-4 text-white/60 mt-1 shrink-0" />
               <div>
-                <p className="text-white/50 text-xs uppercase tracking-wider">Destination</p>
+                <p className="text-white/50 text-xs uppercase tracking-wider">{t.destination}</p>
                 <p className="text-white">{booking?.arrival_point}</p>
               </div>
             </div>
@@ -168,19 +168,19 @@ export default function RideTracking() {
           {/* Trip Details */}
           <div className="grid grid-cols-2 md:grid-cols-4 gap-4 pt-6 border-t border-white/10">
             <div>
-              <p className="text-white/50 text-xs mb-1">Date</p>
+              <p className="text-white/50 text-xs mb-1">{t.date}</p>
               <p className="text-white text-sm font-medium">{booking?.departure_date}</p>
             </div>
             <div>
-              <p className="text-white/50 text-xs mb-1">Heure</p>
+              <p className="text-white/50 text-xs mb-1">{t.time}</p>
               <p className="text-white text-sm font-medium">{booking?.departure_time}</p>
             </div>
             <div>
-              <p className="text-white/50 text-xs mb-1">Distance</p>
+              <p className="text-white/50 text-xs mb-1">{t.distance}</p>
               <p className="text-white text-sm font-medium">{booking?.distance_km} km</p>
             </div>
             <div>
-              <p className="text-white/50 text-xs mb-1">Total</p>
+              <p className="text-white/50 text-xs mb-1">{t.total}</p>
               <p className="text-[#C9A96E] text-sm font-bold">CHF {booking?.total_price?.toFixed(2)}</p>
             </div>
           </div>
