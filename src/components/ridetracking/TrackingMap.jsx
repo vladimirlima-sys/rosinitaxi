@@ -2,12 +2,25 @@ import React, { useEffect, useRef, useState } from 'react';
 import { AlertCircle, Loader2, MapPin, Clock } from 'lucide-react';
 import { base44 } from '@/api/base44Client';
 
-export default function TrackingMap({ booking, loading, error }) {
+function calcETA(driverLat, driverLng, destLat, destLng) {
+  // Haversine distance in km
+  const R = 6371;
+  const dLat = (destLat - driverLat) * Math.PI / 180;
+  const dLng = (destLng - driverLng) * Math.PI / 180;
+  const a = Math.sin(dLat/2)**2 + Math.cos(driverLat * Math.PI/180) * Math.cos(destLat * Math.PI/180) * Math.sin(dLng/2)**2;
+  const distKm = R * 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1-a));
+  // Assume average speed of 40 km/h in urban areas
+  const minutes = Math.round((distKm / 40) * 60);
+  return minutes;
+}
+
+export default function TrackingMap({ booking, loading, error, departureCoords }) {
   const mapRef = useRef(null);
   const mapInstanceRef = useRef(null);
   const driverMarkerRef = useRef(null);
   const [driverLocation, setDriverLocation] = useState(null);
   const [mapLoaded, setMapLoaded] = useState(false);
+  const [eta, setEta] = useState(null);
   const unsubscribeRef = useRef(null);
 
   useEffect(() => {
