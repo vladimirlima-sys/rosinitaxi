@@ -25,7 +25,7 @@ export default function RideCounter() {
 
   return (
     <div className="w-full max-w-md mt-2 mb-4">
-      <div className="bg-black px-5 py-4 opacity-90 rounded-xl flex items-center gap-4">
+      <div className="bg-black rounded-xl px-5 py-4 flex items-center gap-4">
         <div className="w-10 h-10 rounded-full bg-[#F5C300]/10 flex items-center justify-center flex-shrink-0">
           <Route className="w-5 h-5 text-[#F5C300]" />
         </div>
@@ -34,6 +34,6 @@ export default function RideCounter() {
           <p className="text-white/50 text-xs mt-1 uppercase tracking-wider">{t.ridesCompleted}</p>
         </div>
       </div>
-    </div>);
-
+    </div>
+  );
 }
