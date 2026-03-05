@@ -67,10 +67,8 @@ Deno.serve(async (req) => {
       'ContentSid': template.sid
     });
 
-    // Add template variables in correct format
-    template.variables.forEach((variable, index) => {
-      bodyParams.append(`ContentVariables`, JSON.stringify(variable));
-    });
+    // Add template variables in correct format (as array)
+    bodyParams.append('ContentVariables', JSON.stringify(template.variables));
 
     const response = await fetch(url, {
       method: 'POST',
