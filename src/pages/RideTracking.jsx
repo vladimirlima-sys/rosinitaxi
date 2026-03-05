@@ -189,18 +189,18 @@ export default function RideTracking() {
         {/* Driver Card */}
         {driver && (
           <div className="mb-8">
-            <DriverCard driver={driver} booking={booking} />
+            <DriverCard driver={driver} booking={booking} t={t} />
           </div>
         )}
 
         {/* Support Contact */}
         <div className="mb-8">
-          <SupportContact />
+          <SupportContact t={t} />
         </div>
 
         {/* Info Footer */}
         <div className="bg-white/5 border border-white/10 rounded-xl p-4 text-center">
-          <p className="text-white/50 text-sm">Suivi en temps réel · Rosini Transfert</p>
+          <p className="text-white/50 text-sm">{t.realTimeTracking}</p>
         </div>
       </div>
     </div>
