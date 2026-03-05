@@ -140,6 +140,23 @@ export default function BookingForm({ bookingRef }) {
     return priceSettings.standard_price_per_km;
   };
 
+  const checkValaisFribourg = () => {
+    if (!priceSettings || !priceSettings.valais_fribourg_surcharge_percentage) return false;
+    const valaisFribourgKeywords = [
+      'valais', 'wallis', 'vs',
+      'fribourg', 'freiburg', 'fr',
+      'sion', 'sierre', 'martigny', 'monthey', 'visp', 'brig', 'zermatt',
+      'verbier', 'crans-montana', 'crans montana', 'saas-fee', 'saas fee',
+      'leukerbad', 'nendaz', 'verbier', 'leysin', 'champery', 'champéry',
+      'bulle', 'romont', 'murten', 'morat', 'estavayer', 'chatel-saint-denis',
+      'gruyères', 'gruyeres', 'gruyere', 'charmey', 'schwarzsee', 'tafers',
+      'payerne', 'avenches', 'domdidier', 'gletscherdorf', 'saanen', 'gstaad'
+    ];
+    const dep = form.departure_point.toLowerCase();
+    const arr = form.arrival_point.toLowerCase();
+    return valaisFribourgKeywords.some(k => dep.includes(k) || arr.includes(k));
+  };
+
   const calculateTotalPrice = () => {
     if (!priceSettings || estimatedDistance === 0 || !form.vehicle_type) return null;
     
@@ -155,14 +172,11 @@ export default function BookingForm({ bookingRef }) {
       const day = dt.getDay(), hour = dt.getHours();
       const nightSurchargeDays = priceSettings.night_surcharge_days || [];
       
-      // Check if day matches and hour is in range (considering midnight crossing)
       let isNightTime = false;
       if (nightSurchargeDays.includes(day)) {
         if (priceSettings.night_surcharge_start_hour > priceSettings.night_surcharge_end_hour) {
-          // Crosses midnight
           isNightTime = hour >= priceSettings.night_surcharge_start_hour || hour < priceSettings.night_surcharge_end_hour;
         } else {
-          // Normal range
           isNightTime = hour >= priceSettings.night_surcharge_start_hour && hour < priceSettings.night_surcharge_end_hour;
         }
       }
@@ -172,20 +186,8 @@ export default function BookingForm({ bookingRef }) {
       }
     }
 
-    // Apply Valais/Fribourg surcharge if conditions match (applied AFTER base + distance)
-    // Keywords: canton names, abbreviations, and major cities
-    const valaisFribourgKeywords = [
-      'valais', 'wallis', ', vs', '(vs)', ' vs ',
-      'fribourg', 'freiburg', ', fr', '(fr)', ' fr ',
-      'sion', 'sierre', 'martigny', 'monthey', 'visp', 'brig', 'zermatt',
-      'verbier', 'crans-montana', 'saas-fee', 'leukerbad', 'nendaz',
-      'bulle', 'romont', 'murten', 'morat', 'estavayer', 'châtel-saint-denis',
-      'gruyères', 'gruyere', 'charmey', 'schwarzsee'
-    ];
-    const dep = form.departure_point.toLowerCase();
-    const arr = form.arrival_point.toLowerCase();
-    const isValaisFribourg = valaisFribourgKeywords.some(k => dep.includes(k) || arr.includes(k));
-    if (isValaisFribourg && priceSettings.valais_fribourg_surcharge_percentage > 0) {
+    // Apply Valais/Fribourg surcharge
+    if (checkValaisFribourg()) {
       total *= 1 + priceSettings.valais_fribourg_surcharge_percentage / 100;
     }
 
