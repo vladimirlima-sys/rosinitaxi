@@ -196,10 +196,6 @@ export default function DriverPortal() {
   const handleLogout = () => {
     localStorage.removeItem('driver_auth_token');
     tokenRef.current = null;
-    if (!rememberPassword) {
-      localStorage.removeItem('driver_portal_code');
-      setDriverCode('');
-    }
     setDriver(null);
     setBookings([]);
     prevBookingIds.current = new Set();
