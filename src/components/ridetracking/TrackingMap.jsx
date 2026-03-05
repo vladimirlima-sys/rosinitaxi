@@ -14,7 +14,7 @@ function calcETA(driverLat, driverLng, destLat, destLng) {
   return minutes;
 }
 
-export default function TrackingMap({ booking, loading, error, departureCoords }) {
+export default function TrackingMap({ booking, loading, error, t }) {
   const mapRef = useRef(null);
   const mapInstanceRef = useRef(null);
   const driverMarkerRef = useRef(null);
