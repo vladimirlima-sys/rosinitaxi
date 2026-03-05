@@ -19,10 +19,6 @@ export default function Drivers() {
   const [selectedDriverForCredential, setSelectedDriverForCredential] = useState(null);
 
   useEffect(() => {
-    if (localStorage.getItem('admin_unlocked') !== 'true') {
-      window.location.href = createPageUrl('AdminPanel');
-      return;
-    }
     fetchDrivers();
     const unsubscribe = base44.entities.Booking.subscribe(() => {
       fetchMonthlyRevenue();
