@@ -111,9 +111,9 @@ export default function RideTracking() {
             className="flex items-center gap-1 text-white/40 hover:text-white/70 transition-colors text-sm mb-4"
           >
             <ArrowLeft className="w-4 h-4" />
-            Voltar
+            Retour
           </a>
-          <h1 className="text-3xl md:text-4xl font-light text-white">Rastreamento de Corrida</h1>
+          <h1 className="text-3xl md:text-4xl font-light text-white">Suivi de course</h1>
         </div>
 
         {/* Map */}
@@ -133,11 +133,11 @@ export default function RideTracking() {
           {/* Status */}
           <div className="flex items-center justify-between mb-6">
             <div>
-              <p className="text-white/50 text-xs uppercase tracking-wider mb-1">Cliente</p>
+              <p className="text-white/50 text-xs uppercase tracking-wider mb-1">Client</p>
               <p className="text-white text-lg font-medium">{booking?.client_name}</p>
             </div>
             <div className={`text-xs px-3 py-1.5 rounded-full font-medium ${statusColors[booking?.payment_status] || 'text-white/40'}`}>
-              {booking?.payment_status === 'paid' ? 'Confirmada' : 'Pendente'}
+              {booking?.payment_status === 'paid' ? 'Confirmée' : 'En attente'}
             </div>
           </div>
 
@@ -146,14 +146,14 @@ export default function RideTracking() {
             <div className="flex items-start gap-3">
               <MapPin className="w-4 h-4 text-[#C9A96E] mt-1 shrink-0" />
               <div>
-                <p className="text-white/50 text-xs uppercase tracking-wider">Partida</p>
+                <p className="text-white/50 text-xs uppercase tracking-wider">Départ</p>
                 <p className="text-white">{booking?.departure_point}</p>
               </div>
             </div>
             <div className="flex items-start gap-3">
               <MapPin className="w-4 h-4 text-white/60 mt-1 shrink-0" />
               <div>
-                <p className="text-white/50 text-xs uppercase tracking-wider">Destino</p>
+                <p className="text-white/50 text-xs uppercase tracking-wider">Destination</p>
                 <p className="text-white">{booking?.arrival_point}</p>
               </div>
             </div>
@@ -162,15 +162,15 @@ export default function RideTracking() {
           {/* Trip Details */}
           <div className="grid grid-cols-2 md:grid-cols-4 gap-4 pt-6 border-t border-white/10">
             <div>
-              <p className="text-white/50 text-xs mb-1">Data</p>
+              <p className="text-white/50 text-xs mb-1">Date</p>
               <p className="text-white text-sm font-medium">{booking?.departure_date}</p>
             </div>
             <div>
-              <p className="text-white/50 text-xs mb-1">Hora</p>
+              <p className="text-white/50 text-xs mb-1">Heure</p>
               <p className="text-white text-sm font-medium">{booking?.departure_time}</p>
             </div>
             <div>
-              <p className="text-white/50 text-xs mb-1">Distância</p>
+              <p className="text-white/50 text-xs mb-1">Distance</p>
               <p className="text-white text-sm font-medium">{booking?.distance_km} km</p>
             </div>
             <div>
@@ -194,7 +194,7 @@ export default function RideTracking() {
 
         {/* Info Footer */}
         <div className="bg-white/5 border border-white/10 rounded-xl p-4 text-center">
-          <p className="text-white/50 text-sm">Rastreamento em tempo real · Rosini Transfert</p>
+          <p className="text-white/50 text-sm">Suivi en temps réel · Rosini Transfert</p>
         </div>
       </div>
     </div>
