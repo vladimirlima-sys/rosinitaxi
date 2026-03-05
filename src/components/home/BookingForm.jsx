@@ -832,7 +832,7 @@ export default function BookingForm({ bookingRef }) {
             {!isShortNotice && <p className="text-black/40 text-xs">{t.confirmEmail(form.client_email)}</p>}
             <button
               onClick={resetForm}
-              className="mt-4 px-8 h-12 rounded-xl bg-[#F5C300] text-black font-bold text-sm uppercase tracking-wider hover:bg-[#e6b800] transition-all"
+              className="mt-2 px-6 h-10 rounded-lg bg-[#F5C300] text-black font-bold text-xs uppercase tracking-wider hover:bg-[#e6b800] transition-all"
             >
               {t.newBooking}
             </button>
