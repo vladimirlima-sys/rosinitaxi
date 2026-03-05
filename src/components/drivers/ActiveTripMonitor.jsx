@@ -99,7 +99,7 @@ export default function ActiveTripMonitor({ booking, onCompleted }) {
          client_phone: booking.client_phone,
          client_name: booking.client_name,
          departure_point: booking.departure_point,
-         tracking_link: window.location.href,
+         tracking_link: `${window.location.origin}${createPageUrl('RideTracking')}?id=${booking.id}`,
          status: key,
          language: booking.language || 'fr'
        });
