@@ -18,6 +18,7 @@ export default function DriverPortal() {
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState('');
   const [notificationsEnabled, setNotificationsEnabled] = useState(false);
+  const [geoEnabled, setGeoEnabled] = useState(false);
   const [showEarnings, setShowEarnings] = useState(false);
   const [lastUpdated, setLastUpdated] = useState(null);
   const [newBookingIds, setNewBookingIds] = useState(new Set());
