@@ -142,6 +142,17 @@ export default function Drivers() {
           <p className="text-black/60 text-xs md:text-sm">{active} actifs · {inactive} inactifs</p>
         </div>
 
+        {/* Geolocation banner */}
+        {!geoEnabled && (
+          <button
+            onClick={requestGeolocation}
+            className="w-full mb-4 bg-blue-500/10 border border-blue-500/20 rounded-xl p-3 flex items-center gap-3 text-left hover:bg-blue-500/20 transition-all"
+          >
+            <span className="text-lg shrink-0">📍</span>
+            <p className="text-blue-900 text-sm">Activer la géolocalisation pour partager votre position avec les clients</p>
+          </button>
+        )}
+
         {/* Search bar */}
         {drivers.length > 0 && (
           <div className="relative mb-4">
