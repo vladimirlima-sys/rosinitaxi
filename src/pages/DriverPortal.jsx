@@ -30,10 +30,12 @@ export default function DriverPortal() {
 
   useEffect(() => {
     const saved = localStorage.getItem('driver_portal_email');
+    const savedPass = localStorage.getItem('driver_portal_password');
     if (saved) {
       setEmail(saved);
       setRememberPassword(true);
     }
+    if (savedPass) setPassword(savedPass);
     
     // Try to restore session with token
     const savedToken = localStorage.getItem('driver_auth_token');
