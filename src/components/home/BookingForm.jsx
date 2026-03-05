@@ -217,9 +217,8 @@ export default function BookingForm({ bookingRef }) {
       'enney', 'botterens', 'villargiroud', 'avry-sur-matran',
     ];
     const dep = form.departure_point.toLowerCase();
-    const arr = form.arrival_point.toLowerCase();
     const allKeywords = [...valaisKeywords, ...fribourgKeywords];
-    return allKeywords.some(k => dep.includes(k) || arr.includes(k));
+    return allKeywords.some(k => dep.includes(k));
   };
 
   const calculateTotalPrice = () => {
