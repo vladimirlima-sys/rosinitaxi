@@ -554,7 +554,7 @@ export default function BookingForm({ bookingRef }) {
 
             {/* Price preview */}
              {estimatedDistance > 0 &&
-          <div className="bg-black border border-black/40 rounded-xl p-3 sm:p-4 flex items-center justify-between">
+          <div className="bg-black opacity-80 border border-black/40 rounded-xl p-3 sm:p-4 flex items-center justify-between">
                 <div>
                   <p className="text-white/60 text-xs uppercase tracking-wider">{t.estimatedPrice}</p>
                   <p className="text-white text-sm mt-0.5">{estimatedDistance} km · {Math.floor(estimatedTime / 60)}h{estimatedTime % 60}min</p>
@@ -653,8 +653,8 @@ export default function BookingForm({ bookingRef }) {
             </div>
 
             {/* Preferred driver selection */}
-            <div className="bg-black border border-black/40 rounded-xl p-4">
-              <PreferredDriverSelector
+            <div className="bg-black opacity-80 border border-black/40 rounded-xl p-4">
+             <PreferredDriverSelector
               lang={lang}
               selectedDriverId={selectedDriver?.id || null}
               onSelect={(driver) => setSelectedDriver(driver)}
@@ -679,8 +679,8 @@ export default function BookingForm({ bookingRef }) {
         {/* STEP 3 — Personal Info */}
         {step === 3 &&
         <div className="space-y-2 sm:space-y-3">
-            <div className="bg-black border border-black/40 rounded-xl p-3 sm:p-4 space-y-3 sm:space-y-4">
-              <h3 className="text-white font-semibold text-xs sm:text-sm uppercase tracking-wider">{t.step3Title}</h3>
+            <div className="bg-black opacity-80 border border-black/40 rounded-xl p-3 sm:p-4 space-y-3 sm:space-y-4">
+             <h3 className="text-white font-semibold text-xs sm:text-sm uppercase tracking-wider">{t.step3Title}</h3>
 
               <div>
                 <label className={labelClass}><User className="inline w-3 h-3 mr-1" />{t.nameLabel}</label>
@@ -759,8 +759,8 @@ export default function BookingForm({ bookingRef }) {
         {step === 4 &&
         <div className="space-y-2 sm:space-y-3">
             {/* Summary */}
-            <div className="bg-black border border-black/40 rounded-xl p-3 sm:p-4 space-y-2">
-              <h3 className="text-white/60 text-xs uppercase tracking-wider mb-3">{t.summaryLabel}</h3>
+            <div className="bg-black opacity-80 border border-black/40 rounded-xl p-3 sm:p-4 space-y-2">
+             <h3 className="text-white/60 text-xs uppercase tracking-wider mb-3">{t.summaryLabel}</h3>
               <div className="space-y-2">
                 <div className="flex justify-between text-sm"><span className="text-white/50">{t.departure}</span><span className="text-white text-right max-w-[60%] truncate">{form.departure_point}</span></div>
                 <div className="flex justify-between text-sm"><span className="text-white/50">{t.arrival}</span><span className="text-white text-right max-w-[60%] truncate">{form.arrival_point}</span></div>
@@ -778,8 +778,8 @@ export default function BookingForm({ bookingRef }) {
             </div>
 
             {/* Payment method */}
-            <div className="bg-black border border-black/40 rounded-xl p-3 sm:p-4 space-y-2">
-              <h3 className="text-white/60 text-xs uppercase tracking-wider mb-3">{t.paymentMethod}</h3>
+            <div className="bg-black opacity-80 border border-black/40 rounded-xl p-3 sm:p-4 space-y-2">
+             <h3 className="text-white/60 text-xs uppercase tracking-wider mb-3">{t.paymentMethod}</h3>
               {[
             { value: 'stripe', label: t.stripeLabel, desc: t.stripeDesc },
             { value: 'twint', label: t.twintLabel, desc: t.twintDesc },
