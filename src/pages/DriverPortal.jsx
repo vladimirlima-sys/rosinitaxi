@@ -367,10 +367,21 @@ export default function DriverPortal() {
         {!notificationsEnabled && (
           <button
             onClick={requestNotifications}
-            className="w-full mb-4 bg-[#F5C300]/10 border border-[#F5C300]/20 rounded-xl p-3 flex items-center gap-3 text-left hover:bg-[#F5C300]/20 transition-all"
+            className="w-full mb-3 bg-[#F5C300]/10 border border-[#F5C300]/20 rounded-xl p-3 flex items-center gap-3 text-left hover:bg-[#F5C300]/20 transition-all"
           >
             <Bell className="w-4 h-4 text-[#F5C300] shrink-0" />
             <p className="text-[#F5C300] text-sm">Activer les notifications pour recevoir des alertes de nouvelles courses</p>
+          </button>
+        )}
+
+        {/* Geolocation banner */}
+        {!geoEnabled && (
+          <button
+            onClick={requestGeolocation}
+            className="w-full mb-4 bg-blue-500/10 border border-blue-500/20 rounded-xl p-3 flex items-center gap-3 text-left hover:bg-blue-500/20 transition-all"
+          >
+            <span className="text-lg shrink-0">📍</span>
+            <p className="text-blue-400 text-sm">Activer la géolocalisation pour partager votre position avec les clients</p>
           </button>
         )}
 
