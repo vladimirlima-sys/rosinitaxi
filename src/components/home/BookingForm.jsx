@@ -201,6 +201,7 @@ export default function BookingForm({ bookingRef }) {
   };
 
   const totalPrice = calculateTotalPrice();
+  const hasValaisFribourgSurcharge = checkValaisFribourg();
 
   const checkShortNotice = () => {
     if (!form.departure_date || !form.departure_time) return false;
