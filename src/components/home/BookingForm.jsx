@@ -647,7 +647,7 @@ export default function BookingForm({ bookingRef }) {
             </div>
 
             {/* Preferred driver selection */}
-            <div className="bg-black border border-black/40 rounded-xl p-4">
+            <div className="bg-black border border-black/40 rounded-xl p-3">
               <PreferredDriverSelector
                 lang={lang}
                 selectedDriverId={selectedDriver?.id || null}
