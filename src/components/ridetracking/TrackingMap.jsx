@@ -110,6 +110,20 @@ export default function TrackingMap({ booking, loading, error, departureCoords }
     };
   }, [booking?.id]); // only re-init if booking ID changes
 
+  // Geocode departure point to get coordinates for ETA
+  const departureCoordsRef = useRef(null);
+  useEffect(() => {
+    if (!booking?.departure_point || departureCoordsRef.current) return;
+    fetch(`https://nominatim.openstreetmap.org/search?q=${encodeURIComponent(booking.departure_point)}&format=json&limit=1`)
+      .then(r => r.json())
+      .then(data => {
+        if (data?.[0]) {
+          departureCoordsRef.current = { lat: parseFloat(data[0].lat), lng: parseFloat(data[0].lon) };
+        }
+      })
+      .catch(() => {});
+  }, [booking?.departure_point]);
+
   // Update driver marker when location changes - move marker instead of recreating
   useEffect(() => {
     if (!mapLoaded || !mapInstanceRef.current || !driverLocation || !window.L) return;
@@ -133,8 +147,14 @@ export default function TrackingMap({ booking, loading, error, departureCoords }
         .bindPopup('🚗 Chauffeur');
     }
 
-    // Pan map smoothly to follow driver, keep zoom level at 15
+    // Pan map smoothly to follow driver, keep zoom level at 16
     mapInstanceRef.current.setView([lat, lng], 16, { animate: true });
+
+    // Calculate ETA to departure point
+    if (departureCoordsRef.current) {
+      const minutes = calcETA(lat, lng, departureCoordsRef.current.lat, departureCoordsRef.current.lng);
+      setEta(minutes);
+    }
   }, [driverLocation, mapLoaded]);
 
   if (loading) {
