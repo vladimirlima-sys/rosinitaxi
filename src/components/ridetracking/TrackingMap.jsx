@@ -120,8 +120,8 @@ export default function TrackingMap({ booking, loading, error }) {
         .bindPopup('🚗 Chauffeur');
     }
 
-    // Pan map smoothly to follow driver
-    mapInstanceRef.current.panTo([lat, lng]);
+    // Pan map smoothly to follow driver, keep zoom level at 15
+    mapInstanceRef.current.setView([lat, lng], 15, { animate: true });
   }, [driverLocation, mapLoaded]);
 
   if (loading) {
