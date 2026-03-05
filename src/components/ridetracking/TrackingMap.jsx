@@ -13,7 +13,7 @@ export default function TrackingMap({ booking, loading, error }) {
   useEffect(() => {
     if (!booking?.id) return;
 
-    const loadLocation = async () => {
+    const fetchLatestLocation = async () => {
       try {
         const locations = await base44.entities.DriverLocation.filter(
           { booking_id: booking.id },
@@ -21,19 +21,28 @@ export default function TrackingMap({ booking, loading, error }) {
           1
         );
         if (locations?.length > 0) setDriverLocation(locations[0]);
-
-        unsubscribeRef.current = base44.entities.DriverLocation.subscribe((event) => {
-          if (event.data?.booking_id === booking.id && event.type === 'create') {
-            setDriverLocation(event.data);
-          }
-        });
       } catch (err) {
         console.error('Failed to load driver location:', err);
       }
     };
 
-    loadLocation();
-    return () => { if (unsubscribeRef.current) unsubscribeRef.current(); };
+    // Initial fetch
+    fetchLatestLocation();
+
+    // Poll every 5 seconds as primary update mechanism
+    const interval = setInterval(fetchLatestLocation, 5000);
+
+    // Also subscribe for real-time updates
+    unsubscribeRef.current = base44.entities.DriverLocation.subscribe((event) => {
+      if (event.data?.booking_id === booking.id && (event.type === 'create' || event.type === 'update')) {
+        setDriverLocation(event.data);
+      }
+    });
+
+    return () => {
+      clearInterval(interval);
+      if (unsubscribeRef.current) unsubscribeRef.current();
+    };
   }, [booking?.id]);
 
   // Load Leaflet CSS
