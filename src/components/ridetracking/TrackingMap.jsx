@@ -1,5 +1,5 @@
 import React, { useEffect, useRef, useState } from 'react';
-import { AlertCircle, Loader2, MapPin } from 'lucide-react';
+import { AlertCircle, Loader2, MapPin, Clock } from 'lucide-react';
 import { base44 } from '@/api/base44Client';
 
 export default function TrackingMap({ booking, loading, error }) {
