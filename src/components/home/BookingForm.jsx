@@ -497,7 +497,7 @@ export default function BookingForm({ bookingRef }) {
                   onChange={(date) => update('departure_date', date)}
                 />
               </div>
-              <div className="bg-black border border-black/40 rounded-xl p-3 sm:p-4">
+              <div className="bg-black border border-black/40 rounded-xl p-2.5 sm:p-3">
                 <label className={labelClass}><Clock className="inline w-3 h-3 mr-1" />{t.timeLabel}</label>
                 <input
                   type="time"
