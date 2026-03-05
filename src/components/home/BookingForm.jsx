@@ -432,7 +432,7 @@ export default function BookingForm({ bookingRef }) {
 
       {/* STEP 1 — Booking form */}
         {step === 1 && (
-          <div className="space-y-2 sm:space-y-3">
+          <div className="space-y-1.5">
             {/* Departure */}
              <div className="bg-black border border-black/40 rounded-xl p-3 sm:p-4">
               <PlacesAutocomplete
