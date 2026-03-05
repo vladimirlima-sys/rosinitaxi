@@ -15,6 +15,9 @@ export default function RideTracking() {
   const [error, setError] = useState('');
   const unsubscribeRef = useRef(null);
 
+  const lang = booking?.language || 'fr';
+  const t = translations[lang] || translations['fr'];
+
   useEffect(() => {
     const params = new URLSearchParams(window.location.search);
     const bookingId = params.get('id');
