@@ -190,6 +190,16 @@ export default function TrackingMap({ booking, loading, error, departureCoords }
           </div>
         </div>
       )}
+      {driverLocation && eta !== null && (
+        <div className="absolute top-3 left-3 pointer-events-none" style={{ zIndex: 1000 }}>
+          <div className="bg-black/75 backdrop-blur-sm rounded-xl px-3 py-2 flex items-center gap-2">
+            <Clock className="w-3.5 h-3.5 text-[#F5C300]" />
+            <span className="text-white text-xs font-medium">
+              {eta <= 1 ? 'Arrivée imminente' : `~${eta} min jusqu'au départ`}
+            </span>
+          </div>
+        </div>
+      )}
     </div>
   );
 }
