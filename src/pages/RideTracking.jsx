@@ -40,8 +40,8 @@ export default function RideTracking() {
 
   const loadBooking = async (bookingId) => {
     try {
-      const bookings = await base44.entities.Booking.list('-created_date', 200);
-      const found = bookings.find(b => b.id === bookingId);
+      const bookings = await base44.entities.Booking.filter({ id: bookingId });
+      const found = bookings[0];
       
       if (!found) {
         setError('Reserva não encontrada');
