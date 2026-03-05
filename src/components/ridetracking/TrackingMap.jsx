@@ -217,7 +217,9 @@ export default function TrackingMap({ booking, loading, error, t }) {
           <div className="bg-black/75 backdrop-blur-sm rounded-xl px-3 py-2 flex items-center gap-2">
             <Clock className="w-3.5 h-3.5 text-[#F5C300]" />
             <span className="text-white text-xs font-medium">
-              {eta <= 1 ? 'Arrivée imminente' : `~${eta} min jusqu'au départ`}
+              {eta <= 1
+                ? (t?.etaImminent || 'Arrivée imminente')
+                : (t?.etaMinutes ? t.etaMinutes(eta) : `~${eta} min`)}
             </span>
           </div>
         </div>
