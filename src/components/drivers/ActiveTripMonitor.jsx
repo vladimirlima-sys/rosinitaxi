@@ -91,6 +91,13 @@ export default function ActiveTripMonitor({ booking, onCompleted }) {
    localStorage.setItem(storageKey, key);
    setTripStatus(key);
 
+   // Update ride_status on booking record so client tracking page reflects it
+   try {
+     await base44.entities.Booking.update(booking.id, { ride_status: key });
+   } catch (err) {
+     console.error('Failed to update ride_status:', err);
+   }
+
    // Notify client via WhatsApp (en_route and arrived only)
    if (['en_route', 'arrived'].includes(key)) {
      try {
