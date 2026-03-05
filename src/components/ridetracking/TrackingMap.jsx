@@ -207,7 +207,7 @@ export default function TrackingMap({ booking, loading, error, t }) {
         <div className="absolute inset-0 flex flex-col items-center justify-center pointer-events-none">
           <div className="bg-black/60 backdrop-blur-sm rounded-xl px-4 py-2">
             <p className="text-white/60 text-xs flex items-center gap-1">
-              <MapPin className="w-3 h-3" /> Position du chauffeur non disponible
+              <MapPin className="w-3 h-3" /> {t?.driverLocation || 'Position du chauffeur non disponible'}
             </p>
           </div>
         </div>
