@@ -28,7 +28,7 @@ const labels = {
     statuses: { pending: 'En attente', paid: 'Payé', cancelled: 'Annulé', refunded: 'Remboursé' },
     loading: 'Chargement...',
     close: 'Fermer',
-    editNotesInfo: 'Décrivez vos modifications (horaire, adresse, etc.) et nous vous contacterons.',
+    editNotesInfo: 'Décrivez vos modifications (horaire, adresse, etc.) et nous vous contacterons.'
   },
   en: {
     title: 'Check my booking',
@@ -48,7 +48,7 @@ const labels = {
     statuses: { pending: 'Pending', paid: 'Paid', cancelled: 'Cancelled', refunded: 'Refunded' },
     loading: 'Loading...',
     close: 'Close',
-    editNotesInfo: 'Describe your changes (time, address, etc.) and we will contact you.',
+    editNotesInfo: 'Describe your changes (time, address, etc.) and we will contact you.'
   },
   pt: {
     title: 'Consultar a minha reserva',
@@ -68,7 +68,7 @@ const labels = {
     statuses: { pending: 'Pendente', paid: 'Pago', cancelled: 'Cancelado', refunded: 'Reembolsado' },
     loading: 'A carregar...',
     close: 'Fechar',
-    editNotesInfo: 'Descreva as suas alterações (hora, morada, etc.) e entraremos em contacto.',
+    editNotesInfo: 'Descreva as suas alterações (hora, morada, etc.) e entraremos em contacto.'
   },
   de: {
     title: 'Meine Buchung einsehen',
@@ -88,7 +88,7 @@ const labels = {
     statuses: { pending: 'Ausstehend', paid: 'Bezahlt', cancelled: 'Storniert', refunded: 'Erstattet' },
     loading: 'Laden...',
     close: 'Schließen',
-    editNotesInfo: 'Beschreiben Sie Ihre Änderungen und wir melden uns.',
+    editNotesInfo: 'Beschreiben Sie Ihre Änderungen und wir melden uns.'
   },
   it: {
     title: 'Consulta la mia prenotazione',
@@ -108,8 +108,8 @@ const labels = {
     statuses: { pending: 'In attesa', paid: 'Pagato', cancelled: 'Cancellato', refunded: 'Rimborsato' },
     loading: 'Caricamento...',
     close: 'Chiudi',
-    editNotesInfo: 'Descrivi le modifiche e ti contatteremo.',
-  },
+    editNotesInfo: 'Descrivi le modifiche e ti contatteremo.'
+  }
 };
 
 function isLessThan24h(departure_date, departure_time) {
@@ -145,13 +145,13 @@ export default function MyBookingCard() {
     setSelectedBooking(null);
     const results = await base44.entities.Booking.filter({ client_email: email.trim() }, '-departure_date', 10);
     // Also try lowercase match in case stored differently
-    const lowerResults = email.trim() !== email.trim().toLowerCase()
-      ? await base44.entities.Booking.filter({ client_email: email.trim().toLowerCase() }, '-departure_date', 10)
-      : [];
-    const combined = [...results, ...lowerResults.filter(r => !results.find(x => x.id === r.id))];
-    const active = combined.filter(b => b.payment_status !== 'cancelled' && b.payment_status !== 'refunded');
+    const lowerResults = email.trim() !== email.trim().toLowerCase() ?
+    await base44.entities.Booking.filter({ client_email: email.trim().toLowerCase() }, '-departure_date', 10) :
+    [];
+    const combined = [...results, ...lowerResults.filter((r) => !results.find((x) => x.id === r.id))];
+    const active = combined.filter((b) => b.payment_status !== 'cancelled' && b.payment_status !== 'refunded');
     setLoading(false);
-    if (!active.length) { setNotFound(true); return; }
+    if (!active.length) {setNotFound(true);return;}
     setBookings(active);
   };
 
@@ -161,7 +161,7 @@ export default function MyBookingCard() {
     // Use the cancelBooking backend function to handle refund logic properly
     const res = await base44.functions.invoke('cancelBooking', { booking_id: selectedBooking.id });
     if (res.data?.success || res.data?.error === 'Booking is already cancelled') {
-      setBookings(prev => prev.filter(b => b.id !== selectedBooking.id));
+      setBookings((prev) => prev.filter((b) => b.id !== selectedBooking.id));
       setMode(null);
       setSelectedBooking(null);
       setSuccessMsg(t.cancelledSuccess);
@@ -173,21 +173,21 @@ export default function MyBookingCard() {
     if (!selectedBooking) return;
     setActionLoading(true);
     await base44.entities.Booking.update(selectedBooking.id, { notes });
-    setBookings(prev => prev.map(b => b.id === selectedBooking.id ? { ...b, notes } : b));
+    setBookings((prev) => prev.map((b) => b.id === selectedBooking.id ? { ...b, notes } : b));
     setMode(null);
     setSelectedBooking(null);
     setSuccessMsg(t.notesSaved);
     setActionLoading(false);
   };
 
-  const openCancel = (booking) => { setSelectedBooking(booking); setMode('cancel'); setSuccessMsg(''); };
-  const openEdit = (booking) => { setSelectedBooking(booking); setNotes(booking.notes || ''); setMode('edit'); setSuccessMsg(''); };
-  const closeAction = () => { setMode(null); setSelectedBooking(null); };
+  const openCancel = (booking) => {setSelectedBooking(booking);setMode('cancel');setSuccessMsg('');};
+  const openEdit = (booking) => {setSelectedBooking(booking);setNotes(booking.notes || '');setMode('edit');setSuccessMsg('');};
+  const closeAction = () => {setMode(null);setSelectedBooking(null);};
 
   const statusColor = { pending: 'text-yellow-400', paid: 'text-green-400', cancelled: 'text-red-400', refunded: 'text-blue-400' };
 
   return (
-    <div className="bg-black border border-black/40 rounded-xl p-4 space-y-3 mt-4">
+    <div className="bg-black mt-4 p-4 opacity-75 rounded-xl border border-black/40 space-y-3">
       <div className="flex items-center gap-2 mb-1">
         <Mail className="w-4 h-4 text-[#F5C300]" />
         <h3 className="text-white font-semibold text-sm uppercase tracking-wider">{t.title}</h3>
@@ -198,16 +198,16 @@ export default function MyBookingCard() {
         <input
           type="email"
           value={email}
-          onChange={e => setEmail(e.target.value)}
-          onKeyDown={e => e.key === 'Enter' && handleSearch()}
+          onChange={(e) => setEmail(e.target.value)}
+          onKeyDown={(e) => e.key === 'Enter' && handleSearch()}
           placeholder={t.emailPlaceholder}
-          className="flex-1 bg-white/10 border border-white/20 rounded-lg text-white text-sm p-3 outline-none placeholder:text-white/40 focus:border-white/60"
-        />
+          className="flex-1 bg-white/10 border border-white/20 rounded-lg text-white text-sm p-3 outline-none placeholder:text-white/40 focus:border-white/60" />
+
         <button
           onClick={handleSearch}
           disabled={loading}
-          className="px-4 py-2 bg-[#F5C300] text-black font-bold text-sm rounded-lg hover:bg-[#e6b800] transition-all flex items-center gap-1 disabled:opacity-60"
-        >
+          className="px-4 py-2 bg-[#F5C300] text-black font-bold text-sm rounded-lg hover:bg-[#e6b800] transition-all flex items-center gap-1 disabled:opacity-60">
+
           {loading ? <Loader2 className="w-4 h-4 animate-spin" /> : <Search className="w-4 h-4" />}
           {t.search}
         </button>
@@ -217,16 +217,16 @@ export default function MyBookingCard() {
       {notFound && <p className="text-white/50 text-sm text-center py-2">{t.noBooking}</p>}
 
       {/* Success message */}
-      {successMsg && (
-        <div className="flex items-center gap-2 text-green-400 text-sm bg-green-400/10 rounded-lg p-3">
+      {successMsg &&
+      <div className="flex items-center gap-2 text-green-400 text-sm bg-green-400/10 rounded-lg p-3">
           <CheckCircle className="w-4 h-4 shrink-0" />
           {successMsg}
         </div>
-      )}
+      }
 
       {/* Booking list */}
-      {bookings && bookings.map(booking => (
-        <div key={booking.id} className="border border-white/10 rounded-xl p-3 space-y-2 bg-white/5">
+      {bookings && bookings.map((booking) =>
+      <div key={booking.id} className="border border-white/10 rounded-xl p-3 space-y-2 bg-white/5">
           <div className="grid grid-cols-2 gap-x-4 gap-y-1 text-xs">
             <div><span className="text-white/40">{t.from}</span> <span className="text-white">{booking.departure_point}</span></div>
             <div><span className="text-white/40">{t.to}</span> <span className="text-white">{booking.arrival_point}</span></div>
@@ -238,76 +238,76 @@ export default function MyBookingCard() {
           </div>
 
           {/* Cancel / Edit modal inline */}
-          {mode === 'cancel' && selectedBooking?.id === booking.id && (
-            <div className="mt-2 space-y-2 border-t border-white/10 pt-3">
-              {isLessThan24h(booking.departure_date, booking.departure_time) ? (
-                <div className="flex gap-2 items-start bg-red-900/30 border border-red-500/40 rounded-lg p-3">
+          {mode === 'cancel' && selectedBooking?.id === booking.id &&
+        <div className="mt-2 space-y-2 border-t border-white/10 pt-3">
+              {isLessThan24h(booking.departure_date, booking.departure_time) ?
+          <div className="flex gap-2 items-start bg-red-900/30 border border-red-500/40 rounded-lg p-3">
                   <AlertTriangle className="w-4 h-4 text-red-400 shrink-0 mt-0.5" />
                   <p className="text-red-300 text-xs leading-relaxed">{t.cancelWarning24}</p>
-                </div>
-              ) : (
-                <div className="flex gap-2 items-start bg-green-900/20 border border-green-500/30 rounded-lg p-3">
+                </div> :
+
+          <div className="flex gap-2 items-start bg-green-900/20 border border-green-500/30 rounded-lg p-3">
                   <CheckCircle className="w-4 h-4 text-green-400 shrink-0 mt-0.5" />
                   <p className="text-green-300 text-xs">{t.cancelWarningFree}</p>
                 </div>
-              )}
+          }
               <div className="flex gap-2">
                 <button onClick={closeAction} className="flex-1 h-9 rounded-lg border border-white/20 text-white/60 text-xs hover:bg-white/10 transition-all">{t.close}</button>
                 <button
-                  onClick={handleCancel}
-                  disabled={actionLoading}
-                  className="flex-[2] h-9 rounded-lg bg-red-600 text-white font-bold text-xs hover:bg-red-700 transition-all flex items-center justify-center gap-1 disabled:opacity-60"
-                >
+              onClick={handleCancel}
+              disabled={actionLoading}
+              className="flex-[2] h-9 rounded-lg bg-red-600 text-white font-bold text-xs hover:bg-red-700 transition-all flex items-center justify-center gap-1 disabled:opacity-60">
+
                   {actionLoading ? <Loader2 className="w-3 h-3 animate-spin" /> : null}
                   {t.confirmCancel}
                 </button>
               </div>
             </div>
-          )}
+        }
 
-          {mode === 'edit' && selectedBooking?.id === booking.id && (
-            <div className="mt-2 space-y-2 border-t border-white/10 pt-3">
+          {mode === 'edit' && selectedBooking?.id === booking.id &&
+        <div className="mt-2 space-y-2 border-t border-white/10 pt-3">
               <p className="text-white/50 text-xs">{t.editNotesInfo}</p>
               <textarea
-                value={notes}
-                onChange={e => setNotes(e.target.value)}
-                rows={3}
-                placeholder={t.notesLabel}
-                className="w-full bg-white/10 border border-white/20 rounded-lg text-white text-sm p-3 outline-none placeholder:text-white/40 focus:border-white/60 resize-none"
-              />
+            value={notes}
+            onChange={(e) => setNotes(e.target.value)}
+            rows={3}
+            placeholder={t.notesLabel}
+            className="w-full bg-white/10 border border-white/20 rounded-lg text-white text-sm p-3 outline-none placeholder:text-white/40 focus:border-white/60 resize-none" />
+
               <div className="flex gap-2">
                 <button onClick={closeAction} className="flex-1 h-9 rounded-lg border border-white/20 text-white/60 text-xs hover:bg-white/10 transition-all">{t.close}</button>
                 <button
-                  onClick={handleSaveNotes}
-                  disabled={actionLoading}
-                  className="flex-[2] h-9 rounded-lg bg-[#F5C300] text-black font-bold text-xs hover:bg-[#e6b800] transition-all flex items-center justify-center gap-1 disabled:opacity-60"
-                >
+              onClick={handleSaveNotes}
+              disabled={actionLoading}
+              className="flex-[2] h-9 rounded-lg bg-[#F5C300] text-black font-bold text-xs hover:bg-[#e6b800] transition-all flex items-center justify-center gap-1 disabled:opacity-60">
+
                   {actionLoading ? <Loader2 className="w-3 h-3 animate-spin" /> : null}
                   {t.saveNotes}
                 </button>
               </div>
             </div>
-          )}
+        }
 
           {/* Action buttons (only if not showing inline modal for this booking) */}
-          {!(mode && selectedBooking?.id === booking.id) && (
-            <div className="flex gap-2 pt-1">
+          {!(mode && selectedBooking?.id === booking.id) &&
+        <div className="flex gap-2 pt-1">
               <button
-                onClick={() => openEdit(booking)}
-                className="flex-1 h-8 rounded-lg border border-white/20 text-white/70 text-xs hover:bg-white/10 transition-all flex items-center justify-center gap-1"
-              >
+            onClick={() => openEdit(booking)}
+            className="flex-1 h-8 rounded-lg border border-white/20 text-white/70 text-xs hover:bg-white/10 transition-all flex items-center justify-center gap-1">
+
                 <Edit2 className="w-3 h-3" /> {t.editBtn}
               </button>
               <button
-                onClick={() => openCancel(booking)}
-                className="flex-1 h-8 rounded-lg border border-red-500/40 text-red-400 text-xs hover:bg-red-900/20 transition-all flex items-center justify-center gap-1"
-              >
+            onClick={() => openCancel(booking)}
+            className="flex-1 h-8 rounded-lg border border-red-500/40 text-red-400 text-xs hover:bg-red-900/20 transition-all flex items-center justify-center gap-1">
+
                 <X className="w-3 h-3" /> {t.cancelBtn}
               </button>
             </div>
-          )}
+        }
         </div>
-      ))}
-    </div>
-  );
+      )}
+    </div>);
+
 }
