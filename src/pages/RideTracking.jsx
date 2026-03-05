@@ -117,9 +117,9 @@ export default function RideTracking() {
             className="flex items-center gap-1 text-white/40 hover:text-white/70 transition-colors text-sm mb-4"
           >
             <ArrowLeft className="w-4 h-4" />
-            Retour
+            {t.back}
           </a>
-          <h1 className="text-3xl md:text-4xl font-light text-white">Suivi de course</h1>
+          <h1 className="text-3xl md:text-4xl font-light text-white">{t.rideTracking}</h1>
         </div>
 
         {/* Map */}
