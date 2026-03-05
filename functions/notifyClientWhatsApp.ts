@@ -61,14 +61,15 @@ Deno.serve(async (req) => {
     // Send WhatsApp template via Twilio
     const url = `https://api.twilio.com/2010-04-01/Accounts/${accountSid}/Messages.json`;
     
-    const bodyParams = new URLSearchParams({
-      'From': whatsappFrom,
-      'To': formattedPhone,
-      'ContentSid': template.sid
+    const bodyData = new URLSearchParams();
+    bodyData.append('From', whatsappFrom);
+    bodyData.append('To', formattedPhone);
+    bodyData.append('ContentSid', template.sid);
+    
+    // Add each variable with index-based parameter name
+    template.variables.forEach((variable, index) => {
+      bodyData.append(`ContentVariables.${index}`, variable);
     });
-
-    // Add template variables in correct format (as array)
-    bodyParams.append('ContentVariables', JSON.stringify(template.variables));
 
     const response = await fetch(url, {
       method: 'POST',
@@ -76,7 +77,7 @@ Deno.serve(async (req) => {
         'Authorization': 'Basic ' + btoa(`${accountSid}:${authToken}`),
         'Content-Type': 'application/x-www-form-urlencoded'
       },
-      body: bodyParams.toString()
+      body: bodyData.toString()
     });
 
     const data = await response.json();
