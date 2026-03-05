@@ -112,6 +112,7 @@ export default function TrackingMap({ booking, loading, error, departureCoords }
 
   // Geocode departure point to get coordinates for ETA
   const departureCoordsRef = useRef(null);
+  const departureMarkerRef = useRef(null);
   useEffect(() => {
     if (!booking?.departure_point || departureCoordsRef.current) return;
     fetch(`https://nominatim.openstreetmap.org/search?q=${encodeURIComponent(booking.departure_point)}&format=json&limit=1`)
@@ -119,6 +120,27 @@ export default function TrackingMap({ booking, loading, error, departureCoords }
       .then(data => {
         if (data?.[0]) {
           departureCoordsRef.current = { lat: parseFloat(data[0].lat), lng: parseFloat(data[0].lon) };
+          // Add red marker for departure point once map is ready
+          const tryAddMarker = () => {
+            if (mapInstanceRef.current && window.L) {
+              const L = window.L;
+              if (!departureMarkerRef.current) {
+                const redIcon = L.divIcon({
+                  html: `<div style="background:#EF4444;width:18px;height:18px;border-radius:50%;border:3px solid white;box-shadow:0 2px 6px rgba(0,0,0,0.5)"></div>`,
+                  className: '',
+                  iconSize: [18, 18],
+                  iconAnchor: [9, 9]
+                });
+                departureMarkerRef.current = L.marker(
+                  [departureCoordsRef.current.lat, departureCoordsRef.current.lng],
+                  { icon: redIcon }
+                ).addTo(mapInstanceRef.current).bindPopup('📍 Point de départ');
+              }
+            } else {
+              setTimeout(tryAddMarker, 500);
+            }
+          };
+          tryAddMarker();
         }
       })
       .catch(() => {});
