@@ -121,6 +121,40 @@ export default function BookingForm({ bookingRef }) {
     );
   };
 
+  const locateUserArrival = async () => {
+    if (!navigator.geolocation) {
+      toast.error(t.locationUnavailable);
+      return;
+    }
+    setIsLocatingArrival(true);
+    navigator.geolocation.getCurrentPosition(
+      async (position) => {
+        try {
+          const { latitude, longitude } = position.coords;
+          const response = await base44.functions.invoke('hereReverseGeocoding', { lat: latitude, lng: longitude });
+          if (response.data?.address) {
+            const address = response.data.address;
+            update('arrival_point', address);
+            window.dispatchEvent(new CustomEvent('placeSelected', {
+              detail: { address, lat: latitude, lng: longitude }
+            }));
+          } else {
+            toast.error(t.locationError);
+          }
+        } catch (e) {
+          toast.error(t.locationError);
+        } finally {
+          setIsLocatingArrival(false);
+        }
+      },
+      () => {
+        toast.error(t.locationDenied);
+        setIsLocatingArrival(false);
+      },
+      { timeout: 10000, enableHighAccuracy: false }
+    );
+  };
+
   // Auto-locate on mount (disabled to prevent blocking on mobile)
   useEffect(() => {
     // Locating is now optional - user can click the locate button if needed
