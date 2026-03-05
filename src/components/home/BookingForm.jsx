@@ -434,7 +434,7 @@ export default function BookingForm({ bookingRef }) {
         {step === 1 && (
           <div className="space-y-1.5">
             {/* Departure */}
-             <div className="bg-black border border-black/40 rounded-xl p-3 sm:p-4">
+             <div className="bg-black border border-black/40 rounded-xl p-2.5 sm:p-3">
               <PlacesAutocomplete
                 value={form.departure_point}
                 onChange={(val) => update('departure_point', val)}
