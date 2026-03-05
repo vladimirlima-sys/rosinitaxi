@@ -173,9 +173,18 @@ export default function BookingForm({ bookingRef }) {
     }
 
     // Apply Valais/Fribourg surcharge if conditions match (applied AFTER base + distance)
-    const isValaisFribourg = ['valais', 'fribourg', 'wallis', 'freiburg'].some(canton =>
-      form.departure_point.toLowerCase().includes(canton)
-    );
+    // Keywords: canton names, abbreviations, and major cities
+    const valaisFribourgKeywords = [
+      'valais', 'wallis', ', vs', '(vs)', ' vs ',
+      'fribourg', 'freiburg', ', fr', '(fr)', ' fr ',
+      'sion', 'sierre', 'martigny', 'monthey', 'visp', 'brig', 'zermatt',
+      'verbier', 'crans-montana', 'saas-fee', 'leukerbad', 'nendaz',
+      'bulle', 'romont', 'murten', 'morat', 'estavayer', 'châtel-saint-denis',
+      'gruyères', 'gruyere', 'charmey', 'schwarzsee'
+    ];
+    const dep = form.departure_point.toLowerCase();
+    const arr = form.arrival_point.toLowerCase();
+    const isValaisFribourg = valaisFribourgKeywords.some(k => dep.includes(k) || arr.includes(k));
     if (isValaisFribourg && priceSettings.valais_fribourg_surcharge_percentage > 0) {
       total *= 1 + priceSettings.valais_fribourg_surcharge_percentage / 100;
     }
