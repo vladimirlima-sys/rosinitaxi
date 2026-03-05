@@ -19,7 +19,7 @@ export default function RideTimeline({ booking, t }) {
 
   return (
     <div className="bg-white/[0.03] border border-white/10 rounded-2xl p-6">
-      <h3 className="text-white text-sm font-semibold mb-6">Suivi de la course</h3>
+      <h3 className="text-white text-sm font-semibold mb-6">{t.rideStatus}</h3>
       <div className="space-y-4">
         {statusSteps.map((step, idx) => {
           const Icon = step.icon;
