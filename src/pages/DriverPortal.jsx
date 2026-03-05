@@ -148,7 +148,13 @@ export default function DriverPortal() {
         tokenRef.current = data.token;
         localStorage.setItem('driver_auth_token', data.token);
         sessionStorage.setItem('driver_portal_id', data.driver.id);
-        if (rememberPassword) localStorage.setItem('driver_portal_email', emailInput);
+        if (rememberPassword) {
+          localStorage.setItem('driver_portal_email', emailInput);
+          localStorage.setItem('driver_portal_password', passwordInput);
+        } else {
+          localStorage.removeItem('driver_portal_email');
+          localStorage.removeItem('driver_portal_password');
+        }
         await loadBookings(data.driver.id);
       } else {
         setError('Email ou senha incorretos.');
