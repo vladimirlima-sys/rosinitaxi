@@ -187,7 +187,7 @@ export default function MyBookingCard() {
   const statusColor = { pending: 'text-yellow-400', paid: 'text-green-400', cancelled: 'text-red-400', refunded: 'text-blue-400' };
 
   return (
-    <div className="bg-black mt-4 p-4 opacity-75 rounded-xl border border-black/40 space-y-3">
+    <div className="bg-black mt-4 p-4 opacity-90 rounded-xl border border-black/40 space-y-3">
       <div className="flex items-center gap-2 mb-1">
         <Mail className="w-4 h-4 text-[#F5C300]" />
         <h3 className="text-white font-semibold text-sm uppercase tracking-wider">{t.title}</h3>
