@@ -115,12 +115,12 @@ export default function ActiveTripMonitor({ booking, onCompleted }) {
      }
    }
 
-   if (key === 'arrived' && !tripStartedAt) {
-     const now = Date.now();
-     localStorage.setItem(startKey, String(now));
-     setTripStartedAt(now);
-     startGPSTracking();
-   }
+   if (key === 'en_route' && !tripStartedAt) {
+      const now = Date.now();
+      localStorage.setItem(startKey, String(now));
+      setTripStartedAt(now);
+      startGPSTracking();
+    }
     
     // Notify client of status update (pass booking data directly to avoid DB timeout)
     try {
