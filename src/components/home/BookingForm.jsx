@@ -436,7 +436,7 @@ export default function BookingForm({ bookingRef }) {
         {step === 1 &&
         <div className="space-y-2 sm:space-y-3">
             {/* Departure */}
-             <div className="bg-black p-3 opacity-75 rounded-xl border border-black/40 sm:p-4">
+             <div className="bg-black p-3 opacity-90 rounded-xl border border-black/40 sm:p-4">
               <PlacesAutocomplete
               value={form.departure_point}
               onChange={(val) => update('departure_point', val)}
@@ -460,7 +460,7 @@ export default function BookingForm({ bookingRef }) {
             </div>
 
             {/* Arrival */}
-             <div className="bg-black p-3 opacity-75 rounded-xl border border-black/40 sm:p-4">
+             <div className="bg-black p-3 opacity-90 rounded-xl border border-black/40 sm:p-4">
               <PlacesAutocomplete
               value={form.arrival_point}
               onChange={(val) => update('arrival_point', val)}
@@ -492,14 +492,14 @@ export default function BookingForm({ bookingRef }) {
 
             {/* Date & Time */}
              <div className="grid grid-cols-2 gap-2 sm:gap-3">
-               <div className="bg-black p-3 opacity-75 rounded-xl border border-black/40 sm:p-4">
+               <div className="bg-black p-3 opacity-90 rounded-xl border border-black/40 sm:p-4">
                 <label className={labelClass}>{t.dateLabel}</label>
                 <DatePicker
                 value={form.departure_date}
                 onChange={(date) => update('departure_date', date)} />
 
               </div>
-              <div className="bg-black p-3 opacity-80 rounded-xl border border-black/40 sm:p-4">
+              <div className="bg-black p-3 opacity-90 rounded-xl border border-black/40 sm:p-4">
                 <label className={labelClass}><Clock className="inline w-3 h-3 mr-1" />{t.timeLabel}</label>
                 <input
                 type="time"
@@ -521,7 +521,7 @@ export default function BookingForm({ bookingRef }) {
           }
 
             {/* Flight (optional) */}
-             <div className="bg-black p-3 opacity-75 rounded-xl border border-black/40 sm:p-4">
+             <div className="bg-black p-3 opacity-90 rounded-xl border border-black/40 sm:p-4">
               <label className={labelClass}><Plane className="inline w-3 h-3 mr-1" />{t.flightLabel}</label>
               <input
               type="text"
@@ -533,7 +533,7 @@ export default function BookingForm({ bookingRef }) {
             </div>
 
             {/* Passengers */}
-             <div className="bg-black p-3 opacity-75 rounded-xl border border-black/40 sm:p-4">
+             <div className="bg-black p-3 opacity-90 rounded-xl border border-black/40 sm:p-4">
               <label className={labelClass}>{t.passengersLabel}</label>
               <div className="flex gap-2 mt-2">
                 {[1, 2, 3, 4].map((num) =>
@@ -554,7 +554,7 @@ export default function BookingForm({ bookingRef }) {
 
             {/* Price preview */}
              {estimatedDistance > 0 &&
-          <div className="bg-black opacity-80 border border-black/40 rounded-xl p-3 sm:p-4 flex items-center justify-between">
+          <div className="bg-black opacity-90 border border-black/40 rounded-xl p-3 sm:p-4 flex items-center justify-between">
                 <div>
                   <p className="text-white/60 text-xs uppercase tracking-wider">{t.estimatedPrice}</p>
                   <p className="text-white text-sm mt-0.5">{estimatedDistance} km · {Math.floor(estimatedTime / 60)}h{estimatedTime % 60}min</p>
@@ -653,7 +653,7 @@ export default function BookingForm({ bookingRef }) {
             </div>
 
             {/* Preferred driver selection */}
-            <div className="bg-black opacity-80 border border-black/40 rounded-xl p-4">
+            <div className="bg-black opacity-90 border border-black/40 rounded-xl p-4">
              <PreferredDriverSelector
               lang={lang}
               selectedDriverId={selectedDriver?.id || null}
@@ -679,7 +679,7 @@ export default function BookingForm({ bookingRef }) {
         {/* STEP 3 — Personal Info */}
         {step === 3 &&
         <div className="space-y-2 sm:space-y-3">
-            <div className="bg-black opacity-80 border border-black/40 rounded-xl p-3 sm:p-4 space-y-3 sm:space-y-4">
+            <div className="bg-black opacity-90 border border-black/40 rounded-xl p-3 sm:p-4 space-y-3 sm:space-y-4">
              <h3 className="text-white font-semibold text-xs sm:text-sm uppercase tracking-wider">{t.step3Title}</h3>
 
               <div>
@@ -745,7 +745,7 @@ export default function BookingForm({ bookingRef }) {
               style={canProceedStep3 ? { backgroundColor: '#000000', color: '#ffffff' } : {}}
               className={`flex-[2] h-10 sm:h-12 rounded-xl border font-bold text-xs sm:text-sm uppercase tracking-wider transition-all ${
               canProceedStep3 ?
-              'border-black hover:opacity-80' :
+              'border-black hover:opacity-90' :
               'bg-white/10 text-white/40 border-white/50 cursor-not-allowed'}`
               }>
 
@@ -759,7 +759,7 @@ export default function BookingForm({ bookingRef }) {
         {step === 4 &&
         <div className="space-y-2 sm:space-y-3">
             {/* Summary */}
-            <div className="bg-black opacity-80 border border-black/40 rounded-xl p-3 sm:p-4 space-y-2">
+            <div className="bg-black opacity-90 border border-black/40 rounded-xl p-3 sm:p-4 space-y-2">
              <h3 className="text-white/60 text-xs uppercase tracking-wider mb-3">{t.summaryLabel}</h3>
               <div className="space-y-2">
                 <div className="flex justify-between text-sm"><span className="text-white/50">{t.departure}</span><span className="text-white text-right max-w-[60%] truncate">{form.departure_point}</span></div>
@@ -778,7 +778,7 @@ export default function BookingForm({ bookingRef }) {
             </div>
 
             {/* Payment method */}
-            <div className="bg-black opacity-80 border border-black/40 rounded-xl p-3 sm:p-4 space-y-2">
+            <div className="bg-black opacity-90 border border-black/40 rounded-xl p-3 sm:p-4 space-y-2">
              <h3 className="text-white/60 text-xs uppercase tracking-wider mb-3">{t.paymentMethod}</h3>
               {[
             { value: 'stripe', label: t.stripeLabel, desc: t.stripeDesc },
