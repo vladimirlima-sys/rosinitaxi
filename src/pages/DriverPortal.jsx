@@ -1,6 +1,6 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { base44 } from '@/api/base44Client';
-import { Car, Bell, BellOff, Loader2, LogOut, Zap, ArrowLeft } from 'lucide-react';
+import { Car, Bell, BellOff, Loader2, LogOut, Zap, ArrowLeft, Eye, EyeOff } from 'lucide-react';
 import { createPageUrl } from '@/utils';
 import ActiveTripMonitor from '@/components/drivers/ActiveTripMonitor';
 // DriverPortal - clean version
