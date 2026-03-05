@@ -428,7 +428,7 @@ export default function BookingForm({ bookingRef }) {
         <h1 className="text-black text-2xl font-bold tracking-tight">ROSINI</h1>
       </div>
 
-      <div className="w-full max-w-md px-0">
+      <div className="w-full max-w-sm px-0">
 
       {/* STEP 1 — Booking form */}
         {step === 1 && (
