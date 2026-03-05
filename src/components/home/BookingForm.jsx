@@ -63,6 +63,16 @@ export default function BookingForm({ bookingRef }) {
     fetchSettings();
   }, []);
 
+  // Save departure/arrival coordinates for next session
+  useEffect(() => {
+    window.addEventListener('placeSelected', (e) => {
+      const { address, lat, lng } = e.detail;
+      if (lat && lng) {
+        localStorage.setItem('last_departure_coords', JSON.stringify({ lat, lng, address }));
+      }
+    });
+  }, []);
+
   React.useEffect(() => {
     const params = new URLSearchParams(window.location.search);
     if (params.get('booking') === 'success') {
