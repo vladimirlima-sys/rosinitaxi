@@ -17,6 +17,35 @@ export default function Drivers() {
   const [searchQuery, setSearchQuery] = useState('');
   const [showRevenue, setShowRevenue] = useState(false);
   const [selectedDriverForCredential, setSelectedDriverForCredential] = useState(null);
+  const [geoEnabled, setGeoEnabled] = useState(false);
+
+  // Request geolocation once; auto-activate if previously granted
+  useEffect(() => {
+    const autoGeo = () => {
+      navigator.geolocation.getCurrentPosition(
+        () => { setGeoEnabled(true); localStorage.setItem('drivers_geo_granted', '1'); },
+        () => setGeoEnabled(false),
+        { enableHighAccuracy: true }
+      );
+    };
+    if (!navigator.geolocation) return;
+    if (localStorage.getItem('drivers_geo_granted') === '1') {
+      autoGeo();
+    } else if (navigator.permissions) {
+      navigator.permissions.query({ name: 'geolocation' }).then(result => {
+        if (result.state === 'granted') { autoGeo(); }
+      });
+    }
+  }, []);
+
+  const requestGeolocation = () => {
+    if (!navigator.geolocation) return;
+    navigator.geolocation.getCurrentPosition(
+      () => { setGeoEnabled(true); localStorage.setItem('drivers_geo_granted', '1'); },
+      () => setGeoEnabled(false),
+      { enableHighAccuracy: true }
+    );
+  };
 
   useEffect(() => {
     fetchDrivers();
