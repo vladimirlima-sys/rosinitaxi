@@ -629,7 +629,6 @@ export default function BookingForm({ bookingRef }) {
                     <p className={`font-bold ${form.vehicle_type === 'comfort' ? 'text-[#F5C300]' : 'text-black'}`}>
                       CHF {(() => {
                         let p = estimatedDistance * (priceSettings.comfort_price_per_km || priceSettings.standard_price_per_km * 1.3) + (estimatedDistance <= 30 ? (priceSettings.base_fare || 0) : 0);
-                        if (checkValaisFribourg()) p *= 1 + priceSettings.valais_fribourg_surcharge_percentage / 100;
                         return p.toFixed(2);
                       })()}
                     </p>
