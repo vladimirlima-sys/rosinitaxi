@@ -1,10 +1,14 @@
 import { MessageCircle, Phone, Mail, AlertCircle } from 'lucide-react';
 
+const COMPANY_PHONE = '+41772492245';
+const COMPANY_PHONE_DISPLAY = '+41 77 249 22 45';
+const COMPANY_EMAIL = 'contact@rosini.online';
+
 export default function SupportContact({ t }) {
   const handleWhatsAppSupport = () => {
     const message = t?.whatsAppSupport || "I need help with my booking";
     window.open(
-      `https://wa.me/41791234567?text=${encodeURIComponent(message)}`,
+      `https://wa.me/${COMPANY_PHONE.replace('+', '')}?text=${encodeURIComponent(message)}`,
       '_blank'
     );
   };
@@ -21,11 +25,11 @@ export default function SupportContact({ t }) {
 
       <div className="space-y-2">
         <a
-          href="tel:+41791234567"
+          href={`tel:${COMPANY_PHONE}`}
           className="flex items-center gap-2 text-red-400 hover:text-red-300 transition-colors text-sm font-medium"
         >
           <Phone className="w-4 h-4" />
-          {t?.emergencyCall || "Emergency call"} : +41 79 123 4567
+          {t?.emergencyCall || "Emergency call"} : {COMPANY_PHONE_DISPLAY}
         </a>
         <button
           onClick={handleWhatsAppSupport}
@@ -35,11 +39,11 @@ export default function SupportContact({ t }) {
           {t?.contactWhatsApp || "Contact via WhatsApp"}
         </button>
         <a
-          href="mailto:support@rosini.online"
+          href={`mailto:${COMPANY_EMAIL}`}
           className="flex items-center gap-2 text-white/60 hover:text-white/80 transition-colors text-sm font-medium"
         >
           <Mail className="w-4 h-4" />
-          support@rosini.online
+          {COMPANY_EMAIL}
         </a>
       </div>
     </div>
