@@ -570,7 +570,7 @@ export default function BookingForm({ bookingRef }) {
             <button
               onClick={() => setStep(2)}
               disabled={!canProceedStep1 || isCalculatingRoute}
-              className={`w-full h-14 rounded-xl font-bold text-base tracking-wider uppercase transition-all ${
+              className={`w-full h-11 rounded-lg font-bold text-sm tracking-wider uppercase transition-all ${
                 canProceedStep1 && !isCalculatingRoute
                   ? 'bg-black text-white hover:bg-black/80'
                   : 'bg-white/10 text-white/40 cursor-not-allowed'
@@ -578,10 +578,6 @@ export default function BookingForm({ bookingRef }) {
             >
               {isCalculatingRoute ? t.calculatingRoute || 'Calcul en cours...' : t.continueBtn}
             </button>
-
-            <PriceExamplesCards priceSettings={priceSettings} />
-            <RideCounter />
-            <MyBookingCard />
           </div>
         )}
 
