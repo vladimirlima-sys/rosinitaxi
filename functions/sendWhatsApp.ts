@@ -181,16 +181,16 @@ Deno.serve(async (req) => {
         }
       }
 
-      // WhatsApp para admin
+      // SMS para admin
       const cancelAdminMsg =
-        `❌ *Réservation annulée — Rosini Transfert*\n\n` +
-        `👤 ${client_name}\n` +
-        `📍 ${departure_point} → ${arrival_point}\n` +
-        `📅 ${departure_date} à ${departure_time}`;
+        `Reservation annulee - Rosini Transfert\n\n` +
+        `${client_name}\n` +
+        `${departure_point} -> ${arrival_point}\n` +
+        `${departure_date} a ${departure_time}`;
 
       try {
-        await sendWhatsAppMessage('+41772492245', cancelAdminMsg);
-        results.push({ to: '+41772492245', status: 'sent', channel: 'whatsapp' });
+        await sendSmsMessage('+41772492245', cancelAdminMsg);
+        results.push({ to: '+41772492245', status: 'sent', channel: 'sms' });
       } catch (err) {
         console.error('Error sending cancellation admin notification:', err.message);
       }
