@@ -697,7 +697,8 @@ Deno.serve(async (req) => {
             departure_date,
             departure_time,
             vehicle_type,
-            total_price
+            total_price,
+            language
           }
         });
         console.log('WhatsApp confirmation message sent to ' + client_phone);
