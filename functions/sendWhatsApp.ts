@@ -160,12 +160,18 @@ Deno.serve(async (req) => {
     } else if (type === 'cancelled') {
       // Notify client
       if (client_phone) {
-        const cancelClientMsg =
-          `❌ *Réservation annulée — Rosini Transfert*\n\n` +
-          `Bonjour ${client_name}, votre réservation a été annulée.\n\n` +
-          `📍 ${departure_point} → ${arrival_point}\n` +
-          `📅 ${departure_date} à ${departure_time}\n\n` +
-          `Pour toute question: +41 77 249 22 45`;
+        const lang = booking.language || 'fr';
+        const cancelTemplates = {
+          fr: (n, dep, arr, date, time) => `❌ *Réservation annulée — Rosini Transfert*\n\nBonjour ${n}, votre réservation a été annulée.\n\n📍 ${dep} → ${arr}\n📅 ${date} à ${time}\n\nPour toute question: +41 77 249 22 45`,
+          pt: (n, dep, arr, date, time) => `❌ *Reserva cancelada — Rosini Transfert*\n\nOlá ${n}, a sua reserva foi cancelada.\n\n📍 ${dep} → ${arr}\n📅 ${date} às ${time}\n\nQualquer dúvida: +41 77 249 22 45`,
+          en: (n, dep, arr, date, time) => `❌ *Booking cancelled — Rosini Transfert*\n\nHello ${n}, your booking has been cancelled.\n\n📍 ${dep} → ${arr}\n📅 ${date} at ${time}\n\nAny questions: +41 77 249 22 45`,
+          de: (n, dep, arr, date, time) => `❌ *Buchung storniert — Rosini Transfert*\n\nHallo ${n}, Ihre Buchung wurde storniert.\n\n📍 ${dep} → ${arr}\n📅 ${date} um ${time}\n\nBei Fragen: +41 77 249 22 45`,
+          it: (n, dep, arr, date, time) => `❌ *Prenotazione annullata — Rosini Transfert*\n\nSalve ${n}, la sua prenotazione è stata annullata.\n\n📍 ${dep} → ${arr}\n📅 ${date} alle ${time}\n\nPer qualsiasi domanda: +41 77 249 22 45`,
+          es: (n, dep, arr, date, time) => `❌ *Reserva cancelada — Rosini Transfert*\n\nHola ${n}, su reserva ha sido cancelada.\n\n📍 ${dep} → ${arr}\n📅 ${date} a las ${time}\n\nCualquier pregunta: +41 77 249 22 45`,
+          nl: (n, dep, arr, date, time) => `❌ *Boeking geannuleerd — Rosini Transfert*\n\nHallo ${n}, uw boeking is geannuleerd.\n\n📍 ${dep} → ${arr}\n📅 ${date} om ${time}\n\nVragen: +41 77 249 22 45`,
+        };
+        const cancelTpl = cancelTemplates[lang] || cancelTemplates['fr'];
+        const cancelClientMsg = cancelTpl(client_name, departure_point, arrival_point, departure_date, departure_time);
 
         try {
           await sendWhatsAppMessage(client_phone, cancelClientMsg);
