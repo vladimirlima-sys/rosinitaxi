@@ -1,44 +1,37 @@
-import { AreaChart, Area, XAxis, YAxis, CartesianGrid, Tooltip, Legend, ResponsiveContainer } from 'recharts';
-import { format, startOfMonth, eachMonthOfInterval, endOfMonth } from 'date-fns';
+import { AreaChart, Area, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer } from 'recharts';
+import { format, subMonths, startOfMonth, endOfMonth } from 'date-fns';
 
-export default function MonthlyChart({ pageViews, isBookings = false, bookings = [] }) {
-  const data = isBookings ? bookings : pageViews;
-  
-  const months = eachMonthOfInterval({
-    start: new Date(Math.min(...data.map(d => new Date(d.created_date || d.date)))),
-    end: new Date()
-  });
+export default function MonthlyChart({ pageViews, bookings, isBookings = false }) {
+  const items = isBookings ? bookings : pageViews;
+  const data = [];
 
-  const chartData = months.map(monthStart => {
-    const monthEnd = endOfMonth(monthStart);
-    const count = data.filter(d => {
-      const itemDate = new Date(d.created_date || d.date);
-      return itemDate >= monthStart && itemDate <= monthEnd;
+  for (let i = 11; i >= 0; i--) {
+    const monthStart = startOfMonth(subMonths(new Date(), i));
+    const monthEnd = endOfMonth(subMonths(new Date(), i));
+
+    const count = items.filter(item => {
+      const d = new Date(isBookings ? item.created_date : item.date);
+      return d >= monthStart && d <= monthEnd;
     }).length;
-    return {
-      month: format(monthStart, 'MMM yy'),
-      count
-    };
-  }).filter(d => d.count > 0).slice(-12);
+
+    if (count > 0) {
+      data.push({ month: format(monthStart, 'MMM yy'), count });
+    }
+  }
+
+  const color = isBookings ? '#10b981' : '#3b82f6';
+  const title = isBookings ? 'Reservas por Mês' : 'Visitas por Mês';
 
   return (
     <div className="bg-white rounded-lg shadow-sm border border-slate-200 p-4">
-      <h2 className="text-lg font-bold text-slate-900 mb-4">
-        {isBookings ? 'Reservas por Mês' : 'Visitas por Mês'}
-      </h2>
-      <ResponsiveContainer width="100%" height={300}>
-        <AreaChart data={chartData}>
+      <h3 className="font-semibold text-slate-700 mb-4">{title}</h3>
+      <ResponsiveContainer width="100%" height={220}>
+        <AreaChart data={data}>
           <CartesianGrid strokeDasharray="3 3" />
-          <XAxis dataKey="month" />
-          <YAxis />
+          <XAxis dataKey="month" tick={{ fontSize: 11 }} />
+          <YAxis tick={{ fontSize: 11 }} />
           <Tooltip />
-          <Area 
-            type="monotone" 
-            dataKey="count" 
-            fill={isBookings ? '#10b98166' : '#3b82f666'} 
-            stroke={isBookings ? '#10b981' : '#3b82f6'}
-            strokeWidth={2}
-          />
+          <Area type="monotone" dataKey="count" stroke={color} fill={color} fillOpacity={0.15} strokeWidth={2} />
         </AreaChart>
       </ResponsiveContainer>
     </div>
