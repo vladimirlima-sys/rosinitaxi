@@ -36,32 +36,165 @@ Deno.serve(async (req) => {
     // SMS message templates per language and status
     const messages = {
       fr: {
-        en_route: (name, dep, link) => `Rosini Transfert: Bonjour ${name}, votre chauffeur est en route vers ${dep}. Suivez en temps reel: ${link}`,
-        arrived:  (name, dep)       => `Rosini Transfert: Bonjour ${name}, votre chauffeur est arrive a ${dep}. Bonne route!`
+        en_route: (name, dep, link) =>
+`🚗 ROSINI TRANSFERT
+━━━━━━━━━━━━━━━━━━
+Bonjour ${name},
+votre chauffeur est en route !
+
+📍 Direction: ${dep}
+
+🔴 Suivez en direct:
+${link}
+━━━━━━━━━━━━━━━━━━`,
+        arrived: (name, dep) =>
+`✅ ROSINI TRANSFERT
+━━━━━━━━━━━━━━━━━━
+Bonjour ${name},
+votre chauffeur est arrive !
+
+📍 ${dep}
+
+Bonne route ! 🙌
+━━━━━━━━━━━━━━━━━━`
       },
       pt: {
-        en_route: (name, dep, link) => `Rosini Transfert: Ola ${name}, o seu motorista esta a caminho de ${dep}. Acompanhe em tempo real: ${link}`,
-        arrived:  (name, dep)       => `Rosini Transfert: Ola ${name}, o seu motorista chegou a ${dep}. Boa viagem!`
+        en_route: (name, dep, link) =>
+`🚗 ROSINI TRANSFERT
+━━━━━━━━━━━━━━━━━━
+Ola ${name},
+o seu motorista esta a caminho !
+
+📍 Destino: ${dep}
+
+🔴 Acompanhe em direto:
+${link}
+━━━━━━━━━━━━━━━━━━`,
+        arrived: (name, dep) =>
+`✅ ROSINI TRANSFERT
+━━━━━━━━━━━━━━━━━━
+Ola ${name},
+o seu motorista chegou !
+
+📍 ${dep}
+
+Boa viagem ! 🙌
+━━━━━━━━━━━━━━━━━━`
       },
       en: {
-        en_route: (name, dep, link) => `Rosini Transfert: Hello ${name}, your driver is on the way to ${dep}. Track in real time: ${link}`,
-        arrived:  (name, dep)       => `Rosini Transfert: Hello ${name}, your driver has arrived at ${dep}. Have a great trip!`
+        en_route: (name, dep, link) =>
+`🚗 ROSINI TRANSFERT
+━━━━━━━━━━━━━━━━━━
+Hello ${name},
+your driver is on the way !
+
+📍 To: ${dep}
+
+🔴 Track live:
+${link}
+━━━━━━━━━━━━━━━━━━`,
+        arrived: (name, dep) =>
+`✅ ROSINI TRANSFERT
+━━━━━━━━━━━━━━━━━━
+Hello ${name},
+your driver has arrived !
+
+📍 ${dep}
+
+Have a great trip ! 🙌
+━━━━━━━━━━━━━━━━━━`
       },
       de: {
-        en_route: (name, dep, link) => `Rosini Transfert: Hallo ${name}, Ihr Fahrer ist auf dem Weg nach ${dep}. Verfolgen Sie ihn: ${link}`,
-        arrived:  (name, dep)       => `Rosini Transfert: Hallo ${name}, Ihr Fahrer ist in ${dep} angekommen. Gute Fahrt!`
+        en_route: (name, dep, link) =>
+`🚗 ROSINI TRANSFERT
+━━━━━━━━━━━━━━━━━━
+Hallo ${name},
+Ihr Fahrer ist unterwegs !
+
+📍 Ziel: ${dep}
+
+🔴 Live verfolgen:
+${link}
+━━━━━━━━━━━━━━━━━━`,
+        arrived: (name, dep) =>
+`✅ ROSINI TRANSFERT
+━━━━━━━━━━━━━━━━━━
+Hallo ${name},
+Ihr Fahrer ist angekommen !
+
+📍 ${dep}
+
+Gute Fahrt ! 🙌
+━━━━━━━━━━━━━━━━━━`
       },
       it: {
-        en_route: (name, dep, link) => `Rosini Transfert: Salve ${name}, il suo autista e in arrivo a ${dep}. Segui in tempo reale: ${link}`,
-        arrived:  (name, dep)       => `Rosini Transfert: Salve ${name}, il suo autista e arrivato a ${dep}. Buon viaggio!`
+        en_route: (name, dep, link) =>
+`🚗 ROSINI TRANSFERT
+━━━━━━━━━━━━━━━━━━
+Salve ${name},
+il suo autista e in arrivo !
+
+📍 Destinazione: ${dep}
+
+🔴 Segui in diretta:
+${link}
+━━━━━━━━━━━━━━━━━━`,
+        arrived: (name, dep) =>
+`✅ ROSINI TRANSFERT
+━━━━━━━━━━━━━━━━━━
+Salve ${name},
+il suo autista e arrivato !
+
+📍 ${dep}
+
+Buon viaggio ! 🙌
+━━━━━━━━━━━━━━━━━━`
       },
       es: {
-        en_route: (name, dep, link) => `Rosini Transfert: Hola ${name}, su conductor esta en camino a ${dep}. Siga en tiempo real: ${link}`,
-        arrived:  (name, dep)       => `Rosini Transfert: Hola ${name}, su conductor ha llegado a ${dep}. Buen viaje!`
+        en_route: (name, dep, link) =>
+`🚗 ROSINI TRANSFERT
+━━━━━━━━━━━━━━━━━━
+Hola ${name},
+su conductor esta en camino !
+
+📍 Destino: ${dep}
+
+🔴 Siga en directo:
+${link}
+━━━━━━━━━━━━━━━━━━`,
+        arrived: (name, dep) =>
+`✅ ROSINI TRANSFERT
+━━━━━━━━━━━━━━━━━━
+Hola ${name},
+su conductor ha llegado !
+
+📍 ${dep}
+
+Buen viaje ! 🙌
+━━━━━━━━━━━━━━━━━━`
       },
       nl: {
-        en_route: (name, dep, link) => `Rosini Transfert: Hallo ${name}, uw chauffeur is onderweg naar ${dep}. Volg live: ${link}`,
-        arrived:  (name, dep)       => `Rosini Transfert: Hallo ${name}, uw chauffeur is gearriveerd bij ${dep}. Goede reis!`
+        en_route: (name, dep, link) =>
+`🚗 ROSINI TRANSFERT
+━━━━━━━━━━━━━━━━━━
+Hallo ${name},
+uw chauffeur is onderweg !
+
+📍 Naar: ${dep}
+
+🔴 Volg live:
+${link}
+━━━━━━━━━━━━━━━━━━`,
+        arrived: (name, dep) =>
+`✅ ROSINI TRANSFERT
+━━━━━━━━━━━━━━━━━━
+Hallo ${name},
+uw chauffeur is gearriveerd !
+
+📍 ${dep}
+
+Goede reis ! 🙌
+━━━━━━━━━━━━━━━━━━`
       },
     };
 
