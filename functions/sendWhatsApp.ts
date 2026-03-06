@@ -119,13 +119,117 @@ Deno.serve(async (req) => {
       // SMS para cliente (todos os idiomas)
       if (client_phone) {
         const msgTemplates = {
-          fr: (n, dep, arr, date, time, v, price) => `Reservation confirmee - Rosini Transfert\n\nBonjour ${n}, votre reservation est confirmee.\n${dep} -> ${arr}\n${date} a ${time}\nVehicule: ${v}\nCHF ${price}\n\nQuestions: +41 77 249 22 45`,
-          pt: (n, dep, arr, date, time, v, price) => `Reserva confirmada - Rosini Transfert\n\nOla ${n}, a sua reserva foi confirmada.\n${dep} -> ${arr}\n${date} as ${time}\nVeiculo: ${v}\nCHF ${price}\n\nDuvidas: +41 77 249 22 45`,
-          en: (n, dep, arr, date, time, v, price) => `Booking confirmed - Rosini Transfert\n\nHello ${n}, your booking has been confirmed.\n${dep} -> ${arr}\n${date} at ${time}\nVehicle: ${v}\nCHF ${price}\n\nQuestions: +41 77 249 22 45`,
-          de: (n, dep, arr, date, time, v, price) => `Buchung bestatigt - Rosini Transfert\n\nHallo ${n}, Ihre Buchung wurde bestatigt.\n${dep} -> ${arr}\n${date} um ${time}\nFahrzeug: ${v}\nCHF ${price}\n\nFragen: +41 77 249 22 45`,
-          it: (n, dep, arr, date, time, v, price) => `Prenotazione confermata - Rosini Transfert\n\nSalve ${n}, la sua prenotazione e stata confermata.\n${dep} -> ${arr}\n${date} alle ${time}\nVeicolo: ${v}\nCHF ${price}\n\nDomande: +41 77 249 22 45`,
-          es: (n, dep, arr, date, time, v, price) => `Reserva confirmada - Rosini Transfert\n\nHola ${n}, su reserva ha sido confirmada.\n${dep} -> ${arr}\n${date} a las ${time}\nVehiculo: ${v}\nCHF ${price}\n\nPreguntas: +41 77 249 22 45`,
-          nl: (n, dep, arr, date, time, v, price) => `Boeking bevestigd - Rosini Transfert\n\nHallo ${n}, uw boeking is bevestigd.\n${dep} -> ${arr}\n${date} om ${time}\nVoertuig: ${v}\nCHF ${price}\n\nVragen: +41 77 249 22 45`,
+          fr: (n, dep, arr, date, time, v, price) =>
+`✅ ROSINI TRANSFERT
+━━━━━━━━━━━━━━━━━━
+Bonjour ${n},
+votre reservation est confirmee !
+
+🗺 Trajet
+  📍 ${dep}
+  🏁 ${arr}
+
+📅 ${date}  🕐 ${time}
+🚗 ${v}
+💶 CHF ${price}
+━━━━━━━━━━━━━━━━━━
+❓ +41 77 249 22 45`,
+
+          pt: (n, dep, arr, date, time, v, price) =>
+`✅ ROSINI TRANSFERT
+━━━━━━━━━━━━━━━━━━
+Ola ${n},
+a sua reserva foi confirmada !
+
+🗺 Trajeto
+  📍 ${dep}
+  🏁 ${arr}
+
+📅 ${date}  🕐 ${time}
+🚗 ${v}
+💶 CHF ${price}
+━━━━━━━━━━━━━━━━━━
+❓ +41 77 249 22 45`,
+
+          en: (n, dep, arr, date, time, v, price) =>
+`✅ ROSINI TRANSFERT
+━━━━━━━━━━━━━━━━━━
+Hello ${n},
+your booking is confirmed !
+
+🗺 Journey
+  📍 ${dep}
+  🏁 ${arr}
+
+📅 ${date}  🕐 ${time}
+🚗 ${v}
+💶 CHF ${price}
+━━━━━━━━━━━━━━━━━━
+❓ +41 77 249 22 45`,
+
+          de: (n, dep, arr, date, time, v, price) =>
+`✅ ROSINI TRANSFERT
+━━━━━━━━━━━━━━━━━━
+Hallo ${n},
+Ihre Buchung ist bestatigt !
+
+🗺 Fahrt
+  📍 ${dep}
+  🏁 ${arr}
+
+📅 ${date}  🕐 ${time}
+🚗 ${v}
+💶 CHF ${price}
+━━━━━━━━━━━━━━━━━━
+❓ +41 77 249 22 45`,
+
+          it: (n, dep, arr, date, time, v, price) =>
+`✅ ROSINI TRANSFERT
+━━━━━━━━━━━━━━━━━━
+Salve ${n},
+la sua prenotazione e confermata !
+
+🗺 Percorso
+  📍 ${dep}
+  🏁 ${arr}
+
+📅 ${date}  🕐 ${time}
+🚗 ${v}
+💶 CHF ${price}
+━━━━━━━━━━━━━━━━━━
+❓ +41 77 249 22 45`,
+
+          es: (n, dep, arr, date, time, v, price) =>
+`✅ ROSINI TRANSFERT
+━━━━━━━━━━━━━━━━━━
+Hola ${n},
+su reserva esta confirmada !
+
+🗺 Trayecto
+  📍 ${dep}
+  🏁 ${arr}
+
+📅 ${date}  🕐 ${time}
+🚗 ${v}
+💶 CHF ${price}
+━━━━━━━━━━━━━━━━━━
+❓ +41 77 249 22 45`,
+
+          nl: (n, dep, arr, date, time, v, price) =>
+`✅ ROSINI TRANSFERT
+━━━━━━━━━━━━━━━━━━
+Hallo ${n},
+uw boeking is bevestigd !
+
+🗺 Rit
+  📍 ${dep}
+  🏁 ${arr}
+
+📅 ${date}  🕐 ${time}
+🚗 ${v}
+💶 CHF ${price}
+━━━━━━━━━━━━━━━━━━
+❓ +41 77 249 22 45`,
         };
         const tpl = msgTemplates[lang] || msgTemplates['fr'];
         const clientMsg = tpl(client_name, departure_point, arrival_point, departure_date, departure_time, vehicleLabel, total_price);
