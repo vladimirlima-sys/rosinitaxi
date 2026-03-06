@@ -695,7 +695,7 @@ Deno.serve(async (req) => {
             language
           }
         });
-        console.log('WhatsApp confirmation message sent to ' + client_phone);
+        console.log('SMS confirmation sent to ' + client_phone + ' [lang: ' + language + ']');
       } catch (waErr) {
         console.error('WhatsApp notification failed (non-critical):', waErr.message);
       }
