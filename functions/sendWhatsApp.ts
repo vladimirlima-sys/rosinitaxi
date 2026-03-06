@@ -246,20 +246,35 @@ uw boeking is bevestigd !
       }
 
       // SMS para admin
-      const paymentLabel = payment_method === 'twint' ? 'TWINT' : payment_method === 'cash' ? 'Cash' : 'Stripe';
-      const adminMsg =
-`🆕 ROSINI TRANSFERT
-━━━━━━━━━━━━━━━━━━
-Nouvelle reservation !
+      let paymentLabel;
+      let paymentStatus;
+      if (payment_method === 'twint') {
+        paymentLabel = '📲 TWINT';
+        paymentStatus = '⚠️ A RECEVOIR EN TWINT';
+      } else if (payment_method === 'cash') {
+        paymentLabel = '💵 ESPECES (Cash)';
+        paymentStatus = '⚠️ A PERCEVOIR EN ESPECES';
+      } else {
+        paymentLabel = '💳 STRIPE (Carte en ligne)';
+        paymentStatus = '✅ PAYE EN LIGNE - Stripe';
+      }
 
+      const adminMsg =
+`🆕 NOUVELLE RESERVATION
+━━━━━━━━━━━━━━━━━━━━━
 👤 ${client_name}
 📞 ${client_phone || '—'}
+
 📍 ${departure_point}
 🏁 ${arrival_point}
 📅 ${departure_date}  🕐 ${departure_time}
+🚗 ${vehicleLabel}
+
 💶 CHF ${total_price}
-💳 ${paymentLabel}
-━━━━━━━━━━━━━━━━━━`;
+${paymentLabel}
+${paymentStatus}
+━━━━━━━━━━━━━━━━━━━━━
+Rosini Transfert`;
 
       try {
         await sendSmsMessage('+41772492245', adminMsg);
