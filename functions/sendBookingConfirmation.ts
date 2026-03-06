@@ -705,6 +705,19 @@ Deno.serve(async (req) => {
       console.log(`Short notice booking — skipping client email for ${client_email}`);
     }
 
+    // ─── Send SMS to client ─────────────────────────────────────────────────────
+    if (client_phone) {
+      try {
+        await base44.asServiceRole.functions.invoke('sendTwilio', {
+          phone_number: client_phone,
+          message: smsMessage,
+        });
+        console.log(`SMS sent to ${client_phone} in language ${language}`);
+      } catch (smsError) {
+        console.error(`Error sending SMS:`, smsError);
+      }
+    }
+
     // ─── Send to company (with PDF) ─────────────────────────────────────────────
     if (client_name && departure_point && arrival_point) {
       try {
