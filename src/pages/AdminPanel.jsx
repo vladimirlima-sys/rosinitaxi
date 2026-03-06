@@ -6,7 +6,7 @@ import {
   Lock, LogOut, LayoutDashboard, List,
   CalendarDays, Car, Users, Settings, BarChart2,
   FileText, Map, Smartphone, HelpCircle, ChevronRight, Eye, EyeOff, Loader2,
-  Receipt, BookOpen, Star
+  Receipt, BookOpen, Star, TrendingUp
 } from 'lucide-react';
 
 const navPages = [
