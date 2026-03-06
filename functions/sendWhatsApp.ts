@@ -2,10 +2,19 @@ import { createClientFromRequest } from 'npm:@base44/sdk@0.8.6';
 
 const TWILIO_ACCOUNT_SID = Deno.env.get("TWILIO_ACCOUNT_SID");
 const TWILIO_AUTH_TOKEN = Deno.env.get("TWILIO_AUTH_TOKEN");
-const TWILIO_FROM = Deno.env.get("TWILIO_WHATSAPP_FROM"); // e.g. whatsapp:+14155238886
+const TWILIO_WHATSAPP_FROM = Deno.env.get("TWILIO_WHATSAPP_FROM"); // e.g. whatsapp:+14155238886
 
+// Extrai o número de telefone puro do TWILIO_WHATSAPP_FROM (remove prefixo "whatsapp:")
+const TWILIO_SMS_FROM = TWILIO_WHATSAPP_FROM
+  ? TWILIO_WHATSAPP_FROM.replace('whatsapp:', '')
+  : null;
+
+// WhatsApp (para admin/empresa)
 async function sendWhatsAppMessage(to, body) {
   const toFormatted = to.startsWith('whatsapp:') ? to : `whatsapp:${to}`;
+  const fromFormatted = TWILIO_WHATSAPP_FROM.startsWith('whatsapp:')
+    ? TWILIO_WHATSAPP_FROM
+    : `whatsapp:${TWILIO_WHATSAPP_FROM}`;
   const credentials = btoa(`${TWILIO_ACCOUNT_SID}:${TWILIO_AUTH_TOKEN}`);
 
   const response = await fetch(
@@ -17,7 +26,7 @@ async function sendWhatsAppMessage(to, body) {
         'Content-Type': 'application/x-www-form-urlencoded',
       },
       body: new URLSearchParams({
-        From: TWILIO_FROM,
+        From: fromFormatted,
         To: toFormatted,
         Body: body,
       }).toString(),
@@ -26,26 +35,14 @@ async function sendWhatsAppMessage(to, body) {
 
   const result = await response.json();
   if (!response.ok) {
-    throw new Error(`Twilio error: ${result.message || JSON.stringify(result)}`);
+    throw new Error(`Twilio WhatsApp error: ${result.message || JSON.stringify(result)}`);
   }
   return result;
 }
 
-async function sendWhatsAppTemplate(to, templateSid, templateVariables) {
-  const toFormatted = to.startsWith('whatsapp:') ? to : `whatsapp:${to}`;
+// SMS (para clientes)
+async function sendSmsMessage(to, body) {
   const credentials = btoa(`${TWILIO_ACCOUNT_SID}:${TWILIO_AUTH_TOKEN}`);
-
-  const params = new URLSearchParams({
-    From: TWILIO_FROM,
-    To: toFormatted,
-    ContentSid: templateSid,
-  });
-
-  if (templateVariables && templateVariables.length > 0) {
-    templateVariables.forEach((variable, index) => {
-      params.append(`ContentVariables`, JSON.stringify(variable));
-    });
-  }
 
   const response = await fetch(
     `https://api.twilio.com/2010-04-01/Accounts/${TWILIO_ACCOUNT_SID}/Messages.json`,
@@ -55,13 +52,17 @@ async function sendWhatsAppTemplate(to, templateSid, templateVariables) {
         'Authorization': `Basic ${credentials}`,
         'Content-Type': 'application/x-www-form-urlencoded',
       },
-      body: params.toString(),
+      body: new URLSearchParams({
+        From: TWILIO_SMS_FROM,
+        To: to,
+        Body: body,
+      }).toString(),
     }
   );
 
   const result = await response.json();
   if (!response.ok) {
-    throw new Error(`Twilio error: ${result.message || JSON.stringify(result)}`);
+    throw new Error(`Twilio SMS error: ${result.message || JSON.stringify(result)}`);
   }
   return result;
 }
@@ -85,15 +86,14 @@ Deno.serve(async (req) => {
       vehicle_type,
       total_price,
       driver_phone,
-      driver_name,
     } = booking;
 
     const vehicleLabel = vehicle_type === 'comfort' ? 'Comfort' : 'Standard';
+    const lang = booking.language || 'fr';
     const results = [];
 
     // ── NEW BOOKING ──────────────────────────────────────────────
     if (type === 'new_booking') {
-      // Notify driver (+41772492245 = company/admin number)
       const driverPhone = driver_phone || '+41772492245';
       const driverMsg =
         `🔔 *Nouvelle réservation — Rosini Transfert*\n\n` +
@@ -107,7 +107,7 @@ Deno.serve(async (req) => {
 
       try {
         await sendWhatsAppMessage(driverPhone, driverMsg);
-        results.push({ to: driverPhone, status: 'sent' });
+        results.push({ to: driverPhone, status: 'sent', channel: 'whatsapp' });
         console.log('WhatsApp sent to driver:', driverPhone);
       } catch (err) {
         console.error('Error sending to driver:', err.message);
@@ -116,32 +116,31 @@ Deno.serve(async (req) => {
 
     // ── PAYMENT CONFIRMED ─────────────────────────────────────────
     } else if (type === 'payment_confirmed') {
-      // Notify client
+      // SMS para cliente (todos os idiomas)
       if (client_phone) {
-        const lang = booking.language || 'fr';
         const msgTemplates = {
-          fr: (n, dep, arr, date, time, v, price) => `✅ *Réservation confirmée — Rosini Transfert*\n\nBonjour ${n}, votre paiement a bien été reçu.\n\n📍 ${dep} → ${arr}\n📅 ${date} à ${time}\n🚗 ${v}\n💶 CHF ${price}\n\nPour toute question: +41 77 249 22 45`,
-          pt: (n, dep, arr, date, time, v, price) => `✅ *Reserva confirmada — Rosini Transfert*\n\nOlá ${n}, o seu pagamento foi recebido.\n\n📍 ${dep} → ${arr}\n📅 ${date} às ${time}\n🚗 ${v}\n💶 CHF ${price}\n\nQualquer dúvida: +41 77 249 22 45`,
-          en: (n, dep, arr, date, time, v, price) => `✅ *Booking confirmed — Rosini Transfert*\n\nHello ${n}, your payment has been received.\n\n📍 ${dep} → ${arr}\n📅 ${date} at ${time}\n🚗 ${v}\n💶 CHF ${price}\n\nAny questions: +41 77 249 22 45`,
-          de: (n, dep, arr, date, time, v, price) => `✅ *Buchung bestätigt — Rosini Transfert*\n\nHallo ${n}, Ihre Zahlung wurde erhalten.\n\n📍 ${dep} → ${arr}\n📅 ${date} um ${time}\n🚗 ${v}\n💶 CHF ${price}\n\nBei Fragen: +41 77 249 22 45`,
-          it: (n, dep, arr, date, time, v, price) => `✅ *Prenotazione confermata — Rosini Transfert*\n\nSalve ${n}, il suo pagamento è stato ricevuto.\n\n📍 ${dep} → ${arr}\n📅 ${date} alle ${time}\n🚗 ${v}\n💶 CHF ${price}\n\nPer qualsiasi domanda: +41 77 249 22 45`,
-          es: (n, dep, arr, date, time, v, price) => `✅ *Reserva confirmada — Rosini Transfert*\n\nHola ${n}, su pago ha sido recibido.\n\n📍 ${dep} → ${arr}\n📅 ${date} a las ${time}\n🚗 ${v}\n💶 CHF ${price}\n\nCualquier pregunta: +41 77 249 22 45`,
-          nl: (n, dep, arr, date, time, v, price) => `✅ *Boeking bevestigd — Rosini Transfert*\n\nHallo ${n}, uw betaling is ontvangen.\n\n📍 ${dep} → ${arr}\n📅 ${date} om ${time}\n🚗 ${v}\n💶 CHF ${price}\n\nVragen: +41 77 249 22 45`,
+          fr: (n, dep, arr, date, time, v, price) => `Reservation confirmee - Rosini Transfert\n\nBonjour ${n}, votre paiement a bien ete recu.\n${dep} -> ${arr}\n${date} a ${time}\nVehicule: ${v}\nCHF ${price}\n\nQuestions: +41 77 249 22 45`,
+          pt: (n, dep, arr, date, time, v, price) => `Reserva confirmada - Rosini Transfert\n\nOla ${n}, o seu pagamento foi recebido.\n${dep} -> ${arr}\n${date} as ${time}\nVeiculo: ${v}\nCHF ${price}\n\nDuvidas: +41 77 249 22 45`,
+          en: (n, dep, arr, date, time, v, price) => `Booking confirmed - Rosini Transfert\n\nHello ${n}, your payment has been received.\n${dep} -> ${arr}\n${date} at ${time}\nVehicle: ${v}\nCHF ${price}\n\nQuestions: +41 77 249 22 45`,
+          de: (n, dep, arr, date, time, v, price) => `Buchung bestatigt - Rosini Transfert\n\nHallo ${n}, Ihre Zahlung wurde erhalten.\n${dep} -> ${arr}\n${date} um ${time}\nFahrzeug: ${v}\nCHF ${price}\n\nFragen: +41 77 249 22 45`,
+          it: (n, dep, arr, date, time, v, price) => `Prenotazione confermata - Rosini Transfert\n\nSalve ${n}, il suo pagamento e stato ricevuto.\n${dep} -> ${arr}\n${date} alle ${time}\nVeicolo: ${v}\nCHF ${price}\n\nDomande: +41 77 249 22 45`,
+          es: (n, dep, arr, date, time, v, price) => `Reserva confirmada - Rosini Transfert\n\nHola ${n}, su pago ha sido recibido.\n${dep} -> ${arr}\n${date} a las ${time}\nVehiculo: ${v}\nCHF ${price}\n\nPreguntas: +41 77 249 22 45`,
+          nl: (n, dep, arr, date, time, v, price) => `Boeking bevestigd - Rosini Transfert\n\nHallo ${n}, uw betaling is ontvangen.\n${dep} -> ${arr}\n${date} om ${time}\nVoertuig: ${v}\nCHF ${price}\n\nVragen: +41 77 249 22 45`,
         };
         const tpl = msgTemplates[lang] || msgTemplates['fr'];
         const clientMsg = tpl(client_name, departure_point, arrival_point, departure_date, departure_time, vehicleLabel, total_price);
 
         try {
-          await sendWhatsAppMessage(client_phone, clientMsg);
-          results.push({ to: client_phone, status: 'sent' });
-          console.log('WhatsApp sent to client:', client_phone);
+          await sendSmsMessage(client_phone, clientMsg);
+          results.push({ to: client_phone, status: 'sent', channel: 'sms' });
+          console.log('SMS sent to client:', client_phone);
         } catch (err) {
-          console.error('Error sending to client:', err.message);
+          console.error('Error sending SMS to client:', err.message);
           results.push({ to: client_phone, status: 'error', error: err.message });
         }
       }
 
-      // Also notify admin/driver
+      // WhatsApp para admin
       const adminMsg =
         `💳 *Paiement confirmé — Rosini Transfert*\n\n` +
         `👤 ${client_name}\n` +
@@ -151,38 +150,38 @@ Deno.serve(async (req) => {
 
       try {
         await sendWhatsAppMessage('+41772492245', adminMsg);
-        results.push({ to: '+41772492245', status: 'sent' });
+        results.push({ to: '+41772492245', status: 'sent', channel: 'whatsapp' });
       } catch (err) {
         console.error('Error sending admin payment notification:', err.message);
       }
 
     // ── CANCELLED ─────────────────────────────────────────────────
     } else if (type === 'cancelled') {
-      // Notify client
+      // SMS para cliente
       if (client_phone) {
-        const lang = booking.language || 'fr';
         const cancelTemplates = {
-          fr: (n, dep, arr, date, time) => `❌ *Réservation annulée — Rosini Transfert*\n\nBonjour ${n}, votre réservation a été annulée.\n\n📍 ${dep} → ${arr}\n📅 ${date} à ${time}\n\nPour toute question: +41 77 249 22 45`,
-          pt: (n, dep, arr, date, time) => `❌ *Reserva cancelada — Rosini Transfert*\n\nOlá ${n}, a sua reserva foi cancelada.\n\n📍 ${dep} → ${arr}\n📅 ${date} às ${time}\n\nQualquer dúvida: +41 77 249 22 45`,
-          en: (n, dep, arr, date, time) => `❌ *Booking cancelled — Rosini Transfert*\n\nHello ${n}, your booking has been cancelled.\n\n📍 ${dep} → ${arr}\n📅 ${date} at ${time}\n\nAny questions: +41 77 249 22 45`,
-          de: (n, dep, arr, date, time) => `❌ *Buchung storniert — Rosini Transfert*\n\nHallo ${n}, Ihre Buchung wurde storniert.\n\n📍 ${dep} → ${arr}\n📅 ${date} um ${time}\n\nBei Fragen: +41 77 249 22 45`,
-          it: (n, dep, arr, date, time) => `❌ *Prenotazione annullata — Rosini Transfert*\n\nSalve ${n}, la sua prenotazione è stata annullata.\n\n📍 ${dep} → ${arr}\n📅 ${date} alle ${time}\n\nPer qualsiasi domanda: +41 77 249 22 45`,
-          es: (n, dep, arr, date, time) => `❌ *Reserva cancelada — Rosini Transfert*\n\nHola ${n}, su reserva ha sido cancelada.\n\n📍 ${dep} → ${arr}\n📅 ${date} a las ${time}\n\nCualquier pregunta: +41 77 249 22 45`,
-          nl: (n, dep, arr, date, time) => `❌ *Boeking geannuleerd — Rosini Transfert*\n\nHallo ${n}, uw boeking is geannuleerd.\n\n📍 ${dep} → ${arr}\n📅 ${date} om ${time}\n\nVragen: +41 77 249 22 45`,
+          fr: (n, dep, arr, date, time) => `Reservation annulee - Rosini Transfert\n\nBonjour ${n}, votre reservation a ete annulee.\n${dep} -> ${arr}\n${date} a ${time}\n\nQuestions: +41 77 249 22 45`,
+          pt: (n, dep, arr, date, time) => `Reserva cancelada - Rosini Transfert\n\nOla ${n}, a sua reserva foi cancelada.\n${dep} -> ${arr}\n${date} as ${time}\n\nDuvidas: +41 77 249 22 45`,
+          en: (n, dep, arr, date, time) => `Booking cancelled - Rosini Transfert\n\nHello ${n}, your booking has been cancelled.\n${dep} -> ${arr}\n${date} at ${time}\n\nQuestions: +41 77 249 22 45`,
+          de: (n, dep, arr, date, time) => `Buchung storniert - Rosini Transfert\n\nHallo ${n}, Ihre Buchung wurde storniert.\n${dep} -> ${arr}\n${date} um ${time}\n\nFragen: +41 77 249 22 45`,
+          it: (n, dep, arr, date, time) => `Prenotazione annullata - Rosini Transfert\n\nSalve ${n}, la sua prenotazione e stata annullata.\n${dep} -> ${arr}\n${date} alle ${time}\n\nDomande: +41 77 249 22 45`,
+          es: (n, dep, arr, date, time) => `Reserva cancelada - Rosini Transfert\n\nHola ${n}, su reserva ha sido cancelada.\n${dep} -> ${arr}\n${date} a las ${time}\n\nPreguntas: +41 77 249 22 45`,
+          nl: (n, dep, arr, date, time) => `Boeking geannuleerd - Rosini Transfert\n\nHallo ${n}, uw boeking is geannuleerd.\n${dep} -> ${arr}\n${date} om ${time}\n\nVragen: +41 77 249 22 45`,
         };
         const cancelTpl = cancelTemplates[lang] || cancelTemplates['fr'];
         const cancelClientMsg = cancelTpl(client_name, departure_point, arrival_point, departure_date, departure_time);
 
         try {
-          await sendWhatsAppMessage(client_phone, cancelClientMsg);
-          results.push({ to: client_phone, status: 'sent' });
+          await sendSmsMessage(client_phone, cancelClientMsg);
+          results.push({ to: client_phone, status: 'sent', channel: 'sms' });
+          console.log('SMS sent to client (cancellation):', client_phone);
         } catch (err) {
-          console.error('Error sending cancellation to client:', err.message);
+          console.error('Error sending cancellation SMS to client:', err.message);
           results.push({ to: client_phone, status: 'error', error: err.message });
         }
       }
 
-      // Notify admin
+      // WhatsApp para admin
       const cancelAdminMsg =
         `❌ *Réservation annulée — Rosini Transfert*\n\n` +
         `👤 ${client_name}\n` +
@@ -191,7 +190,7 @@ Deno.serve(async (req) => {
 
       try {
         await sendWhatsAppMessage('+41772492245', cancelAdminMsg);
-        results.push({ to: '+41772492245', status: 'sent' });
+        results.push({ to: '+41772492245', status: 'sent', channel: 'whatsapp' });
       } catch (err) {
         console.error('Error sending cancellation admin notification:', err.message);
       }
