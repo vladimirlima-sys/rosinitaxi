@@ -96,19 +96,19 @@ Deno.serve(async (req) => {
     if (type === 'new_booking') {
       const driverPhone = driver_phone || '+41772492245';
       const driverMsg =
-        `🔔 *Nouvelle réservation — Rosini Transfert*\n\n` +
-        `👤 Client: ${client_name}\n` +
-        `📱 Tel: ${client_phone || '—'}\n` +
-        `📍 De: ${departure_point}\n` +
-        `📍 À: ${arrival_point}\n` +
-        `📅 Le: ${departure_date} à ${departure_time}\n` +
-        `🚗 Véhicule: ${vehicleLabel}\n` +
-        `💶 Total: CHF ${total_price}`;
+        `Nouvelle reservation - Rosini Transfert\n\n` +
+        `Client: ${client_name}\n` +
+        `Tel: ${client_phone || '—'}\n` +
+        `De: ${departure_point}\n` +
+        `A: ${arrival_point}\n` +
+        `Le: ${departure_date} a ${departure_time}\n` +
+        `Vehicule: ${vehicleLabel}\n` +
+        `Total: CHF ${total_price}`;
 
       try {
-        await sendWhatsAppMessage(driverPhone, driverMsg);
-        results.push({ to: driverPhone, status: 'sent', channel: 'whatsapp' });
-        console.log('WhatsApp sent to driver:', driverPhone);
+        await sendSmsMessage(driverPhone, driverMsg);
+        results.push({ to: driverPhone, status: 'sent', channel: 'sms' });
+        console.log('SMS sent to driver:', driverPhone);
       } catch (err) {
         console.error('Error sending to driver:', err.message);
         results.push({ to: driverPhone, status: 'error', error: err.message });
