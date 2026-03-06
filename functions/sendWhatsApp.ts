@@ -118,14 +118,18 @@ Deno.serve(async (req) => {
     } else if (type === 'payment_confirmed') {
       // Notify client
       if (client_phone) {
-        const clientMsg =
-          `✅ *Réservation confirmée — Rosini Transfert*\n\n` +
-          `Bonjour ${client_name}, votre paiement a bien été reçu.\n\n` +
-          `📍 ${departure_point} → ${arrival_point}\n` +
-          `📅 ${departure_date} à ${departure_time}\n` +
-          `🚗 ${vehicleLabel}\n` +
-          `💶 CHF ${total_price}\n\n` +
-          `Pour toute question: +41 77 249 22 45`;
+        const lang = booking.language || 'fr';
+        const msgTemplates = {
+          fr: (n, dep, arr, date, time, v, price) => `✅ *Réservation confirmée — Rosini Transfert*\n\nBonjour ${n}, votre paiement a bien été reçu.\n\n📍 ${dep} → ${arr}\n📅 ${date} à ${time}\n🚗 ${v}\n💶 CHF ${price}\n\nPour toute question: +41 77 249 22 45`,
+          pt: (n, dep, arr, date, time, v, price) => `✅ *Reserva confirmada — Rosini Transfert*\n\nOlá ${n}, o seu pagamento foi recebido.\n\n📍 ${dep} → ${arr}\n📅 ${date} às ${time}\n🚗 ${v}\n💶 CHF ${price}\n\nQualquer dúvida: +41 77 249 22 45`,
+          en: (n, dep, arr, date, time, v, price) => `✅ *Booking confirmed — Rosini Transfert*\n\nHello ${n}, your payment has been received.\n\n📍 ${dep} → ${arr}\n📅 ${date} at ${time}\n🚗 ${v}\n💶 CHF ${price}\n\nAny questions: +41 77 249 22 45`,
+          de: (n, dep, arr, date, time, v, price) => `✅ *Buchung bestätigt — Rosini Transfert*\n\nHallo ${n}, Ihre Zahlung wurde erhalten.\n\n📍 ${dep} → ${arr}\n📅 ${date} um ${time}\n🚗 ${v}\n💶 CHF ${price}\n\nBei Fragen: +41 77 249 22 45`,
+          it: (n, dep, arr, date, time, v, price) => `✅ *Prenotazione confermata — Rosini Transfert*\n\nSalve ${n}, il suo pagamento è stato ricevuto.\n\n📍 ${dep} → ${arr}\n📅 ${date} alle ${time}\n🚗 ${v}\n💶 CHF ${price}\n\nPer qualsiasi domanda: +41 77 249 22 45`,
+          es: (n, dep, arr, date, time, v, price) => `✅ *Reserva confirmada — Rosini Transfert*\n\nHola ${n}, su pago ha sido recibido.\n\n📍 ${dep} → ${arr}\n📅 ${date} a las ${time}\n🚗 ${v}\n💶 CHF ${price}\n\nCualquier pregunta: +41 77 249 22 45`,
+          nl: (n, dep, arr, date, time, v, price) => `✅ *Boeking bevestigd — Rosini Transfert*\n\nHallo ${n}, uw betaling is ontvangen.\n\n📍 ${dep} → ${arr}\n📅 ${date} om ${time}\n🚗 ${v}\n💶 CHF ${price}\n\nVragen: +41 77 249 22 45`,
+        };
+        const tpl = msgTemplates[lang] || msgTemplates['fr'];
+        const clientMsg = tpl(client_name, departure_point, arrival_point, departure_date, departure_time, vehicleLabel, total_price);
 
         try {
           await sendWhatsAppMessage(client_phone, clientMsg);
