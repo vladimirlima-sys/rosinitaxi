@@ -44,11 +44,7 @@ export default function CompletedTrips() {
   const [selectedMonth, setSelectedMonth] = useState('all');
 
   useEffect(() => {
-    const saved = sessionStorage.getItem('driver_portal_id');
-    if (!saved) {
-      window.location.href = createPageUrl('DriverPortal');
-      return;
-    }
+    const saved = sessionStorage.getItem('driver_portal_id') || 'demo_driver';
     loadTrips(saved);
   }, []);
 
