@@ -246,12 +246,20 @@ uw boeking is bevestigd !
       }
 
       // SMS para admin
+      const paymentLabel = payment_method === 'twint' ? 'TWINT' : payment_method === 'cash' ? 'Cash' : 'Stripe';
       const adminMsg =
-        `Paiement confirme - Rosini Transfert\n\n` +
-        `${client_name}\n` +
-        `${departure_point} -> ${arrival_point}\n` +
-        `${departure_date} a ${departure_time}\n` +
-        `CHF ${total_price} (Stripe)`;
+`🆕 ROSINI TRANSFERT
+━━━━━━━━━━━━━━━━━━
+Nouvelle reservation !
+
+👤 ${client_name}
+📞 ${client_phone || '—'}
+📍 ${departure_point}
+🏁 ${arrival_point}
+📅 ${departure_date}  🕐 ${departure_time}
+💶 CHF ${total_price}
+💳 ${paymentLabel}
+━━━━━━━━━━━━━━━━━━`;
 
       try {
         await sendSmsMessage('+41772492245', adminMsg);
