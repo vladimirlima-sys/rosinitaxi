@@ -140,17 +140,17 @@ Deno.serve(async (req) => {
         }
       }
 
-      // WhatsApp para admin
+      // SMS para admin
       const adminMsg =
-        `💳 *Paiement confirmé — Rosini Transfert*\n\n` +
-        `👤 ${client_name}\n` +
-        `📍 ${departure_point} → ${arrival_point}\n` +
-        `📅 ${departure_date} à ${departure_time}\n` +
-        `💶 CHF ${total_price} (Stripe)`;
+        `Paiement confirme - Rosini Transfert\n\n` +
+        `${client_name}\n` +
+        `${departure_point} -> ${arrival_point}\n` +
+        `${departure_date} a ${departure_time}\n` +
+        `CHF ${total_price} (Stripe)`;
 
       try {
-        await sendWhatsAppMessage('+41772492245', adminMsg);
-        results.push({ to: '+41772492245', status: 'sent', channel: 'whatsapp' });
+        await sendSmsMessage('+41772492245', adminMsg);
+        results.push({ to: '+41772492245', status: 'sent', channel: 'sms' });
       } catch (err) {
         console.error('Error sending admin payment notification:', err.message);
       }
