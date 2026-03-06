@@ -21,57 +21,63 @@ Deno.serve(async (req) => {
     const whatsappFrom = Deno.env.get('TWILIO_WHATSAPP_FROM');
 
     if (!accountSid || !authToken || !whatsappFrom) {
-      return Response.json(
-        { error: 'Twilio credentials not configured' },
-        { status: 500 }
-      );
+      return Response.json({ error: 'Twilio credentials not configured' }, { status: 500 });
     }
+
+    // SMS sender = same number without whatsapp: prefix
+    const smsFrom = whatsappFrom.replace('whatsapp:', '');
 
     // Format phone number
-    let formattedPhone = client_phone.replace(/\D/g, '');
+    let formattedPhone = client_phone.replace(/\s/g, '');
     if (!formattedPhone.startsWith('+')) {
-      formattedPhone = '+' + formattedPhone;
+      formattedPhone = '+' + formattedPhone.replace(/\D/g, '');
     }
 
-    // Template configuration by language and status
-    const templates = {
-      'fr': {
-        'en_route': {
-          sid: 'HX905b87dda9be5608efd829b75d588118',
-          variables: [client_name || '', departure_point || '', tracking_link || '']
-        },
-        'arrived': {
-          sid: 'HX57b573cd1d0f5875c54cc0b145c73281',
-          variables: [client_name || '', departure_point || '']
-        }
-      }
+    // SMS message templates per language and status
+    const messages = {
+      fr: {
+        en_route: (name, dep, link) => `Rosini Transfert: Bonjour ${name}, votre chauffeur est en route vers ${dep}. Suivez en temps reel: ${link}`,
+        arrived:  (name, dep)       => `Rosini Transfert: Bonjour ${name}, votre chauffeur est arrive a ${dep}. Bonne route!`
+      },
+      pt: {
+        en_route: (name, dep, link) => `Rosini Transfert: Ola ${name}, o seu motorista esta a caminho de ${dep}. Acompanhe em tempo real: ${link}`,
+        arrived:  (name, dep)       => `Rosini Transfert: Ola ${name}, o seu motorista chegou a ${dep}. Boa viagem!`
+      },
+      en: {
+        en_route: (name, dep, link) => `Rosini Transfert: Hello ${name}, your driver is on the way to ${dep}. Track in real time: ${link}`,
+        arrived:  (name, dep)       => `Rosini Transfert: Hello ${name}, your driver has arrived at ${dep}. Have a great trip!`
+      },
+      de: {
+        en_route: (name, dep, link) => `Rosini Transfert: Hallo ${name}, Ihr Fahrer ist auf dem Weg nach ${dep}. Verfolgen Sie ihn: ${link}`,
+        arrived:  (name, dep)       => `Rosini Transfert: Hallo ${name}, Ihr Fahrer ist in ${dep} angekommen. Gute Fahrt!`
+      },
+      it: {
+        en_route: (name, dep, link) => `Rosini Transfert: Salve ${name}, il suo autista e in arrivo a ${dep}. Segui in tempo reale: ${link}`,
+        arrived:  (name, dep)       => `Rosini Transfert: Salve ${name}, il suo autista e arrivato a ${dep}. Buon viaggio!`
+      },
+      es: {
+        en_route: (name, dep, link) => `Rosini Transfert: Hola ${name}, su conductor esta en camino a ${dep}. Siga en tiempo real: ${link}`,
+        arrived:  (name, dep)       => `Rosini Transfert: Hola ${name}, su conductor ha llegado a ${dep}. Buen viaje!`
+      },
+      nl: {
+        en_route: (name, dep, link) => `Rosini Transfert: Hallo ${name}, uw chauffeur is onderweg naar ${dep}. Volg live: ${link}`,
+        arrived:  (name, dep)       => `Rosini Transfert: Hallo ${name}, uw chauffeur is gearriveerd bij ${dep}. Goede reis!`
+      },
     };
 
-    const languageTemplates = templates[language];
-    if (!languageTemplates) {
-      console.error(`Language '${language}' not supported for WhatsApp templates`);
-      return Response.json({ success: true, skipped: true });
-    }
+    const langMsgs = messages[language] || messages['fr'];
+    const msgFn = langMsgs[status];
+    const messageBody = status === 'en_route'
+      ? msgFn(client_name || '', departure_point || '', tracking_link || '')
+      : msgFn(client_name || '', departure_point || '');
 
-    const template = languageTemplates[status];
-    if (!template) {
-      return Response.json({ success: true, skipped: true });
-    }
-
-    // Send WhatsApp template via Twilio
+    // Send SMS via Twilio
     const url = `https://api.twilio.com/2010-04-01/Accounts/${accountSid}/Messages.json`;
-    
-    const bodyData = new URLSearchParams();
-    bodyData.append('From', whatsappFrom);
-    bodyData.append('To', formattedPhone);
-    bodyData.append('ContentSid', template.sid);
-    
-    // ContentVariables must be a JSON object with 1-based string keys
-    const contentVariables = {};
-    template.variables.forEach((variable, index) => {
-      contentVariables[String(index + 1)] = variable;
+    const bodyData = new URLSearchParams({
+      From: smsFrom,
+      To: formattedPhone,
+      Body: messageBody,
     });
-    bodyData.append('ContentVariables', JSON.stringify(contentVariables));
 
     const response = await fetch(url, {
       method: 'POST',
@@ -85,21 +91,15 @@ Deno.serve(async (req) => {
     const data = await response.json();
 
     if (!response.ok) {
-      console.error('Twilio error:', data);
-      return Response.json(
-        { error: 'Failed to send WhatsApp', details: data },
-        { status: 500 }
-      );
+      console.error('Twilio SMS error:', data);
+      return Response.json({ error: 'Failed to send SMS', details: data }, { status: 500 });
     }
 
-    console.log('WhatsApp template sent:', data.sid);
+    console.log('SMS sent to client:', formattedPhone, '| status:', status, '| lang:', language, '| sid:', data.sid);
     return Response.json({ success: true, message_sid: data.sid });
 
   } catch (error) {
     console.error('Error:', error);
-    return Response.json(
-      { error: error.message },
-      { status: 500 }
-    );
+    return Response.json({ error: error.message }, { status: 500 });
   }
 });
