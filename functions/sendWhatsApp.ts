@@ -264,13 +264,103 @@ uw boeking is bevestigd !
       // SMS para cliente
       if (client_phone) {
         const cancelTemplates = {
-          fr: (n, dep, arr, date, time) => `Reservation annulee - Rosini Transfert\n\nBonjour ${n}, votre reservation a ete annulee.\n${dep} -> ${arr}\n${date} a ${time}\n\nQuestions: +41 77 249 22 45`,
-          pt: (n, dep, arr, date, time) => `Reserva cancelada - Rosini Transfert\n\nOla ${n}, a sua reserva foi cancelada.\n${dep} -> ${arr}\n${date} as ${time}\n\nDuvidas: +41 77 249 22 45`,
-          en: (n, dep, arr, date, time) => `Booking cancelled - Rosini Transfert\n\nHello ${n}, your booking has been cancelled.\n${dep} -> ${arr}\n${date} at ${time}\n\nQuestions: +41 77 249 22 45`,
-          de: (n, dep, arr, date, time) => `Buchung storniert - Rosini Transfert\n\nHallo ${n}, Ihre Buchung wurde storniert.\n${dep} -> ${arr}\n${date} um ${time}\n\nFragen: +41 77 249 22 45`,
-          it: (n, dep, arr, date, time) => `Prenotazione annullata - Rosini Transfert\n\nSalve ${n}, la sua prenotazione e stata annullata.\n${dep} -> ${arr}\n${date} alle ${time}\n\nDomande: +41 77 249 22 45`,
-          es: (n, dep, arr, date, time) => `Reserva cancelada - Rosini Transfert\n\nHola ${n}, su reserva ha sido cancelada.\n${dep} -> ${arr}\n${date} a las ${time}\n\nPreguntas: +41 77 249 22 45`,
-          nl: (n, dep, arr, date, time) => `Boeking geannuleerd - Rosini Transfert\n\nHallo ${n}, uw boeking is geannuleerd.\n${dep} -> ${arr}\n${date} om ${time}\n\nVragen: +41 77 249 22 45`,
+          fr: (n, dep, arr, date, time) =>
+`❌ ROSINI TRANSFERT
+━━━━━━━━━━━━━━━━━━
+Bonjour ${n},
+votre reservation a ete annulee.
+
+🗺 Trajet
+  📍 ${dep}
+  🏁 ${arr}
+
+📅 ${date}  🕐 ${time}
+━━━━━━━━━━━━━━━━━━
+❓ +41 77 249 22 45`,
+
+          pt: (n, dep, arr, date, time) =>
+`❌ ROSINI TRANSFERT
+━━━━━━━━━━━━━━━━━━
+Ola ${n},
+a sua reserva foi cancelada.
+
+🗺 Trajeto
+  📍 ${dep}
+  🏁 ${arr}
+
+📅 ${date}  🕐 ${time}
+━━━━━━━━━━━━━━━━━━
+❓ +41 77 249 22 45`,
+
+          en: (n, dep, arr, date, time) =>
+`❌ ROSINI TRANSFERT
+━━━━━━━━━━━━━━━━━━
+Hello ${n},
+your booking has been cancelled.
+
+🗺 Journey
+  📍 ${dep}
+  🏁 ${arr}
+
+📅 ${date}  🕐 ${time}
+━━━━━━━━━━━━━━━━━━
+❓ +41 77 249 22 45`,
+
+          de: (n, dep, arr, date, time) =>
+`❌ ROSINI TRANSFERT
+━━━━━━━━━━━━━━━━━━
+Hallo ${n},
+Ihre Buchung wurde storniert.
+
+🗺 Fahrt
+  📍 ${dep}
+  🏁 ${arr}
+
+📅 ${date}  🕐 ${time}
+━━━━━━━━━━━━━━━━━━
+❓ +41 77 249 22 45`,
+
+          it: (n, dep, arr, date, time) =>
+`❌ ROSINI TRANSFERT
+━━━━━━━━━━━━━━━━━━
+Salve ${n},
+la sua prenotazione e stata annullata.
+
+🗺 Percorso
+  📍 ${dep}
+  🏁 ${arr}
+
+📅 ${date}  🕐 ${time}
+━━━━━━━━━━━━━━━━━━
+❓ +41 77 249 22 45`,
+
+          es: (n, dep, arr, date, time) =>
+`❌ ROSINI TRANSFERT
+━━━━━━━━━━━━━━━━━━
+Hola ${n},
+su reserva ha sido cancelada.
+
+🗺 Trayecto
+  📍 ${dep}
+  🏁 ${arr}
+
+📅 ${date}  🕐 ${time}
+━━━━━━━━━━━━━━━━━━
+❓ +41 77 249 22 45`,
+
+          nl: (n, dep, arr, date, time) =>
+`❌ ROSINI TRANSFERT
+━━━━━━━━━━━━━━━━━━
+Hallo ${n},
+uw boeking is geannuleerd.
+
+🗺 Rit
+  📍 ${dep}
+  🏁 ${arr}
+
+📅 ${date}  🕐 ${time}
+━━━━━━━━━━━━━━━━━━
+❓ +41 77 249 22 45`,
         };
         const cancelTpl = cancelTemplates[lang] || cancelTemplates['fr'];
         const cancelClientMsg = cancelTpl(client_name, departure_point, arrival_point, departure_date, departure_time);
