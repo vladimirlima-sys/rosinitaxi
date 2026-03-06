@@ -23,6 +23,7 @@ const navPages = [
   { name: 'Taximeter', label: 'Taximètre', icon: Smartphone },
   { name: 'DriverPortal', label: 'Portail Chauffeur', icon: Map },
   { name: 'FAQ', label: 'FAQ', icon: HelpCircle },
+  { name: 'Analytics', label: 'Statistiques de visites', icon: TrendingUp },
   { name: 'Home', label: 'Site public', icon: LayoutDashboard },
 ];
 
