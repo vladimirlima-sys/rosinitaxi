@@ -21,6 +21,7 @@ function HomeContent({ bookingRef }) {
           <LanguageSwitcher />
         </div>
 
+        <PageTracker page="Home" />
         <BookingForm bookingRef={bookingRef} />
         <div className="absolute bottom-0 right-0 p-4">
           <a href={createPageUrl('DriverPortal')} title="Portal do Motorista">
