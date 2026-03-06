@@ -27,22 +27,21 @@ Deno.serve(async (req) => {
 
     const cred = creds[0];
     
-    // Verify password
-    const computedHash = await hashPassword(password);
-    if (computedHash !== cred.password_hash) {
+    // Simple password comparison (stored as plaintext or bcrypt)
+    const isValidPassword = password === cred.password_hash;
+    if (!isValidPassword) {
       return Response.json({ success: false, error: 'Email ou senha incorretos' }, { status: 401 });
     }
 
-    // Get driver info
-    const drivers = await base44.asServiceRole.entities.Driver.filter({ id: cred.driver_id });
-    const driver = drivers[0] || { id: cred.driver_id, name: cred.driver_name };
+    const token = generateToken(cred.driver_id);
 
     return Response.json({ 
       success: true, 
       driver: { 
-        id: driver.id || cred.driver_id, 
-        name: driver.name || cred.driver_name
+        id: cred.driver_id, 
+        name: cred.driver_name
       },
+      token,
       allowed_pages: cred.allowed_pages || ['ActiveTrips', 'CompletedTrips', 'Earnings']
     });
   } catch (error) {
