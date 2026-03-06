@@ -1,35 +1,35 @@
-import { BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, Legend, ResponsiveContainer } from 'recharts';
-import { format, startOfDay, eachDayOfInterval } from 'date-fns';
+import { BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer } from 'recharts';
+import { format, subDays } from 'date-fns';
 
-export default function DailyChart({ pageViews, isBookings = false, bookings = [] }) {
-  const data = isBookings ? bookings : pageViews;
-  
-  const dates = eachDayOfInterval({
-    start: new Date(Math.min(...data.map(d => new Date(d.created_date || d.date)))),
-    end: new Date()
-  });
+export default function DailyChart({ pageViews, bookings, isBookings = false }) {
+  const data = [];
+  const items = isBookings ? bookings : pageViews;
 
-  const chartData = dates.map(date => {
+  for (let i = 29; i >= 0; i--) {
+    const date = subDays(new Date(), i);
     const dateStr = format(date, 'yyyy-MM-dd');
-    const count = data.filter(d => (d.created_date || d.date).startsWith(dateStr)).length;
-    return {
-      date: format(date, 'dd MMM'),
-      count
-    };
-  }).filter(d => d.count > 0).slice(-30);
+    const count = items.filter(item => {
+      const d = isBookings ? item.created_date?.split('T')[0] : item.date;
+      return d === dateStr;
+    }).length;
+    if (count > 0) {
+      data.push({ date: format(date, 'dd/MM'), count });
+    }
+  }
+
+  const color = isBookings ? '#10b981' : '#3b82f6';
+  const title = isBookings ? 'Reservas por Dia' : 'Visitas por Dia';
 
   return (
     <div className="bg-white rounded-lg shadow-sm border border-slate-200 p-4">
-      <h2 className="text-lg font-bold text-slate-900 mb-4">
-        {isBookings ? 'Reservas por Dia' : 'Visitas por Dia'}
-      </h2>
-      <ResponsiveContainer width="100%" height={300}>
-        <BarChart data={chartData}>
+      <h3 className="font-semibold text-slate-700 mb-4">{title}</h3>
+      <ResponsiveContainer width="100%" height={220}>
+        <BarChart data={data}>
           <CartesianGrid strokeDasharray="3 3" />
-          <XAxis dataKey="date" />
-          <YAxis />
+          <XAxis dataKey="date" tick={{ fontSize: 11 }} />
+          <YAxis tick={{ fontSize: 11 }} />
           <Tooltip />
-          <Bar dataKey="count" fill={isBookings ? '#10b981' : '#3b82f6'} />
+          <Bar dataKey="count" fill={color} radius={[4, 4, 0, 0]} />
         </BarChart>
       </ResponsiveContainer>
     </div>
