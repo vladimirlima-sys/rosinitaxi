@@ -678,15 +678,9 @@ Deno.serve(async (req) => {
       }
     };
 
-    // ─── WhatsApp notification ──────────────────────────────────────────────────
+    // ─── SMS notification ──────────────────────────────────────────────────
     if (client_phone) {
       try {
-        const whatsappMessage = language === 'pt' 
-          ? `✓ Olá ${client_name}! Sua reserva foi confirmada.\n\n${departure_point} → ${arrival_point}\n${departure_date} às ${departure_time}\nVeículo: ${vehicleLabel}\nTotal: CHF ${total_price}`
-          : language === 'en'
-          ? `✓ Hello ${client_name}! Your booking has been confirmed.\n\n${departure_point} → ${arrival_point}\n${departure_date} at ${departure_time}\nVehicle: ${vehicleLabel}\nTotal: CHF ${total_price}`
-          : `✓ Bonjour ${client_name}! Votre réservation est confirmée.\n\n${departure_point} → ${arrival_point}\n${departure_date} à ${departure_time}\nVéhicule: ${vehicleLabel}\nTotal: CHF ${total_price}`;
-        
         await base44.asServiceRole.functions.invoke('sendWhatsApp', {
           type: 'payment_confirmed',
           booking: {
