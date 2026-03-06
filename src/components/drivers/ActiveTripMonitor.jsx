@@ -243,8 +243,56 @@ export default function ActiveTripMonitor({ booking, onCompleted }) {
         </div>
       </div>
 
+      {/* Payment badge */}
+      {(() => {
+        const method = booking.payment_method;
+        const isPaid = booking.payment_status === 'paid';
+        if (isPaid) {
+          return (
+            <div className="mx-4 mt-3 px-3 py-2 rounded-xl bg-green-500/10 border border-green-500/30 flex items-center gap-2">
+              <span className="text-lg">✅</span>
+              <div>
+                <p className="text-green-400 text-xs font-bold uppercase tracking-wider">Déjà payé</p>
+                <p className="text-green-400/60 text-xs">{method === 'stripe' ? 'Paiement en ligne (Stripe)' : method === 'twint' ? 'TWINT' : 'Espèces'}</p>
+              </div>
+            </div>
+          );
+        }
+        if (method === 'stripe') {
+          return (
+            <div className="mx-4 mt-3 px-3 py-2 rounded-xl bg-blue-500/10 border border-blue-500/30 flex items-center gap-2">
+              <span className="text-lg">💳</span>
+              <div>
+                <p className="text-blue-400 text-xs font-bold uppercase tracking-wider">Payé en ligne</p>
+                <p className="text-blue-400/60 text-xs">Stripe — rien à encaisser</p>
+              </div>
+            </div>
+          );
+        }
+        if (method === 'twint') {
+          return (
+            <div className="mx-4 mt-3 px-3 py-2 rounded-xl bg-orange-500/10 border border-orange-500/30 flex items-center gap-2">
+              <span className="text-lg">📱</span>
+              <div>
+                <p className="text-orange-400 text-xs font-bold uppercase tracking-wider">À encaisser — TWINT</p>
+                <p className="text-orange-400/60 text-xs">CHF {booking.total_price?.toFixed(2)}</p>
+              </div>
+            </div>
+          );
+        }
+        return (
+          <div className="mx-4 mt-3 px-3 py-2 rounded-xl bg-yellow-500/10 border border-yellow-500/30 flex items-center gap-2">
+            <span className="text-lg">💵</span>
+            <div>
+              <p className="text-yellow-400 text-xs font-bold uppercase tracking-wider">À encaisser — Espèces</p>
+              <p className="text-yellow-400/60 text-xs">CHF {booking.total_price?.toFixed(2)}</p>
+            </div>
+          </div>
+        );
+      })()}
+
       {/* Stats row */}
-      <div className="grid grid-cols-3 divide-x divide-white/10 border-b border-white/10">
+      <div className="grid grid-cols-3 divide-x divide-white/10 border-b border-white/10 mt-3">
         <div className="p-3 text-center">
           <p className="text-white/30 text-xs mb-1">Distance</p>
           <p className="text-white text-sm font-semibold">{booking.distance_km ? `${booking.distance_km} km` : '—'}</p>
