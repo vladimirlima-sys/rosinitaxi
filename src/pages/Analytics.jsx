@@ -1,12 +1,12 @@
 import React, { useState, useEffect } from 'react';
 import { base44 } from '@/api/base44Client';
 import { Calendar, TrendingUp, Users, BookOpen } from 'lucide-react';
-import AnalyticsHeader from '@/components/analytics/AnalyticsHeader';
-import DailyChart from '@/components/analytics/DailyChart';
-import WeeklyChart from '@/components/analytics/WeeklyChart';
-import MonthlyChart from '@/components/analytics/MonthlyChart';
-import BookingsEvolution from '@/components/analytics/BookingsEvolution';
-import AnalyticsMetrics from '@/components/analytics/AnalyticsMetrics';
+import AnalyticsHeader from '@/components/analytics/AnalyticsHeader.js';
+import DailyChart from '@/components/analytics/DailyChart.js';
+import WeeklyChart from '@/components/analytics/WeeklyChart.js';
+import MonthlyChart from '@/components/analytics/MonthlyChart.js';
+import BookingsEvolution from '@/components/analytics/BookingsEvolution.js';
+import AnalyticsMetrics from '@/components/analytics/AnalyticsMetrics.js';
 
 export default function Analytics() {
   const [period, setPeriod] = useState('daily'); // daily, weekly, monthly
