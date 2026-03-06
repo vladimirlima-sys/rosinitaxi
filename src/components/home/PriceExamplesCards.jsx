@@ -4,11 +4,11 @@ import { useLang } from '@/components/LanguageContext';
 import { translations } from '@/components/translations';
 
 const ROUTES = [
-  { from: 'Montreux', to: 'Aéroport Genève', km: 85, isAirport: true },
-  { from: 'Lausanne', to: 'Aéroport Genève', km: 60, isAirport: true },
-  { from: 'Verbier', to: 'Zurich', km: 230, isAirport: false },
-  { from: 'Vevey', to: 'Zurich', km: 180, isAirport: false },
-];
+{ from: 'Montreux', to: 'Aéroport Genève', km: 85, isAirport: true },
+{ from: 'Lausanne', to: 'Aéroport Genève', km: 60, isAirport: true },
+{ from: 'Verbier', to: 'Zurich', km: 230, isAirport: false },
+{ from: 'Vevey', to: 'Zurich', km: 180, isAirport: false }];
+
 
 function calcPrice(km, pricePerKm, baseFare, airportFee, isAirport) {
   let total = km * pricePerKm;
@@ -54,10 +54,10 @@ export default function PriceExamplesCards({ priceSettings }) {
           style={{
             transform: animating ? `translateX(${direction > 0 ? '-100%' : '100%'})` : 'translateX(0)',
             opacity: animating ? 0 : 1,
-            transition: 'transform 0.3s ease, opacity 0.3s ease',
-          }}
-        >
-          <div className="bg-black rounded-xl p-4 flex flex-col gap-3">
+            transition: 'transform 0.3s ease, opacity 0.3s ease'
+          }}>
+
+          <div className="bg-black p-4 opacity-90 rounded-xl flex flex-col gap-3">
             <div className="flex items-start gap-2">
               <MapPin className="w-3.5 h-3.5 text-[#F5C300] mt-0.5 shrink-0" />
               <div>
@@ -82,15 +82,15 @@ export default function PriceExamplesCards({ priceSettings }) {
 
       {/* Dots */}
       <div className="flex justify-center gap-1.5 mt-3">
-        {ROUTES.map((_, i) => (
-          <div
-            key={i}
-            className={`h-1.5 rounded-full transition-all duration-300 ${i === current ? 'bg-black w-4' : 'bg-black/20 w-1.5'}`}
-          />
-        ))}
+        {ROUTES.map((_, i) =>
+        <div
+          key={i}
+          className={`h-1.5 rounded-full transition-all duration-300 ${i === current ? 'bg-black w-4' : 'bg-black/20 w-1.5'}`} />
+
+        )}
       </div>
 
       <p className="text-black/30 text-[10px] text-center mt-2">{t.priceExamplesNote}</p>
-    </div>
-  );
+    </div>);
+
 }
