@@ -446,7 +446,7 @@ Deno.serve(async (req) => {
         <td style="padding:9px 12px;color:#999;font-size:13px;">Montant total</td>
         <td style="padding:9px 12px;">
           <span style="color:#F5C300;font-size:22px;font-weight:bold;">CHF ${total_price}</span>
-          <span style="margin-left:10px;background:#F5C300;color:#000;font-size:11px;font-weight:bold;padding:4px 10px;border-radius:4px;vertical-align:middle;">${isPaid ? 'PAYÉ' : 'PAYÉ'}</span>
+          <span style="margin-left:10px;background:${isPaid ? '#F5C300' : '#ff6b00'};color:#000;font-size:11px;font-weight:bold;padding:4px 10px;border-radius:4px;vertical-align:middle;">${isPaid ? 'PAYÉ EN LIGNE ✓' : 'À ENCAISSER ⚠️'}</span>
         </td>
       </tr>
       ${spacer()}
