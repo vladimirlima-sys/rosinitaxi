@@ -85,6 +85,7 @@ Deno.serve(async (req) => {
       departure_time,
       vehicle_type,
       total_price,
+      payment_method,
       driver_phone,
     } = booking;
 
