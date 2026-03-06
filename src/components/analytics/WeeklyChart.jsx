@@ -1,43 +1,38 @@
-import { LineChart, Line, XAxis, YAxis, CartesianGrid, Tooltip, Legend, ResponsiveContainer } from 'recharts';
-import { format, startOfWeek, eachWeekOfInterval, endOfWeek } from 'date-fns';
+import { LineChart, Line, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer } from 'recharts';
+import { format, startOfWeek, subWeeks } from 'date-fns';
 
-export default function WeeklyChart({ pageViews, isBookings = false, bookings = [] }) {
-  const data = isBookings ? bookings : pageViews;
-  
-  const weeks = eachWeekOfInterval({
-    start: new Date(Math.min(...data.map(d => new Date(d.created_date || d.date)))),
-    end: new Date()
-  });
+export default function WeeklyChart({ pageViews, bookings, isBookings = false }) {
+  const items = isBookings ? bookings : pageViews;
+  const data = [];
 
-  const chartData = weeks.map(weekStart => {
-    const weekEnd = endOfWeek(weekStart);
-    const count = data.filter(d => {
-      const itemDate = new Date(d.created_date || d.date);
-      return itemDate >= weekStart && itemDate <= weekEnd;
+  for (let i = 11; i >= 0; i--) {
+    const weekStart = startOfWeek(subWeeks(new Date(), i), { weekStartsOn: 1 });
+    const weekEnd = new Date(weekStart);
+    weekEnd.setDate(weekEnd.getDate() + 6);
+
+    const count = items.filter(item => {
+      const d = new Date(isBookings ? item.created_date : item.date);
+      return d >= weekStart && d <= weekEnd;
     }).length;
-    return {
-      week: format(weekStart, 'dd MMM'),
-      count
-    };
-  }).filter(d => d.count > 0).slice(-12);
+
+    if (count > 0) {
+      data.push({ week: format(weekStart, 'dd/MM'), count });
+    }
+  }
+
+  const color = isBookings ? '#10b981' : '#3b82f6';
+  const title = isBookings ? 'Reservas por Semana' : 'Visitas por Semana';
 
   return (
     <div className="bg-white rounded-lg shadow-sm border border-slate-200 p-4">
-      <h2 className="text-lg font-bold text-slate-900 mb-4">
-        {isBookings ? 'Reservas por Semana' : 'Visitas por Semana'}
-      </h2>
-      <ResponsiveContainer width="100%" height={300}>
-        <LineChart data={chartData}>
+      <h3 className="font-semibold text-slate-700 mb-4">{title}</h3>
+      <ResponsiveContainer width="100%" height={220}>
+        <LineChart data={data}>
           <CartesianGrid strokeDasharray="3 3" />
-          <XAxis dataKey="week" />
-          <YAxis />
+          <XAxis dataKey="week" tick={{ fontSize: 11 }} />
+          <YAxis tick={{ fontSize: 11 }} />
           <Tooltip />
-          <Line 
-            type="monotone" 
-            dataKey="count" 
-            stroke={isBookings ? '#10b981' : '#3b82f6'} 
-            strokeWidth={2}
-          />
+          <Line type="monotone" dataKey="count" stroke={color} strokeWidth={2} dot={{ r: 4 }} />
         </LineChart>
       </ResponsiveContainer>
     </div>
