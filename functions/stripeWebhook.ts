@@ -91,6 +91,25 @@ Deno.serve(async (req) => {
       console.error("Failed to send emails:", err.message);
     }
 
+    // ── WhatsApp notification ────────────────────────────────────────────────
+    try {
+      await base44.asServiceRole.functions.invoke('sendWhatsApp', {
+        type: 'payment_confirmed',
+        booking: {
+          client_name: clientName,
+          client_phone: booking?.client_phone || clientPhone,
+          departure_point: departure,
+          arrival_point: arrival,
+          departure_date: departureDate,
+          departure_time: departureTime,
+          vehicle_type: vehicleType,
+          total_price: amount,
+        }
+      });
+      console.log("WhatsApp payment_confirmed sent");
+    } catch (waErr) {
+      console.error("WhatsApp notification failed:", waErr.message);
+    }
   }
 
   return Response.json({ received: true });
