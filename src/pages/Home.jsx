@@ -5,6 +5,7 @@ import SeoHead from '@/components/SeoHead';
 import { LanguageProvider, useLang } from '@/components/LanguageContext';
 import { createPageUrl } from '@/utils';
 import { HelpCircle } from 'lucide-react';
+import PageTracker from '@/components/home/PageTracker';
 
 function HomeContent({ bookingRef }) {
   const { lang } = useLang();
