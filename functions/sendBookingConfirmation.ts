@@ -678,6 +678,18 @@ Deno.serve(async (req) => {
       }
     };
 
+    // ─── SMS messages per language ─────────────────────────────────────────────
+    const smsTemplates = {
+      fr: `✅ Rosini: Votre transfert est confirmé!\n📍 ${departure_point} → ${arrival_point}\n📅 ${departure_date} à ${departure_time}\n🚗 ${vehicleLabel} | CHF ${total_price}\nMerci de votre confiance!`,
+      pt: `✅ Rosini: A sua reserva está confirmada!\n📍 ${departure_point} → ${arrival_point}\n📅 ${departure_date} às ${departure_time}\n🚗 ${vehicleLabel} | CHF ${total_price}\nObrigado pela sua confiança!`,
+      en: `✅ Rosini: Your transfer is confirmed!\n📍 ${departure_point} → ${arrival_point}\n📅 ${departure_date} at ${departure_time}\n🚗 ${vehicleLabel} | CHF ${total_price}\nThank you for choosing us!`,
+      de: `✅ Rosini: Ihre Buchung ist bestätigt!\n📍 ${departure_point} → ${arrival_point}\n📅 ${departure_date} um ${departure_time}\n🚗 ${vehicleLabel} | CHF ${total_price}\nVielen Dank für Ihr Vertrauen!`,
+      it: `✅ Rosini: La sua prenotazione è confermata!\n📍 ${departure_point} → ${arrival_point}\n📅 ${departure_date} alle ${departure_time}\n🚗 ${vehicleLabel} | CHF ${total_price}\nGrazie per la sua fiducia!`,
+      es: `✅ Rosini: ¡Su reserva está confirmada!\n📍 ${departure_point} → ${arrival_point}\n📅 ${departure_date} a las ${departure_time}\n🚗 ${vehicleLabel} | CHF ${total_price}\n¡Gracias por su confianza!`,
+      nl: `✅ Rosini: Uw transfer is bevestigd!\n📍 ${departure_point} → ${arrival_point}\n📅 ${departure_date} om ${departure_time}\n🚗 ${vehicleLabel} | CHF ${total_price}\nBedankt voor uw vertrouwen!`,
+    };
+    const smsMessage = smsTemplates[language] || smsTemplates.fr;
+
     // ─── Subject per language ───────────────────────────────────────────────────
     const clientSubject = t.subject;
 
