@@ -589,8 +589,8 @@ Deno.serve(async (req) => {
 
       // PAID / TO COLLECT badge (black box, white text)
       y += 3;
-      const badge = 'PAYÉ';
-      const badgeW = 32;
+      const badge = isPaid ? 'PAYÉ EN LIGNE ✓' : 'À ENCAISSER ⚠️';
+      const badgeW = isPaid ? 42 : 40;
       doc.setFillColor(0, 0, 0);
       doc.roundedRect(pw - 15 - badgeW, y - 6, badgeW, 8, 2, 2, 'F');
       doc.setFontSize(8);
