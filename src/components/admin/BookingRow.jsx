@@ -58,7 +58,7 @@ export default function BookingRow({ booking, onStatusChange, onDelete, onAssign
           </div>
 
           <div className="flex flex-col gap-1">
-            <BookingStatusBadge status={booking.payment_status} />
+            <BookingStatusBadge status={booking.payment_status} paymentMethod={booking.payment_method} />
             {booking.driver_name && (
               <span className="text-xs text-[#F5C300]/80 truncate flex items-center gap-1">
                 <UserCheck className="w-3 h-3 shrink-0" />{booking.driver_name}
