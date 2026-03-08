@@ -163,6 +163,20 @@ export default function ActiveTripMonitor({ booking, onCompleted }) {
           console.error('Followup error:', followupErr);
         }
         
+        // Envoyer demande d'avis
+        try {
+          await base44.functions.invoke('sendReviewRequest', {
+            booking_id: booking.id,
+            client_name: booking.client_name,
+            client_email: booking.client_email,
+            departure_point: booking.departure_point,
+            arrival_point: booking.arrival_point,
+            language: booking.language || 'fr'
+          });
+        } catch (reviewErr) {
+          console.error('Review request error:', reviewErr);
+        }
+        
         toast.success('Course terminée — transférée vers l\'historique ✓');
         if (onCompleted) onCompleted();
       } catch (error) {
