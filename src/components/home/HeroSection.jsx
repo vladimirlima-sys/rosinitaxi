@@ -21,8 +21,11 @@ export default function HeroSection({ onScrollToBooking }) {
           <h1 className="text-5xl md:text-7xl lg:text-8xl font-extralight text-black tracking-[0.15em] mb-1 leading-none">
             ROSINI
           </h1>
-          <p className="text-xl md:text-2xl font-light text-black/60 tracking-[0.25em] uppercase letter-spacing">
+          <p className="text-xl md:text-2xl font-light text-black/60 tracking-[0.25em] uppercase letter-spacing mb-2">
             TÁXI
+          </p>
+          <p className="text-sm text-black/50 font-medium">
+            Disponível 24 horas por dia
           </p>
         </div>
 
