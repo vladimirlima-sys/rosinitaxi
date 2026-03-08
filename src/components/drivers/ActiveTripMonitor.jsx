@@ -434,6 +434,9 @@ export default function ActiveTripMonitor({ booking, onCompleted }) {
               onChange={e => setNewArrival(e.target.value)}
               className="flex-1 bg-white/5 border border-white/20 rounded text-white text-sm px-2 py-1 outline-none"
             />
+            <button onClick={locateAndSetArrival} disabled={locatingArrival} title="Géolocalisation" className="text-blue-400 hover:text-blue-300 disabled:opacity-50">
+              {locatingArrival ? <Loader className="w-4 h-4 animate-spin" /> : <Navigation className="w-3 h-3" />}
+            </button>
             <button onClick={saveArrivalChange} className="text-green-400 hover:text-green-300"><Check className="w-4 h-4" /></button>
             <button onClick={() => { setEditingArrival(false); setNewArrival(booking.arrival_point); }} className="text-white/30 hover:text-red-400"><X className="w-4 h-4" /></button>
           </div>
