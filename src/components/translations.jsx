@@ -125,6 +125,7 @@ export const translations = {
     selectDate: 'Selecione uma data',
     priceExamples: 'Exemplos de preços',
     priceExamplesNote: '* Preços indicativos, sem pedágios',
+    addStop: 'Adicionar uma paragem',
     ridesCompleted: 'corridas realizadas',
     rideTracking: 'Acompanhamento da corrida',
     back: 'Voltar',
