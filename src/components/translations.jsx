@@ -607,6 +607,7 @@ export const translations = {
     selectDate: 'Wählen Sie ein Datum',
     priceExamples: 'Preisbeispiele',
     priceExamplesNote: '* Richtpreise, ohne Mautgebühren',
+    addStop: 'Halt hinzufügen',
     ridesCompleted: 'Fahrten absolviert',
     rideTracking: 'Fahrt-Tracking',
     back: 'Zurück',
