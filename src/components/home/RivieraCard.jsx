@@ -3,7 +3,6 @@ import { useLang } from '@/components/LanguageContext';
 
 const translations = {
   fr: {
-    title: 'Votre partenaire pour les transferts longue distance et les trajets locaux dans la Riviera.',
     subtitle: 'Région de la Riviera',
     description: 'Nous acceptons les trajets courts dans la région de Vevey, La Tour-de-Peilz, Montreux et environs.',
     availability: 'Disponible 24 heures sur 24',
