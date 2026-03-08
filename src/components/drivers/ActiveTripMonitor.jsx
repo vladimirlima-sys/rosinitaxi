@@ -213,15 +213,58 @@ export default function ActiveTripMonitor({ booking, onCompleted }) {
     }
   };
 
+  const locateAndSetArrival = async () => {
+    setLocatingArrival(true);
+    try {
+      const pos = await new Promise((resolve, reject) => {
+        navigator.geolocation.getCurrentPosition(resolve, reject);
+      });
+      const res = await base44.functions.invoke('hereReverseGeocoding', {
+        lat: pos.coords.latitude,
+        lng: pos.coords.longitude
+      });
+      setNewArrival(res.data);
+      await recalculatePrice(booking.departure_point, res.data, currentStops);
+    } catch (err) {
+      console.error('Erro ao localizar:', err);
+      toast.error('Erro ao obter localização');
+    } finally {
+      setLocatingArrival(false);
+    }
+  };
+
   const saveArrivalChange = async () => {
     if (!newArrival.trim()) return;
     try {
+      await recalculatePrice(booking.departure_point, newArrival.trim(), currentStops);
       await base44.entities.Booking.update(booking.id, { arrival_point: newArrival.trim() });
       booking.arrival_point = newArrival.trim();
       setEditingArrival(false);
-      toast.success('Destination mise à jour');
+      toast.success('Destination e preço atualizados');
     } catch (err) {
       toast.error('Erreur lors de la mise à jour');
+    }
+  };
+
+  const recalculatePrice = async (departure, arrival, stops) => {
+    try {
+      const res = await base44.functions.invoke('hereRoutes', {
+        departure,
+        arrival,
+        stops: stops.filter(s => s.trim())
+      });
+      if (res.data?.distance_km) {
+        const dist = res.data.distance_km;
+        const pricePerKm = booking.vehicle_type === 'comfort' 
+          ? (priceSettings.current.comfort_price_per_km || priceSettings.current.standard_price_per_km * 1.3)
+          : priceSettings.current.standard_price_per_km;
+        const base = priceSettings.current.base_fare || 0;
+        const newPrice = dist * pricePerKm + (dist <= 30 ? base : 0);
+        setUpdatedPrice(newPrice);
+        await base44.entities.Booking.update(booking.id, { total_price: newPrice, distance_km: dist });
+      }
+    } catch (err) {
+      console.error('Erro ao recalcular preço:', err);
     }
   };
 
