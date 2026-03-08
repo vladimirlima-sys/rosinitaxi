@@ -2,14 +2,53 @@ import { useState } from 'react';
 import { ChevronDown, Users, Gift, AlertCircle } from 'lucide-react';
 
 const extraLabels = {
-  baby_seat: 'Cadeira de bebé',
-  extra_luggage: 'Bagagem extra',
-  wheelchair_accessible: 'Acessível cadeira de rodas',
-  pet_friendly: 'Amigável para animais',
+  fr: {
+    baby_seat: 'Siège bébé',
+    extra_luggage: 'Bagages supplémentaires',
+    wheelchair_accessible: 'Accessible fauteuil roulant',
+    pet_friendly: 'Animaux de compagnie',
+  },
+  pt: {
+    baby_seat: 'Cadeira de bebé',
+    extra_luggage: 'Bagagem extra',
+    wheelchair_accessible: 'Acessível cadeira de rodas',
+    pet_friendly: 'Amigável para animais',
+  },
+  en: {
+    baby_seat: 'Baby seat',
+    extra_luggage: 'Extra luggage',
+    wheelchair_accessible: 'Wheelchair accessible',
+    pet_friendly: 'Pet friendly',
+  },
+  de: {
+    baby_seat: 'Kindersitz',
+    extra_luggage: 'Zusätzliches Gepäck',
+    wheelchair_accessible: 'Rollstuhlgerecht',
+    pet_friendly: 'Haustierfreundlich',
+  },
+  it: {
+    baby_seat: 'Seggiolino bambino',
+    extra_luggage: 'Bagaglio extra',
+    wheelchair_accessible: 'Accessibile in sedia a rotelle',
+    pet_friendly: 'Animali ammessi',
+  },
+  es: {
+    baby_seat: 'Asiento infantil',
+    extra_luggage: 'Equipaje extra',
+    wheelchair_accessible: 'Accesible para silla de ruedas',
+    pet_friendly: 'Mascotas permitidas',
+  },
+  nl: {
+    baby_seat: 'Babyzetel',
+    extra_luggage: 'Extra bagage',
+    wheelchair_accessible: 'Rolstoeltoegankelijk',
+    pet_friendly: 'Huisdieren welkom',
+  },
 };
 
 export default function BookingDetails({ booking, t }) {
   const [expanded, setExpanded] = useState(false);
+  const currentExtraLabels = extraLabels[t.moreDetails ? Object.keys(extraLabels)[0] : 'fr'] || extraLabels.fr;
 
   return (
     <div className="space-y-3">
@@ -17,7 +56,7 @@ export default function BookingDetails({ booking, t }) {
         onClick={() => setExpanded(!expanded)}
         className="w-full flex items-center justify-between text-left py-2.5 px-3 text-white text-xs font-medium hover:bg-white/10 transition-colors rounded-lg border border-white/10"
       >
-        <span>Mais detalhes</span>
+        <span>{t.moreDetails}</span>
         <ChevronDown className={`w-4 h-4 transition-transform ${expanded ? 'rotate-180' : ''}`} />
       </button>
 
