@@ -17,7 +17,7 @@ const faqData = {
       {
         title: 'Le Service',
         items: [
-          { q: 'Quelles zones desservez-vous ?', a: 'Nous desservons toute la Suisse ainsi que les grandes villes européennes. Nos services couvrent tous les aéroports suisses (Genève, Zurich, Bâle) et les principales destinations en Europe.' },
+          { q: 'Quelles zones desservez-vous ?', a: 'Pour les courts trajets, nous opérons à Vevey, Montreux, Tour-de-Peilz et région 24h/24 7j/7. Pour les longues distances, nous couvrons toute la région romande, y compris Fribourg et le Valais.' },
           { q: 'Êtes-vous disponibles 24h/24 ?', a: 'Oui, nous sommes disponibles 24 heures sur 24, 7 jours sur 7, y compris les jours fériés. Vous pouvez réserver à tout moment.' },
           { q: 'Quels types de véhicules proposez-vous ?', a: 'Nous proposons deux catégories : STANDARD (berline confortable, jusqu\'à 3 passagers, 2 bagages) et COMFORT (véhicule plus spacieux, jusqu\'à 4 passagers, 3 bagages). Les deux incluent climatisation et Wi-Fi gratuit.' },
           { q: 'Les chauffeurs sont-ils professionnels ?', a: 'Tous nos chauffeurs sont professionnels, titulaires d\'une licence de transport et régulièrement formés. Ils connaissent parfaitement les routes suisses et européennes.' },
@@ -64,7 +64,7 @@ const faqData = {
       {
         title: 'The Service',
         items: [
-          { q: 'What areas do you cover?', a: 'We cover all of Switzerland and major European cities. Our services include all Swiss airports (Geneva, Zurich, Basel) and main European destinations.' },
+          { q: 'What areas do you cover?', a: 'For short trips, we operate in Vevey, Montreux, Tour-de-Peilz and the surrounding area 24/7. For long distances, we cover the entire Romande region, including Fribourg and Valais.' },
           { q: 'Are you available 24/7?', a: 'Yes, we are available 24 hours a day, 7 days a week, including public holidays. You can book at any time.' },
           { q: 'What types of vehicles do you offer?', a: 'We offer two categories: STANDARD (comfortable sedan, up to 3 passengers, 2 bags) and COMFORT (more spacious vehicle, up to 4 passengers, 3 bags). Both include air conditioning and free Wi-Fi.' },
           { q: 'Are your drivers professional?', a: 'All our drivers are professional, licensed transport operators and regularly trained. They are thoroughly familiar with Swiss and European routes.' },
@@ -111,7 +111,7 @@ const faqData = {
       {
         title: 'O Serviço',
         items: [
-          { q: 'Quais regiões vocês cobrem?', a: 'Cobrimos toda a Suíça e as principais cidades europeias. Os nossos serviços incluem todos os aeroportos suíços (Genebra, Zurique, Basileia) e os principais destinos europeus.' },
+          { q: 'Quais regiões vocês cobrem?', a: 'Para trajetos curtos, operamos em Vevey, Montreux, Tour-de-Peilz e região 24h/24 7 dias/7. Para longas distâncias, cobrimos toda a região francesa (Romanda), incluindo Friburgo e Valais.' },
           { q: 'Estão disponíveis 24h/24?', a: 'Sim, estamos disponíveis 24 horas por dia, 7 dias por semana, incluindo feriados. Pode reservar a qualquer momento.' },
           { q: 'Que tipos de veículos oferecem?', a: 'Oferecemos duas categorias: STANDARD (sedan confortável, até 3 passageiros, 2 bagagens) e COMFORT (veículo mais espaçoso, até 4 passageiros, 3 bagagens). Ambos incluem ar-condicionado e Wi-Fi gratuito.' },
           { q: 'Os motoristas são profissionais?', a: 'Todos os nossos motoristas são profissionais, licenciados e regularmente formados. Conhecem perfeitamente as rotas suíças e europeias.' },
@@ -158,7 +158,7 @@ const faqData = {
       {
         title: 'Der Service',
         items: [
-          { q: 'Welche Gebiete decken Sie ab?', a: 'Wir decken die gesamte Schweiz sowie wichtige europäische Städte ab. Unsere Dienste umfassen alle Schweizer Flughäfen (Genf, Zürich, Basel) und die wichtigsten europäischen Destinationen.' },
+          { q: 'Welche Gebiete decken Sie ab?', a: 'Für kurze Fahrten sind wir in Vevey, Montreux, Tour-de-Peilz und Umgebung 24/7 tätig. Für längere Strecken decken wir die gesamte Romandie ab, einschließlich Freiburg und Wallis.' },
           { q: 'Sind Sie 24/7 verfügbar?', a: 'Ja, wir sind 24 Stunden am Tag, 7 Tage die Woche, einschließlich Feiertagen, verfügbar. Sie können jederzeit buchen.' },
           { q: 'Welche Fahrzeugtypen bieten Sie an?', a: 'Wir bieten zwei Kategorien an: STANDARD (komfortable Limousine, bis 3 Passagiere, 2 Gepäckstücke) und COMFORT (geräumigeres Fahrzeug, bis 4 Passagiere, 3 Gepäckstücke). Beide umfassen Klimaanlage und kostenloses WLAN.' },
           { q: 'Sind Ihre Fahrer professionell?', a: 'Alle unsere Fahrer sind professionell, lizenziert und regelmäßig geschult. Sie kennen die Schweizer und europäischen Routen bestens.' },
@@ -205,7 +205,7 @@ const faqData = {
       {
         title: 'Il Servizio',
         items: [
-          { q: 'Quali zone coprite?', a: 'Copriamo tutta la Svizzera e le principali città europee. I nostri servizi includono tutti gli aeroporti svizzeri (Ginevra, Zurigo, Basilea) e le principali destinazioni europee.' },
+          { q: 'Quali zone coprite?', a: 'Per i brevi percorsi, operiamo a Vevey, Montreux, Tour-de-Peilz e zona circostante 24/7. Per le lunghe distanze, copriamo l\'intera regione romanda, inclusi Friburgo e Vallese.' },
           { q: 'Siete disponibili 24/7?', a: 'Sì, siamo disponibili 24 ore su 24, 7 giorni su 7, inclusi i giorni festivi. Potete prenotare in qualsiasi momento.' },
           { q: 'Che tipi di veicoli offrite?', a: 'Offriamo due categorie: STANDARD (berlina confortevole, fino a 3 passeggeri, 2 bagagli) e COMFORT (veicolo più spazioso, fino a 4 passeggeri, 3 bagagli). Entrambi includono aria condizionata e Wi-Fi gratuito.' },
           { q: 'Gli autisti sono professionisti?', a: 'Tutti i nostri autisti sono professionisti, autorizzati e regolarmente formati. Conoscono perfettamente le strade svizzere ed europee.' },
