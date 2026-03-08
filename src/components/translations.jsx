@@ -777,6 +777,8 @@ export const translations = {
     priceExamples: 'Esempi di prezzi',
     priceExamplesNote: '* Prezzi indicativi, pedaggi esclusi',
     addStop: 'Aggiungere una fermata',
+    stopLabel: 'Fermata',
+    stopPlaceholder: (n) => `Indirizzo della fermata ${n}...`,
     ridesCompleted: 'corse effettuate',
     rideTracking: 'Tracciamento corsa',
     back: 'Indietro',
