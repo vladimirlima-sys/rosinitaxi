@@ -32,15 +32,15 @@ export default function HeroSection({ onScrollToBooking }) {
           {t.heroDesc}
         </p>
 
-        <div className="flex flex-wrap justify-center gap-4 mb-10">
+        <div className="flex flex-wrap justify-center gap-2 md:gap-4 mb-10">
           {[
             { icon: Clock, label: t.pill1 },
             { icon: Shield, label: t.pill2 },
             { icon: MapPin, label: t.pill3 },
           ].map((item, i) => (
-            <div key={i} className="flex items-center gap-2 px-5 py-2.5 rounded-full bg-black/10 border border-black/20">
-              <item.icon className="w-4 h-4 text-black" />
-              <span className="text-black/80 text-sm font-medium">{item.label}</span>
+            <div key={i} className="flex items-center gap-1.5 md:gap-2 px-3 md:px-5 py-1.5 md:py-2.5 rounded-full bg-black/10 border border-black/20">
+              <item.icon className="w-3.5 md:w-4 h-3.5 md:h-4 text-black" />
+              <span className="text-black/80 text-xs md:text-sm font-medium whitespace-nowrap">{item.label}</span>
             </div>
           ))}
         </div>
