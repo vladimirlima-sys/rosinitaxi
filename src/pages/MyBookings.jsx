@@ -461,7 +461,7 @@ export default function MyBookings() {
                     <BookingDetails booking={b} t={t} lang={displayLang} />
 
                     {/* Actions */}
-                    <BookingActions booking={b} t={t} />
+                    <BookingActions booking={b} t={t} lang={displayLang} />
 
                     {/* Cancel button */}
                     {canCancel(b) && !cancelResult[b.id] && (
