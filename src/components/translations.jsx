@@ -1101,6 +1101,8 @@ export const translations = {
     priceExamples: 'Prijsvoorbeelden',
     priceExamplesNote: '* Indicatieve prijzen, tol niet inbegrepen',
     addStop: 'Een stop toevoegen',
+    stopLabel: 'Stop',
+    stopPlaceholder: (n) => `Adres van stop ${n}...`,
     ridesCompleted: 'ritten voltooid',
     rideTracking: 'Rit-tracking',
     back: 'Terug',
