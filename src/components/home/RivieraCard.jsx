@@ -1,5 +1,6 @@
 import { MapPin, Clock, Sparkles } from 'lucide-react';
 import { useLang } from '@/components/LanguageContext';
+import { useEffect, useState } from 'react';
 
 const translations = {
   fr: {
