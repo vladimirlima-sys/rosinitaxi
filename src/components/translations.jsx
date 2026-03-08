@@ -1088,6 +1088,7 @@ export const translations = {
     selectDate: 'Selecteer een datum',
     priceExamples: 'Prijsvoorbeelden',
     priceExamplesNote: '* Indicatieve prijzen, tol niet inbegrepen',
+    addStop: 'Een stop toevoegen',
     ridesCompleted: 'ritten voltooid',
     rideTracking: 'Rit-tracking',
     back: 'Terug',
