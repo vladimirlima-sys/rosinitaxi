@@ -367,6 +367,7 @@ export default function BookingForm({ bookingRef }) {
           window.top.location.href = response.data.url;
         } else {
           console.error('❌ No URL in response:', response);
+          sessionStorage.removeItem('pendingBooking');
           throw new Error(response?.data?.error || 'Erro na sessão de pagamento');
         }
       } else {
