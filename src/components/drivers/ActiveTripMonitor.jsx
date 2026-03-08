@@ -193,6 +193,42 @@ export default function ActiveTripMonitor({ booking, onCompleted }) {
     }
   };
 
+  const saveArrivalChange = async () => {
+    if (!newArrival.trim()) return;
+    try {
+      await base44.entities.Booking.update(booking.id, { arrival_point: newArrival.trim() });
+      booking.arrival_point = newArrival.trim();
+      setEditingArrival(false);
+      toast.success('Destination mise à jour');
+    } catch (err) {
+      toast.error('Erreur lors de la mise à jour');
+    }
+  };
+
+  const saveNewStop = async () => {
+    if (!newStop.trim()) return;
+    const updated = [...currentStops, newStop.trim()];
+    try {
+      await base44.entities.Booking.update(booking.id, { additional_stops: updated });
+      setCurrentStops(updated);
+      setNewStop('');
+      setAddingStop(false);
+      toast.success('Arrêt ajouté');
+    } catch (err) {
+      toast.error('Erreur lors de l\'ajout');
+    }
+  };
+
+  const removeStop = async (idx) => {
+    const updated = currentStops.filter((_, i) => i !== idx);
+    try {
+      await base44.entities.Booking.update(booking.id, { additional_stops: updated });
+      setCurrentStops(updated);
+    } catch (err) {
+      toast.error('Erreur lors de la suppression');
+    }
+  };
+
   const resetTrip = () => {
     localStorage.removeItem(storageKey);
     localStorage.removeItem(startKey);
