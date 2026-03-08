@@ -24,6 +24,9 @@ function HomeContent({ bookingRef }) {
 
         <PageTracker page="Home" />
         <BookingForm bookingRef={bookingRef} />
+        <div className="absolute bottom-4 left-1/2 -translate-x-1/2 z-40">
+          <RivieraCard />
+        </div>
         <div className="absolute bottom-0 right-0 p-4">
           <a href={createPageUrl('DriverPortal')} title="Portal do Motorista">
             <img src="https://flagcdn.com/ch.svg" alt="Suíça" className="w-12 h-8 rounded shadow-lg cursor-pointer hover:opacity-80 transition-opacity" />
