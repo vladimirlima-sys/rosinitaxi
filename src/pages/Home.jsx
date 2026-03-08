@@ -14,6 +14,7 @@ function HomeContent({ bookingRef }) {
     <>
       <SeoHead lang={lang} />
       <div className="min-h-screen bg-[#F5C300] relative">
+        <RivieraCard />
         <a
           href={createPageUrl('FAQ')} className="fixed top-5 left-5 z-50 bg-black text-[#F5C300] p-2.5 opacity-40 rounded-full flex items-center gap-1.5 hover:bg-black/80 transition-all shadow">
           <HelpCircle className="w-5 h-5" />
@@ -24,9 +25,6 @@ function HomeContent({ bookingRef }) {
 
         <PageTracker page="Home" />
         <BookingForm bookingRef={bookingRef} />
-        <div className="absolute bottom-4 left-1/2 -translate-x-1/2 z-40">
-          <RivieraCard />
-        </div>
         <div className="absolute bottom-0 right-0 p-4">
           <a href={createPageUrl('DriverPortal')} title="Portal do Motorista">
             <img src="https://flagcdn.com/ch.svg" alt="Suíça" className="w-12 h-8 rounded shadow-lg cursor-pointer hover:opacity-80 transition-opacity" />
