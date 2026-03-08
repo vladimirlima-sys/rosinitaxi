@@ -63,20 +63,19 @@ Deno.serve(async (req) => {
         language: language,
       };
 
+      // Add driver if pre-selected
       if (driverId) {
         bookingData.driver_id = driverId;
         bookingData.driver_name = driverName;
       }
 
       booking = await base44.asServiceRole.entities.Booking.create(bookingData);
-      console.log("Booking created:", booking.id);
+      console.log("Booking created with paid status:", booking.id);
     } catch (err) {
       console.error("Failed to create booking:", err.message);
     }
 
-    // ── Send confirmation emails + 1 SMS via sendBookingConfirmation ─────────
-    // sendBookingConfirmation already handles: client SMS, client email, company email
-    // Do NOT call sendWhatsApp separately to avoid duplicate SMS
+    // ── Send emails via sendBookingConfirmation ──────────────────────────────
     try {
       await base44.asServiceRole.functions.invoke('sendBookingConfirmation', {
         client_name: clientName,
@@ -97,9 +96,29 @@ Deno.serve(async (req) => {
         skip_client_email: isShortNotice,
         booking_id: booking?.id || null,
       });
-      console.log("Confirmation sent for:", clientEmail);
+      console.log("Emails sent for:", clientEmail);
     } catch (err) {
-      console.error("Failed to send confirmation:", err.message);
+      console.error("Failed to send emails:", err.message);
+    }
+
+    // ── WhatsApp notification ────────────────────────────────────────────────
+    try {
+      await base44.asServiceRole.functions.invoke('sendWhatsApp', {
+        type: 'payment_confirmed',
+        booking: {
+          client_name: clientName,
+          client_phone: clientPhone,
+          departure_point: departure,
+          arrival_point: arrival,
+          departure_date: departureDate,
+          departure_time: departureTime,
+          vehicle_type: vehicleType,
+          total_price: amount,
+        }
+      });
+      console.log("WhatsApp payment_confirmed sent");
+    } catch (waErr) {
+      console.error("WhatsApp notification failed:", waErr.message);
     }
   }
 
