@@ -14,7 +14,8 @@ Deno.serve(async (req) => {
       distance_km, total_price,
       passengers, notes,
       payment_method, language = 'fr',
-      skip_client_email = false, booking_id
+      skip_client_email = false, booking_id,
+      driver_id, driver_name
     } = body;
 
     const vehicleLabel = vehicle_type === 'economic' ? 'Standard' : 'Comfort';
