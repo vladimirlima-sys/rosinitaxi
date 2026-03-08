@@ -825,8 +825,8 @@ export default function BookingForm({ bookingRef }) {
               <h3 className="text-white/60 text-xs uppercase tracking-wider mb-3">{t.summaryLabel}</h3>
               <div className="space-y-2">
                 <div className="flex justify-between text-sm"><span className="text-white/50">{t.departure}</span><span className="text-white text-right max-w-[60%] truncate">{form.departure_point}</span></div>
-                {additionalStops.filter(s => s.trim()).map((stop, i) => (
-                  <div key={i} className="flex justify-between text-sm"><span className="text-orange-400/70">Étape {i + 1}</span><span className="text-orange-300 text-right max-w-[60%] truncate">{stop}</span></div>
+                {additionalStops.filter(s => s.address?.trim()).map((stop, i) => (
+                  <div key={i} className="flex justify-between text-sm"><span className="text-orange-400/70">Arrêt {i + 1}</span><span className="text-orange-300 text-right max-w-[60%] truncate">{stop.address}</span></div>
                 ))}
                 <div className="flex justify-between text-sm"><span className="text-white/50">{t.arrival}</span><span className="text-white text-right max-w-[60%] truncate">{form.arrival_point}</span></div>
               </div>
