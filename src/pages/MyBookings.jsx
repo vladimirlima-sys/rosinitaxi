@@ -92,6 +92,7 @@ const T = {
     refundPolicy: 'Full refund if cancelled more than 24h before departure.',
     contact: 'Questions? info@rosini.online | +41 77 249 22 45',
     payment: { stripe: 'Credit card', twint: 'TWINT', cash: 'Cash' },
+    moreDetails: 'More details',
   },
   de: {
     title: 'Meine Buchungen',
