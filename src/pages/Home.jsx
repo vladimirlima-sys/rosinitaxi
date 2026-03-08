@@ -21,7 +21,7 @@ function HomeContent({ bookingRef }) {
 
         <PageTracker page="Home" />
         <BookingForm bookingRef={bookingRef} />
-        <div className="absolute bottom-0 right-0 p-4 flex items-center gap-3">
+        <div className="absolute bottom-0 left-0 p-4 flex items-center gap-3">
           <a href={createPageUrl('FAQ')} title="FAQ" className="w-10 h-10 rounded-full bg-black/40 backdrop-blur-sm border border-white/20 text-white/70 hover:text-[#F5C300] hover:border-[#F5C300]/40 transition-all duration-200 flex items-center justify-center">
             <HelpCircle className="w-5 h-5" />
           </a>
