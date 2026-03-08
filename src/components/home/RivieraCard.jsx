@@ -52,7 +52,7 @@ export default function RivieraCard() {
 
   return (
     <div className="bg-black/50 backdrop-blur-sm border-b border-white/10 px-6 py-3 relative z-0">
-      <div className="max-w-7xl mx-auto flex items-center justify-between gap-4">
+      <div className="max-w-7xl mx-auto flex flex-col md:flex-row md:items-center md:justify-between gap-4">
         <div className="flex items-center gap-3">
           <div className="bg-[#F5C300] rounded-full p-2 shrink-0">
             <Sparkles className="w-4 h-4 text-black" />
@@ -62,7 +62,7 @@ export default function RivieraCard() {
             <p className="text-white/60 text-xs">{t.description}</p>
           </div>
         </div>
-        <div className="flex items-center gap-2 text-white/60 text-xs shrink-0">
+        <div className="flex items-center gap-2 text-white/60 text-xs md:shrink-0 md:whitespace-nowrap">
           <Clock className="w-3.5 h-3.5 text-[#F5C300]" />
           <span>{t.availability}</span>
         </div>
