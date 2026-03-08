@@ -405,6 +405,9 @@ export default function ActiveTripMonitor({ booking, onCompleted }) {
                 placeholder="Nouvelle étape..."
                 className="flex-1 bg-white/5 border border-white/20 rounded text-white text-xs px-2 py-1 outline-none placeholder:text-white/30"
               />
+              <button onClick={locateAndAddStop} disabled={locatingStop} title="Géolocalisation" className="text-blue-400 hover:text-blue-300 disabled:opacity-50">
+                {locatingStop ? <Loader className="w-4 h-4 animate-spin" /> : <Navigation className="w-3 h-3" />}
+              </button>
               <button onClick={saveNewStop} className="text-green-400 hover:text-green-300"><Check className="w-4 h-4" /></button>
               <button onClick={() => { setAddingStop(false); setNewStop(''); }} className="text-white/30 hover:text-red-400"><X className="w-4 h-4" /></button>
             </div>
