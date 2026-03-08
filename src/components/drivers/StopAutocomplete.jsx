@@ -39,7 +39,7 @@ export default function StopAutocomplete({ value, onChange, placeholder, onLocat
   };
 
   const handleSelectSuggestion = (suggestion) => {
-    onChange(suggestion.formattedAddress || suggestion.address);
+    onChange(suggestion.address);
     setSuggestions([]);
     setShowSuggestions(false);
   };
