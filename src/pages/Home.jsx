@@ -1,6 +1,7 @@
 import React, { useRef } from 'react';
 import BookingForm from '@/components/home/BookingForm';
 import LanguageSwitcher from '@/components/home/LanguageSwitcher';
+import RivieraCard from '@/components/home/RivieraCard';
 import SeoHead from '@/components/SeoHead';
 import { LanguageProvider, useLang } from '@/components/LanguageContext';
 import { createPageUrl } from '@/utils';
