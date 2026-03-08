@@ -458,7 +458,7 @@ export default function MyBookings() {
                     {canCancel(b) && !cancelResult[b.id] && <CancelCountdown departureDate={b.departure_date} departureTime={b.departure_time} />}
 
                     {/* Details */}
-                    <BookingDetails booking={b} t={t} />
+                    <BookingDetails booking={b} t={t} lang={displayLang} />
 
                     {/* Actions */}
                     <BookingActions booking={b} t={t} />
