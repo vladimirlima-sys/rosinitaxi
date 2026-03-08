@@ -217,9 +217,9 @@ export default function DriverPortal() {
   };
 
   const upcoming = bookings.filter(b => {
-    if (b.payment_status === 'paid') return false;
     const localCompleted = localStorage.getItem(`trip_status_${b.id}`) === 'completed';
     if (localCompleted) return false;
+    // Include paid bookings (Stripe) AND unpaid bookings (cash/TWINT)
     return true;
   }).sort((a, b) => new Date(`${a.departure_date}T${a.departure_time || '00:00'}`) - new Date(`${b.departure_date}T${b.departure_time || '00:00'}`));
 
