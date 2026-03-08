@@ -1,8 +1,20 @@
 import { FilterX } from 'lucide-react';
 
-export default function BookingFilters({ filters, setFilters, t }) {
+const sortTranslations = {
+  fr: { all: 'Tous', recent: 'Plus récentes', oldest: 'Plus anciennes', expensive: 'Prix plus élevé', cheap: 'Prix moins élevé', clear: 'Effacer' },
+  pt: { all: 'Todos', recent: 'Mais recentes', oldest: 'Mais antigas', expensive: 'Maior preço', cheap: 'Menor preço', clear: 'Limpar' },
+  en: { all: 'All', recent: 'Most recent', oldest: 'Oldest', expensive: 'Highest price', cheap: 'Lowest price', clear: 'Clear' },
+  de: { all: 'Alle', recent: 'Neueste', oldest: 'Älteste', expensive: 'Höchster Preis', cheap: 'Niedrigster Preis', clear: 'Löschen' },
+  it: { all: 'Tutti', recent: 'Più recenti', oldest: 'Più vecchi', expensive: 'Prezzo più alto', cheap: 'Prezzo più basso', clear: 'Cancella' },
+  es: { all: 'Todos', recent: 'Más recientes', oldest: 'Más antiguos', expensive: 'Precio más alto', cheap: 'Precio más bajo', clear: 'Limpiar' },
+  nl: { all: 'Alle', recent: 'Meest recent', oldest: 'Oudste', expensive: 'Hoogste prijs', cheap: 'Laagste prijs', clear: 'Wissen' },
+};
+
+export default function BookingFilters({ filters, setFilters, t, lang = 'fr' }) {
+  const tr = sortTranslations[lang] || sortTranslations.fr;
+
   const statusOptions = [
-    { value: 'all', label: 'Todos' },
+    { value: 'all', label: tr.all },
     { value: 'paid', label: t.statusLabels.paid },
     { value: 'pending', label: t.statusLabels.pending },
     { value: 'cancelled', label: t.statusLabels.cancelled },
@@ -10,10 +22,10 @@ export default function BookingFilters({ filters, setFilters, t }) {
   ];
 
   const sortOptions = [
-    { value: 'date-desc', label: 'Mais recentes' },
-    { value: 'date-asc', label: 'Mais antigas' },
-    { value: 'price-desc', label: 'Maior preço' },
-    { value: 'price-asc', label: 'Menor preço' },
+    { value: 'date-desc', label: tr.recent },
+    { value: 'date-asc', label: tr.oldest },
+    { value: 'price-desc', label: tr.expensive },
+    { value: 'price-asc', label: tr.cheap },
   ];
 
   return (
