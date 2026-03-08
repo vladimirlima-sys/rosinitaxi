@@ -44,6 +44,9 @@ export default function BookingRow({ booking, onStatusChange, onDelete, onAssign
 
           <div className="text-sm">
             <p className="text-white">{booking.departure_point}</p>
+            {booking.additional_stops?.length > 0 && (
+              <p className="text-orange-400/70 text-xs">+ {booking.additional_stops.length} étape(s)</p>
+            )}
             <p className="text-white/40 text-xs">→ {booking.arrival_point}</p>
           </div>
 
