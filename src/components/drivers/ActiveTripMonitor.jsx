@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useRef } from 'react';
-import { Navigation, MapPin, Clock, DollarSign, CheckCircle, Car, ChevronRight, Loader2, Phone, Mail, Edit2, Plus, X, Check, Loader } from 'lucide-react';
+import { Navigation, MapPin, Clock, DollarSign, CheckCircle, Car, ChevronRight, Loader2, Phone, Mail, Edit2, Plus, X, Check, Loader, RefreshCw } from 'lucide-react';
 import { base44 } from '@/api/base44Client';
 import { createPageUrl } from '@/utils';
 import { toast } from 'sonner';
@@ -56,6 +56,7 @@ export default function ActiveTripMonitor({ booking, onCompleted }) {
   const [locatingStop, setLocatingStop] = useState(false);
   const [locatingArrival, setLocatingArrival] = useState(false);
   const [updatedPrice, setUpdatedPrice] = useState(booking.total_price);
+  const [updatingPrice, setUpdatingPrice] = useState(false);
   const gpsWatchRef = useRef(null);
 
   const priceSettings = useRef({});
@@ -513,9 +514,27 @@ export default function ActiveTripMonitor({ booking, onCompleted }) {
             ) : '—'}
           </p>
         </div>
-        <div className="p-3 text-center">
-           <p className="text-white/30 text-xs mb-1">Tarif</p>
+        <div className="p-3 text-center flex flex-col items-center gap-1">
+           <p className="text-white/30 text-xs">Tarif</p>
            <p className="text-[#F5C300] text-sm font-bold">CHF {updatedPrice?.toFixed(2) || '—'}</p>
+           <button 
+             onClick={async () => {
+               setUpdatingPrice(true);
+               try {
+                 await recalculatePrice(booking.departure_point, newArrival || booking.arrival_point, currentStops);
+                 toast.success('Tarif mis à jour');
+               } catch (err) {
+                 toast.error('Erreur lors de la mise à jour');
+               } finally {
+                 setUpdatingPrice(false);
+               }
+             }}
+             disabled={updatingPrice}
+             className="text-white/40 hover:text-[#F5C300] disabled:opacity-50 transition-colors mt-0.5"
+             title="Actualiser le tarif"
+           >
+             {updatingPrice ? <Loader className="w-3 h-3 animate-spin" /> : <RefreshCw className="w-3 h-3" />}
+           </button>
          </div>
       </div>
 
