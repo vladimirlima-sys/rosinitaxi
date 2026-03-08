@@ -51,7 +51,7 @@ export default function RivieraCard() {
   const t = translations[lang] || translations.fr;
 
   return (
-    <div className="bg-black/50 backdrop-blur-sm border-b border-white/10 px-6 py-3">
+    <div className="bg-black/50 backdrop-blur-sm border-b border-white/10 px-6 py-3 relative z-0">
       <div className="max-w-7xl mx-auto flex items-center justify-between gap-4">
         <div className="flex items-center gap-3">
           <div className="bg-[#F5C300] rounded-full p-2 shrink-0">
