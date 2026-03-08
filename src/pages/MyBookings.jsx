@@ -210,7 +210,7 @@ const statusColors = {
 
 export default function MyBookings() {
   const params = new URLSearchParams(window.location.search);
-  const langParam = params.get('lang') || 'fr';
+  const langParam = params.get('lang') || null;
   const emailParam = params.get('email') || '';
 
   const [email, setEmail] = useState(emailParam);
@@ -220,9 +220,11 @@ export default function MyBookings() {
   const [cancellingId, setCancellingId] = useState(null);
   const [cancelResult, setCancelResult] = useState({});
   const [filters, setFilters] = useState({ status: 'all', sort: 'date-desc' });
-  const [currentLang, setCurrentLang] = useState(langParam);
+  const [currentLang, setCurrentLang] = useState(langParam || 'fr');
 
-  const t = T[currentLang] || T[langParam] || T.fr;
+  // Use langParam if available (from email link), otherwise use currentLang
+  const displayLang = langParam || currentLang;
+  const t = T[displayLang] || T.fr;
 
   const handleSearch = async (e) => {
     e.preventDefault();
