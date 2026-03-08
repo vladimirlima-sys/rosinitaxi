@@ -3,6 +3,7 @@ import { useLang } from '@/components/LanguageContext';
 
 const translations = {
   fr: {
+    title: 'Votre partenaire pour les transferts longue distance et les trajets locaux dans la Riviera.',
     subtitle: 'Région de la Riviera',
     description: 'Nous acceptons les trajets courts dans la région de Vevey, La Tour-de-Peilz, Montreux et environs.',
     availability: 'Disponible 24 heures sur 24',
@@ -58,6 +59,7 @@ export default function RivieraCard() {
             <Sparkles className="w-4 h-4 text-black" />
           </div>
           <div className="flex-1">
+            <p className="text-white font-semibold text-sm">{t.title}</p>
             <p className="text-white/60 text-xs">{t.description}</p>
           </div>
         </div>
