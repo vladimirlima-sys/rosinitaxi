@@ -2,7 +2,15 @@ import { createClientFromRequest } from 'npm:@base44/sdk@0.8.20';
 
 function generateToken(driverId) {
   const timestamp = Date.now();
-  return Buffer.from(JSON.stringify({ driverId, timestamp })).toString('base64');
+  return btoa(JSON.stringify({ driverId, timestamp }));
+}
+
+async function hashPassword(password) {
+  const encoder = new TextEncoder();
+  const data = encoder.encode(password);
+  const hashBuffer = await crypto.subtle.digest('SHA-256', data);
+  const hashArray = Array.from(new Uint8Array(hashBuffer));
+  return hashArray.map(b => b.toString(16).padStart(2, '0')).join('');
 }
 
 Deno.serve(async (req) => {
