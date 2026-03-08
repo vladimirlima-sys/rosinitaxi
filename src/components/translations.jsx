@@ -452,6 +452,8 @@ export const translations = {
     priceExamples: 'Price examples',
     priceExamplesNote: '* Indicative prices, tolls not included',
     addStop: 'Add a stop',
+    stopLabel: 'Stop',
+    stopPlaceholder: (n) => `Address of stop ${n}...`,
     ridesCompleted: 'rides completed',
     rideTracking: 'Ride Tracking',
     back: 'Back',
