@@ -222,7 +222,7 @@ export default function MyBookings() {
   const [filters, setFilters] = useState({ status: 'all', sort: 'date-desc' });
   const [currentLang, setCurrentLang] = useState(langParam);
 
-  const t = T[currentLang] || T.fr;
+  const t = T[currentLang] || T[langParam] || T.fr;
 
   const handleSearch = async (e) => {
     e.preventDefault();
