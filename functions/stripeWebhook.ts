@@ -19,6 +19,28 @@ Deno.serve(async (req) => {
     const session = event.data.object;
     const meta = session.metadata || {};
 
+    const base44 = createClientFromRequest(req);
+
+    // ── Handle price adjustment payment ──────────────────────────────────────
+    if (meta.adjustment_type === 'price_increase') {
+      const bookingId = meta.booking_id;
+      const newPrice = parseFloat(meta.new_price);
+      
+      try {
+        // Update booking with new price
+        await base44.asServiceRole.entities.Booking.update(bookingId, {
+          total_price: newPrice,
+          stripe_payment_intent_id: session.payment_intent || null,
+        });
+        console.log(`Booking ${bookingId} updated with new price: CHF ${newPrice}`);
+      } catch (err) {
+        console.error(`Failed to update booking ${bookingId}:`, err.message);
+      }
+
+      return Response.json({ received: true });
+    }
+
+    // ── Original booking creation flow ───────────────────────────────────────
     const clientName = meta.client_name || "Client";
     const clientEmail = session.customer_email || meta.client_email;
     const clientPhone = meta.client_phone || '';
@@ -38,8 +60,6 @@ Deno.serve(async (req) => {
     const driverName = meta.driver_name || '';
     const additionalStopsRaw = meta.additional_stops || '';
     const additionalStops = additionalStopsRaw ? additionalStopsRaw.split('||').filter(s => s) : [];
-
-    const base44 = createClientFromRequest(req);
 
     // ── Create booking now that payment is confirmed ─────────────────────────
     let booking = null;
