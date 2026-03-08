@@ -23,11 +23,8 @@ Deno.serve(async (req) => {
       return Response.json({ success: false, error: 'Email e senha obrigatórios' }, { status: 400 });
     }
 
-    // Get all driver credentials - use list and filter in memory
-    const allCreds = await base44.asServiceRole.entities.DriverCredential.list('', 1000);
-    const creds = allCreds.filter(c => 
-      c.email.toLowerCase() === email.toLowerCase() && c.status === 'active'
-    );
+    // Get driver credentials by email
+    const creds = await base44.asServiceRole.entities.DriverCredential.filter({ email: email.toLowerCase() });
 
     if (creds.length === 0) {
       return Response.json({ success: false, error: 'Email ou senha incorretos' }, { status: 401 });
