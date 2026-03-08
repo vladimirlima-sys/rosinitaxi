@@ -359,7 +359,7 @@ export default function BookingForm({ bookingRef }) {
           language: lang,
           driver_id: selectedDriver?.id || '',
           driver_name: selectedDriver?.name || '',
-          additional_stops: additionalStops.filter(s => s.trim()),
+          additional_stops: additionalStops.filter(s => s.address?.trim()).map(s => s.address),
           origin: window.location.origin,
           is_short_notice: isShortNotice,
         });
