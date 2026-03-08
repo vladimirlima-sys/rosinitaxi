@@ -315,17 +315,46 @@ export default function MyBookings() {
     return upcoming[0] || null;
   }, [bookings]);
 
+  const languages = [
+    { code: 'fr', label: 'Français' },
+    { code: 'pt', label: 'Português' },
+    { code: 'en', label: 'English' },
+    { code: 'de', label: 'Deutsch' },
+    { code: 'it', label: 'Italiano' },
+    { code: 'es', label: 'Español' },
+    { code: 'nl', label: 'Nederlands' },
+  ];
+
   return (
     <div className="min-h-screen bg-[#F5C300] px-4 py-12">
       <div className="max-w-2xl mx-auto">
-         {/* Back button */}
-         <a
-           href={createPageUrl('Home')}
-           className="inline-flex items-center gap-2 text-black/60 hover:text-black transition-colors mb-6"
-         >
-           <ArrowLeft className="w-4 h-4" />
-           <span className="text-sm">{['Retour', 'Voltar', 'Back', 'Zurück', 'Indietro', 'Volver', 'Terug'][['fr', 'pt', 'en', 'de', 'it', 'es', 'nl'].indexOf(langParam)] || 'Retour'}</span>
-         </a>
+         {/* Top bar with back and language selector */}
+         <div className="flex items-center justify-between mb-6">
+           <a
+            href={createPageUrl('Home')}
+            className="inline-flex items-center gap-2 text-black/60 hover:text-black transition-colors"
+          >
+            <ArrowLeft className="w-4 h-4" />
+            <span className="text-sm">{t.back}</span>
+          </a>
+
+          {/* Language selector */}
+          <select
+            value={displayLang}
+            onChange={(e) => setCurrentLang(e.target.value)}
+            className="flex items-center gap-2 px-3 py-2 bg-black/20 border border-black/30 rounded-lg text-black text-sm font-medium hover:bg-black/30 transition-colors cursor-pointer appearance-none"
+            style={{
+              backgroundImage: `url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 12 12'%3E%3Cpath fill='%23000' d='M6 9L1 4h10z'/%3E%3C/svg%3E")`,
+              backgroundRepeat: 'no-repeat',
+              backgroundPosition: 'right 8px center',
+              paddingRight: '28px',
+            }}
+          >
+            {languages.map(lang => (
+              <option key={lang.code} value={lang.code}>{lang.label}</option>
+            ))}
+          </select>
+         </div>
 
          {/* Header */}
          <div className="text-center mb-10">
