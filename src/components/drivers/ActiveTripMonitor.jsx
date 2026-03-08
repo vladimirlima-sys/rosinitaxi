@@ -285,17 +285,87 @@ export default function ActiveTripMonitor({ booking, onCompleted }) {
             <Navigation className="w-3 h-3" /> GPS
           </a>
         </div>
-        <div className="ml-2.5 w-[1px] h-3 bg-white/10" />
-        <div className="flex items-center gap-2">
-          <div className="w-5 h-5 rounded-full bg-white/10 flex items-center justify-center shrink-0">
-            <MapPin className="w-3 h-3 text-white/50" />
+
+        {/* Additional stops */}
+        {currentStops.map((stop, idx) => (
+          <div key={idx}>
+            <div className="ml-2.5 w-[1px] h-3 bg-white/10" />
+            <div className="flex items-center gap-2">
+              <div className="w-5 h-5 rounded-full bg-orange-400/20 flex items-center justify-center shrink-0">
+                <MapPin className="w-3 h-3 text-orange-400" />
+              </div>
+              <p className="text-orange-300 text-sm truncate flex-1">{stop}</p>
+              <a href={getMapsUrl(stop)} target="_blank" rel="noopener noreferrer"
+                className="text-blue-400 text-xs hover:text-blue-300 flex items-center gap-1">
+                <Navigation className="w-3 h-3" /> GPS
+              </a>
+              <button onClick={() => removeStop(idx)} className="text-white/30 hover:text-red-400 transition-colors ml-1">
+                <X className="w-3.5 h-3.5" />
+              </button>
+            </div>
           </div>
-          <p className="text-white/80 text-sm truncate">{booking.arrival_point}</p>
-          <a href={getMapsUrl(booking.arrival_point)} target="_blank" rel="noopener noreferrer"
-            className="ml-auto shrink-0 text-blue-400 text-xs hover:text-blue-300 flex items-center gap-1">
-            <Navigation className="w-3 h-3" /> GPS
-          </a>
-        </div>
+        ))}
+
+        {/* Add stop */}
+        {addingStop ? (
+          <div>
+            <div className="ml-2.5 w-[1px] h-3 bg-white/10" />
+            <div className="flex items-center gap-2">
+              <div className="w-5 h-5 rounded-full bg-orange-400/20 flex items-center justify-center shrink-0">
+                <Plus className="w-3 h-3 text-orange-400" />
+              </div>
+              <input
+                autoFocus
+                type="text"
+                value={newStop}
+                onChange={e => setNewStop(e.target.value)}
+                placeholder="Nouvelle étape..."
+                className="flex-1 bg-white/5 border border-white/20 rounded text-white text-xs px-2 py-1 outline-none placeholder:text-white/30"
+              />
+              <button onClick={saveNewStop} className="text-green-400 hover:text-green-300"><Check className="w-4 h-4" /></button>
+              <button onClick={() => { setAddingStop(false); setNewStop(''); }} className="text-white/30 hover:text-red-400"><X className="w-4 h-4" /></button>
+            </div>
+          </div>
+        ) : (
+          <button onClick={() => setAddingStop(true)}
+            className="ml-7 flex items-center gap-1 text-white/30 hover:text-[#F5C300] text-xs transition-colors">
+            <Plus className="w-3 h-3" /> Ajouter une étape
+          </button>
+        )}
+
+        <div className="ml-2.5 w-[1px] h-3 bg-white/10" />
+
+        {/* Arrival — editable */}
+        {editingArrival ? (
+          <div className="flex items-center gap-2">
+            <div className="w-5 h-5 rounded-full bg-white/10 flex items-center justify-center shrink-0">
+              <MapPin className="w-3 h-3 text-white/50" />
+            </div>
+            <input
+              autoFocus
+              type="text"
+              value={newArrival}
+              onChange={e => setNewArrival(e.target.value)}
+              className="flex-1 bg-white/5 border border-white/20 rounded text-white text-sm px-2 py-1 outline-none"
+            />
+            <button onClick={saveArrivalChange} className="text-green-400 hover:text-green-300"><Check className="w-4 h-4" /></button>
+            <button onClick={() => { setEditingArrival(false); setNewArrival(booking.arrival_point); }} className="text-white/30 hover:text-red-400"><X className="w-4 h-4" /></button>
+          </div>
+        ) : (
+          <div className="flex items-center gap-2">
+            <div className="w-5 h-5 rounded-full bg-white/10 flex items-center justify-center shrink-0">
+              <MapPin className="w-3 h-3 text-white/50" />
+            </div>
+            <p className="text-white/80 text-sm truncate flex-1">{booking.arrival_point}</p>
+            <button onClick={() => setEditingArrival(true)} className="text-white/30 hover:text-[#F5C300] transition-colors" title="Modifier destination">
+              <Edit2 className="w-3.5 h-3.5" />
+            </button>
+            <a href={getMapsUrl(booking.arrival_point)} target="_blank" rel="noopener noreferrer"
+              className="shrink-0 text-blue-400 text-xs hover:text-blue-300 flex items-center gap-1">
+              <Navigation className="w-3 h-3" /> GPS
+            </a>
+          </div>
+        )}
       </div>
 
       {/* Payment badge */}
