@@ -213,8 +213,6 @@ export default function MyBookings() {
   const langParam = params.get('lang') || 'fr';
   const emailParam = params.get('email') || '';
 
-  const t = T[langParam] || T.fr;
-
   const [email, setEmail] = useState(emailParam);
   const [bookings, setBookings] = useState(null);
   const [loading, setLoading] = useState(false);
@@ -222,6 +220,9 @@ export default function MyBookings() {
   const [cancellingId, setCancellingId] = useState(null);
   const [cancelResult, setCancelResult] = useState({});
   const [filters, setFilters] = useState({ status: 'all', sort: 'date-desc' });
+  const [currentLang, setCurrentLang] = useState(langParam);
+
+  const t = T[currentLang] || T.fr;
 
   const handleSearch = async (e) => {
     e.preventDefault();
@@ -234,6 +235,10 @@ export default function MyBookings() {
       // Sort by departure_date descending
       results.sort((a, b) => new Date(b.departure_date) - new Date(a.departure_date));
       setBookings(results);
+      // Set language based on first booking found
+      if (results.length > 0 && results[0].language) {
+        setCurrentLang(results[0].language);
+      }
     } catch (err) {
       setBookings([]);
     } finally {
