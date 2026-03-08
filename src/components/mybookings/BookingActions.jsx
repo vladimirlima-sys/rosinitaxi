@@ -86,7 +86,7 @@ export default function BookingActions({ booking, t, lang = 'fr' }) {
         className="flex-1 h-9 rounded-lg bg-white/10 hover:bg-white/20 text-white/70 text-xs font-medium flex items-center justify-center gap-1.5 transition-colors"
       >
         <MapPin className="w-3.5 h-3.5" />
-        <span className="hidden sm:inline">Mapa</span>
+        <span className="hidden sm:inline">{tr.map}</span>
       </button>
 
       {['paid', 'refunded'].includes(booking.payment_status) && (
@@ -95,7 +95,7 @@ export default function BookingActions({ booking, t, lang = 'fr' }) {
           className="flex-1 h-9 rounded-lg bg-white/10 hover:bg-white/20 text-white/70 text-xs font-medium flex items-center justify-center gap-1.5 transition-colors"
         >
           <Star className="w-3.5 h-3.5" />
-          <span className="hidden sm:inline">Avaliar</span>
+          <span className="hidden sm:inline">{tr.review}</span>
         </button>
       )}
 
@@ -104,7 +104,7 @@ export default function BookingActions({ booking, t, lang = 'fr' }) {
         className="flex-1 h-9 rounded-lg bg-white/10 hover:bg-white/20 text-white/70 text-xs font-medium flex items-center justify-center gap-1.5 transition-colors"
       >
         <Share2 className="w-3.5 h-3.5" />
-        <span className="hidden sm:inline">Partilhar</span>
+        <span className="hidden sm:inline">{tr.share}</span>
       </button>
     </div>
   );
