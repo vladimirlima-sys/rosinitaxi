@@ -50,8 +50,9 @@ Deno.serve(async (req) => {
       });
 
       // Send email with payment link
+      console.log(`Attempting to send price adjustment email to ${clientEmail}...`);
       try {
-        await base44.asServiceRole.functions.invoke('sendPriceAdjustmentEmail', {
+        const emailResult = await base44.asServiceRole.functions.invoke('sendPriceAdjustmentEmail', {
           client_name: clientName,
           client_email: clientEmail,
           booking_id: bookingId,
@@ -63,9 +64,10 @@ Deno.serve(async (req) => {
           arrival_point: booking.arrival_point,
           language: booking.language || 'fr',
         });
-        console.log(`Price adjustment email sent to ${clientEmail}`);
+        console.log(`Price adjustment email sent successfully to ${clientEmail}:`, emailResult.data);
       } catch (emailErr) {
         console.error('Failed to send price adjustment email:', emailErr.message);
+        console.error('Email error details:', emailErr);
       }
 
       return Response.json({
