@@ -51,19 +51,20 @@ export default function RivieraCard() {
   const t = translations[lang] || translations.fr;
 
   return (
-    <div className="bg-black/40 backdrop-blur-sm border border-white/20 rounded-2xl p-6 max-w-md mx-auto">
-      <div className="flex items-start gap-3">
-        <div className="bg-[#F5C300] rounded-full p-3 shrink-0">
-          <Sparkles className="w-5 h-5 text-black" />
-        </div>
-        <div className="flex-1">
-          <h3 className="text-white font-bold text-lg">{t.title}</h3>
-          <p className="text-[#F5C300] text-sm font-medium mb-3">{t.subtitle}</p>
-          <p className="text-white/70 text-sm mb-3">{t.description}</p>
-          <div className="flex items-center gap-2 text-white/60 text-xs">
-            <Clock className="w-3.5 h-3.5 text-[#F5C300]" />
-            <span>{t.availability}</span>
+    <div className="bg-black/50 backdrop-blur-sm border-b border-white/10 px-6 py-3">
+      <div className="max-w-7xl mx-auto flex items-center justify-between gap-4">
+        <div className="flex items-center gap-3">
+          <div className="bg-[#F5C300] rounded-full p-2 shrink-0">
+            <Sparkles className="w-4 h-4 text-black" />
           </div>
+          <div className="flex-1">
+            <p className="text-white font-semibold text-sm">{t.title}</p>
+            <p className="text-white/60 text-xs">{t.description}</p>
+          </div>
+        </div>
+        <div className="flex items-center gap-2 text-white/60 text-xs shrink-0">
+          <Clock className="w-3.5 h-3.5 text-[#F5C300]" />
+          <span>{t.availability}</span>
         </div>
       </div>
     </div>
