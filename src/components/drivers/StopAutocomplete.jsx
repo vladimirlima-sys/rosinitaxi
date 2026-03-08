@@ -25,7 +25,7 @@ export default function StopAutocomplete({ value, onChange, placeholder, onLocat
     suggestionTimeoutRef.current = setTimeout(async () => {
       setSearching(true);
       try {
-        const res = await base44.functions.invoke('hereGeocoding', { query: val });
+        const res = await base44.functions.invoke('hereGeocoding', { searchText: val });
         if (res.data?.results) {
           setSuggestions(res.data.results.slice(0, 5));
           setShowSuggestions(true);
