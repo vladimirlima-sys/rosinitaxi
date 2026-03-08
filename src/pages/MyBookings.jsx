@@ -36,6 +36,7 @@ const T = {
     refundPolicy: 'Remboursement intégral si annulation plus de 24h avant le départ.',
     contact: 'Des questions ? info@rosini.online | +41 77 249 22 45',
     payment: { stripe: 'Carte bancaire', twint: 'TWINT', cash: 'Espèces' },
+    moreDetails: 'Plus de détails',
   },
   pt: {
     title: 'As minhas reservas',
