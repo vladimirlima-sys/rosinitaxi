@@ -49,14 +49,6 @@ const translations = {
 export default function RivieraCard() {
   const { lang } = useLang();
   const t = translations[lang] || translations.fr;
-  const [floating, setFloating] = useState(Array(5).fill(0).map(() => Math.random() * 100));
-
-  useEffect(() => {
-    const interval = setInterval(() => {
-      setFloating(Array(5).fill(0).map(() => Math.random() * 100));
-    }, 4000);
-    return () => clearInterval(interval);
-  }, []);
 
   return (
     <>
