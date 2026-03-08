@@ -36,6 +36,8 @@ Deno.serve(async (req) => {
     const notes = meta.notes || '';
     const driverId = meta.driver_id || '';
     const driverName = meta.driver_name || '';
+    const additionalStopsRaw = meta.additional_stops || '';
+    const additionalStops = additionalStopsRaw ? additionalStopsRaw.split('||').filter(s => s) : [];
 
     const base44 = createClientFromRequest(req);
 
@@ -56,6 +58,7 @@ Deno.serve(async (req) => {
         total_price: parseFloat(amount),
         passengers: passengers,
         notes: notes,
+        additional_stops: additionalStops,
         payment_status: 'paid',
         payment_method: 'stripe',
         stripe_payment_intent_id: session.payment_intent || null,
