@@ -1,8 +1,7 @@
 import React from 'react';
-import { Phone, Mail, Clock, HelpCircle } from 'lucide-react';
+import { Phone, Mail, Clock } from 'lucide-react';
 import { useLang } from '@/components/LanguageContext';
 import { translations } from '@/components/translations';
-import { createPageUrl } from '@/utils';
 
 export default function FooterSection() {
   const { lang } = useLang();
