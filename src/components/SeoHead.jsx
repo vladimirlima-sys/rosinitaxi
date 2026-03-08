@@ -3,7 +3,7 @@ import { useEffect } from 'react';
 const seoConfig = {
   fr: {
     title: 'Rosini Transports et locations Sarl — Transfer Privé Genève, Suisse & Europe',
-    description: 'Service de transfer privé et location de voiture avec chauffeur à Genève, Lausanne et toute la Suisse. Transfert aéroport, transport longue distance en Europe. Disponible 24h/24 — 7j/7.',
+    description: 'Votre partenaire pour les transferts longue distance et les trajets locaux dans la Riviera.',
     keywords: 'transfer privé Genève, location voiture avec chauffeur, transport luxe Suisse, transfert aéroport Genève, chauffeur privé Lausanne, taxi longue distance Suisse, transfer Europe, Rosini Transports, VTC Genève, transport professionnel Suisse',
   },
   en: {
