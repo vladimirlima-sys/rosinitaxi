@@ -286,6 +286,7 @@ export const translations = {
     selectDate: 'Sélectionnez une date',
     priceExamples: 'Exemples de prix',
     priceExamplesNote: '* Prix indicatifs, hors péages',
+    addStop: 'Ajouter un arrêt',
     ridesCompleted: 'trajets effectués',
     rideTracking: 'Suivi de course',
     back: 'Retour',
