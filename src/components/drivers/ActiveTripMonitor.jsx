@@ -295,15 +295,15 @@ export default function ActiveTripMonitor({ booking, onCompleted }) {
         await base44.entities.Booking.update(booking.id, { total_price: newPrice, distance_km: dist });
 
         // Handle price adjustment via Stripe if payment was online
-        if (booking.payment_method === 'stripe' && booking.stripe_payment_intent_id && oldPrice !== newPrice) {
-          try {
-            const adjustment = await base44.functions.invoke('handlePriceAdjustment', {
-              bookingId: booking.id,
-              oldPrice: oldPrice,
-              newPrice: newPrice,
-              clientEmail: booking.client_email,
-              clientName: booking.client_name,
-            });
+         if (booking.payment_method === 'stripe' && oldPrice !== newPrice) {
+           try {
+             const adjustment = await base44.functions.invoke('handlePriceAdjustment', {
+               bookingId: booking.id,
+               oldPrice: oldPrice,
+               newPrice: newPrice,
+               clientEmail: booking.client_email,
+               clientName: booking.client_name,
+             });
 
             if (adjustment.data?.type === 'charge' && adjustment.data?.url) {
               toast.info('Tarif aumentado - cliente será notificado para confirmar pagamento adicional');
