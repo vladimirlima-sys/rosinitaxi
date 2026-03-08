@@ -3,6 +3,7 @@ import { Navigation, MapPin, Clock, DollarSign, CheckCircle, Car, ChevronRight, 
 import { base44 } from '@/api/base44Client';
 import { createPageUrl } from '@/utils';
 import { toast } from 'sonner';
+import StopAutocomplete from './StopAutocomplete';
 
 const TRIP_STATUSES = [
   { key: 'en_route', label: '🚗 Route vers le client', color: 'text-blue-400', bg: 'bg-blue-400/10 border-blue-400/30' },
