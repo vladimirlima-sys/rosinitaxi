@@ -493,18 +493,23 @@ export default function BookingForm({ bookingRef }) {
 
             {/* Additional stops */}
             {additionalStops.map((stop, i) => (
-              <div key={i} className="bg-black border border-white/20 rounded-xl p-3 sm:p-4 flex items-center gap-2">
-                <MapPin className="w-4 h-4 text-[#F5C300] shrink-0" />
-                <input
-                  type="text"
-                  placeholder={`Parada ${i + 1}...`}
-                  value={stop}
-                  onChange={(e) => updateStop(i, e.target.value)}
-                  className="flex-1 bg-transparent text-white text-sm outline-none border-none placeholder:text-white/40"
+              <div key={i} className="bg-black border border-white/20 rounded-xl p-3 sm:p-4 relative">
+                <div className="flex items-center justify-between mb-2">
+                  <span className="text-[#F5C300] text-xs uppercase tracking-wider font-medium">Arrêt {i + 1}</span>
+                  <button onClick={() => removeStop(i)} className="text-white/40 hover:text-red-400 transition-colors">
+                    <X className="w-4 h-4" />
+                  </button>
+                </div>
+                <PlacesAutocomplete
+                  value={stop.address}
+                  onChange={(val) => updateStop(i, 'address', val)}
+                  onSelect={(sel) => updateStop(i, 'lat', sel.lat) || updateStop(i, 'lng', sel.lng) || updateStop(i, 'address', sel.formattedAddress)}
+                  placeholder={`Adresse de l'arrêt ${i + 1}...`}
+                  showLocateButton={true}
+                  isLocating={locatingStopIndex === i}
+                  onLocate={() => locateStop(i)}
+                  t={t}
                 />
-                <button onClick={() => removeStop(i)} className="text-white/40 hover:text-red-400 transition-colors">
-                  <X className="w-4 h-4" />
-                </button>
               </div>
             ))}
 
