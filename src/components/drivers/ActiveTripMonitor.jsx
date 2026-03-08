@@ -392,27 +392,23 @@ export default function ActiveTripMonitor({ booking, onCompleted }) {
 
         {/* Add stop */}
         {addingStop ? (
-          <div>
-            <div className="ml-2.5 w-[1px] h-3 bg-white/10" />
-            <div className="flex items-center gap-2">
-              <div className="w-5 h-5 rounded-full bg-orange-400/20 flex items-center justify-center shrink-0">
-                <Plus className="w-3 h-3 text-orange-400" />
-              </div>
-              <input
-                autoFocus
-                type="text"
-                value={newStop}
-                onChange={e => setNewStop(e.target.value)}
-                placeholder="Nouvelle étape..."
-                className="flex-1 bg-white/5 border border-white/20 rounded text-white text-xs px-2 py-1 outline-none placeholder:text-white/30"
-              />
-              <button onClick={locateAndAddStop} disabled={locatingStop} title="Géolocalisation" className="text-blue-400 hover:text-blue-300 disabled:opacity-50">
-                {locatingStop ? <Loader className="w-4 h-4 animate-spin" /> : <Navigation className="w-3 h-3" />}
-              </button>
-              <button onClick={saveNewStop} className="text-green-400 hover:text-green-300"><Check className="w-4 h-4" /></button>
-              <button onClick={() => { setAddingStop(false); setNewStop(''); }} className="text-white/30 hover:text-red-400"><X className="w-4 h-4" /></button>
-            </div>
-          </div>
+           <div>
+             <div className="ml-2.5 w-[1px] h-3 bg-white/10" />
+             <div className="flex items-center gap-2">
+               <div className="w-5 h-5 rounded-full bg-orange-400/20 flex items-center justify-center shrink-0">
+                 <Plus className="w-3 h-3 text-orange-400" />
+               </div>
+               <StopAutocomplete
+                 value={newStop}
+                 onChange={setNewStop}
+                 placeholder="Nouvelle étape..."
+                 onLocate={locateAndAddStop}
+                 isLocating={locatingStop}
+                 onSave={saveNewStop}
+                 onCancel={() => { setAddingStop(false); setNewStop(''); }}
+               />
+             </div>
+           </div>
         ) : (
           <button onClick={() => setAddingStop(true)}
             className="ml-7 flex items-center gap-1 text-orange-400 hover:text-orange-300 text-xs font-medium border border-orange-400/40 rounded px-2 py-1 transition-colors hover:border-orange-300/60">
