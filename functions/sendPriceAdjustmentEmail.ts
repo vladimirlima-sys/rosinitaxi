@@ -146,11 +146,27 @@ Deno.serve(async (req) => {
       </html>
     `;
 
-    await base44.integrations.Core.SendEmail({
-      to: client_email,
-      subject: t.subject,
-      body: emailHtml,
+    // Get Gmail access token
+    const { accessToken } = await base44.asServiceRole.connectors.getConnection('gmail');
+    
+    // Send via Gmail API
+    const gmailBody = emailHtml;
+    const encodedEmail = Buffer.from(`To: ${client_email}\r\nSubject: ${t.subject}\r\nContent-Type: text/html; charset=UTF-8\r\n\r\n${gmailBody}`).toString('base64');
+    
+    const gmailResponse = await fetch('https://www.googleapis.com/gmail/v1/users/me/messages/send', {
+      method: 'POST',
+      headers: {
+        'Authorization': `Bearer ${accessToken}`,
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({
+        raw: encodedEmail,
+      }),
     });
+
+    if (!gmailResponse.ok) {
+      throw new Error(`Gmail API error: ${await gmailResponse.text()}`);
+    }
 
     console.log(`Price adjustment email sent to ${client_email} for booking ${booking_id}`);
     return Response.json({ success: true });
