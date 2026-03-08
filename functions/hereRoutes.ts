@@ -3,6 +3,7 @@ Deno.serve(async (req) => {
     const body = await req.json();
     const departure = body.departure;
     const arrival = body.arrival;
+    const via = body.via || []; // array of {lat, lng} for additional stops
     
     if (!departure || !arrival) {
       return Response.json({ error: 'departure and arrival are required' }, { status: 400 });
@@ -13,7 +14,8 @@ Deno.serve(async (req) => {
       return Response.json({ error: 'HERE_API_KEY not configured' }, { status: 500 });
     }
 
-    const url = `https://router.hereapi.com/v8/routes?transportMode=car&origin=${departure.lat},${departure.lng}&destination=${arrival.lat},${arrival.lng}&return=polyline,summary&apikey=${apiKey}`;
+    const viaParams = via.map(v => `&via=${v.lat},${v.lng}`).join('');
+    const url = `https://router.hereapi.com/v8/routes?transportMode=car&origin=${departure.lat},${departure.lng}${viaParams}&destination=${arrival.lat},${arrival.lng}&return=polyline,summary&apikey=${apiKey}`;
     
     const response = await fetch(url);
     const data = await response.json();
@@ -28,11 +30,13 @@ Deno.serve(async (req) => {
     }
 
     const route = data.routes[0];
-    const summary = route.sections[0]?.summary || {};
-    const distance_km = Math.round(summary.length / 1000);
-    const estimated_time_minutes = Math.round(summary.duration / 60);
+    // Aggregate all sections (important when via waypoints are used)
+    const totalLength = route.sections.reduce((sum, s) => sum + (s.summary?.length || 0), 0);
+    const totalDuration = route.sections.reduce((sum, s) => sum + (s.summary?.duration || 0), 0);
+    const distance_km = Math.round(totalLength / 1000);
+    const estimated_time_minutes = Math.round(totalDuration / 60);
     
-    // Decode polyline
+    // Polyline from first section
     const polyline = route.sections[0]?.polyline || '';
 
     return Response.json({
