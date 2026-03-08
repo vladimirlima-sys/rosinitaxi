@@ -57,6 +57,7 @@ export default function ActiveTripMonitor({ booking, onCompleted }) {
   const [locatingArrival, setLocatingArrival] = useState(false);
   const [updatedPrice, setUpdatedPrice] = useState(booking.total_price);
   const [updatingPrice, setUpdatingPrice] = useState(false);
+  const [sendingAdjustment, setSendingAdjustment] = useState(false);
   const gpsWatchRef = useRef(null);
 
   const priceSettings = useRef({});
