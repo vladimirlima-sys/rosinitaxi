@@ -120,6 +120,7 @@ const T = {
     refundPolicy: 'Vollständige Erstattung bei Stornierung mehr als 24h vor Abfahrt.',
     contact: 'Fragen? info@rosini.online | +41 77 249 22 45',
     payment: { stripe: 'Kreditkarte', twint: 'TWINT', cash: 'Bargeld' },
+    moreDetails: 'Weitere Details',
   },
   it: {
     title: 'Le mie prenotazioni',
