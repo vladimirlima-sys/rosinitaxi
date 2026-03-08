@@ -31,6 +31,7 @@ export default function BookingForm({ bookingRef }) {
   const [priceSettings, setPriceSettings] = useState(null);
   const [selectedDriver, setSelectedDriver] = useState(null);
   const [additionalStops, setAdditionalStops] = useState([]);
+  const [locatingStopIndex, setLocatingStopIndex] = useState(null);
   const [form, setForm] = useState({
     departure_point: '',
     arrival_point: '',
@@ -411,9 +412,28 @@ export default function BookingForm({ bookingRef }) {
     }
   };
 
-  const addStop = () => setAdditionalStops(prev => [...prev, '']);
+  const addStop = () => setAdditionalStops(prev => [...prev, { address: '', lat: null, lng: null }]);
   const removeStop = (i) => setAdditionalStops(prev => prev.filter((_, idx) => idx !== i));
-  const updateStop = (i, val) => setAdditionalStops(prev => prev.map((s, idx) => idx === i ? val : s));
+  const updateStop = (i, field, val) => setAdditionalStops(prev => prev.map((s, idx) => idx === i ? { ...s, [field]: val } : s));
+
+  const locateStop = async (i) => {
+    if (!navigator.geolocation) { toast.error(t.locationUnavailable); return; }
+    setLocatingStopIndex(i);
+    navigator.geolocation.getCurrentPosition(
+      async (position) => {
+        try {
+          const { latitude, longitude } = position.coords;
+          const response = await base44.functions.invoke('hereReverseGeocoding', { lat: latitude, lng: longitude });
+          if (response.data?.address) {
+            setAdditionalStops(prev => prev.map((s, idx) => idx === i ? { address: response.data.address, lat: latitude, lng: longitude } : s));
+          } else { toast.error(t.locationError); }
+        } catch { toast.error(t.locationError); }
+        finally { setLocatingStopIndex(null); }
+      },
+      () => { toast.error(t.locationDenied); setLocatingStopIndex(null); },
+      { timeout: 10000, enableHighAccuracy: false }
+    );
+  };
 
   const resetForm = () => {
     setStep(1);
