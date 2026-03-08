@@ -15,7 +15,7 @@ export default function BookingDetails({ booking, t }) {
     <div className="space-y-3">
       <button
         onClick={() => setExpanded(!expanded)}
-        className="w-full flex items-center justify-between text-left py-2 text-white/60 text-xs hover:text-white transition-colors"
+        className="w-full flex items-center justify-between text-left py-2.5 px-3 text-white text-xs font-medium hover:bg-white/10 transition-colors rounded-lg border border-white/10"
       >
         <span>Mais detalhes</span>
         <ChevronDown className={`w-4 h-4 transition-transform ${expanded ? 'rotate-180' : ''}`} />
