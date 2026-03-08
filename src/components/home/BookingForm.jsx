@@ -503,7 +503,7 @@ export default function BookingForm({ bookingRef }) {
                 <PlacesAutocomplete
                   value={stop.address}
                   onChange={(val) => updateStop(i, 'address', val)}
-                  onSelect={(sel) => updateStop(i, 'lat', sel.lat) || updateStop(i, 'lng', sel.lng) || updateStop(i, 'address', sel.formattedAddress)}
+                  onSelect={(sel) => setAdditionalStops(prev => prev.map((s, idx) => idx === i ? { address: sel.formattedAddress, lat: sel.lat, lng: sel.lng } : s))}
                   placeholder={`Adresse de l'arrêt ${i + 1}...`}
                   showLocateButton={true}
                   isLocating={locatingStopIndex === i}
