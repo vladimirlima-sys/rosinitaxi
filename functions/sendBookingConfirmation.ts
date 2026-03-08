@@ -679,6 +679,32 @@ Deno.serve(async (req) => {
       }
     };
 
+    // ─── SMS to driver (when assigned) ─────────────────────────────────────
+    if (driver_id) {
+      try {
+        const drivers = await base44.asServiceRole.entities.Driver.list('', 200);
+        const driver = drivers.find(d => d.id === driver_id);
+        if (driver?.phone) {
+          const accountSid = Deno.env.get('TWILIO_ACCOUNT_SID');
+          const authToken = Deno.env.get('TWILIO_AUTH_TOKEN');
+          const fromNumber = Deno.env.get('TWILIO_WHATSAPP_FROM');
+          const auth = btoa(`${accountSid}:${authToken}`);
+          const driverMsg = `🚗 Rosini Transports\nNouvelle course assignée !\nClient: ${client_name}\nDate: ${departure_date} à ${departure_time}\nDépart: ${departure_point}\nArrivée: ${arrival_point}\nVéhicule: ${vehicle_type === 'comfort' ? 'Confort' : 'Standard'}\nPrix: CHF ${total_price}${payment_method === 'stripe' ? ' (payé en ligne)' : ' (à encaisser)'}`;
+          const driverPhone = driver.phone.replace(/\s/g, '');
+          const to = driverPhone.startsWith('whatsapp:') ? driverPhone : `whatsapp:${driverPhone}`;
+          const from = fromNumber.startsWith('whatsapp:') ? fromNumber : `whatsapp:${fromNumber}`;
+          await fetch(`https://api.twilio.com/2010-04-01/Accounts/${accountSid}/Messages.json`, {
+            method: 'POST',
+            headers: { 'Authorization': `Basic ${auth}`, 'Content-Type': 'application/x-www-form-urlencoded' },
+            body: new URLSearchParams({ From: from, To: to, Body: driverMsg }).toString(),
+          });
+          console.log(`Driver SMS sent to ${driver.name} (${driver.phone})`);
+        }
+      } catch (driverSmsErr) {
+        console.error('Driver SMS failed (non-critical):', driverSmsErr.message);
+      }
+    }
+
     // ─── SMS notification ──────────────────────────────────────────────────
     if (client_phone) {
       try {
