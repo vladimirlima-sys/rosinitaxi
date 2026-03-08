@@ -1,6 +1,6 @@
 import React, { useState, useMemo } from 'react';
 import { base44 } from '@/api/base44Client';
-import { Loader2, Mail, ArrowRight, CalendarDays, MapPin, Car, CreditCard, XCircle, CheckCircle, AlertTriangle, ArrowLeft } from 'lucide-react';
+import { Loader2, Mail, ArrowRight, CalendarDays, MapPin, Car, CreditCard, XCircle, CheckCircle, AlertTriangle, ArrowLeft, Globe } from 'lucide-react';
 import { createPageUrl } from '@/utils';
 import BookingFilters from '@/components/mybookings/BookingFilters';
 import CancelCountdown from '@/components/mybookings/CancelCountdown';
