@@ -504,7 +504,7 @@ export default function BookingForm({ bookingRef }) {
                   value={stop.address}
                   onChange={(val) => updateStop(i, 'address', val)}
                   onSelect={(sel) => setAdditionalStops(prev => prev.map((s, idx) => idx === i ? { address: sel.formattedAddress, lat: sel.lat, lng: sel.lng } : s))}
-                  placeholder={`Adresse de l'arrêt ${i + 1}...`}
+                  placeholder={t.stopPlaceholder ? t.stopPlaceholder(i + 1) : `Arrêt ${i + 1}...`}
                   showLocateButton={true}
                   isLocating={locatingStopIndex === i}
                   onLocate={() => locateStop(i)}
