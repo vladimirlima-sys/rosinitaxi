@@ -768,6 +768,7 @@ export const translations = {
     selectDate: 'Seleziona una data',
     priceExamples: 'Esempi di prezzi',
     priceExamplesNote: '* Prezzi indicativi, pedaggi esclusi',
+    addStop: 'Aggiungere una fermata',
     ridesCompleted: 'corse effettuate',
     rideTracking: 'Tracciamento corsa',
     back: 'Indietro',
