@@ -74,7 +74,7 @@ export default function StopAutocomplete({ value, onChange, placeholder, onLocat
                   onClick={() => handleSelectSuggestion(sug)}
                   className="px-2 py-1.5 hover:bg-white/10 cursor-pointer text-white/70 hover:text-white transition-colors text-left border-b border-white/5 last:border-b-0"
                 >
-                  <p className="truncate">{sug.formattedAddress || sug.address}</p>
+                  <p className="truncate">{sug.address}</p>
                   {sug.city && <p className="text-white/40 text-[10px] truncate">{sug.city}</p>}
                 </div>
               ))}
