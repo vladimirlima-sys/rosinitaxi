@@ -42,10 +42,31 @@ Deno.serve(async (req) => {
           base44_app_id: Deno.env.get('BASE44_APP_ID'),
           booking_id: bookingId,
           adjustment_type: 'price_increase',
+          old_price: oldPrice,
+          new_price: newPrice,
         },
         success_url: `${req.headers.get('origin')}/`,
         cancel_url: `${req.headers.get('origin')}/`,
       });
+
+      // Send email with payment link
+      try {
+        await base44.asServiceRole.functions.invoke('sendPriceAdjustmentEmail', {
+          client_name: clientName,
+          client_email: clientEmail,
+          booking_id: bookingId,
+          old_price: oldPrice,
+          new_price: newPrice,
+          difference: priceDiff,
+          payment_url: session.url,
+          departure_point: booking.departure_point,
+          arrival_point: booking.arrival_point,
+          language: booking.language || 'fr',
+        });
+        console.log(`Price adjustment email sent to ${clientEmail}`);
+      } catch (emailErr) {
+        console.error('Failed to send price adjustment email:', emailErr.message);
+      }
 
       return Response.json({
         type: 'charge',
