@@ -1,5 +1,5 @@
 import Stripe from 'npm:stripe@14.21.0';
-import { createClientFromRequest } from 'npm:@base44/sdk@0.8.6';
+import { createClientFromRequest } from 'npm:@base44/sdk@0.8.20';
 
 const stripe = new Stripe(Deno.env.get("STRIPE_SECRET_KEY"));
 
@@ -27,45 +27,55 @@ Deno.serve(async (req) => {
     const departureDate = meta.departure_date || "";
     const departureTime = meta.departure_time || "";
     const vehicleType = meta.vehicle_type || 'economic';
-    const distanceKm = meta.distance_km || "0";
+    const distanceKm = parseFloat(meta.distance_km || "0");
     const amount = (session.amount_total / 100).toFixed(2);
     const isShortNotice = meta.is_short_notice === 'true';
     const language = meta.language || 'fr';
-    const bookingId = meta.booking_id || null;
     const flightNumber = meta.flight_number || '';
-    const passengers = meta.passengers || 1;
+    const passengers = parseInt(meta.passengers || '1');
     const notes = meta.notes || '';
+    const driverId = meta.driver_id || '';
+    const driverName = meta.driver_name || '';
 
     const base44 = createClientFromRequest(req);
 
-    // ── Update booking status ────────────────────────────────────────────────
+    // ── Create booking now that payment is confirmed ─────────────────────────
     let booking = null;
     try {
-      if (bookingId) {
-        const found = await base44.asServiceRole.entities.Booking.filter({ id: bookingId });
-        booking = found?.[0] || null;
+      const bookingData = {
+        client_name: clientName,
+        client_email: clientEmail,
+        client_phone: clientPhone,
+        departure_point: departure,
+        arrival_point: arrival,
+        departure_date: departureDate,
+        departure_time: departureTime,
+        flight_number: flightNumber,
+        vehicle_type: vehicleType,
+        distance_km: distanceKm,
+        total_price: parseFloat(amount),
+        passengers: passengers,
+        notes: notes,
+        payment_status: 'paid',
+        payment_method: 'stripe',
+        stripe_payment_intent_id: session.payment_intent || null,
+        confirmation_sent: true,
+        language: language,
+      };
+
+      // Add driver if pre-selected
+      if (driverId) {
+        bookingData.driver_id = driverId;
+        bookingData.driver_name = driverName;
       }
-      if (!booking) {
-        const pendingBookings = await base44.asServiceRole.entities.Booking.filter({ client_email: clientEmail, payment_status: "pending" });
-        if (departureDate) {
-          booking = pendingBookings.find(b => b.departure_date === departureDate && b.departure_time === departureTime) || pendingBookings[0] || null;
-        } else {
-          booking = pendingBookings[0] || null;
-        }
-      }
-      if (booking) {
-        await base44.asServiceRole.entities.Booking.update(booking.id, {
-          payment_status: "paid",
-          confirmation_sent: true,
-          stripe_payment_intent_id: session.payment_intent || null
-        });
-        console.log("Booking marked as paid:", booking.id);
-      }
+
+      booking = await base44.asServiceRole.entities.Booking.create(bookingData);
+      console.log("Booking created with paid status:", booking.id);
     } catch (err) {
-      console.error("Failed to update booking status:", err.message);
+      console.error("Failed to create booking:", err.message);
     }
 
-    // ── Send emails via sendBookingConfirmation (handles translations + PDF) ─
+    // ── Send emails via sendBookingConfirmation ──────────────────────────────
     try {
       await base44.asServiceRole.functions.invoke('sendBookingConfirmation', {
         client_name: clientName,
@@ -77,16 +87,16 @@ Deno.serve(async (req) => {
         departure_time: departureTime,
         flight_number: flightNumber,
         vehicle_type: vehicleType,
-        distance_km: parseFloat(distanceKm),
+        distance_km: distanceKm,
         total_price: parseFloat(amount),
-        passengers: parseInt(passengers),
+        passengers: passengers,
         notes: notes,
         payment_method: 'stripe',
         language: language,
         skip_client_email: isShortNotice,
-        booking_id: booking?.id || bookingId,
+        booking_id: booking?.id || null,
       });
-      console.log("Emails sent via sendBookingConfirmation for:", clientEmail, "| lang:", language);
+      console.log("Emails sent for:", clientEmail);
     } catch (err) {
       console.error("Failed to send emails:", err.message);
     }
@@ -97,7 +107,7 @@ Deno.serve(async (req) => {
         type: 'payment_confirmed',
         booking: {
           client_name: clientName,
-          client_phone: booking?.client_phone || clientPhone,
+          client_phone: clientPhone,
           departure_point: departure,
           arrival_point: arrival,
           departure_date: departureDate,
