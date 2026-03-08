@@ -329,10 +329,8 @@ export default function BookingForm({ bookingRef }) {
       };
 
       if (paymentMethod === 'stripe') {
-        console.log('💳 Stripe payment - creating booking...');
-        const createdBooking = await base44.entities.Booking.create(bookingData);
-        console.log('✅ Booking created:', createdBooking.id);
-        
+        console.log('💳 Stripe payment - going directly to checkout (booking created after payment)...');
+
         sessionStorage.setItem('pendingBooking', JSON.stringify({ 
           ...form, 
           total_price: parseFloat(totalPrice), 
@@ -353,9 +351,14 @@ export default function BookingForm({ bookingRef }) {
           distance_km: estimatedDistance,
           departure_date: form.departure_date, 
           departure_time: form.departure_time,
+          flight_number: form.flight_number || '',
+          passengers: form.passengers || 1,
+          notes: form.notes || '',
+          language: lang,
+          driver_id: selectedDriver?.id || '',
+          driver_name: selectedDriver?.name || '',
           origin: window.location.origin,
           is_short_notice: isShortNotice,
-          booking_id: createdBooking.id
         });
         
         console.log('📦 Checkout response received:', response);
