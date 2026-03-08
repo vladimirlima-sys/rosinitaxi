@@ -60,6 +60,7 @@ export default function RivieraCard() {
           </div>
           <div className="flex-1">
             <p className="text-white font-semibold text-sm">{t.title}</p>
+            <p className="text-white/60 text-xs">{t.description}</p>
           </div>
         </div>
         <div className="flex items-center gap-2 text-white/60 text-xs md:shrink-0 md:whitespace-nowrap">
