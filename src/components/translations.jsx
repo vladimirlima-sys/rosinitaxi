@@ -126,6 +126,8 @@ export const translations = {
     priceExamples: 'Exemplos de preços',
     priceExamplesNote: '* Preços indicativos, sem pedágios',
     addStop: 'Adicionar uma paragem',
+    stopLabel: 'Paragem',
+    stopPlaceholder: (n) => `Endereço da paragem ${n}...`,
     ridesCompleted: 'corridas realizadas',
     rideTracking: 'Acompanhamento da corrida',
     back: 'Voltar',
