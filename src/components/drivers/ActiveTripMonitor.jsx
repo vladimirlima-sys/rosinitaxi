@@ -250,11 +250,38 @@ export default function ActiveTripMonitor({ booking, onCompleted }) {
 
   const recalculatePrice = async (departure, arrival, stops) => {
     try {
+      // Geocodificar endereços para coordenadas
+      const geocodeDeparture = await base44.functions.invoke('hereGeocoding', { searchText: departure });
+      const geocodeArrival = await base44.functions.invoke('hereGeocoding', { searchText: arrival });
+      
+      if (!geocodeDeparture.data?.results?.[0] || !geocodeArrival.data?.results?.[0]) {
+        console.error('Could not geocode addresses');
+        return;
+      }
+      
+      const depCoords = { lat: geocodeDeparture.data.results[0].lat, lng: geocodeDeparture.data.results[0].lng };
+      const arrCoords = { lat: geocodeArrival.data.results[0].lat, lng: geocodeArrival.data.results[0].lng };
+      
+      // Geocodificar paradas
+      const viaCoords = [];
+      for (const stop of stops.filter(s => s.trim())) {
+        try {
+          const geocodeStop = await base44.functions.invoke('hereGeocoding', { searchText: stop });
+          if (geocodeStop.data?.results?.[0]) {
+            viaCoords.push({ lat: geocodeStop.data.results[0].lat, lng: geocodeStop.data.results[0].lng });
+          }
+        } catch (err) {
+          console.error('Error geocoding stop:', err);
+        }
+      }
+      
+      // Calcular rota
       const res = await base44.functions.invoke('hereRoutes', {
-        departure,
-        arrival,
-        stops: stops.filter(s => s.trim())
+        departure: depCoords,
+        arrival: arrCoords,
+        via: viaCoords
       });
+      
       if (res.data?.distance_km) {
         const dist = res.data.distance_km;
         const pricePerKm = booking.vehicle_type === 'comfort' 
