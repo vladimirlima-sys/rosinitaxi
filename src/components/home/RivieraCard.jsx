@@ -58,7 +58,6 @@ export default function RivieraCard() {
             <Sparkles className="w-4 h-4 text-black" />
           </div>
           <div className="flex-1">
-            <p className="text-white font-semibold text-sm">{t.title}</p>
             <p className="text-white/60 text-xs">{t.description}</p>
           </div>
         </div>
