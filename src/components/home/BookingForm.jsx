@@ -469,6 +469,30 @@ export default function BookingForm({ bookingRef }) {
               </div>
             </div>
 
+            {/* Additional stops */}
+            {additionalStops.map((stop, i) => (
+              <div key={i} className="bg-black border border-white/20 rounded-xl p-3 sm:p-4 flex items-center gap-2">
+                <MapPin className="w-4 h-4 text-[#F5C300] shrink-0" />
+                <input
+                  type="text"
+                  placeholder={`Parada ${i + 1}...`}
+                  value={stop}
+                  onChange={(e) => updateStop(i, e.target.value)}
+                  className="flex-1 bg-transparent text-white text-sm outline-none border-none placeholder:text-white/40"
+                />
+                <button onClick={() => removeStop(i)} className="text-white/40 hover:text-red-400 transition-colors">
+                  <X className="w-4 h-4" />
+                </button>
+              </div>
+            ))}
+
+            <button
+              onClick={addStop}
+              className="w-full flex items-center justify-center gap-2 border border-dashed border-white/30 rounded-xl py-2.5 text-white/50 hover:text-white/80 hover:border-white/50 transition-all text-sm"
+            >
+              <Plus className="w-4 h-4" /> Ajouter une étape
+            </button>
+
             {/* Arrival */}
              <div className="bg-black border border-black/40 rounded-xl p-3 sm:p-4">
               <PlacesAutocomplete
