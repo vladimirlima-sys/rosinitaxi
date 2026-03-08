@@ -52,7 +52,27 @@ export default function ActiveTripMonitor({ booking, onCompleted }) {
   const [addingStop, setAddingStop] = useState(false);
   const [newStop, setNewStop] = useState('');
   const [currentStops, setCurrentStops] = useState(booking.additional_stops || []);
+  const [locatingStop, setLocatingStop] = useState(false);
+  const [locatingArrival, setLocatingArrival] = useState(false);
+  const [updatedPrice, setUpdatedPrice] = useState(booking.total_price);
   const gpsWatchRef = useRef(null);
+
+  const priceSettings = useRef({});
+
+  // Carregar configurações de preço na montagem
+  useEffect(() => {
+    const fetchPriceSettings = async () => {
+      try {
+        const settings = await base44.entities.PriceSettings.list();
+        if (settings.length > 0) {
+          priceSettings.current = settings[0];
+        }
+      } catch (err) {
+        console.error('Erro ao carregar PriceSettings:', err);
+      }
+    };
+    fetchPriceSettings();
+  }, []);
 
   const currentIndex = TRIP_STATUSES.findIndex(s => s.key === tripStatus);
   const currentStatusObj = TRIP_STATUSES[currentIndex] || null;
