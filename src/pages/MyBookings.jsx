@@ -399,7 +399,7 @@ export default function MyBookings() {
             ) : (
               <>
                 {nextTrip && <NextTripHighlight booking={nextTrip} t={t} />}
-                <BookingFilters filters={filters} setFilters={setFilters} t={t} />
+                <BookingFilters filters={filters} setFilters={setFilters} t={t} lang={displayLang} />
                 <div className="space-y-4">
                   {filteredAndSorted.map(b => (
                   <div key={b.id} className="bg-black rounded-2xl p-5 space-y-4">
