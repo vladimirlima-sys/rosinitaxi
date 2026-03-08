@@ -47,6 +47,11 @@ export default function ActiveTripMonitor({ booking, onCompleted }) {
     return v ? parseInt(v) : null;
   });
   const [savingPayment, setSavingPayment] = useState(false);
+  const [editingArrival, setEditingArrival] = useState(false);
+  const [newArrival, setNewArrival] = useState(booking.arrival_point || '');
+  const [addingStop, setAddingStop] = useState(false);
+  const [newStop, setNewStop] = useState('');
+  const [currentStops, setCurrentStops] = useState(booking.additional_stops || []);
   const gpsWatchRef = useRef(null);
 
   const currentIndex = TRIP_STATUSES.findIndex(s => s.key === tripStatus);
