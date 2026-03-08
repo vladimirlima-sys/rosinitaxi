@@ -289,6 +289,8 @@ export const translations = {
     priceExamples: 'Exemples de prix',
     priceExamplesNote: '* Prix indicatifs, hors péages',
     addStop: 'Ajouter un arrêt',
+    stopLabel: 'Arrêt',
+    stopPlaceholder: (n) => `Adresse de l'arrêt ${n}...`,
     ridesCompleted: 'trajets effectués',
     rideTracking: 'Suivi de course',
     back: 'Retour',
