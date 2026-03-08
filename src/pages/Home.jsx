@@ -28,6 +28,7 @@ function HomeContent({ bookingRef }) {
           </a>
         </div>
       </div>
+      <FooterSection />
     </>);
 
 }
