@@ -268,15 +268,35 @@ export default function ActiveTripMonitor({ booking, onCompleted }) {
     }
   };
 
+  const locateAndAddStop = async () => {
+    setLocatingStop(true);
+    try {
+      const pos = await new Promise((resolve, reject) => {
+        navigator.geolocation.getCurrentPosition(resolve, reject);
+      });
+      const res = await base44.functions.invoke('hereReverseGeocoding', {
+        lat: pos.coords.latitude,
+        lng: pos.coords.longitude
+      });
+      setNewStop(res.data);
+    } catch (err) {
+      console.error('Erro ao localizar:', err);
+      toast.error('Erro ao obter localização');
+    } finally {
+      setLocatingStop(false);
+    }
+  };
+
   const saveNewStop = async () => {
     if (!newStop.trim()) return;
     const updated = [...currentStops, newStop.trim()];
     try {
+      await recalculatePrice(booking.departure_point, booking.arrival_point, updated);
       await base44.entities.Booking.update(booking.id, { additional_stops: updated });
       setCurrentStops(updated);
       setNewStop('');
       setAddingStop(false);
-      toast.success('Arrêt ajouté');
+      toast.success('Arrêt ajouté e preço atualizado');
     } catch (err) {
       toast.error('Erreur lors de l\'ajout');
     }
