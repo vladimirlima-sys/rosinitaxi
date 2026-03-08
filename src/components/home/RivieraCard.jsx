@@ -89,7 +89,7 @@ export default function RivieraCard() {
           {letter}
         </div>
       ))}
-      <div className="max-w-7xl mx-auto flex flex-col md:flex-row md:items-center md:justify-between gap-4">
+      <div className="max-w-7xl mx-auto flex flex-col md:flex-row md:items-center md:justify-between gap-4 relative z-10">
         <div className="flex items-center gap-3">
           <div className="bg-[#F5C300] rounded-full p-2 shrink-0">
             <Sparkles className="w-4 h-4 text-black" />
