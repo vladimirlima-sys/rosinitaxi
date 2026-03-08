@@ -50,9 +50,18 @@ export default function FooterSection() {
         
         <div className="flex flex-col md:flex-row justify-between items-center gap-4">
           <p className="text-white/30 text-sm">© 2026 Rosini transports et locations SARL. {t.copyright(new Date().getFullYear())}</p>
-          <div className="flex items-center gap-1">
-            <div className="w-2 h-2 rounded-full bg-green-500 animate-pulse" />
-            <span className="text-white/30 text-xs">{t.availableNow}</span>
+          <div className="flex items-center gap-4">
+            <a
+              href={createPageUrl('FAQ')}
+              className="text-white/50 hover:text-[#F5C300] transition-colors flex items-center gap-2"
+            >
+              <HelpCircle className="w-4 h-4" />
+              <span className="text-sm">FAQ</span>
+            </a>
+            <div className="flex items-center gap-1">
+              <div className="w-2 h-2 rounded-full bg-green-500 animate-pulse" />
+              <span className="text-white/30 text-xs">{t.availableNow}</span>
+            </div>
           </div>
         </div>
       </div>
