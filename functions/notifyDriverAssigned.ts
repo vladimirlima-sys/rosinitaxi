@@ -5,16 +5,16 @@ Deno.serve(async (req) => {
     const base44 = createClientFromRequest(req);
     const { event, data, old_data } = await req.json();
 
-    // Only process update events
-    if (event.type !== 'update') {
-      return Response.json({ success: true });
-    }
-
-    // Only trigger when driver_id is newly assigned or changed
+    // For create: only notify if driver_id is already set
+    // For update: only notify if driver_id changed
     const newDriverId = data?.driver_id;
     const oldDriverId = old_data?.driver_id;
 
-    if (!newDriverId || newDriverId === oldDriverId) {
+    if (!newDriverId) {
+      return Response.json({ success: true });
+    }
+
+    if (event.type === 'update' && newDriverId === oldDriverId) {
       return Response.json({ success: true });
     }
 
