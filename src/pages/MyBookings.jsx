@@ -204,6 +204,7 @@ const T = {
     refundPolicy: 'Volledige terugbetaling bij annulering meer dan 24u voor vertrek.',
     contact: 'Vragen? info@rosini.online | +41 77 249 22 45',
     payment: { stripe: 'Creditcard', twint: 'TWINT', cash: 'Contant' },
+    moreDetails: 'Meer details',
   },
 };
 
