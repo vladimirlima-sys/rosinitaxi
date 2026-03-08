@@ -60,22 +60,23 @@ export default function RivieraCard() {
   }, []);
 
   return (
-    <style>{`
-      @keyframes float {
-        0%, 100% { transform: translateY(0px) translateX(0px); opacity: 0.6; }
-        50% { transform: translateY(-20px) translateX(10px); opacity: 0.3; }
-      }
-      .floating-letter {
-        animation: float 4s ease-in-out infinite;
-        position: absolute;
-        font-size: 2rem;
-        font-weight: bold;
-        color: rgba(245, 195, 0, 0.5);
-        pointer-events: none;
-        z-index: 0;
-      }
-    `}</style>
-    <div className="bg-black/50 backdrop-blur-sm border-b border-white/10 px-6 py-3 relative z-10 overflow-hidden">
+    <>
+      <style>{`
+        @keyframes float {
+          0%, 100% { transform: translateY(0px) translateX(0px); opacity: 0.6; }
+          50% { transform: translateY(-20px) translateX(10px); opacity: 0.3; }
+        }
+        .floating-letter {
+          animation: float 4s ease-in-out infinite;
+          position: absolute;
+          font-size: 2rem;
+          font-weight: bold;
+          color: rgba(245, 195, 0, 0.5);
+          pointer-events: none;
+          z-index: 0;
+        }
+      `}</style>
+      <div className="bg-black/50 backdrop-blur-sm border-b border-white/10 px-6 py-3 relative z-10 overflow-hidden">
       {['R', 'I', 'V', 'I', 'A'].map((letter, i) => (
         <div
           key={i}
