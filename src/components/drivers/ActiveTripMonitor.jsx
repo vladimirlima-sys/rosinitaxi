@@ -369,6 +369,35 @@ export default function ActiveTripMonitor({ booking, onCompleted }) {
     }
   };
 
+  const sendStripeAdjustmentEmail = async () => {
+    if (booking.payment_method !== 'stripe' || updatedPrice === booking.total_price) {
+      toast.error('Stripe uniquement - prix doit être différent');
+      return;
+    }
+    
+    setSendingAdjustment(true);
+    try {
+      const adjustment = await base44.functions.invoke('handlePriceAdjustment', {
+        bookingId: booking.id,
+        oldPrice: booking.total_price,
+        newPrice: updatedPrice,
+        clientEmail: booking.client_email,
+        clientName: booking.client_name,
+      });
+
+      if (adjustment.data?.type === 'charge') {
+        toast.success('Email envoyé au client avec lien de paiement');
+      } else if (adjustment.data?.type === 'refund') {
+        toast.success(`Reembolso de CHF ${adjustment.data?.amount?.toFixed(2)} processado`);
+      }
+    } catch (err) {
+      console.error('Error sending adjustment:', err);
+      toast.error('Erreur lors de l\'envoi');
+    } finally {
+      setSendingAdjustment(false);
+    }
+  };
+
   const resetTrip = () => {
     localStorage.removeItem(storageKey);
     localStorage.removeItem(startKey);
