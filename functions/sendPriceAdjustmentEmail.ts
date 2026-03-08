@@ -147,12 +147,22 @@ Deno.serve(async (req) => {
     `;
 
     // Get Gmail access token
-    const { accessToken } = await base44.asServiceRole.connectors.getConnection('gmail');
+    console.log('Getting Gmail connection...');
+    let accessToken;
+    try {
+      const conn = await base44.asServiceRole.connectors.getConnection('gmail');
+      accessToken = conn.accessToken;
+      console.log('Gmail connection successful');
+    } catch (connErr) {
+      console.error('Gmail connection error:', connErr.message);
+      throw new Error(`Failed to get Gmail connection: ${connErr.message}`);
+    }
     
     // Send via Gmail API
     const emailMessage = `To: ${client_email}\r\nSubject: ${t.subject}\r\nContent-Type: text/html; charset=UTF-8\r\n\r\n${emailHtml}`;
     const encodedEmail = btoa(emailMessage);
     
+    console.log(`Sending email to ${client_email}...`);
     const gmailResponse = await fetch('https://www.googleapis.com/gmail/v1/users/me/messages/send', {
       method: 'POST',
       headers: {
@@ -165,11 +175,14 @@ Deno.serve(async (req) => {
     });
 
     if (!gmailResponse.ok) {
-      throw new Error(`Gmail API error: ${await gmailResponse.text()}`);
+      const errorText = await gmailResponse.text();
+      console.error(`Gmail API error (${gmailResponse.status}):`, errorText);
+      throw new Error(`Gmail API error: ${errorText}`);
     }
 
-    console.log(`Price adjustment email sent to ${client_email} for booking ${booking_id}`);
-    return Response.json({ success: true });
+    const gmailResult = await gmailResponse.json();
+    console.log(`Price adjustment email sent to ${client_email} for booking ${booking_id}. Message ID: ${gmailResult.id}`);
+    return Response.json({ success: true, messageId: gmailResult.id });
   } catch (error) {
     console.error('Send email error:', error);
     return Response.json({ error: error.message }, { status: 500 });
