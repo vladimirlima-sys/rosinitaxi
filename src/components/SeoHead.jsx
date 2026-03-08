@@ -71,14 +71,13 @@ export default function SeoHead({ lang = 'fr' }) {
     // HTML lang attribute
     document.documentElement.lang = lang;
 
-    // Structured data (JSON-LD)
-    const existingLd = document.querySelector('script[type="application/ld+json"]');
-    if (existingLd) existingLd.remove();
-    const ld = document.createElement('script');
-    ld.type = 'application/ld+json';
-    ld.text = JSON.stringify({
+    // Structured data (JSON-LD) - TaxiService + LocalBusiness
+    document.querySelectorAll('script[type="application/ld+json"]').forEach(el => el.remove());
+    
+    const organizationSchema = {
       "@context": "https://schema.org",
-      "@type": "LocalBusiness",
+      "@type": "TaxiService",
+      "@id": "https://rosini.online",
       "name": "Rosini Transports et locations Sarl",
       "description": config.description,
       "url": "https://rosini.online",
@@ -105,9 +104,75 @@ export default function SeoHead({ lang = 'fr' }) {
         "Transport longue distance",
         "VTC",
         "Transport de luxe"
+      ],
+      "hasOfferCatalog": {
+        "@type": "OfferCatalog",
+        "name": "Services de Transport",
+        "itemListElement": [
+          {
+            "@type": "Service",
+            "name": "Transfer Aéroport",
+            "description": "Transfer privé depuis/vers les aéroports de Genève, Zurich et Bâle"
+          },
+          {
+            "@type": "Service",
+            "name": "Transport Longue Distance",
+            "description": "Trajets longue distance en Suisse et Europe"
+          },
+          {
+            "@type": "Service",
+            "name": "Location avec Chauffeur",
+            "description": "Location de véhicules haut de gamme avec chauffeur privé"
+          }
+        ]
+      },
+      "sameAs": [
+        "https://www.facebook.com/rosinitransports",
+        "https://www.instagram.com/rosinitransports"
       ]
-    });
-    document.head.appendChild(ld);
+    };
+
+    const ld1 = document.createElement('script');
+    ld1.type = 'application/ld+json';
+    ld1.text = JSON.stringify(organizationSchema);
+    document.head.appendChild(ld1);
+
+    // FAQ Schema
+    const faqSchema = {
+      "@context": "https://schema.org",
+      "@type": "FAQPage",
+      "mainEntity": [
+        {
+          "@type": "Question",
+          "name": "Comment réserver un transfer avec Rosini Transports ?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "Utilisez notre formulaire de réservation en ligne. Indiquez votre point de départ, destination et date. Nous calculons le prix en temps réel et vous permet de payer par carte ou en espèces."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "Quels sont vos tarifs ?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "Nos tarifs sont calculés en fonction de la distance. Consultez notre formulaire de réservation pour un devis personnalisé. Disponible 24h/24, 7j/7."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "Couvrez-vous les trajets en Europe ?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "Oui, nous proposons des transfers longue distance en Suisse et à travers l'Europe avec chauffeur professionnel."
+          }
+        }
+      ]
+    };
+
+    const ld2 = document.createElement('script');
+    ld2.type = 'application/ld+json';
+    ld2.text = JSON.stringify(faqSchema);
+    document.head.appendChild(ld2);
   }, [lang]);
 
   return null;
