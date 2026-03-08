@@ -4,7 +4,7 @@ import { useEffect, useState } from 'react';
 
 const translations = {
   fr: {
-    title: 'Trajets courts disponibles 24h/24',
+    title: 'Votre partenaire pour les transferts longue distance et les trajets locaux dans la Riviera.',
     subtitle: 'Région de la Riviera',
     description: 'Nous acceptons les trajets courts dans la région de Vevey, La Tour-de-Peilz, Montreux et environs.',
     availability: 'Disponible 24 heures sur 24',
