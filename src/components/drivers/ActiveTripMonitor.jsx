@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useRef } from 'react';
-import { Navigation, MapPin, Clock, DollarSign, CheckCircle, Car, ChevronRight, Loader2, Phone, Mail } from 'lucide-react';
+import { Navigation, MapPin, Clock, DollarSign, CheckCircle, Car, ChevronRight, Loader2, Phone, Mail, Edit2, Plus, X, Check } from 'lucide-react';
 import { base44 } from '@/api/base44Client';
 import { createPageUrl } from '@/utils';
 import { toast } from 'sonner';
