@@ -46,9 +46,20 @@ const extraLabels = {
   },
 };
 
+const translations = {
+  fr: { flight: 'Vol', passengers: 'Passagers', passenger: 'passager', extras: 'Extras', notes: 'Notes', distance: 'Distance estimée' },
+  pt: { flight: 'Voo', passengers: 'Passageiros', passenger: 'passageiro', extras: 'Extras', notes: 'Notas', distance: 'Distância estimada' },
+  en: { flight: 'Flight', passengers: 'Passengers', passenger: 'passenger', extras: 'Extras', notes: 'Notes', distance: 'Estimated distance' },
+  de: { flight: 'Flug', passengers: 'Passagiere', passenger: 'Passagier', extras: 'Extras', notes: 'Notizen', distance: 'Geschätzte Entfernung' },
+  it: { flight: 'Volo', passengers: 'Passeggeri', passenger: 'passeggero', extras: 'Extra', notes: 'Note', distance: 'Distanza stimata' },
+  es: { flight: 'Vuelo', passengers: 'Pasajeros', passenger: 'pasajero', extras: 'Extras', notes: 'Notas', distance: 'Distancia estimada' },
+  nl: { flight: 'Vlucht', passengers: 'Passagiers', passenger: 'passagier', extras: 'Extra\'s', notes: 'Notities', distance: 'Geschatte afstand' },
+};
+
 export default function BookingDetails({ booking, t, lang = 'fr' }) {
   const [expanded, setExpanded] = useState(false);
   const currentExtraLabels = extraLabels[lang] || extraLabels.fr;
+  const tr = translations[lang] || translations.fr;
 
   return (
     <div className="space-y-3">
@@ -64,7 +75,7 @@ export default function BookingDetails({ booking, t, lang = 'fr' }) {
         <div className="bg-white/5 rounded-lg p-4 space-y-3 text-xs text-white/70">
           {booking.flight_number && (
             <div>
-              <p className="text-white/50 mb-1">Voo</p>
+              <p className="text-white/50 mb-1">{tr.flight}</p>
               <p className="text-white">{booking.flight_number}</p>
             </div>
           )}
@@ -72,7 +83,7 @@ export default function BookingDetails({ booking, t, lang = 'fr' }) {
           {booking.passengers && (
             <div className="flex items-center gap-2">
               <Users className="w-3.5 h-3.5 text-[#F5C300]/60" />
-              <span>{booking.passengers} {booking.passengers === 1 ? 'passageiro' : 'passageiros'}</span>
+              <span>{booking.passengers} {booking.passengers === 1 ? tr.passenger : tr.passengers}</span>
             </div>
           )}
 
@@ -80,11 +91,11 @@ export default function BookingDetails({ booking, t, lang = 'fr' }) {
             <div>
               <div className="flex items-center gap-2 text-white/50 mb-2">
                 <Gift className="w-3.5 h-3.5" />
-                <span>Extras</span>
+                <span>{tr.extras}</span>
               </div>
               <div className="space-y-1 ml-5">
                 {booking.extras.map(extra => (
-                  <p key={extra} className="text-white/60">{extraLabels[extra] || extra}</p>
+                  <p key={extra} className="text-white/60">{currentExtraLabels[extra] || extra}</p>
                 ))}
               </div>
             </div>
@@ -94,7 +105,7 @@ export default function BookingDetails({ booking, t, lang = 'fr' }) {
             <div>
               <div className="flex items-center gap-2 text-white/50 mb-1">
                 <AlertCircle className="w-3.5 h-3.5" />
-                <span>Notas</span>
+                <span>{tr.notes}</span>
               </div>
               <p className="text-white/60 ml-5">{booking.special_notes}</p>
             </div>
@@ -102,7 +113,7 @@ export default function BookingDetails({ booking, t, lang = 'fr' }) {
 
           {booking.distance_km && (
             <div>
-              <p className="text-white/50 mb-1">Distância estimada</p>
+              <p className="text-white/50 mb-1">{tr.distance}</p>
               <p className="text-white">{booking.distance_km} km</p>
             </div>
           )}
