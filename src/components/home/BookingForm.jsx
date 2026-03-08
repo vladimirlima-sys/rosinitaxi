@@ -540,6 +540,7 @@ export default function BookingForm({ bookingRef }) {
               <RouteCalculator
                 departure={form.departure_point}
                 arrival={form.arrival_point}
+                stops={additionalStops.filter(s => s.address?.trim()).map(s => s.address)}
                 onRouteCalculated={(data) => {
                   setIsCalculatingRoute(false);
                   handleRouteCalculated(data);
