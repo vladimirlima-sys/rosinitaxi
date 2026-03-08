@@ -46,9 +46,9 @@ const extraLabels = {
   },
 };
 
-export default function BookingDetails({ booking, t }) {
+export default function BookingDetails({ booking, t, lang = 'fr' }) {
   const [expanded, setExpanded] = useState(false);
-  const currentExtraLabels = extraLabels[t.moreDetails ? Object.keys(extraLabels)[0] : 'fr'] || extraLabels.fr;
+  const currentExtraLabels = extraLabels[lang] || extraLabels.fr;
 
   return (
     <div className="space-y-3">
