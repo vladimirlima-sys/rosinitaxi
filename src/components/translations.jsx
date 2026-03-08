@@ -928,6 +928,7 @@ export const translations = {
     selectDate: 'Selecciona una fecha',
     priceExamples: 'Ejemplos de precios',
     priceExamplesNote: '* Precios indicativos, sin peajes',
+    addStop: 'Añadir una parada',
     ridesCompleted: 'viajes realizados',
     rideTracking: 'Seguimiento del viaje',
     back: 'Atrás',
