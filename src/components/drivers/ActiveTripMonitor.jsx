@@ -419,24 +419,21 @@ export default function ActiveTripMonitor({ booking, onCompleted }) {
         <div className="ml-2.5 w-[1px] h-3 bg-white/10" />
 
         {/* Arrival — editable */}
-        {editingArrival ? (
-          <div className="flex items-center gap-2">
-            <div className="w-5 h-5 rounded-full bg-white/10 flex items-center justify-center shrink-0">
-              <MapPin className="w-3 h-3 text-white/50" />
-            </div>
-            <input
-              autoFocus
-              type="text"
-              value={newArrival}
-              onChange={e => setNewArrival(e.target.value)}
-              className="flex-1 bg-white/5 border border-white/20 rounded text-white text-sm px-2 py-1 outline-none"
-            />
-            <button onClick={locateAndSetArrival} disabled={locatingArrival} title="Géolocalisation" className="text-blue-400 hover:text-blue-300 disabled:opacity-50">
-              {locatingArrival ? <Loader className="w-4 h-4 animate-spin" /> : <Navigation className="w-3 h-3" />}
-            </button>
-            <button onClick={saveArrivalChange} className="text-green-400 hover:text-green-300"><Check className="w-4 h-4" /></button>
-            <button onClick={() => { setEditingArrival(false); setNewArrival(booking.arrival_point); }} className="text-white/30 hover:text-red-400"><X className="w-4 h-4" /></button>
-          </div>
+         {editingArrival ? (
+           <div className="flex items-center gap-2">
+             <div className="w-5 h-5 rounded-full bg-white/10 flex items-center justify-center shrink-0">
+               <MapPin className="w-3 h-3 text-white/50" />
+             </div>
+             <StopAutocomplete
+               value={newArrival}
+               onChange={setNewArrival}
+               placeholder="Nouvelle destination..."
+               onLocate={locateAndSetArrival}
+               isLocating={locatingArrival}
+               onSave={saveArrivalChange}
+               onCancel={() => { setEditingArrival(false); setNewArrival(booking.arrival_point); }}
+             />
+           </div>
         ) : (
           <div className="flex items-center gap-2">
             <div className="w-5 h-5 rounded-full bg-white/10 flex items-center justify-center shrink-0">
