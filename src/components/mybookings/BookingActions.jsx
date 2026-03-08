@@ -2,8 +2,19 @@ import { Download, Share2, Star, MapPin, Loader2 } from 'lucide-react';
 import { base44 } from '@/api/base44Client';
 import { useState } from 'react';
 
-export default function BookingActions({ booking, t }) {
+const buttonTranslations = {
+  fr: { receipt: 'Reçu', map: 'Carte', review: 'Évaluer', share: 'Partager', downloading: 'Téléchargement...' },
+  pt: { receipt: 'Recibo', map: 'Mapa', review: 'Avaliar', share: 'Partilhar', downloading: 'A descarregar...' },
+  en: { receipt: 'Receipt', map: 'Map', review: 'Review', share: 'Share', downloading: 'Downloading...' },
+  de: { receipt: 'Quittung', map: 'Karte', review: 'Bewertung', share: 'Teilen', downloading: 'Wird heruntergeladen...' },
+  it: { receipt: 'Ricevuta', map: 'Mappa', review: 'Valuta', share: 'Condividi', downloading: 'Download in corso...' },
+  es: { receipt: 'Recibo', map: 'Mapa', review: 'Evaluar', share: 'Compartir', downloading: 'Descargando...' },
+  nl: { receipt: 'Bon', map: 'Kaart', review: 'Beoordelen', share: 'Delen', downloading: 'Bezig met downloaden...' },
+};
+
+export default function BookingActions({ booking, t, lang = 'fr' }) {
   const [downloading, setDownloading] = useState(false);
+  const tr = buttonTranslations[lang] || buttonTranslations.fr;
 
   const handleDownloadReceipt = async () => {
     try {
