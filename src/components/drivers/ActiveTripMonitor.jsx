@@ -599,27 +599,39 @@ export default function ActiveTripMonitor({ booking, onCompleted }) {
           </p>
         </div>
         <div className="p-3 text-center flex flex-col items-center gap-1">
-           <p className="text-white/30 text-xs">Tarif</p>
-           <p className="text-[#F5C300] text-sm font-bold">CHF {updatedPrice?.toFixed(2) || '—'}</p>
-           <button 
-             onClick={async () => {
-               setUpdatingPrice(true);
-               try {
-                 await recalculatePrice(booking.departure_point, newArrival || booking.arrival_point, currentStops);
-                 toast.success('Tarif mis à jour');
-               } catch (err) {
-                 toast.error('Erreur lors de la mise à jour');
-               } finally {
-                 setUpdatingPrice(false);
-               }
-             }}
-             disabled={updatingPrice}
-             className="text-white/40 hover:text-[#F5C300] disabled:opacity-50 transition-colors mt-0.5"
-             title="Actualiser le tarif"
-           >
-             {updatingPrice ? <Loader className="w-3 h-3 animate-spin" /> : <RefreshCw className="w-3 h-3" />}
-           </button>
-         </div>
+             <p className="text-white/30 text-xs">Tarif</p>
+             <p className="text-[#F5C300] text-sm font-bold">CHF {updatedPrice?.toFixed(2) || '—'}</p>
+             <div className="flex items-center gap-1 mt-1">
+               <button 
+                 onClick={async () => {
+                   setUpdatingPrice(true);
+                   try {
+                     await recalculatePrice(booking.departure_point, newArrival || booking.arrival_point, currentStops);
+                     toast.success('Tarif mis à jour');
+                   } catch (err) {
+                     toast.error('Erreur lors de la mise à jour');
+                   } finally {
+                     setUpdatingPrice(false);
+                   }
+                 }}
+                 disabled={updatingPrice}
+                 className="text-white/40 hover:text-[#F5C300] disabled:opacity-50 transition-colors"
+                 title="Actualiser le tarif"
+               >
+                 {updatingPrice ? <Loader className="w-3 h-3 animate-spin" /> : <RefreshCw className="w-3 h-3" />}
+               </button>
+               {booking.payment_method === 'stripe' && updatedPrice !== booking.total_price && (
+                 <button
+                   onClick={sendStripeAdjustmentEmail}
+                   disabled={sendingAdjustment}
+                   className="text-orange-400 hover:text-orange-300 disabled:opacity-50 transition-colors"
+                   title="Envoyer lien de paiement"
+                 >
+                   {sendingAdjustment ? <Loader className="w-3 h-3 animate-spin" /> : <Mail className="w-3 h-3" />}
+                 </button>
+               )}
+             </div>
+           </div>
       </div>
 
       {/* Current status */}
