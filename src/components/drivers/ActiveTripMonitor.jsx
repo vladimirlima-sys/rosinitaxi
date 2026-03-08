@@ -329,7 +329,7 @@ export default function ActiveTripMonitor({ booking, onCompleted }) {
         ) : (
           <button onClick={() => setAddingStop(true)}
             className="ml-7 flex items-center gap-1 text-orange-400 hover:text-orange-300 text-xs font-medium border border-orange-400/40 rounded px-2 py-1 transition-colors hover:border-orange-300/60">
-            <Plus className="w-3 h-3" /> Ajouter une étape
+            <Plus className="w-3 h-3" /> Ajouter un arrêt
           </button>
         )}
 
