@@ -495,7 +495,7 @@ export default function BookingForm({ bookingRef }) {
             {additionalStops.map((stop, i) => (
               <div key={i} className="bg-black border border-white/20 rounded-xl p-3 sm:p-4 relative">
                 <div className="flex items-center justify-between mb-2">
-                  <span className="text-[#F5C300] text-xs uppercase tracking-wider font-medium">Arrêt {i + 1}</span>
+                  <span className="text-[#F5C300] text-xs uppercase tracking-wider font-medium">{t.addStop ? `${t.addStop.replace(/^ajouter un |^add a |^añadir una |^aggiungere una |^halt |^adicionar uma |^een stop |uma paragem/i, '').replace(/^stop$/i, 'Stop').replace(/^arrêt$/i, 'Arrêt').replace(/^parada$/i, 'Parada').replace(/^fermata$/i, 'Fermata').replace(/^stop$/i, 'Stop') : 'Arrêt'} {i + 1}</span>
                   <button onClick={() => removeStop(i)} className="text-white/40 hover:text-red-400 transition-colors">
                     <X className="w-4 h-4" />
                   </button>
