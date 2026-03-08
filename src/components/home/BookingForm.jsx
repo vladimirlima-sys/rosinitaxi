@@ -489,7 +489,7 @@ export default function BookingForm({ bookingRef }) {
 
             <button
               onClick={addStop}
-              className="w-full flex items-center justify-center gap-2 border border-dashed border-white/30 rounded-xl py-2.5 text-white/50 hover:text-white/80 hover:border-white/50 transition-all text-sm"
+              className="w-full flex items-center justify-center gap-2 border border-[#F5C300]/60 bg-[#F5C300]/10 rounded-xl py-3 text-[#F5C300] hover:bg-[#F5C300]/20 hover:border-[#F5C300] transition-all text-sm font-medium"
             >
               <Plus className="w-4 h-4" /> Ajouter une étape
             </button>
