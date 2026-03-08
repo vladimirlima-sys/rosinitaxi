@@ -35,8 +35,9 @@ Deno.serve(async (req) => {
 
     const cred = creds[0];
     
-    // Simple password comparison (stored as plaintext or bcrypt)
-    const isValidPassword = password === cred.password_hash;
+    // Compare hashed password
+    const hashedInput = await hashPassword(password);
+    const isValidPassword = hashedInput === cred.password_hash;
     if (!isValidPassword) {
       return Response.json({ success: false, error: 'Email ou senha incorretos' }, { status: 401 });
     }
