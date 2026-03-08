@@ -614,6 +614,8 @@ export const translations = {
     priceExamples: 'Preisbeispiele',
     priceExamplesNote: '* Richtpreise, ohne Mautgebühren',
     addStop: 'Halt hinzufügen',
+    stopLabel: 'Halt',
+    stopPlaceholder: (n) => `Adresse von Halt ${n}...`,
     ridesCompleted: 'Fahrten absolviert',
     rideTracking: 'Fahrt-Tracking',
     back: 'Zurück',
