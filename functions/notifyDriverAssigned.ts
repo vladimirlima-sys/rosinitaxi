@@ -33,30 +33,28 @@ Deno.serve(async (req) => {
 
     const message = `🚗 *Rosini Transports*\nNouvelle course assignée !\n\n👤 Client: ${booking.client_name}${booking.client_phone ? '\n📞 Tél: ' + booking.client_phone : ''}\n📅 Date: ${booking.departure_date} à ${booking.departure_time}\n📍 Départ: ${booking.departure_point}\n🏁 Arrivée: ${booking.arrival_point}\n🚘 Véhicule: ${vehicleLabel}\n👥 Passagers: ${booking.passengers || 1}\n💰 Prix: CHF ${booking.total_price} — ${payStatus}${booking.flight_number ? '\n✈️ Vol: ' + booking.flight_number : ''}${booking.special_notes ? '\n📝 Notes: ' + booking.special_notes : ''}`;
 
-    // ─── WhatsApp via Twilio ────────────────────────────────────────────────
+    // ─── SMS via Twilio ─────────────────────────────────────────────────────
     if (driver.phone) {
       const accountSid = Deno.env.get('TWILIO_ACCOUNT_SID');
       const authToken = Deno.env.get('TWILIO_AUTH_TOKEN');
       const fromNumber = Deno.env.get('TWILIO_WHATSAPP_FROM');
       const auth = btoa(`${accountSid}:${authToken}`);
-      const driverPhone = driver.phone.replace(/\s/g, '');
-      const to = driverPhone.startsWith('whatsapp:') ? driverPhone : `whatsapp:${driverPhone}`;
-      const from = fromNumber?.startsWith('whatsapp:') ? fromNumber : `whatsapp:${fromNumber}`;
+      const driverPhone = driver.phone.replace(/\s/g, '').replace(/^whatsapp:/, '');
 
       const twilioRes = await fetch(`https://api.twilio.com/2010-04-01/Accounts/${accountSid}/Messages.json`, {
         method: 'POST',
         headers: { 'Authorization': `Basic ${auth}`, 'Content-Type': 'application/x-www-form-urlencoded' },
-        body: new URLSearchParams({ From: from, To: to, Body: message }).toString(),
+        body: new URLSearchParams({ From: fromNumber.replace(/^whatsapp:/, ''), To: driverPhone, Body: message }).toString(),
       });
 
       const twilioResult = await twilioRes.json();
       if (!twilioRes.ok) {
-        console.error('Twilio WhatsApp error:', JSON.stringify(twilioResult));
+        console.error('Twilio SMS error:', JSON.stringify(twilioResult));
       } else {
-        console.log(`Driver WhatsApp sent to ${driver.name} (${driver.phone}) — SID: ${twilioResult.sid}`);
+        console.log(`Driver SMS sent to ${driver.name} (${driver.phone}) — SID: ${twilioResult.sid}`);
       }
     } else {
-      console.log(`Driver ${driver.name} has no phone — skipping WhatsApp`);
+      console.log(`Driver ${driver.name} has no phone — skipping SMS`);
     }
 
     // ─── Email via Gmail ────────────────────────────────────────────────────
