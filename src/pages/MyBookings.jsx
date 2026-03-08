@@ -237,8 +237,8 @@ export default function MyBookings() {
       // Sort by departure_date descending
       results.sort((a, b) => new Date(b.departure_date) - new Date(a.departure_date));
       setBookings(results);
-      // Set language based on first booking found
-      if (results.length > 0 && results[0].language) {
+      // Set language based on first booking found (only if not already specified in URL)
+      if (!langParam && results.length > 0 && results[0].language) {
         setCurrentLang(results[0].language);
       }
     } catch (err) {
