@@ -520,9 +520,9 @@ export default function ActiveTripMonitor({ booking, onCompleted }) {
           </p>
         </div>
         <div className="p-3 text-center">
-          <p className="text-white/30 text-xs mb-1">Tarif</p>
-          <p className="text-[#F5C300] text-sm font-bold">CHF {booking.total_price?.toFixed(2) || '—'}</p>
-        </div>
+           <p className="text-white/30 text-xs mb-1">Tarif</p>
+           <p className="text-[#F5C300] text-sm font-bold">CHF {updatedPrice?.toFixed(2) || '—'}</p>
+         </div>
       </div>
 
       {/* Current status */}
