@@ -21,13 +21,15 @@ function HomeContent({ bookingRef }) {
 
         <PageTracker page="Home" />
         <BookingForm bookingRef={bookingRef} />
-        <div className="absolute bottom-0 right-0 p-4">
+        <div className="absolute bottom-0 right-0 p-4 flex items-center gap-3">
+          <a href={createPageUrl('FAQ')} title="FAQ" className="text-white/50 hover:text-[#F5C300] transition-colors">
+            <HelpCircle className="w-6 h-6" />
+          </a>
           <a href={createPageUrl('DriverPortal')} title="Portal do Motorista">
             <img src="https://flagcdn.com/ch.svg" alt="Suíça" className="w-12 h-8 rounded shadow-lg cursor-pointer hover:opacity-80 transition-opacity" />
           </a>
         </div>
       </div>
-      <FooterSection />
     </>);
 
 }
