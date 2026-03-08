@@ -57,9 +57,38 @@ Deno.serve(async (req) => {
       payment_status: refundIssued ? 'refunded' : 'cancelled'
     });
 
-    // Send cancellation notification email to company
+    // Calculate hours until departure
+    const departureDateTime = new Date(`${booking.departure_date}T${booking.departure_time}:00`);
+    const now = new Date();
+    const hoursUntilDeparture = (departureDateTime.getTime() - now.getTime()) / (1000 * 60 * 60);
+
+    // Send cancellation email to CLIENT
     try {
-      const accessToken = await base44.asServiceRole.connectors.getAccessToken('gmail');
+      console.log('Sending cancellation email to client...');
+      const clientEmailResult = await base44.asServiceRole.functions.invoke('sendCancellationEmail', {
+        client_name: booking.client_name,
+        client_email: booking.client_email,
+        booking_id: booking_id,
+        departure_point: booking.departure_point,
+        arrival_point: booking.arrival_point,
+        departure_date: booking.departure_date,
+        departure_time: booking.departure_time,
+        total_price: booking.total_price,
+        refund_issued: refundIssued,
+        refund_amount: booking.total_price,
+        hours_until_departure: hoursUntilDeparture,
+        language: booking.language || 'fr',
+        cancelled_by: 'company'
+      });
+      console.log('Cancellation email sent to client:', clientEmailResult.data);
+    } catch (clientEmailErr) {
+      console.error('Failed to send cancellation email to client:', clientEmailErr.message);
+    }
+
+    // Send cancellation notification email to COMPANY
+    try {
+      console.log('Sending cancellation email to company...');
+      const accessToken = (await base44.asServiceRole.connectors.getConnection('gmail')).accessToken;
       const subject = `❌ Annulation — ${booking.client_name} | ${booking.departure_point} → ${booking.arrival_point} | ${booking.departure_date}`;
       const cleanPhone = (booking.client_phone || '').replace(/\D/g, '');
       const waLink = cleanPhone ? `https://wa.me/${cleanPhone}` : null;
@@ -89,30 +118,24 @@ Deno.serve(async (req) => {
   <p style="color:#444;text-align:center;font-size:11px;margin-top:24px;">© ${new Date().getFullYear()} Rosini Transfert — Notification automatique</p>
 </div></body></html>`;
 
-      const lines = [
-        `From: taxirosini@gmail.com`,
-        `To: info@rosini.online`,
-        `Subject: ${subject}`,
-        `MIME-Version: 1.0`,
-        `Content-Type: text/html; charset="UTF-8"`,
-        ``,
-        htmlBody
-      ];
-      const emailMessage = lines.join('\r\n');
-      const base64Message = btoa(unescape(encodeURIComponent(emailMessage)))
-        .replace(/\+/g, '-').replace(/\//g, '_').replace(/=/g, '');
+      const emailMessage = `To: info@rosini.online\r\nSubject: ${subject}\r\nContent-Type: text/html; charset=UTF-8\r\n\r\n${htmlBody}`;
+      const encodedEmail = btoa(emailMessage);
 
-      await fetch('https://www.googleapis.com/gmail/v1/users/me/messages/send', {
+      const gmailResponse = await fetch('https://www.googleapis.com/gmail/v1/users/me/messages/send', {
         method: 'POST',
         headers: {
           'Authorization': `Bearer ${accessToken}`,
           'Content-Type': 'application/json'
         },
-        body: JSON.stringify({ raw: base64Message })
+        body: JSON.stringify({ raw: encodedEmail })
       });
+
+      if (!gmailResponse.ok) {
+        throw new Error(`Gmail error: ${gmailResponse.status}`);
+      }
       console.log('Cancellation email sent to company');
     } catch (emailErr) {
-      console.error('Failed to send cancellation email (non-critical):', emailErr.message);
+      console.error('Failed to send cancellation email to company (non-critical):', emailErr.message);
     }
 
     return Response.json({ success: true, refund_issued: refundIssued });
