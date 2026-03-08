@@ -150,8 +150,8 @@ Deno.serve(async (req) => {
     const { accessToken } = await base44.asServiceRole.connectors.getConnection('gmail');
     
     // Send via Gmail API
-    const gmailBody = emailHtml;
-    const encodedEmail = Buffer.from(`To: ${client_email}\r\nSubject: ${t.subject}\r\nContent-Type: text/html; charset=UTF-8\r\n\r\n${gmailBody}`).toString('base64');
+    const emailMessage = `To: ${client_email}\r\nSubject: ${t.subject}\r\nContent-Type: text/html; charset=UTF-8\r\n\r\n${emailHtml}`;
+    const encodedEmail = btoa(emailMessage);
     
     const gmailResponse = await fetch('https://www.googleapis.com/gmail/v1/users/me/messages/send', {
       method: 'POST',
