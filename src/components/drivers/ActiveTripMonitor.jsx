@@ -289,8 +289,35 @@ export default function ActiveTripMonitor({ booking, onCompleted }) {
           : priceSettings.current.standard_price_per_km;
         const base = priceSettings.current.base_fare || 0;
         const newPrice = dist * pricePerKm + (dist <= 30 ? base : 0);
+        const oldPrice = booking.total_price;
+        
         setUpdatedPrice(newPrice);
         await base44.entities.Booking.update(booking.id, { total_price: newPrice, distance_km: dist });
+
+        // Handle price adjustment via Stripe if payment was online
+        if (booking.payment_method === 'stripe' && booking.stripe_payment_intent_id && oldPrice !== newPrice) {
+          try {
+            const adjustment = await base44.functions.invoke('handlePriceAdjustment', {
+              bookingId: booking.id,
+              oldPrice: oldPrice,
+              newPrice: newPrice,
+              clientEmail: booking.client_email,
+              clientName: booking.client_name,
+            });
+
+            if (adjustment.data?.type === 'charge' && adjustment.data?.url) {
+              toast.info('Tarif aumentado - cliente será notificado para confirmar pagamento adicional');
+              // Optionally open checkout in new window or show link
+            } else if (adjustment.data?.type === 'refund') {
+              toast.success(`Reembolso de CHF ${adjustment.data?.amount?.toFixed(2)} processado`);
+            } else if (adjustment.data?.type === 'refund_manual') {
+              toast.warn(`Reembolso manual necessário: CHF ${adjustment.data?.amount?.toFixed(2)}`);
+            }
+          } catch (err) {
+            console.error('Error handling price adjustment:', err);
+            toast.error('Erro ao processar ajuste de preço');
+          }
+        }
       }
     } catch (err) {
       console.error('Erro ao recalcular preço:', err);
