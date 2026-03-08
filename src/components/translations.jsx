@@ -447,6 +447,7 @@ export const translations = {
     selectDate: 'Select a date',
     priceExamples: 'Price examples',
     priceExamplesNote: '* Indicative prices, tolls not included',
+    addStop: 'Add a stop',
     ridesCompleted: 'rides completed',
     rideTracking: 'Ride Tracking',
     back: 'Back',
