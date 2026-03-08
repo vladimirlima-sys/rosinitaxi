@@ -56,7 +56,7 @@ export default function BookingFilters({ filters, setFilters, t, lang = 'fr' }) 
             onClick={() => setFilters({ status: 'all', sort: 'date-desc' })}
             className="px-3 py-2 text-[#F5C300] text-sm flex items-center gap-1 hover:bg-white/5 rounded-lg transition-colors"
           >
-            <FilterX className="w-4 h-4" /> Limpar
+            <FilterX className="w-4 h-4" /> {tr.clear}
           </button>
         )}
       </div>
