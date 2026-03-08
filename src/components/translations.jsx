@@ -939,6 +939,8 @@ export const translations = {
     priceExamples: 'Ejemplos de precios',
     priceExamplesNote: '* Precios indicativos, sin peajes',
     addStop: 'Añadir una parada',
+    stopLabel: 'Parada',
+    stopPlaceholder: (n) => `Dirección de la parada ${n}...`,
     ridesCompleted: 'viajes realizados',
     rideTracking: 'Seguimiento del viaje',
     back: 'Atrás',
