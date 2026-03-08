@@ -78,7 +78,7 @@ export default function BookingActions({ booking, t, lang = 'fr' }) {
         className="flex-1 h-9 rounded-lg bg-white/10 hover:bg-white/20 text-white/70 text-xs font-medium flex items-center justify-center gap-1.5 transition-colors disabled:opacity-60"
       >
         {downloading ? <Loader2 className="w-3.5 h-3.5 animate-spin" /> : <Download className="w-3.5 h-3.5" />}
-        <span className="hidden sm:inline">{downloading ? 'A descarregar...' : 'Recibo'}</span>
+        <span className="hidden sm:inline">{downloading ? tr.downloading : tr.receipt}</span>
       </button>
 
       <button
