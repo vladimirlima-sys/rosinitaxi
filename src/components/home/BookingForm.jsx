@@ -439,6 +439,7 @@ export default function BookingForm({ bookingRef }) {
     setStep(1);
     setPaymentMethod('stripe');
     setAdditionalStops([]);
+    setLocatingStopIndex(null);
     setForm({ departure_point: '', arrival_point: '', departure_date: '', departure_time: '', flight_number: '', vehicle_type: '', passengers: 1, client_name: '', client_email: '', client_phone: '+41', notes: '', distance_km: 0 });
     setEstimatedDistance(0);
     setEstimatedTime(0);
