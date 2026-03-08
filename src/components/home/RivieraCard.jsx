@@ -105,6 +105,7 @@ export default function RivieraCard() {
           <span>{t.availability}</span>
         </div>
       </div>
-    </div>
+      </div>
+    </>
   );
 }
