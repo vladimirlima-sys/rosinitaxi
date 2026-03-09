@@ -443,7 +443,7 @@ export default function Taximeter() {
             {getNightSurchargePercentage() > 0 && (
               <div className="flex justify-between text-sm">
                 <span className="text-white/50">Supplément nocturne ({getNightSurchargePercentage()}%)</span>
-                <span className="text-[#F5C300]">CHF {((distanceKm * getPricePerKm() + getBaseFare()) * (getNightSurchargePercentage() / 100)).toFixed(2)}</span>
+                <span className="text-[#F5C300]">CHF {(distanceKm * getPricePerKm() * (getNightSurchargePercentage() / 100)).toFixed(2)}</span>
               </div>
             )}
             {waitingPrice > 0 && (
