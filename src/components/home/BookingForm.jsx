@@ -293,7 +293,7 @@ export default function BookingForm({ bookingRef }) {
     setCouponLoading(true);
     setCouponError('');
     try {
-      const res = await base44.functions.invoke('validateCoupon', { code: couponCode });
+      const res = await base44.functions.invoke('validateCoupon', { code: couponCode, email: form.client_email });
       if (res.data?.valid) {
         setCouponApplied(res.data);
       } else {
