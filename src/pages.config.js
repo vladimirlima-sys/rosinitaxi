@@ -65,6 +65,7 @@ import Reservas from './pages/Reservas';
 import RideTracking from './pages/RideTracking';
 import Settings from './pages/Settings';
 import Taximeter from './pages/Taximeter';
+import Coupons from './pages/Coupons';
 import __Layout from './Layout.jsx';
 
 
@@ -87,6 +88,7 @@ export const PAGES = {
     "RideTracking": RideTracking,
     "Settings": Settings,
     "Taximeter": Taximeter,
+    "Coupons": Coupons,
 }
 
 export const pagesConfig = {
