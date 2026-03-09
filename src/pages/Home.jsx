@@ -7,13 +7,15 @@ import { LanguageProvider, useLang } from '@/components/LanguageContext';
 import { createPageUrl } from '@/utils';
 import { HelpCircle } from 'lucide-react';
 import PageTracker from '@/components/home/PageTracker';
+import MarchPromoBanner from '@/components/home/MarchPromoBanner';
 
 function HomeContent({ bookingRef }) {
   const { lang } = useLang();
   return (
     <>
       <SeoHead lang={lang} />
-      <div className="min-h-screen bg-[#F5C300] relative">
+      <MarchPromoBanner />
+      <div className="min-h-screen bg-[#F5C300] relative pt-11">
         <RivieraCard />
         <div className="fixed top-14 right-5 z-50">
           <LanguageSwitcher />
