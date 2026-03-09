@@ -291,6 +291,25 @@ export default function Taximeter() {
           )}
         </div>
 
+        {/* Night surcharge button */}
+        <button
+          onClick={() => {
+            if (nightSurchargeManual === null) {
+              setNightSurchargeManual(!isNightSurchargeAutoActive());
+            } else {
+              setNightSurchargeManual(null); // reset to auto
+            }
+          }}
+          className={`w-full h-12 rounded-2xl font-bold text-sm uppercase tracking-wider transition-all flex items-center justify-center gap-2 border ${
+            isNightSurchargeApplied()
+              ? 'bg-red-600 border-red-500 text-white shadow-lg shadow-red-900/40'
+              : 'bg-[#111] border-white/10 text-white/40 hover:bg-white/5'
+          }`}
+        >
+          🌙 Supplément nuit {isNightSurchargeApplied() ? `+${priceSettings?.night_surcharge_percentage || 15}%` : '(inactif)'}
+          {nightSurchargeManual !== null && <span className="text-xs opacity-60 ml-1">(manuel)</span>}
+        </button>
+
         {/* Main display */}
         <div className="bg-[#111] border border-white/10 rounded-2xl p-6 text-center space-y-4">
           {/* Distance */}
