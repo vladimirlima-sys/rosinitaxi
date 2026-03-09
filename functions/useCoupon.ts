@@ -3,21 +3,33 @@ import { createClientFromRequest } from 'npm:@base44/sdk@0.8.20';
 Deno.serve(async (req) => {
   try {
     const base44 = createClientFromRequest(req);
-    const { coupon_id, booking_id } = await req.json();
+    const { coupon_id, booking_id, email } = await req.json();
 
-    if (!coupon_id) {
-      return Response.json({ error: 'coupon_id requis' }, { status: 400 });
+    if (!coupon_id) return Response.json({ error: 'coupon_id obrigatório.' }, { status: 400 });
+    if (!email) return Response.json({ error: 'email obrigatório.' }, { status: 400 });
+
+    const coupons = await base44.asServiceRole.entities.Coupon.filter({ id: coupon_id });
+    if (!coupons || coupons.length === 0) {
+      return Response.json({ error: 'Cupão não encontrado.' }, { status: 404 });
+    }
+
+    const coupon = coupons[0];
+    const usedEmails = coupon.used_by_emails || [];
+    const normalizedEmail = email.toLowerCase().trim();
+
+    if (usedEmails.includes(normalizedEmail)) {
+      return Response.json({ error: 'Email já utilizou este cupão.' }, { status: 400 });
     }
 
     await base44.asServiceRole.entities.Coupon.update(coupon_id, {
-      is_used: true,
-      used_by_booking_id: booking_id || '',
-      used_at: new Date().toISOString()
+      used_by_emails: [...usedEmails, normalizedEmail],
+      used_count: (coupon.used_count || 0) + 1,
     });
 
+    console.log(`Coupon ${coupon_id} used by ${normalizedEmail} for booking ${booking_id}`);
     return Response.json({ success: true });
-  } catch (error) {
-    console.error('useCoupon error:', error);
-    return Response.json({ error: error.message }, { status: 500 });
+  } catch (err) {
+    console.error('useCoupon error:', err.message);
+    return Response.json({ error: 'Erro interno.' }, { status: 500 });
   }
 });
