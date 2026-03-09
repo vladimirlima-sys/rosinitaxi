@@ -9,7 +9,7 @@ Deno.serve(async (req) => {
       departure, arrival, vehicle_type, distance_km,
       departure_date, departure_time, origin, is_short_notice,
       flight_number, passengers, notes, language,
-      driver_id, driver_name, additional_stops
+      driver_id, driver_name, additional_stops, coupon_id
     } = await req.json();
 
     if (!amount || amount <= 0) throw new Error('Invalid amount');
