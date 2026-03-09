@@ -37,7 +37,7 @@ export default function MarchPromoBanner() {
             {tx.use}
           </span>
           <span className="bg-[#F5C300] text-black font-black text-sm sm:text-base px-3 py-0.5 rounded-md tracking-widest font-mono shadow">
-            MARCO10
+            ROSINI10
           </span>
           <span className="text-white/50 text-xs sm:text-sm">
             {tx.valid}
