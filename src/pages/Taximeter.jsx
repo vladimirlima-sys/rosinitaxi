@@ -144,9 +144,9 @@ export default function Taximeter() {
       const pricePerKm = getPricePerKm();
       const nightSurchargePercent = getNightSurchargePercentage();
       
-      const basePrice = baseFare + km * pricePerKm;
-      const nightSurcharge = basePrice * (nightSurchargePercent / 100);
-      const total = basePrice + nightSurcharge + newWaitingPrice;
+      const kmPrice = km * pricePerKm;
+      const nightSurcharge = kmPrice * (nightSurchargePercent / 100);
+      const total = baseFare + kmPrice + nightSurcharge + newWaitingPrice;
       
       setTotalPrice(parseFloat(total.toFixed(2)));
     }
