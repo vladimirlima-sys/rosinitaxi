@@ -398,7 +398,8 @@ export default function BookingForm({ bookingRef }) {
           ...form, 
           total_price: parseFloat(totalPrice), 
           distance_km: estimatedDistance, 
-          language: lang 
+          language: lang,
+          coupon_id: couponApplied?.coupon_id || null
         }));
         
         console.log('🔗 Calling createCheckout function...');
