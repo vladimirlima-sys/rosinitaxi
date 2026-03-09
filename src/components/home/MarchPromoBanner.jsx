@@ -21,25 +21,25 @@ export default function MarchPromoBanner() {
 
   return (
     <div className="fixed top-0 left-0 right-0 z-[100] bg-black text-[#F5C300] shadow-lg">
-      <div className="relative flex items-center justify-center gap-3 px-6 py-3 text-center">
+      <div className="relative flex items-center justify-center gap-3 px-6 py-1.5 sm:py-3 text-center">
         <Sparkles className="w-5 h-5 text-[#F5C300] shrink-0 hidden sm:block" />
 
         <div className="flex flex-wrap items-center justify-center gap-1 sm:gap-2">
-          <span className="text-sm sm:text-base font-extrabold uppercase tracking-widest">
+          <span className="text-xs sm:text-base font-extrabold uppercase tracking-widest">
             {tx.month}
           </span>
-          <span className="text-sm sm:text-base font-light text-white">·</span>
-          <span className="text-sm sm:text-base font-semibold text-white">
+          <span className="text-xs sm:text-base font-light text-white">·</span>
+          <span className="text-xs sm:text-base font-semibold text-white">
             {tx.discount}
           </span>
-          <span className="hidden sm:inline text-sm sm:text-base font-light text-white">·</span>
-          <span className="text-sm sm:text-base text-white/70">
+          <span className="hidden sm:inline text-xs sm:text-base font-light text-white">·</span>
+          <span className="text-xs sm:text-base text-white/70">
             {tx.use}
           </span>
-          <span className="bg-[#F5C300] text-black font-black text-sm sm:text-base px-3 py-0.5 rounded-md tracking-widest font-mono shadow">
+          <span className="bg-[#F5C300] text-black font-black text-xs sm:text-base px-2 sm:px-3 py-0.5 rounded-md tracking-widest font-mono shadow">
             ROSINI10
           </span>
-          <span className="text-white/50 text-xs sm:text-sm">
+          <span className="text-white/50 text-xs hidden sm:inline">
             {tx.valid}
           </span>
         </div>
