@@ -856,6 +856,12 @@ export default function BookingForm({ bookingRef }) {
               <div className="flex justify-between text-sm"><span className="text-white/50">{t.summaryDateHeure}</span><span className="text-white">{form.departure_date} {form.departure_time}</span></div>
               <div className="flex justify-between text-sm"><span className="text-white/50">{t.summaryVehicle}</span><span className="text-white">{form.vehicle_type === 'comfort' ? 'COMFORT' : 'STANDARD'}</span></div>
               <div className="flex justify-between text-sm"><span className="text-white/50">{t.summaryDistance}</span><span className="text-white">{estimatedDistance} km</span></div>
+              {nightSurchargeAmount > 0 && (
+                <div className="flex justify-between text-sm"><span className="text-yellow-400/80">🌙 Supplément nuit ({priceSettings.night_surcharge_percentage}%)</span><span className="text-yellow-400">+CHF {nightSurchargeAmount.toFixed(2)}</span></div>
+              )}
+              {hasValaisFribourgSurcharge && (
+                <div className="flex justify-between text-sm"><span className="text-orange-400/80">Supplément Valais/Fribourg ({priceSettings.valais_fribourg_surcharge_percentage}%)</span><span className="text-orange-400">inclus</span></div>
+              )}
 
               <div className="w-full h-[1px] bg-white/20 my-2" />
                <div className="flex justify-between items-center">
