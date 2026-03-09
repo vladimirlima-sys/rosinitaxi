@@ -289,7 +289,10 @@ export default function BookingForm({ bookingRef }) {
     const day = dt.getDay(), hour = dt.getHours();
     const nightSurchargeDays = priceSettings.night_surcharge_days || [];
     let isNightTime = false;
-    if (nightSurchargeDays.includes(day)) {
+    const fullDays2 = priceSettings.night_surcharge_full_days || [];
+    if (fullDays2.includes(day)) {
+      isNightTime = true;
+    } else if (nightSurchargeDays.includes(day)) {
       if (priceSettings.night_surcharge_start_hour > priceSettings.night_surcharge_end_hour) {
         isNightTime = hour >= priceSettings.night_surcharge_start_hour || hour < priceSettings.night_surcharge_end_hour;
       } else {
