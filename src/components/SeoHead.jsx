@@ -128,11 +128,11 @@ export default function SeoHead({ lang = 'fr' }) {
       },
       "logo": {
         "@type": "ImageObject",
-        "url": "https://qtrypzzcjebvfcihiynt.supabase.co/storage/v1/object/public/base44-prod/public/6997aac0bfa41b14d425e0d3/78d64efc2_generated_image.png",
+        "url": "https://qtrypzzcjebvfcihiynt.supabase.co/storage/v1/object/public/base44-prod/public/6997aac0bfa41b14d425e0d3/a27c92213_IMG_1147.jpeg",
         "width": 512,
         "height": 512
       },
-      "image": "https://qtrypzzcjebvfcihiynt.supabase.co/storage/v1/object/public/base44-prod/public/6997aac0bfa41b14d425e0d3/78d64efc2_generated_image.png",
+      "image": "https://qtrypzzcjebvfcihiynt.supabase.co/storage/v1/object/public/base44-prod/public/6997aac0bfa41b14d425e0d3/a27c92213_IMG_1147.jpeg",
       "sameAs": [
         "https://www.facebook.com/rosinitransports",
         "https://www.instagram.com/rosinitransports"
@@ -147,7 +147,7 @@ export default function SeoHead({ lang = 'fr' }) {
       "url": "https://rosini.online",
       "logo": {
         "@type": "ImageObject",
-        "url": "https://qtrypzzcjebvfcihiynt.supabase.co/storage/v1/object/public/base44-prod/public/6997aac0bfa41b14d425e0d3/78d64efc2_generated_image.png",
+        "url": "https://qtrypzzcjebvfcihiynt.supabase.co/storage/v1/object/public/base44-prod/public/6997aac0bfa41b14d425e0d3/a27c92213_IMG_1147.jpeg",
         "width": 512,
         "height": 512
       }
