@@ -3,7 +3,7 @@ import { X, Sparkles } from 'lucide-react';
 import { useLang } from '@/components/LanguageContext';
 
 const t = {
-  fr: { month: '🎁 Mars', discount: '-10% sur votre trajet !', use: 'Utilisez le code', valid: '(valide jusqu\'au 31 Mar)' },
+  fr: { month: '🎁 Mars', discount: '-10% sur votre trajet !', use: 'Utilisez le code', valid: '(valable jusqu\'au 31 Mar)' },
   pt: { month: '🎁 Março', discount: '-10% na sua reserva!', use: 'Use o código', valid: '(válido até 31 Mar)' },
   en: { month: '🎁 March', discount: '-10% on your ride!', use: 'Use code', valid: '(valid until Mar 31)' },
   de: { month: '🎁 März', discount: '-10% auf Ihre Fahrt!', use: 'Code verwenden', valid: '(gültig bis 31. Mär)' },
