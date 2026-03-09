@@ -17,6 +17,7 @@ export default function Taximeter() {
   const [waitingEnabled, setWaitingEnabled] = useState(false);
   const [waitingSeconds, setWaitingSeconds] = useState(0);
   const [waitingPrice, setWaitingPrice] = useState(0);
+  const [nightSurchargeManual, setNightSurchargeManual] = useState(null); // null=auto, true=forced on, false=forced off
 
   const lastPositionRef = useRef(null);
   const watchIdRef = useRef(null);
