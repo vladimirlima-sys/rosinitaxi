@@ -8,7 +8,8 @@ Deno.serve(async (req) => {
     if (!code) return Response.json({ error: 'Código obrigatório.' }, { status: 400 });
     if (!email) return Response.json({ error: 'Email obrigatório.' }, { status: 400 });
 
-    const coupons = await base44.entities.Coupon.filter({ code: code.trim().toUpperCase() });
+    // Use asServiceRole for public app (no user auth required)
+    const coupons = await base44.asServiceRole.entities.Coupon.filter({ code: code.trim().toUpperCase() });
     if (!coupons || coupons.length === 0) {
       return Response.json({ error: 'Cupão inválido.' }, { status: 404 });
     }
