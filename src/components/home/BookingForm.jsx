@@ -239,8 +239,8 @@ export default function BookingForm({ bookingRef }) {
     // Base distance price
     let total = estimatedDistance * getPricePerKm();
     
-    // Add base fare for short trips (≤ 30 km)
-    if (estimatedDistance <= 30) total += priceSettings.base_fare || 0;
+    // Add base fare for short trips (≤ 50 km)
+    if (estimatedDistance <= 50) total += priceSettings.base_fare || 0;
 
     // Apply night surcharge if conditions match (applied AFTER base + distance)
     if (form.departure_date && form.departure_time && priceSettings.night_surcharge_percentage > 0) {
@@ -670,7 +670,7 @@ export default function BookingForm({ bookingRef }) {
                   {priceSettings && estimatedDistance > 0 && (
                     <p className={`font-bold ${form.vehicle_type === 'economic' ? 'text-[#F5C300]' : 'text-black'}`}>
                       CHF {(() => {
-                        let p = estimatedDistance * priceSettings.standard_price_per_km + (estimatedDistance <= 30 ? (priceSettings.base_fare || 0) : 0);
+                        let p = estimatedDistance * priceSettings.standard_price_per_km + (estimatedDistance <= 50 ? (priceSettings.base_fare || 0) : 0);
                         return p.toFixed(2);
                       })()}
                     </p>
@@ -700,7 +700,7 @@ export default function BookingForm({ bookingRef }) {
                   {priceSettings && estimatedDistance > 0 && (
                     <p className={`font-bold ${form.vehicle_type === 'comfort' ? 'text-[#F5C300]' : 'text-black'}`}>
                       CHF {(() => {
-                        let p = estimatedDistance * (priceSettings.comfort_price_per_km || priceSettings.standard_price_per_km * 1.3) + (estimatedDistance <= 30 ? (priceSettings.base_fare || 0) : 0);
+                        let p = estimatedDistance * (priceSettings.comfort_price_per_km || priceSettings.standard_price_per_km * 1.3) + (estimatedDistance <= 50 ? (priceSettings.base_fare || 0) : 0);
                         return p.toFixed(2);
                       })()}
                     </p>
