@@ -94,6 +94,21 @@ Deno.serve(async (req) => {
 
       booking = await base44.asServiceRole.entities.Booking.create(bookingData);
       console.log("Booking created with paid status:", booking.id);
+
+      // Mark coupon as used
+      const couponId = meta.coupon_id || '';
+      if (couponId) {
+        try {
+          await base44.asServiceRole.entities.Coupon.update(couponId, {
+            is_used: true,
+            used_by_booking_id: booking.id,
+            used_at: new Date().toISOString()
+          });
+          console.log("Coupon marked as used:", couponId);
+        } catch (couponErr) {
+          console.error("Failed to mark coupon as used:", couponErr.message);
+        }
+      }
     } catch (err) {
       console.error("Failed to create booking:", err.message);
     }
