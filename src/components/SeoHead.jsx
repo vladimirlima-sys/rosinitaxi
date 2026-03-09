@@ -126,10 +126,31 @@ export default function SeoHead({ lang = 'fr' }) {
           }
         ]
       },
+      "logo": {
+        "@type": "ImageObject",
+        "url": "https://rosini.online/logo.png",
+        "width": 512,
+        "height": 512
+      },
+      "image": "https://rosini.online/logo.png",
       "sameAs": [
         "https://www.facebook.com/rosinitransports",
         "https://www.instagram.com/rosinitransports"
       ]
+    };
+
+    // Organization schema specifically for Google logo display
+    const orgSchema = {
+      "@context": "https://schema.org",
+      "@type": "Organization",
+      "name": "Rosini Transports et locations Sarl",
+      "url": "https://rosini.online",
+      "logo": {
+        "@type": "ImageObject",
+        "url": "https://rosini.online/logo.png",
+        "width": 512,
+        "height": 512
+      }
     };
 
     const ld1 = document.createElement('script');
