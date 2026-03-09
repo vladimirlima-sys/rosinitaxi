@@ -424,6 +424,7 @@ export default function BookingForm({ bookingRef }) {
           additional_stops: additionalStops.filter(s => s.address?.trim()).map(s => s.address),
           origin: window.location.origin,
           is_short_notice: isShortNotice,
+          coupon_id: couponApplied?.coupon_id || '',
         });
         
         console.log('📦 Checkout response received:', response);
