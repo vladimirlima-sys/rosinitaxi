@@ -95,16 +95,23 @@ Deno.serve(async (req) => {
       booking = await base44.asServiceRole.entities.Booking.create(bookingData);
       console.log("Booking created with paid status:", booking.id);
 
-      // Mark coupon as used
+      // Mark coupon as used by this email
       const couponId = meta.coupon_id || '';
-      if (couponId) {
+      if (couponId && clientEmail) {
         try {
-          await base44.asServiceRole.entities.Coupon.update(couponId, {
-            is_used: true,
-            used_by_booking_id: booking.id,
-            used_at: new Date().toISOString()
-          });
-          console.log("Coupon marked as used:", couponId);
+          const coupons = await base44.asServiceRole.entities.Coupon.filter({ id: couponId });
+          if (coupons && coupons.length > 0) {
+            const coupon = coupons[0];
+            const usedEmails = coupon.used_by_emails || [];
+            const normalizedEmail = clientEmail.toLowerCase().trim();
+            if (!usedEmails.includes(normalizedEmail)) {
+              await base44.asServiceRole.entities.Coupon.update(couponId, {
+                used_by_emails: [...usedEmails, normalizedEmail],
+                used_count: (coupon.used_count || 0) + 1,
+              });
+              console.log("Coupon", couponId, "used by", normalizedEmail);
+            }
+          }
         } catch (couponErr) {
           console.error("Failed to mark coupon as used:", couponErr.message);
         }
