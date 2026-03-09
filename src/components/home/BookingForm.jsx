@@ -280,6 +280,28 @@ export default function BookingForm({ bookingRef }) {
   const totalPrice = calculateTotalPrice();
   const hasValaisFribourgSurcharge = checkValaisFribourg();
 
+  const getNightSurchargeAmount = () => {
+    if (!priceSettings || !priceSettings.night_surcharge_percentage || !form.departure_date || !form.departure_time) return 0;
+    const dt = new Date(`${form.departure_date}T${form.departure_time}:00`);
+    const day = dt.getDay(), hour = dt.getHours();
+    const nightSurchargeDays = priceSettings.night_surcharge_days || [];
+    let isNightTime = false;
+    if (nightSurchargeDays.includes(day)) {
+      if (priceSettings.night_surcharge_start_hour > priceSettings.night_surcharge_end_hour) {
+        isNightTime = hour >= priceSettings.night_surcharge_start_hour || hour < priceSettings.night_surcharge_end_hour;
+      } else {
+        isNightTime = hour >= priceSettings.night_surcharge_start_hour && hour < priceSettings.night_surcharge_end_hour;
+      }
+    }
+    if (!isNightTime) return 0;
+    // Base before night surcharge
+    let base = estimatedDistance * getPricePerKm();
+    if (estimatedDistance <= 5) base += 13;
+    else if (estimatedDistance <= 50) base += priceSettings.base_fare || 0;
+    return base * priceSettings.night_surcharge_percentage / 100;
+  };
+  const nightSurchargeAmount = getNightSurchargeAmount();
+
   const checkShortNotice = () => {
     if (!form.departure_date || !form.departure_time) return false;
     const [y, m, d] = form.departure_date.split('-').map(Number);
