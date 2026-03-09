@@ -512,6 +512,9 @@ export default function BookingForm({ bookingRef }) {
     setEstimatedDistance(0);
     setEstimatedTime(0);
     setPhoneError('');
+    setCouponCode('');
+    setCouponApplied(null);
+    setCouponError('');
   };
 
   const inputClass = "bg-white/10 border border-white/20 text-white placeholder:text-white/40 focus:border-white/60 focus:ring-0 h-12 rounded-lg text-sm";
