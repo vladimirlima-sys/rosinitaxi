@@ -8,7 +8,7 @@ Deno.serve(async (req) => {
     if (!coupon_id) return Response.json({ error: 'coupon_id obrigatório.' }, { status: 400 });
     if (!email) return Response.json({ error: 'email obrigatório.' }, { status: 400 });
 
-    const coupons = await base44.asServiceRole.entities.Coupon.filter({ id: coupon_id });
+    const coupons = await base44.entities.Coupon.filter({ id: coupon_id });
     if (!coupons || coupons.length === 0) {
       return Response.json({ error: 'Cupão não encontrado.' }, { status: 404 });
     }
