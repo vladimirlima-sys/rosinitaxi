@@ -147,7 +147,7 @@ export default function SeoHead({ lang = 'fr' }) {
       "url": "https://rosini.online",
       "logo": {
         "@type": "ImageObject",
-        "url": "https://rosini.online/logo.png",
+        "url": "https://qtrypzzcjebvfcihiynt.supabase.co/storage/v1/object/public/base44-prod/public/6997aac0bfa41b14d425e0d3/78d64efc2_generated_image.png",
         "width": 512,
         "height": 512
       }
