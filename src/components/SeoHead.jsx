@@ -128,11 +128,11 @@ export default function SeoHead({ lang = 'fr' }) {
       },
       "logo": {
         "@type": "ImageObject",
-        "url": "https://rosini.online/logo.png",
+        "url": "https://qtrypzzcjebvfcihiynt.supabase.co/storage/v1/object/public/base44-prod/public/6997aac0bfa41b14d425e0d3/78d64efc2_generated_image.png",
         "width": 512,
         "height": 512
       },
-      "image": "https://rosini.online/logo.png",
+      "image": "https://qtrypzzcjebvfcihiynt.supabase.co/storage/v1/object/public/base44-prod/public/6997aac0bfa41b14d425e0d3/78d64efc2_generated_image.png",
       "sameAs": [
         "https://www.facebook.com/rosinitransports",
         "https://www.instagram.com/rosinitransports"
