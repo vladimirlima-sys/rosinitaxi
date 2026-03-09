@@ -50,7 +50,7 @@ export default function CompletedTrips() {
 
   const loadTrips = async (driverId) => {
     try {
-      const all = await base44.asServiceRole.entities.Booking.list('-departure_date', 500);
+      const all = await base44.entities.Booking.list('-departure_date', 500);
       // Show all paid trips for this driver (no localStorage dependency)
       const completed = all.filter(b =>
         b.driver_id === driverId &&

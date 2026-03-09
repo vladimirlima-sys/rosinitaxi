@@ -52,6 +52,7 @@ import Analytics from './pages/Analytics';
 import Calendar from './pages/Calendar';
 import Clients from './pages/Clients';
 import CompletedTrips from './pages/CompletedTrips';
+import Coupons from './pages/Coupons';
 import CreatePayslip from './pages/CreatePayslip';
 import DriverPortal from './pages/DriverPortal';
 import Drivers from './pages/Drivers';
@@ -65,7 +66,6 @@ import Reservas from './pages/Reservas';
 import RideTracking from './pages/RideTracking';
 import Settings from './pages/Settings';
 import Taximeter from './pages/Taximeter';
-import Coupons from './pages/Coupons';
 import __Layout from './Layout.jsx';
 
 
@@ -75,6 +75,7 @@ export const PAGES = {
     "Calendar": Calendar,
     "Clients": Clients,
     "CompletedTrips": CompletedTrips,
+    "Coupons": Coupons,
     "CreatePayslip": CreatePayslip,
     "DriverPortal": DriverPortal,
     "Drivers": Drivers,
@@ -88,7 +89,6 @@ export const PAGES = {
     "RideTracking": RideTracking,
     "Settings": Settings,
     "Taximeter": Taximeter,
-    "Coupons": Coupons,
 }
 
 export const pagesConfig = {
