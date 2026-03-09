@@ -73,31 +73,37 @@ export default function Taximeter() {
   
   const getWaitingPricePerMinute = () => priceSettings?.taximeter_waiting_price_per_minute || 0.30;
 
-  const isNightSurchargeApplied = () => {
-    if (!priceSettings?.night_surcharge_percentage) return false;
-    if (!priceSettings.night_surcharge_days?.length) return false;
-
+  const isNightSurchargeAutoActive = () => {
     const now = new Date();
     const dayOfWeek = now.getDay();
     const hour = now.getHours();
-    const startHour = priceSettings.night_surcharge_start_hour;
-    const endHour = priceSettings.night_surcharge_end_hour;
 
-    // Check if current day is in surcharge days
-    if (!priceSettings.night_surcharge_days.includes(dayOfWeek)) return false;
+    // Full day surcharge (e.g. Sunday)
+    const fullDays = priceSettings?.night_surcharge_full_days || [];
+    if (fullDays.includes(dayOfWeek)) return true;
 
-    // Check if current time is in surcharge period
-    if (startHour <= endHour) {
-      // Normal period (doesn't cross midnight)
-      return hour >= startHour && hour < endHour;
-    } else {
-      // Period crosses midnight
+    // Hour-based surcharge
+    const nightDays = priceSettings?.night_surcharge_days || [];
+    if (!nightDays.includes(dayOfWeek)) return false;
+
+    const startHour = priceSettings?.night_surcharge_start_hour ?? 22;
+    const endHour = priceSettings?.night_surcharge_end_hour ?? 6;
+
+    if (startHour > endHour) {
       return hour >= startHour || hour < endHour;
+    } else {
+      return hour >= startHour && hour < endHour;
     }
   };
 
+  const isNightSurchargeApplied = () => {
+    if (nightSurchargeManual !== null) return nightSurchargeManual;
+    if (!priceSettings?.night_surcharge_percentage) return false;
+    return isNightSurchargeAutoActive();
+  };
+
   const getNightSurchargePercentage = () => {
-    return isNightSurchargeApplied() ? (priceSettings?.night_surcharge_percentage || 0) : 0;
+    return isNightSurchargeApplied() ? (priceSettings?.night_surcharge_percentage || 15) : 0;
   };
 
   const haversineKm = (lat1, lon1, lat2, lon2) => {
