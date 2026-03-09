@@ -250,7 +250,10 @@ export default function BookingForm({ bookingRef }) {
       const nightSurchargeDays = priceSettings.night_surcharge_days || [];
       
       let isNightTime = false;
-      if (nightSurchargeDays.includes(day)) {
+      const fullDays = priceSettings.night_surcharge_full_days || [];
+      if (fullDays.includes(day)) {
+        isNightTime = true;
+      } else if (nightSurchargeDays.includes(day)) {
         if (priceSettings.night_surcharge_start_hour > priceSettings.night_surcharge_end_hour) {
           isNightTime = hour >= priceSettings.night_surcharge_start_hour || hour < priceSettings.night_surcharge_end_hour;
         } else {
