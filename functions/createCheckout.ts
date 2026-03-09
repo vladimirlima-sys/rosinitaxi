@@ -60,6 +60,7 @@ Deno.serve(async (req) => {
         driver_name: driver_name || '',
         is_short_notice: is_short_notice ? 'true' : 'false',
         additional_stops: Array.isArray(additional_stops) ? additional_stops.filter(s => s).join('||') : '',
+        coupon_id: coupon_id || '',
       },
     });
 
