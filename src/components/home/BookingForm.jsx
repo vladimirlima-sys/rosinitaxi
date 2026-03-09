@@ -906,7 +906,46 @@ export default function BookingForm({ bookingRef }) {
                 <span className="text-white font-semibold text-sm">{t.summaryTotal}</span>
                 <span className="text-[#F5C300] text-2xl font-bold">CHF {totalPrice}</span>
               </div>
+              {couponApplied && (
+                <div className="flex justify-between text-sm">
+                  <span className="text-green-400/80">🎟️ Coupon {couponApplied.code} (-{couponApplied.discount_percentage}%)</span>
+                  <span className="text-green-400">-CHF {(calculateBasePrice() * couponApplied.discount_percentage / 100).toFixed(2)}</span>
+                </div>
+              )}
               <p className="text-white/40 text-xs italic">{t.noTollsIncluded}</p>
+            </div>
+
+            {/* Coupon */}
+            <div className="bg-black border border-black/40 rounded-xl p-3 sm:p-4">
+              <h3 className="text-white/60 text-xs uppercase tracking-wider mb-3">🎟️ Code promo</h3>
+              {couponApplied ? (
+                <div className="flex items-center justify-between bg-green-500/10 border border-green-500/30 rounded-lg p-3">
+                  <div>
+                    <p className="text-green-400 font-bold text-sm">{couponApplied.code}</p>
+                    <p className="text-green-400/70 text-xs">-{couponApplied.discount_percentage}% appliqué</p>
+                  </div>
+                  <button onClick={removeCoupon} className="text-white/40 hover:text-red-400 transition-colors text-xs uppercase tracking-wider">Retirer</button>
+                </div>
+              ) : (
+                <div className="flex gap-2">
+                  <input
+                    type="text"
+                    placeholder="CODE PROMO"
+                    value={couponCode}
+                    onChange={(e) => { setCouponCode(e.target.value.toUpperCase()); setCouponError(''); }}
+                    onKeyDown={(e) => e.key === 'Enter' && applyCoupon()}
+                    className="flex-1 bg-white/10 border border-white/20 rounded-lg text-white text-sm p-3 outline-none placeholder:text-white/30 focus:border-white/60 uppercase tracking-widest"
+                  />
+                  <button
+                    onClick={applyCoupon}
+                    disabled={couponLoading || !couponCode.trim()}
+                    className="px-4 rounded-lg bg-[#F5C300] text-black font-bold text-sm disabled:opacity-50 transition-all hover:bg-[#e6b800]"
+                  >
+                    {couponLoading ? '...' : 'OK'}
+                  </button>
+                </div>
+              )}
+              {couponError && <p className="text-red-400 text-xs mt-2">{couponError}</p>}
             </div>
 
             {/* Payment method */}
