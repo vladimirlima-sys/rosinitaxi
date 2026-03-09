@@ -21,7 +21,7 @@ Deno.serve(async (req) => {
       return Response.json({ error: 'Email já utilizou este cupão.' }, { status: 400 });
     }
 
-    await base44.asServiceRole.entities.Coupon.update(coupon_id, {
+    await base44.entities.Coupon.update(coupon_id, {
       used_by_emails: [...usedEmails, normalizedEmail],
       used_count: (coupon.used_count || 0) + 1,
     });
