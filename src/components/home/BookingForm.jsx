@@ -441,6 +441,11 @@ export default function BookingForm({ bookingRef }) {
         const createdBooking = response.data;
         console.log('✅ Booking created:', createdBooking.id);
         
+        // Marcar cupom como usado
+        if (couponApplied) {
+          base44.functions.invoke('useCoupon', { coupon_id: couponApplied.coupon_id, booking_id: createdBooking.id }).catch(() => {});
+        }
+
         // Avança para confirmação
         setStep(5);
         setIsSubmitting(false);
