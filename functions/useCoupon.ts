@@ -8,7 +8,8 @@ Deno.serve(async (req) => {
     if (!coupon_id) return Response.json({ error: 'coupon_id obrigatório.' }, { status: 400 });
     if (!email) return Response.json({ error: 'email obrigatório.' }, { status: 400 });
 
-    const coupons = await base44.entities.Coupon.filter({ id: coupon_id });
+    // Use asServiceRole for public app (no user auth required)
+    const coupons = await base44.asServiceRole.entities.Coupon.filter({ id: coupon_id });
     if (!coupons || coupons.length === 0) {
       return Response.json({ error: 'Cupão não encontrado.' }, { status: 404 });
     }
@@ -21,7 +22,7 @@ Deno.serve(async (req) => {
       return Response.json({ error: 'Email já utilizou este cupão.' }, { status: 400 });
     }
 
-    await base44.entities.Coupon.update(coupon_id, {
+    await base44.asServiceRole.entities.Coupon.update(coupon_id, {
       used_by_emails: [...usedEmails, normalizedEmail],
       used_count: (coupon.used_count || 0) + 1,
     });
