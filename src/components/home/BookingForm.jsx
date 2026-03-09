@@ -47,6 +47,10 @@ export default function BookingForm({ bookingRef }) {
     distance_km: 0
   });
   const [phoneError, setPhoneError] = useState('');
+  const [couponCode, setCouponCode] = useState('');
+  const [couponApplied, setCouponApplied] = useState(null); // { coupon_id, discount_percentage, code }
+  const [couponError, setCouponError] = useState('');
+  const [couponLoading, setCouponLoading] = useState(false);
 
   const update = (field, value) => {
     setForm((prev) => ({ ...prev, [field]: value }));
