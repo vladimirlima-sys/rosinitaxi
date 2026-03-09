@@ -158,6 +158,11 @@ export default function SeoHead({ lang = 'fr' }) {
     ld1.text = JSON.stringify(organizationSchema);
     document.head.appendChild(ld1);
 
+    const ld0 = document.createElement('script');
+    ld0.type = 'application/ld+json';
+    ld0.text = JSON.stringify(orgSchema);
+    document.head.appendChild(ld0);
+
     // FAQ Schema
     const faqSchema = {
       "@context": "https://schema.org",
