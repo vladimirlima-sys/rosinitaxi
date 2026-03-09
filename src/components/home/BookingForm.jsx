@@ -237,17 +237,14 @@ export default function BookingForm({ bookingRef }) {
     return allKeywords.some(k => dep.includes(k));
   };
 
-  const calculateTotalPrice = () => {
+  const calculateBasePrice = () => {
     if (!priceSettings || estimatedDistance === 0 || !form.vehicle_type) return null;
     
-    // Base distance price
     let total = estimatedDistance * getPricePerKm();
     
-    // Add base fare for short trips (≤ 50 km), with a higher rate for very short trips (≤ 5 km)
     if (estimatedDistance <= 5) total += 13;
     else if (estimatedDistance <= 50) total += priceSettings.base_fare || 0;
 
-    // Apply night surcharge if conditions match (applied AFTER base + distance)
     if (form.departure_date && form.departure_time && priceSettings.night_surcharge_percentage > 0) {
       const dt = new Date(`${form.departure_date}T${form.departure_time}:00`);
       const day = dt.getDay(), hour = dt.getHours();
@@ -270,18 +267,49 @@ export default function BookingForm({ bookingRef }) {
       }
     }
 
-    // Apply Valais/Fribourg surcharge
     if (checkValaisFribourg()) {
       total *= 1 + priceSettings.valais_fribourg_surcharge_percentage / 100;
     }
 
-    // Add airport fee if applicable (fixed amount, NOT percentage)
     const isAirport = ['aeroporto', 'aéroport', 'airport'].some(k =>
       form.departure_point.toLowerCase().includes(k) || form.arrival_point.toLowerCase().includes(k)
     );
     if (isAirport && priceSettings.airport_fee) total += priceSettings.airport_fee;
     
-    return total.toFixed(2);
+    return total;
+  };
+
+  const calculateTotalPrice = () => {
+    const base = calculateBasePrice();
+    if (base === null) return null;
+    if (couponApplied) {
+      return (base * (1 - couponApplied.discount_percentage / 100)).toFixed(2);
+    }
+    return base.toFixed(2);
+  };
+
+  const applyCoupon = async () => {
+    if (!couponCode.trim()) return;
+    setCouponLoading(true);
+    setCouponError('');
+    try {
+      const res = await base44.functions.invoke('validateCoupon', { code: couponCode });
+      if (res.data?.valid) {
+        setCouponApplied(res.data);
+      } else {
+        setCouponError(res.data?.error || 'Code invalide');
+      }
+    } catch (err) {
+      setCouponError(err.message || 'Erreur de validation');
+    } finally {
+      setCouponLoading(false);
+    }
+  };
+
+  const removeCoupon = () => {
+    setCouponApplied(null);
+    setCouponCode('');
+    setCouponError('');
   };
 
   const totalPrice = calculateTotalPrice();
