@@ -1,0 +1,54 @@
+{
+  "name": "Review",
+  "type": "object",
+  "properties": {
+    "booking_id": {
+      "type": "string",
+      "description": "ID de la r\u00e9servation associ\u00e9e"
+    },
+    "client_name": {
+      "type": "string",
+      "description": "Nom du client qui laisse l'avis"
+    },
+    "client_email": {
+      "type": "string",
+      "description": "Email du client"
+    },
+    "driver_rating": {
+      "type": "number",
+      "minimum": 1,
+      "maximum": 5,
+      "description": "Note du chauffeur (1-5 \u00e9toiles)"
+    },
+    "trip_rating": {
+      "type": "number",
+      "minimum": 1,
+      "maximum": 5,
+      "description": "Note du trajet (1-5 \u00e9toiles)"
+    },
+    "comment": {
+      "type": "string",
+      "description": "Commentaire de l'avis"
+    },
+    "journey_from": {
+      "type": "string",
+      "description": "Point de d\u00e9part du trajet"
+    },
+    "journey_to": {
+      "type": "string",
+      "description": "Point d'arriv\u00e9e du trajet"
+    },
+    "journey_date": {
+      "type": "string",
+      "format": "date",
+      "description": "Date du trajet"
+    }
+  },
+  "required": [
+    "booking_id",
+    "client_name",
+    "client_email",
+    "driver_rating",
+    "trip_rating"
+  ]
+}

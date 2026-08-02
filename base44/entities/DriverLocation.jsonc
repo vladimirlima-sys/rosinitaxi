@@ -1,0 +1,37 @@
+{
+  "name": "DriverLocation",
+  "type": "object",
+  "properties": {
+    "booking_id": {
+      "type": "string",
+      "description": "ID da reserva associada"
+    },
+    "driver_id": {
+      "type": "string",
+      "description": "ID do motorista"
+    },
+    "latitude": {
+      "type": "number",
+      "description": "Latitude do motorista"
+    },
+    "longitude": {
+      "type": "number",
+      "description": "Longitude do motorista"
+    },
+    "accuracy": {
+      "type": "number",
+      "description": "Precis\u00e3o do GPS em metros"
+    },
+    "timestamp": {
+      "type": "number",
+      "description": "Timestamp do registro"
+    }
+  },
+  "required": [
+    "booking_id",
+    "driver_id",
+    "latitude",
+    "longitude",
+    "timestamp"
+  ]
+}

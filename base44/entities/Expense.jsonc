@@ -1,0 +1,51 @@
+{
+  "name": "Expense",
+  "type": "object",
+  "properties": {
+    "category": {
+      "type": "string",
+      "enum": [
+        "carburant",
+        "assurance",
+        "peage",
+        "telephone",
+        "internet",
+        "entretien",
+        "autre"
+      ],
+      "description": "Cat\u00e9gorie de d\u00e9pense"
+    },
+    "amount": {
+      "type": "number",
+      "description": "Montant en CHF"
+    },
+    "description": {
+      "type": "string",
+      "description": "Description de la d\u00e9pense"
+    },
+    "date": {
+      "type": "string",
+      "format": "date",
+      "description": "Date de la d\u00e9pense"
+    },
+    "month": {
+      "type": "string",
+      "description": "Mois (YYYY-MM)"
+    },
+    "is_recurring": {
+      "type": "boolean",
+      "default": false,
+      "description": "Si la d\u00e9pense est r\u00e9currente mensuellement"
+    },
+    "recurring_start_month": {
+      "type": "string",
+      "description": "Mois de d\u00e9but de la r\u00e9currence (YYYY-MM)"
+    }
+  },
+  "required": [
+    "category",
+    "amount",
+    "date",
+    "month"
+  ]
+}

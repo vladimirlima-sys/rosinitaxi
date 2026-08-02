@@ -1,0 +1,48 @@
+{
+  "name": "FinancialReport",
+  "type": "object",
+  "properties": {
+    "month": {
+      "type": "string",
+      "description": "M\u00eas do relat\u00f3rio (YYYY-MM)"
+    },
+    "month_label": {
+      "type": "string",
+      "description": "R\u00f3tulo do m\u00eas (ex: Janeiro 2026)"
+    },
+    "total_revenue": {
+      "type": "number",
+      "description": "Total de receitas em CHF"
+    },
+    "total_expenses": {
+      "type": "number",
+      "description": "Total de despesas em CHF"
+    },
+    "total_taxes": {
+      "type": "number",
+      "description": "Total de impostos em CHF"
+    },
+    "net_result": {
+      "type": "number",
+      "description": "Resultado l\u00edquido em CHF"
+    },
+    "num_bookings": {
+      "type": "number",
+      "description": "N\u00famero de reservas"
+    },
+    "pdf_data": {
+      "type": "string",
+      "description": "Dados do PDF em base64 para download"
+    }
+  },
+  "required": [
+    "month",
+    "month_label",
+    "total_revenue",
+    "total_expenses",
+    "total_taxes",
+    "net_result",
+    "num_bookings"
+  ],
+  "rls": {}
+}

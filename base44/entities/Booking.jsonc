@@ -1,0 +1,170 @@
+{
+  "name": "Booking",
+  "type": "object",
+  "properties": {
+    "client_name": {
+      "type": "string",
+      "description": "Nome do cliente"
+    },
+    "client_email": {
+      "type": "string",
+      "description": "Email do cliente"
+    },
+    "client_phone": {
+      "type": "string",
+      "description": "Telefone do cliente"
+    },
+    "departure_point": {
+      "type": "string",
+      "description": "Ponto de partida"
+    },
+    "arrival_point": {
+      "type": "string",
+      "description": "Ponto de chegada"
+    },
+    "additional_stops": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      },
+      "default": [],
+      "description": "Paradas adicionais entre partida e chegada"
+    },
+    "departure_date": {
+      "type": "string",
+      "format": "date",
+      "description": "Data de partida"
+    },
+    "departure_time": {
+      "type": "string",
+      "description": "Hor\u00e1rio de partida"
+    },
+    "flight_number": {
+      "type": "string",
+      "description": "N\u00famero do voo de chegada"
+    },
+    "vehicle_type": {
+      "type": "string",
+      "enum": [
+        "economic",
+        "comfort"
+      ],
+      "description": "Tipo de ve\u00edculo"
+    },
+    "distance_km": {
+      "type": "number",
+      "description": "Dist\u00e2ncia em km"
+    },
+    "total_price": {
+      "type": "number",
+      "description": "Pre\u00e7o total em CHF"
+    },
+    "passengers": {
+      "type": "number",
+      "description": "N\u00famero de passageiros"
+    },
+    "extras": {
+      "type": "array",
+      "description": "Extras selecionados",
+      "items": {
+        "type": "string",
+        "enum": [
+          "baby_seat",
+          "extra_luggage",
+          "wheelchair_accessible",
+          "pet_friendly"
+        ]
+      },
+      "default": []
+    },
+    "extras_price": {
+      "type": "number",
+      "description": "Custo dos extras em CHF",
+      "default": 0
+    },
+    "special_notes": {
+      "type": "string",
+      "description": "Observa\u00e7\u00f5es especiais do cliente"
+    },
+    "payment_status": {
+      "type": "string",
+      "enum": [
+        "pending",
+        "paid",
+        "cancelled",
+        "refunded"
+      ],
+      "default": "pending",
+      "description": "Status do pagamento"
+    },
+    "payment_method": {
+      "type": "string",
+      "enum": [
+        "stripe",
+        "cash",
+        "twint"
+      ],
+      "default": "stripe",
+      "description": "M\u00e9todo de pagamento"
+    },
+    "stripe_payment_intent_id": {
+      "type": "string",
+      "description": "ID do PaymentIntent do Stripe para reembolsos"
+    },
+    "notes": {
+      "type": "string",
+      "description": "Observa\u00e7\u00f5es adicionais"
+    },
+    "confirmation_sent": {
+      "type": "boolean",
+      "default": false,
+      "description": "Se a confirma\u00e7\u00e3o foi enviada"
+    },
+    "sms_sent": {
+      "type": "boolean",
+      "default": false,
+      "description": "Se o SMS foi enviado"
+    },
+    "driver_id": {
+      "type": "string",
+      "description": "ID do motorista atribu\u00eddo"
+    },
+    "driver_name": {
+      "type": "string",
+      "description": "Nome do motorista atribu\u00eddo (cache)"
+    },
+    "language": {
+      "type": "string",
+      "enum": [
+        "fr",
+        "pt",
+        "en",
+        "de",
+        "it",
+        "es",
+        "nl"
+      ],
+      "default": "fr",
+      "description": "Idioma do cliente no momento da reserva"
+    },
+    "ride_status": {
+      "type": "string",
+      "enum": [
+        "en_route",
+        "arrived",
+        "completed"
+      ],
+      "description": "Statut de la course en temps r\u00e9el"
+    }
+  },
+  "required": [
+    "client_name",
+    "client_email",
+    "departure_point",
+    "arrival_point",
+    "departure_date",
+    "departure_time",
+    "vehicle_type"
+  ],
+  "rls": {}
+}

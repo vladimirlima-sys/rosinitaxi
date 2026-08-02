@@ -1,0 +1,72 @@
+{
+  "name": "TaxSettings",
+  "type": "object",
+  "properties": {
+    "avs_percentage": {
+      "type": "number",
+      "default": 5.15,
+      "description": "Percentual AVS (Assurance-Vieillesse et Survivants) - Vaud"
+    },
+    "ai_percentage": {
+      "type": "number",
+      "default": 0.8,
+      "description": "Percentual AI (Assurance-Invalidit\u00e9)"
+    },
+    "apg_percentage": {
+      "type": "number",
+      "default": 0,
+      "description": "Percentual APG (Assurance-Placement Gratuit)"
+    },
+    "ac_percentage": {
+      "type": "number",
+      "default": 1.1,
+      "description": "Percentual AC (Assurance Ch\u00f4mage)"
+    },
+    "af_percentage": {
+      "type": "number",
+      "default": 0,
+      "description": "Percentual AF (Allocations Familiales)"
+    },
+    "pc_percentage": {
+      "type": "number",
+      "default": 0,
+      "description": "Percentual PC (Prestations Compl\u00e9mentaires)"
+    },
+    "cont_frais_admin_percentage": {
+      "type": "number",
+      "default": 0,
+      "description": "Percentual Contribution Frais Administratifs"
+    },
+    "impot_source_percentage": {
+      "type": "number",
+      "default": 0,
+      "description": "Percentual Imp\u00f4t \u00e0 la Source (opcional)"
+    },
+    "impot_cantonal_percentage": {
+      "type": "number",
+      "default": 8.5,
+      "description": "Percentual Imp\u00f4t Cantonal - Vaud"
+    },
+    "impot_communal_percentage": {
+      "type": "number",
+      "default": 8,
+      "description": "Percentual Imp\u00f4t Comunal - Vaud"
+    },
+    "other_deductions_percentage": {
+      "type": "number",
+      "default": 0,
+      "description": "Outras dedu\u00e7\u00f5es (percentual)"
+    },
+    "notes": {
+      "type": "string",
+      "description": "Notas sobre as configura\u00e7\u00f5es de impostos"
+    }
+  },
+  "required": [
+    "avs_percentage",
+    "ai_percentage",
+    "impot_cantonal_percentage",
+    "impot_communal_percentage"
+  ],
+  "rls": {}
+}

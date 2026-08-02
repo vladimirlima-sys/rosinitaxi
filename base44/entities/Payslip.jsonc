@@ -1,0 +1,137 @@
+{
+  "name": "Payslip",
+  "type": "object",
+  "properties": {
+    "driver_id": {
+      "type": "string",
+      "description": "ID do motorista"
+    },
+    "driver_name": {
+      "type": "string",
+      "description": "Nome do motorista"
+    },
+    "driver_address": {
+      "type": "string",
+      "description": "Endere\u00e7o do motorista"
+    },
+    "driver_avs": {
+      "type": "string",
+      "description": "N\u00famero AVS do motorista"
+    },
+    "month": {
+      "type": "string",
+      "description": "M\u00eas (YYYY-MM)"
+    },
+    "month_label": {
+      "type": "string",
+      "description": "R\u00f3tulo do m\u00eas (ex: Mars 2026)"
+    },
+    "salary_brut": {
+      "type": "number",
+      "description": "Salaire brut en CHF"
+    },
+    "heures_travaillees": {
+      "type": "number",
+      "description": "Nombre d'heures travaill\u00e9es"
+    },
+    "taux_horaire": {
+      "type": "number",
+      "description": "Taux horaire CHF"
+    },
+    "avs_percentage": {
+      "type": "number",
+      "description": "% AVS"
+    },
+    "avs_amount": {
+      "type": "number",
+      "description": "Montant AVS"
+    },
+    "ai_percentage": {
+      "type": "number",
+      "description": "% AI"
+    },
+    "ai_amount": {
+      "type": "number",
+      "description": "Montant AI"
+    },
+    "apg_percentage": {
+      "type": "number",
+      "description": "% APG"
+    },
+    "apg_amount": {
+      "type": "number",
+      "description": "Montant APG"
+    },
+    "ac_percentage": {
+      "type": "number",
+      "description": "% AC"
+    },
+    "ac_amount": {
+      "type": "number",
+      "description": "Montant AC"
+    },
+    "af_percentage": {
+      "type": "number",
+      "description": "% AF"
+    },
+    "af_amount": {
+      "type": "number",
+      "description": "Montant AF"
+    },
+    "pc_percentage": {
+      "type": "number",
+      "description": "% PC"
+    },
+    "pc_amount": {
+      "type": "number",
+      "description": "Montant PC"
+    },
+    "cont_frais_admin_percentage": {
+      "type": "number",
+      "description": "% Contrib. Frais Admin"
+    },
+    "cont_frais_admin_amount": {
+      "type": "number",
+      "description": "Montant Contrib. Frais Admin"
+    },
+    "impot_source_percentage": {
+      "type": "number",
+      "description": "% Imp\u00f4t \u00e0 la source"
+    },
+    "impot_source_amount": {
+      "type": "number",
+      "description": "Montant Imp\u00f4t \u00e0 la source"
+    },
+    "other_deductions_percentage": {
+      "type": "number",
+      "description": "% Autres d\u00e9ductions"
+    },
+    "other_deductions_amount": {
+      "type": "number",
+      "description": "Montant Autres d\u00e9ductions"
+    },
+    "total_deductions": {
+      "type": "number",
+      "description": "Total des d\u00e9ductions"
+    },
+    "salary_net": {
+      "type": "number",
+      "description": "Salaire net en CHF"
+    },
+    "notes": {
+      "type": "string",
+      "description": "Notes"
+    },
+    "pdf_data": {
+      "type": "string",
+      "description": "PDF base64"
+    }
+  },
+  "required": [
+    "driver_name",
+    "month",
+    "month_label",
+    "salary_brut"
+  ],
+  "rls": {}
+}

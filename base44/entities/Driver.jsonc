@@ -1,0 +1,43 @@
+{
+  "name": "Driver",
+  "type": "object",
+  "properties": {
+    "name": {
+      "type": "string",
+      "description": "Nome completo do motorista"
+    },
+    "phone": {
+      "type": "string",
+      "description": "Telefone do motorista"
+    },
+    "email": {
+      "type": "string",
+      "description": "Email do motorista"
+    },
+    "vehicle": {
+      "type": "string",
+      "description": "Ve\u00edculo (modelo e placa)"
+    },
+    "license_number": {
+      "type": "string",
+      "description": "N\u00famero da CNH"
+    },
+    "status": {
+      "type": "string",
+      "enum": [
+        "active",
+        "inactive"
+      ],
+      "default": "active",
+      "description": "Status do motorista"
+    },
+    "notes": {
+      "type": "string",
+      "description": "Observa\u00e7\u00f5es"
+    }
+  },
+  "required": [
+    "name",
+    "phone"
+  ]
+}

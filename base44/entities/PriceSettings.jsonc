@@ -1,0 +1,60 @@
+{
+  "name": "PriceSettings",
+  "type": "object",
+  "properties": {
+    "standard_price_per_km": {
+      "type": "number",
+      "description": "Pre\u00e7o por km do carro STANDARD"
+    },
+    "comfort_price_per_km": {
+      "type": "number",
+      "description": "Pre\u00e7o por km do carro COMFORT"
+    },
+    "base_fare": {
+      "type": "number",
+      "default": 10,
+      "description": "Taxa base da corrida"
+    },
+    "airport_fee": {
+      "type": "number",
+      "description": "Taxa de aeroporto"
+    },
+    "night_surcharge_percentage": {
+      "type": "number",
+      "description": "Percentual de taxa noturna"
+    },
+    "night_surcharge_days": {
+      "type": "array",
+      "items": {
+        "type": "number"
+      },
+      "default": [],
+      "description": "Dias da semana (0=domingo, 1=segunda, etc) em que se aplica taxa noturna por hor\u00e1rio"
+    },
+    "night_surcharge_start_hour": {
+      "type": "number",
+      "description": "Hora de in\u00edcio da taxa noturna (0-23)"
+    },
+    "night_surcharge_end_hour": {
+      "type": "number",
+      "description": "Hora de fim da taxa noturna (0-23)"
+    },
+    "night_surcharge_full_days": {
+      "type": "array",
+      "items": {
+        "type": "number"
+      },
+      "default": [],
+      "description": "Dias da semana (0=domingo, etc) com adicional noturno 24h (dia inteiro)"
+    },
+    "valais_fribourg_surcharge_percentage": {
+      "type": "number",
+      "default": 15,
+      "description": "Percentual de adicional para corridas originadas em Valais ou Fribourg"
+    }
+  },
+  "required": [
+    "standard_price_per_km"
+  ],
+  "rls": {}
+}

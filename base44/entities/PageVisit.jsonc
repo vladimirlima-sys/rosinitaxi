@@ -1,0 +1,62 @@
+{
+  "name": "PageVisit",
+  "type": "object",
+  "properties": {
+    "session_id": {
+      "type": "string",
+      "description": "ID \u00fanico da sess\u00e3o do visitante"
+    },
+    "page": {
+      "type": "string",
+      "description": "P\u00e1gina visitada"
+    },
+    "language": {
+      "type": "string",
+      "description": "Idioma do visitante"
+    },
+    "user_agent": {
+      "type": "string",
+      "description": "User agent do navegador"
+    },
+    "referrer": {
+      "type": "string",
+      "description": "URL de origem"
+    },
+    "month": {
+      "type": "string",
+      "description": "M\u00eas da visita (YYYY-MM)"
+    },
+    "day": {
+      "type": "string",
+      "description": "Dia da visita (YYYY-MM-DD)"
+    },
+    "hour": {
+      "type": "number",
+      "description": "Hora da visita (0-23)"
+    },
+    "is_active": {
+      "type": "boolean",
+      "default": true,
+      "description": "Se o visitante est\u00e1 ativo agora (heartbeat)"
+    },
+    "last_seen": {
+      "type": "number",
+      "description": "Timestamp do \u00faltimo heartbeat"
+    },
+    "device_type": {
+      "type": "string",
+      "enum": [
+        "mobile",
+        "tablet",
+        "desktop"
+      ],
+      "description": "Tipo de dispositivo"
+    }
+  },
+  "required": [
+    "session_id",
+    "page",
+    "month",
+    "day"
+  ]
+}
